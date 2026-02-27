@@ -1,0 +1,2230 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projet Hexagon — Game Design Document</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #111827;
+            --bg-card: #1a2234;
+            --bg-card-hover: #1f2b42;
+            --accent-cyan: #22d3ee;
+            --accent-blue: #3b82f6;
+            --accent-purple: #a855f7;
+            --accent-green: #10b981;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-pink: #ec4899;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: #1e293b;
+            --glow-cyan: 0 0 30px rgba(34, 211, 238, 0.15);
+            --hex-clip: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* === HERO === */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 30% 20%, rgba(34, 211, 238, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 60%);
+            z-index: 0;
+        }
+
+        .hex-grid-bg {
+            position: absolute;
+            inset: 0;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Cpath d='M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100' fill='none' stroke='%2322d3ee' stroke-width='1'/%3E%3Cpath d='M28 0L28 34L0 50L0 84L28 100L56 84L56 50L28 34' fill='none' stroke='%2322d3ee' stroke-width='1'/%3E%3C/svg%3E");
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 1rem;
+            background: rgba(34, 211, 238, 0.1);
+            border: 1px solid rgba(34, 211, 238, 0.2);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            color: var(--accent-cyan);
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #fff 0%, var(--accent-cyan) 50%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: 3rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat .number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent-cyan);
+        }
+
+        .hero-stat .label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* === NAV === */
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 14, 23, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0.75rem 2rem;
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav a {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .nav a:hover {
+            color: var(--accent-cyan);
+            background: rgba(34, 211, 238, 0.08);
+        }
+
+        /* === SECTIONS === */
+        .section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        .section-header {
+            margin-bottom: 3rem;
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-tag.cyan {
+            color: var(--accent-cyan);
+        }
+
+        .section-tag.purple {
+            color: var(--accent-purple);
+        }
+
+        .section-tag.green {
+            color: var(--accent-green);
+        }
+
+        .section-tag.orange {
+            color: var(--accent-orange);
+        }
+
+        .section-tag.red {
+            color: var(--accent-red);
+        }
+
+        .section-tag.blue {
+            color: var(--accent-blue);
+        }
+
+        .section-tag.pink {
+            color: var(--accent-pink);
+        }
+
+        .section h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+
+        .section .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 700px;
+        }
+
+        /* === CARDS === */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .card-grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            background: var(--bg-card-hover);
+            border-color: rgba(34, 211, 238, 0.2);
+            transform: translateY(-2px);
+            box-shadow: var(--glow-cyan);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-icon.cyan {
+            background: rgba(34, 211, 238, 0.12);
+        }
+
+        .card-icon.purple {
+            background: rgba(168, 85, 247, 0.12);
+        }
+
+        .card-icon.green {
+            background: rgba(16, 185, 129, 0.12);
+        }
+
+        .card-icon.orange {
+            background: rgba(245, 158, 11, 0.12);
+        }
+
+        .card-icon.red {
+            background: rgba(239, 68, 68, 0.12);
+        }
+
+        .card-icon.blue {
+            background: rgba(59, 130, 246, 0.12);
+        }
+
+        .card-icon.pink {
+            background: rgba(236, 72, 153, 0.12);
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .card .tag {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 1rem;
+        }
+
+        .tag.phase1 {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+        }
+
+        .tag.phase2 {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-blue);
+        }
+
+        .tag.phase3 {
+            background: rgba(168, 85, 247, 0.15);
+            color: var(--accent-purple);
+        }
+
+        .tag.core {
+            background: rgba(34, 211, 238, 0.15);
+            color: var(--accent-cyan);
+        }
+
+        /* === TABLES === */
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin: 1.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: rgba(34, 211, 238, 0.06);
+            text-align: left;
+            padding: 0.75rem 1rem;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-cyan);
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        td:first-child {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* === FLOW DIAGRAM === */
+        .flow {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+
+        .flow-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1.25rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            min-width: 140px;
+            text-align: center;
+        }
+
+        .flow-step .emoji {
+            font-size: 2rem;
+        }
+
+        .flow-step .flow-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .flow-step .flow-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .flow-arrow {
+            font-size: 1.5rem;
+            color: var(--accent-cyan);
+            padding: 0 0.5rem;
+        }
+
+        /* === FORMULA === */
+        .formula-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .formula {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.3rem;
+            color: var(--accent-cyan);
+            margin-bottom: 0.75rem;
+        }
+
+        .formula-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* === TIER LIST === */
+        .tier-list {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .tier {
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .tier:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--glow-cyan);
+        }
+
+        .tier-header {
+            padding: 1rem;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .tier:nth-child(1) .tier-header {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.05));
+            color: var(--accent-green);
+        }
+
+        .tier:nth-child(2) .tier-header {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.05));
+            color: var(--accent-blue);
+        }
+
+        .tier:nth-child(3) .tier-header {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.05));
+            color: var(--accent-orange);
+        }
+
+        .tier:nth-child(4) .tier-header {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(168, 85, 247, 0.05));
+            color: var(--accent-purple);
+        }
+
+        .tier-body {
+            padding: 1.25rem;
+        }
+
+        .tier-body h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .tier-body p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .tier-examples {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .tier-examples span {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            padding: 0.3rem 0.6rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+        }
+
+        /* === TIMELINE === */
+        .timeline {
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent-green), var(--accent-blue), var(--accent-purple));
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 64px;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 16px;
+            top: 4px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 3px solid;
+        }
+
+        .timeline-item:nth-child(1) .timeline-dot {
+            border-color: var(--accent-green);
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        .timeline-item:nth-child(2) .timeline-dot {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        .timeline-item:nth-child(3) .timeline-dot {
+            border-color: var(--accent-purple);
+            background: rgba(168, 85, 247, 0.2);
+        }
+
+        .timeline-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .timeline-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .timeline-tags span {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* === ALERT BOXES === */
+        .alert {
+            padding: 1.25rem 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+            font-size: 0.9rem;
+        }
+
+        .alert.golden {
+            background: rgba(245, 158, 11, 0.06);
+            border-color: var(--accent-orange);
+        }
+
+        .alert.golden strong {
+            color: var(--accent-orange);
+        }
+
+        .alert.danger {
+            background: rgba(239, 68, 68, 0.06);
+            border-color: var(--accent-red);
+        }
+
+        .alert.danger strong {
+            color: var(--accent-red);
+        }
+
+        .alert.info {
+            background: rgba(34, 211, 238, 0.06);
+            border-color: var(--accent-cyan);
+        }
+
+        .alert.info strong {
+            color: var(--accent-cyan);
+        }
+
+        /* === VS COMPARISON === */
+        .vs-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 1rem;
+            align-items: center;
+            margin: 2rem 0;
+        }
+
+        .vs-col {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .vs-col h4 {
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .vs-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .vs-col li {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            padding-left: 1.25rem;
+            position: relative;
+        }
+
+        .vs-col li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-cyan);
+        }
+
+        .vs-badge {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--text-muted);
+        }
+
+        /* === DIVIDER === */
+        .divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--border), transparent);
+            margin: 0;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            .tier-list {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .vs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .vs-badge {
+                text-align: center;
+            }
+
+            .flow {
+                flex-direction: column;
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .tier-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* === SCROLLBAR === */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        /* === ANIMATIONS === */
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(34, 211, 238, 0.1);
+            }
+
+            50% {
+                box-shadow: 0 0 40px rgba(34, 211, 238, 0.25);
+            }
+        }
+
+        .glow-pulse {
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .float {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* === HEAT BAR === */
+        .heat-bar {
+            display: flex;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+            height: 60px;
+            border: 1px solid var(--border);
+        }
+
+        .heat-zone {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .heat-zone span {
+            font-size: 0.65rem;
+            opacity: 0.7;
+            margin-top: 2px;
+        }
+
+        .heat-zone.cold {
+            flex: 1;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05));
+            color: var(--accent-green);
+        }
+
+        .heat-zone.warm {
+            flex: 1.5;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.08));
+            color: var(--accent-orange);
+        }
+
+        .heat-zone.hot {
+            flex: 2;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(239, 68, 68, 0.08));
+            color: var(--accent-red);
+        }
+
+        /* === SIEGE PHASES === */
+        .siege-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin: 2rem 0;
+        }
+
+        .siege-phase {
+            display: flex;
+            align-items: stretch;
+            gap: 1.25rem;
+            padding: 1.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .siege-phase:last-child {
+            border-bottom: none;
+        }
+
+        .siege-number {
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        .siege-number.step1 {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent-orange);
+            border: 2px solid var(--accent-orange);
+        }
+
+        .siege-number.step2 {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--accent-red);
+            border: 2px solid var(--accent-red);
+        }
+
+        .siege-number.step3 {
+            background: rgba(168, 85, 247, 0.15);
+            color: var(--accent-purple);
+            border: 2px solid var(--accent-purple);
+        }
+
+        .siege-info h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .siege-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .siege-info .siege-detail {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.25rem 0.7rem;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            margin-right: 0.5rem;
+        }
+
+        /* === SOLO BADGE === */
+        .solo-banner {
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.08), rgba(168, 85, 247, 0.08));
+            border: 1px solid rgba(34, 211, 238, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .solo-banner::before {
+            content: '👤';
+            position: absolute;
+            font-size: 8rem;
+            opacity: 0.04;
+            right: -1rem;
+            top: -2rem;
+        }
+
+        .solo-banner h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .solo-banner p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* === COOLDOWN MOCKUP === */
+        .hud-mockup {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            display: inline-flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            margin: 1rem 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .hud-mockup .hud-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .hud-mockup .hud-label {
+            color: var(--text-muted);
+        }
+
+        .hud-mockup .hud-value {
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .hud-mockup .hud-value.warning {
+            color: var(--accent-orange);
+        }
+
+        .hud-mockup .hud-explain {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-style: italic;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* === POKEDEX GRID === */
+        .pokedex-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .pokedex-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .pokedex-item:hover {
+            transform: translateY(-3px);
+            border-color: rgba(34, 211, 238, 0.3);
+            box-shadow: var(--glow-cyan);
+        }
+
+        .pokedex-item .pokedex-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .pokedex-item h4 {
+            font-size: 0.85rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .pokedex-item p {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        /* === PRINT === */
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+
+            .nav {
+                display: none;
+            }
+
+            .card {
+                border: 1px solid #ddd;
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+        <div class="hex-grid-bg"></div>
+        <div class="hero-content">
+            <div class="hero-badge">⬡ Game Design Document v1.0</div>
+            <h1>Projet Hexagon</h1>
+            <p>Conquiers ta ville à pied, à vélo, en bougeant. Construis ton empire sur la vraie carte et défends-le en
+                personne.</p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="number">👤</div>
+                    <div class="label">100% Solo</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="number">16</div>
+                    <div class="label">Systèmes</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="number">3</div>
+                    <div class="label">Phases</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="number">4</div>
+                    <div class="label">Tiers de Skins</div>
+                </div>
+            </div>
+            <a href="https://discord.gg/uBrmertx" target="_blank" class="discord-btn">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
+                </svg>
+                Rejoins le Discord
+            </a>
+        </div>
+    </section>
+
+    <!-- ============ NAV ============ -->
+    <nav class="nav">
+        <a href="#loop">🔄 Boucle</a>
+        <a href="#actions">⚔️ Actions</a>
+        <a href="#heatscore">🌡️ Heat Score</a>
+        <a href="#economy">🪙 Économie</a>
+        <a href="#balance">⚖️ Anti-Snowball</a>
+        <a href="#fortification">🏰 Forteresses</a>
+        <a href="#loot">💎 Loot</a>
+        <a href="#cataloguage">📚 Cataloguage</a>
+        <a href="#retention">🔥 Rétention</a>
+        <a href="#skins">🎨 Skins</a>
+        <a href="#modes">🛋️ Modes</a>
+        <a href="#vault">🏦 Coffre-fort</a>
+        <a href="#antizerg">👥 Anti-Zerg</a>
+        <a href="#antiragequit">😤 Anti-Rage</a>
+        <a href="#defense">📱 Défense Push</a>
+        <a href="#coldstart">🚀 Cold Start</a>
+        <a href="#anticheat">🛡️ Anti-Triche</a>
+        <a href="#roadmap">📍 Roadmap</a>
+    </nav>
+
+    <!-- ============ CORE LOOP ============ -->
+    <section class="section" id="loop">
+        <div class="section-header">
+            <div class="section-tag cyan">⬡ Fondation</div>
+            <h2>Boucle de Gameplay</h2>
+            <p class="subtitle">Le cycle fondamental qui définit chaque session de jeu</p>
+        </div>
+
+        <div class="flow">
+            <div class="flow-step float" style="animation-delay: 0s;">
+                <div class="emoji">🌫️</div>
+                <div class="flow-title">Découvrir</div>
+                <div class="flow-desc">Passif · Automatique</div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step float" style="animation-delay: 0.5s;">
+                <div class="emoji">⚔️</div>
+                <div class="flow-title">Capturer</div>
+                <div class="flow-desc">Actif · 5 sec arrêté</div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step float" style="animation-delay: 1s;">
+                <div class="emoji">🏴</div>
+                <div class="flow-title">Posséder</div>
+                <div class="flow-desc">Stratégique · Revenus</div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step float" style="animation-delay: 1.5s;">
+                <div class="emoji">🛡️</div>
+                <div class="flow-title">Défendre</div>
+                <div class="flow-desc">Rétention · Retourner</div>
+            </div>
+        </div>
+
+        <div class="solo-banner">
+            <h3>👤 100% Solo — Pas de clans, pas de groupes</h3>
+            <p>Hexagon est un jeu SOLO. Pas de system de clan, pas de party, pas de bonus de groupe. Si deux joueurs se
+                croisent, c'est du PvP naturel — jamais de coordination assistée.</p>
+        </div>
+
+        <div class="alert golden">
+            <strong>⬡ Règle d'or :</strong> Découvrir ≠ Capturer. La découverte (fog of war) est passive et illimitée.
+            La capture demande un arrêt (&lt;5 km/h), du temps, et a un cooldown. Le piéton est roi — le cooldown est
+            calibré
+            sur le temps de marche entre 2 hexes (~500m). Pas de pénalité de vitesse : c'est le cooldown seul qui
+            régule.
+        </div>
+
+        <div class="alert danger">
+            <strong>🚗 Sécurité :</strong> La capture est impossible en mouvement (&gt;5 km/h). Le bouton HOLD
+            n'apparaît pas.
+            Le jeu ne doit JAMAIS encourager l'utilisation du téléphone au volant.
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ============ ACTIONS TABLE ============ -->
+    <section class="section" id="actions">
+        <div class="section-header">
+            <div class="section-tag blue">⚔️ Combat</div>
+            <h2>Actions & Récompenses</h2>
+            <p class="subtitle">Chaque action a un coût en temps et une récompense proportionnelle au risque</p>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Condition</th>
+                        <th>Récompense</th>
+                        <th>Cooldown</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>🌫️ Découvrir</td>
+                        <td>Passer à travers (auto)</td>
+                        <td>+2 coins</td>
+                        <td>Aucun</td>
+                    </tr>
+                    <tr>
+                        <td>🟢 Capturer (neutre)</td>
+                        <td>Stationnaire &lt;5 km/h, 5 sec</td>
+                        <td>+50 coins</td>
+                        <td>5 min</td>
+                    </tr>
+                    <tr>
+                        <td>🟡 Voler (ennemi)</td>
+                        <td>Stationnaire, 15-30 sec</td>
+                        <td>+100 coins</td>
+                        <td>5 min</td>
+                    </tr>
+                    <tr>
+                        <td>🟠 Voler (protégé)</td>
+                        <td>Stationnaire, 60 sec</td>
+                        <td>+200 coins</td>
+                        <td>5 min</td>
+                    </tr>
+                    <tr>
+                        <td>🔴 Voler (forteresse)</td>
+                        <td>2 joueurs + 60 sec</td>
+                        <td>+500 coins</td>
+                        <td>5 min</td>
+                    </tr>
+                    <tr>
+                        <td>🛡️ Défendre (succès)</td>
+                        <td>Automatique</td>
+                        <td>+75 coins</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td>🔁 Reconquérir</td>
+                        <td>Stationnaire, 5 sec</td>
+                        <td>+150 coins</td>
+                        <td>5 min</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="alert info">
+            <strong>🔑 Bonus de vol :</strong> Un hex possédé &lt;24h ne donne que +50 coins au voleur (pas de prime).
+            Le bonus augmente avec l'ancienneté de possession — ça empêche l'exploit de ping-pong entre comptes.
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ============ HEAT SCORE ============ -->
+    <section class="section" id="heatscore">
+        <div class="section-header">
+            <div class="section-tag red">🌡️ Zones</div>
+            <h2>Heat Score &amp; Zones de Jeu</h2>
+            <p class="subtitle">Les gains dépendent de la compétition réelle dans ta zone — pas de farm solo en campagne
+            </p>
+        </div>
+
+        <div class="heat-bar">
+            <div class="heat-zone cold">🟢 Cold<span>×0.1 gains</span></div>
+            <div class="heat-zone warm">🟡 Warm<span>×0.5 gains</span></div>
+            <div class="heat-zone hot">🔴 Hot<span>×1.0 gains</span></div>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Zone Heat</th>
+                        <th>Joueurs uniques (7j)</th>
+                        <th>Multiplicateur</th>
+                        <th>Exemple</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>🟢 Cold</td>
+                        <td>0–9 joueurs</td>
+                        <td><strong>×0.1</strong></td>
+                        <td>Campagne, zone morte</td>
+                    </tr>
+                    <tr>
+                        <td>🟡 Warm</td>
+                        <td>10–24 joueurs</td>
+                        <td><strong>×0.5</strong></td>
+                        <td>Banlieue, St-Lambert</td>
+                    </tr>
+                    <tr>
+                        <td>🔴 Hot</td>
+                        <td>25+ joueurs</td>
+                        <td><strong>×1.0</strong></td>
+                        <td>Centre-ville Montréal</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-grid" style="margin-top: 1.5rem;">
+            <div class="card">
+                <div class="card-icon red">🛡️</div>
+                <h3>Anti-manipulation (min. 10 comptes)</h3>
+                <p>Un « joueur unique » doit avoir : un <strong>Device ID unique</strong>, un <strong>domicile GPS
+                        distinct</strong>,
+                    un historique de <strong>7+ jours</strong>, et un minimum de <strong>5 captures dans la
+                        zone</strong>.
+                    3 multi-comptes ne peuvent PAS inflater une zone Cold → Warm.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon orange">🗺️</div>
+                <h3>Fog partout, coins en zone active</h3>
+                <p>Le fog of war se lève <strong>partout</strong> (même en campagne) — c'est satisfaisant.
+                    Mais les <strong>coins et captures</strong> ne sont actifs qu'en zones de jeu.
+                    Le joueur en road trip voit sa carte se dévoiler sans pouvoir farmer.</p>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 1rem;">
+            <div class="card-icon cyan">📊</div>
+            <h3>Heatmap visible sur la carte</h3>
+            <p>Les zones Hot brillent en <strong>rouge/orange subtil</strong> sur la carte. Le joueur voit d'un coup
+                d'œil
+                où l'action est concentrée. La heatmap se met à jour <strong>1 fois par jour</strong> (backend-only, pas
+                manipulable).</p>
+        </div>
+
+        <div class="alert golden" style="margin-top: 1.5rem;">
+            <strong>💡 Logique narrative :</strong> Un hex en ville VAUT plus parce qu'il y a de la compétition.
+            Un hex au milieu d'un champ de maïs vaut rien parce que personne le veut. Les coins reflètent la VALEUR
+            stratégique du territoire.
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ============ ECONOMY ============ -->
+    <section class="section" id="economy">
+        <div class="section-header">
+            <div class="section-tag orange">🪙 Économie</div>
+            <h2>Système de Coins — Local vs Global</h2>
+            <p class="subtitle">Les coins sont taggés par zone — farmer en campagne ne domine pas en ville</p>
+        </div>
+
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-icon green">📥</div>
+                <h3>Sources de revenus</h3>
+                <p>
+                    Découvrir un hex : <strong>+2</strong><br>
+                    Capturer (neutre) : <strong>+50</strong><br>
+                    Voler (ennemi) : <strong>+100 à +500</strong><br>
+                    Quête quotidienne (×3) : <strong>+75-150</strong><br>
+                    Daily login streak : <strong>+50 à +500</strong><br>
+                    Taxe loot 30% : <strong>variable</strong>
+                </p>
+            </div>
+            <div class="card">
+                <div class="card-icon red">📤</div>
+                <h3>Dépenses (coin sinks)</h3>
+                <p>
+                    Bouclier 24h : <strong>500 + 50/j</strong><br>
+                    Max <strong>2 boucliers</strong> actifs<br>
+                    Tour de guet : <strong>300</strong><br>
+                    Fortification : <strong>1,000</strong><br>
+                    Skin T2 : <strong>2,000</strong><br>
+                    Entretien forteresse : <strong>200/jour</strong>
+                </p>
+            </div>
+        </div>
+
+        <div class="formula-box glow-pulse">
+            <div class="formula">coût d'entretien = (hexes)² × 0.5 / jour</div>
+            <div class="formula-desc">10 hexes = 50/j ✅ · 30 hexes = 450/j ⚠️ · 50 hexes = 1,250/j 💀 · 100 hexes =
+                5,000/j 🪦</div>
+        </div>
+
+        <div class="alert danger">
+            <strong>🚫 JAMAIS de pay-to-win :</strong> Les coins viennent UNIQUEMENT du gameplay. L'argent réel achète
+            seulement des cosmétiques (skins). <em>Jamais de coins, jamais de boucliers achetables.</em>
+        </div>
+
+        <div class="card-grid" style="margin-top: 1.5rem;">
+            <div class="card">
+                <div class="card-icon blue">🏠</div>
+                <h3>Coins locaux</h3>
+                <p>Capturer/défendre dans ta zone → pleine valeur ici. <strong>×5 le coût</strong> dans une autre zone.
+                    Le joueur voit clairement le prix et le multiplicateur avant d'acheter.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon purple">🌍</div>
+                <h3>Coins globaux</h3>
+                <p>Obtenus via quêtes quotidiennes, events, achievements. Dépensables <strong>partout</strong>
+                    à la même valeur. Plus rares, plus précieux.</p>
+            </div>
+        </div>
+
+        <div class="formula-box" style="margin-top: 1.5rem;">
+            <div class="formula" style="font-size: 1rem;">Coin gagné = Base (50) × Heat Score (0.1 à 1.0) · Coin dépensé
+                hors-zone = Prix × 5</div>
+            <div class="formula-desc">Le joueur voit toujours le vrai prix, le multiplicateur, et une explication.
+                Transparence totale.</div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ============ ANTI-SNOWBALL ============ -->
+    <section class="section" id="balance">
+        <div class="section-header">
+            <div class="section-tag red">⚖️ Balance</div>
+            <h2>Anti-Snowball</h2>
+            <p class="subtitle">Le joueur dominant ne doit JAMAIS devenir imprenable</p>
+        </div>
+
+        <div class="card-grid card-grid-3">
+            <div class="card">
+                <div class="card-icon red">⏱️</div>
+                <h3>Cooldown 5 min</h3>
+                <p>Calibré sur le temps de marche entre 2 hexes (~500m). Le piéton n'attend jamais. L'auto attend
+                    toujours. ~12 captures/heure max.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon orange">📋</div>
+                <h3>Max 20 captures/jour</h3>
+                <p>Même en jouant 8 heures, tu captures 20 hexes max. Régénère +5 par 6h. Le casual de 15 min est
+                    presque aussi efficace que le grinder.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon purple">📈</div>
+                <h3>Coût quadratique</h3>
+                <p>L'entretien monte en n². Un empire trop grand s'effondre financièrement tout seul. Le sweet spot est
+                    ~15-25 hexes.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon cyan">⏳</div>
+                <h3>Decay territorial</h3>
+                <p>Non-visité 3j → fane. 7j → -50% défense. 14j → neutre. Tu dois physiquement revisiter tes hexes.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon blue">🛡️</div>
+                <h3>Max 2 boucliers</h3>
+                <p>Sur 30 hexes, tu en protèges 2. Les 28 autres sont vulnérables. Après expiration, cooldown 48h avant
+                    de re-shielder le même hex. Bouclier = 500 coins + 50/jour d'entretien.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon green">🔓</div>
+                <h3>Rien n'est invincible</h3>
+                <p>Les boucliers rallongent le temps de capture, ils ne l'empêchent PAS. Un joueur déterminé peut
+                    toujours casser n'importe quoi.</p>
+            </div>
+        </div>
+
+        <div class="table-wrap" style="margin-top: 2rem;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Transport</th>
+                        <th>Trajet 500m</th>
+                        <th>+ Cooldown</th>
+                        <th>Total / hex</th>
+                        <th>Avantage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>🚶 Piéton</td>
+                        <td>6 min</td>
+                        <td>0 min</td>
+                        <td><strong>6 min</strong></td>
+                        <td>👑 Meilleur UX</td>
+                    </tr>
+                    <tr>
+                        <td>🚴 Vélo</td>
+                        <td>2 min</td>
+                        <td>3 min</td>
+                        <td><strong>5 min</strong></td>
+                        <td>Bon compromis</td>
+                    </tr>
+                    <tr>
+                        <td>🚗 Auto</td>
+                        <td>0.5 min</td>
+                        <td>4.5 min</td>
+                        <td><strong>5 min</strong></td>
+                        <td>😤 Frustrant = voulu</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ============ FORTIFICATION ============ -->
+    <section class="section" id="fortification">
+        <div class="section-header">
+            <div class="section-tag purple">🏰 Forteresses</div>
+            <h2>Forteresse &amp; Siège</h2>
+            <p class="subtitle">Le flex ultime — très cher à construire, épique à détruire</p>
+        </div>
+
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-icon purple">🏰</div>
+                <h3>Construction (7 hexes)</h3>
+                <p>Un cluster complet (1 centre + 6 adjacents) possédé depuis <strong>14+ jours</strong>.
+                    Coût : <strong>5,000 coins</strong>. Zone <strong>Hot uniquement</strong>.
+                    Max <strong>1 forteresse</strong> par joueur.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon orange">💰</div>
+                <h3>Entretien : 200-300 coins/jour</h3>
+                <p>Si tu payes pas → dégradation → redevient 7 hexes normaux en 7 jours.
+                    Un empire qu'on ne nourrit pas s'effondre.</p>
+            </div>
+        </div>
+
+        <div class="card-grid card-grid-3" style="margin-top: 1rem;">
+            <div class="card">
+                <div class="card-icon cyan">👁️</div>
+                <h3>Visible par tous</h3>
+                <p>Icône spéciale, glow, effets 3D. Tout le monde voit ta forteresse sur la carte.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon pink">✏️</div>
+                <h3>Nom personnalisé</h3>
+                <p>Le joueur nomme sa forteresse : « La Citadelle du Plateau ». Prestige maximum.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon green">🏆</div>
+                <h3>Leaderboard</h3>
+                <p>Classement des forteresses les plus anciennes. Skin T4 (mesh 3D Blender) exclusif.</p>
+            </div>
+        </div>
+
+        <div class="section-header" style="margin-top: 3rem;">
+            <div class="section-tag red">⚔️ Siège</div>
+            <h2>Attaquer une Forteresse</h2>
+            <p class="subtitle">Un siège progressif — pas un smash-and-grab instantané</p>
+        </div>
+
+        <div class="siege-flow">
+            <div class="siege-phase">
+                <div class="siege-number step1">1</div>
+                <div class="siege-info">
+                    <h4>🔓 Brèche — Capturer un hex périphérique</h4>
+                    <p>L'attaquant capture <strong>1 hex sur les 6</strong> autour du cœur.
+                        Solo : 5 min stationnaire. Le propriétaire reçoit une <strong>push notif immédiate</strong>
+                        et a <strong>24h pour reconquérir</strong> la brèche (= reset du siège).</p>
+                    <span class="siege-detail">⏱️ 5 min (solo)</span>
+                    <span class="siege-detail">📱 Push notif au proprio</span>
+                    <span class="siege-detail">🔄 Reconquête = siège annulé</span>
+                </div>
+            </div>
+            <div class="siege-phase">
+                <div class="siege-number step2">2</div>
+                <div class="siege-info">
+                    <h4>⏳ Cooldown du siège — 6 à 12h</h4>
+                    <p>Après la brèche, l'attaquant doit <strong>attendre 6–12h</strong> avant de pouvoir
+                        attaquer le cœur. Le proprio utilise ce temps pour renforcer ses défenses
+                        ou reconquérir la brèche.</p>
+                    <span class="siege-detail">⏱ 6–12h selon la forteresse</span>
+                    <span class="siege-detail">🛡️ Temps pour défendre</span>
+                </div>
+            </div>
+            <div class="siege-phase">
+                <div class="siege-number step3">3</div>
+                <div class="siege-info">
+                    <h4>🪓 Bélier de Siège — Attaquer le cœur</h4>
+                    <p>Si la brèche tient, l'attaquant utilise un <strong>Bélier de Siège</strong> sur le cœur.
+                        Le bélier est un item spécial : <strong>2,000 coins + 7 jours de craft</strong>,
+                        <strong>consommable</strong> (détruit même si le raid échoue), max <strong>1 par
+                            joueur</strong>.
+                        Si le cœur tombe → <strong>toute la forteresse tombe en cascade</strong>.
+                    </p>
+                    <span class="siege-detail">🪓 Item : Bélier de Siège</span>
+                    <span class="siege-detail">💰 2,000 coins + 7j craft</span>
+                    <span class="siege-detail">💥 Consommable (utilisé = détruit)</span>
+                    <span class="siege-detail">🏆 +500 coins × 7 hexes = 3,500 butin</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="formula-box glow-pulse">
+            <div class="formula">Construire = semaines · Détruire = jours · Le drame = éternel</div>
+            <div class="formula-desc">Le propriétaire vit dans la tension. Le raider planifie une opération. Tout le
+                quartier regarde.</div>
+        </div>
+
+        <div class="alert golden" style="margin-top: 1.5rem;">
+            <strong>📍 Restriction :</strong> Aucune forteresse dans un rayon de 500m de ton « home hex ».
+            Ta forteresse doit être LOIN de chez toi → vulnérable quand tu dors → du vrai gameplay.
+            Seules les zones Hot sont constructibles.
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ============ LOOT ============ -->
+    <section class="section" id="loot">
+        <div class="section-header">
+            <div class="section-tag green">💎 Ressources</div>
+            <h2>Système de Loot</h2>
+            <p class="subtitle">Le loot apparaît sur tes hexes — tu prends ta taxe, le reste est à qui le veut</p>
+        </div>
+
+        <div class="vs-grid">
+            <div class="vs-col">
+                <h4>🏴 Sur TON hex</h4>
+                <ul>
+                    <li>30% → automatique dans ton inventaire (taxe)</li>
+                    <li>70% → reste sur la carte pour tous</li>
+                    <li>Attire les autres joueurs chez toi</li>
+                    <li>Crée du PvP naturel</li>
+                </ul>
+            </div>
+            <div class="vs-badge">VS</div>
+            <div class="vs-col">
+                <h4>⬜ Sur hex NEUTRE</h4>
+                <ul>
+                    <li>100% → disponible pour tout le monde</li>
+                    <li>Premier arrivé, premier servi</li>
+                    <li>Incite l'exploration</li>
+                    <li>Accessible aux nouveaux</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ancienneté de l'hex</th>
+                        <th>Qualité du loot</th>
+                        <th>Motivation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            < 1 jour</td>
+                        <td>🟢 Commun (coins)</td>
+                        <td>Début accessible</td>
+                    </tr>
+                    <tr>
+                        <td>7+ jours</td>
+                        <td>🔵 Rare possible</td>
+                        <td>Garder ses hexes</td>
+                    </tr>
+                    <tr>
+                        <td>30+ jours</td>
+                        <td>🟣 Légendaire possible</td>
+                        <td>Défendre à tout prix</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ============ CATALOGUAGE ============ -->
+    <section class="section" id="cataloguage">
+        <div class="section-header">
+            <div class="section-tag green">📚 Collection</div>
+            <h2>Cataloguage — Le Pokédex Urbain</h2>
+            <p class="subtitle">Pour les explorateurs qui s'en foutent du PvP — la complétude est le hook ultime</p>
+        </div>
+
+        <div class="pokedex-grid">
+            <div class="pokedex-item">
+                <div class="pokedex-icon">🎨</div>
+                <h4>Murales</h4>
+                <p>Partenariat Tourisme MTL</p>
+            </div>
+            <div class="pokedex-item">
+                <div class="pokedex-icon">🏛️</div>
+                <h4>Monuments</h4>
+                <p>Sites historiques</p>
+            </div>
+            <div class="pokedex-item">
+                <div class="pokedex-icon">🌳</div>
+                <h4>Parcs</h4>
+                <p>Espaces verts</p>
+            </div>
+            <div class="pokedex-item">
+                <div class="pokedex-icon">🍕</div>
+                <h4>Restaurants</h4>
+                <p>Partenaires sponsors</p>
+            </div>
+            <div class="pokedex-item">
+                <div class="pokedex-icon">🏅</div>
+                <h4>Badges quartier</h4>
+                <p>100% du Plateau!</p>
+            </div>
+            <div class="pokedex-item">
+                <div class="pokedex-icon">❄️</div>
+                <h4>Badges saison</h4>
+                <p>50 hexes en janvier</p>
+            </div>
+        </div>
+
+        <div class="card-grid" style="margin-top: 1.5rem;">
+            <div class="card">
+                <div class="card-icon purple">🧠</div>
+                <h3>Le hook OCD</h3>
+                <p>Les gens deviennent obsessifs quand il faut remplir des listes. « Il me manque 3 murales
+                    dans Hochelaga… » — c'est de la rétention pure sans aucun PvP.
+                    Collections complétées = récompenses cosmétiques exclusives.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon orange">💼</div>
+                <h3>Business model intégré</h3>
+                <p>Un restaurant paye pour être un « point d'intérêt rare ». Le joueur doit <strong>physiquement y
+                        aller</strong>
+                    pour le cataloguer → le restaurant reçoit du <strong>foot traffic réel</strong>.
+                    Comme les Pokéstops sponsorisés de Pokémon GO.</p>
+            </div>
+        </div>
+
+        <div class="alert info" style="margin-top: 1rem;">
+            <strong>🎯 Inclusivité :</strong> Le joueur explorateur et le joueur compétitif jouent au même jeu.
+            L'un collectionne, l'autre conquiert. Les deux débloquent du contenu différent sur les mêmes hexes.
+            Aucun joueur n'est laissé de côté.
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ============ RETENTION ============ -->
+    <section class="section" id="retention">
+        <div class="section-header">
+            <div class="section-tag pink">🔥 Rétention</div>
+            <h2>Boucles de Rétention</h2>
+            <p class="subtitle">Chaque mécanisme ramène le joueur — de la minute 1 au mois 12</p>
+        </div>
+
+        <div class="card-grid card-grid-3">
+            <div class="card">
+                <div class="card-icon orange">📅</div>
+                <h3>Daily Login</h3>
+                <p>J1: 50 → J2: 100 → ... → J7: 🎁 Skin rare.<br>Jour manqué = reset à J1.</p>
+                <span class="tag phase1">Phase 1</span>
+            </div>
+            <div class="card">
+                <div class="card-icon red">💀</div>
+                <h3>Decay Territorial</h3>
+                <p>3j → fane. 7j → -50% def. 14j → neutre. Tu DOIS retourner physiquement.</p>
+                <span class="tag phase1">Phase 1</span>
+            </div>
+            <div class="card">
+                <div class="card-icon cyan">📋</div>
+                <h3>Quêtes (×3/jour)</h3>
+                <p>Découvre 3 hexes, parcours 5 km, visite un hex possédé. Bonus 3/3 : coffre.</p>
+                <span class="tag phase1">Phase 1</span>
+            </div>
+            <div class="card">
+                <div class="card-icon orange">🔥</div>
+                <h3>Streaks</h3>
+                <p>7 jours consécutifs → ×1.5 gains. 30 jours → skin exclusif. Personne veut briser sa streak.</p>
+                <span class="tag phase2">Phase 2</span>
+            </div>
+            <div class="card">
+                <div class="card-icon purple">🏆</div>
+                <h3>Saisons (3 mois)</h3>
+                <p>Thème + Battle Pass. Leaderboard reset. Skins exclusifs saisonniers (FOMO).</p>
+                <span class="tag phase3">Phase 3</span>
+            </div>
+            <div class="card">
+                <div class="card-icon blue">🔔</div>
+                <h3>Push Notifications</h3>
+                <p>"Ton hex expire dans 6h !" · "Un joueur dans ton territoire !" · "Garde ta streak !"</p>
+                <span class="tag phase2">Phase 2</span>
+            </div>
+        </div>
+
+        <div class="formula-box" style="margin-top: 2rem;">
+            <div class="formula" style="font-size: 1rem;">
+                Minute 1 → Fog · Jour 1 → Quêtes · Semaine 1 → Streak · Mois 1 → Territoire · Saison 1 → Battle Pass
+            </div>
+            <div class="formula-desc">Chaque couche de rétention cible une échelle de temps différente</div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ============ SKINS ============ -->
+    <section class="section" id="skins">
+        <div class="section-header">
+            <div class="section-tag cyan">🎨 Personnalisation</div>
+            <h2>Système de Skins</h2>
+            <p class="subtitle">4 tiers de personnalisation — du flat au 3D importé de Blender</p>
+        </div>
+
+        <div class="tier-list">
+            <div class="tier">
+                <div class="tier-header">T1 · Flat</div>
+                <div class="tier-body">
+                    <h4>Couleur unie</h4>
+                    <p>Système actuel</p>
+                    <div class="tier-examples">
+                        <span>Classic Blue</span>
+                        <span>Crimson</span>
+                        <span>Emerald</span>
+                    </div>
+                </div>
+            </div>
+            <div class="tier">
+                <div class="tier-header">T2 · Textured</div>
+                <div class="tier-body">
+                    <h4>Texture UV</h4>
+                    <p>Substance Painter</p>
+                    <div class="tier-examples">
+                        <span>Carbon Fiber</span>
+                        <span>Marble</span>
+                        <span>Wood Grain</span>
+                    </div>
+                </div>
+            </div>
+            <div class="tier">
+                <div class="tier-header">T3 · Animated</div>
+                <div class="tier-body">
+                    <h4>Shader animé</h4>
+                    <p>GPU-only, 0 CPU</p>
+                    <div class="tier-examples">
+                        <span>Neon Pulse</span>
+                        <span>Lava Flow</span>
+                        <span>Aurora</span>
+                    </div>
+                </div>
+            </div>
+            <div class="tier">
+                <div class="tier-header">T4 · 3D</div>
+                <div class="tier-body">
+                    <h4>Mesh importé</h4>
+                    <p>Blender → .fbx</p>
+                    <div class="tier-examples">
+                        <span>Crystal Tower</span>
+                        <span>Fortress Wall</span>
+                        <span>Hologram</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert info">
+            <strong>📦 Pipeline d'import :</strong> Modéliser dans Blender/Maya (100-500 poly) → Texturer dans Substance
+            Painter → Animer si nécessaire → Exporter .fbx → Unity Assets/Skins/ → Créer HexSkinDefinition
+            (ScriptableObject)
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ============ MODES ============ -->
+    <section class="section" id="modes">
+        <div class="section-header">
+            <div class="section-tag blue">🛋️ Sessions</div>
+            <h2>Mode Terrain vs Mode Salon</h2>
+            <p class="subtitle">Dehors tu conquiers, chez toi tu gères — double le temps de jeu</p>
+        </div>
+
+        <div class="vs-grid">
+            <div class="vs-col">
+                <h4>🚶 Mode Terrain (GPS)</h4>
+                <ul>
+                    <li>Découvrir des hexes (fog of war)</li>
+                    <li>Capturer / voler des hexes</li>
+                    <li>Ramasser du loot physiquement</li>
+                    <li>Défendre une forteresse attaquée</li>
+                </ul>
+            </div>
+            <div class="vs-badge">+</div>
+            <div class="vs-col">
+                <h4>🛋️ Mode Salon (sans GPS)</h4>
+                <ul>
+                    <li>Gérer et upgrader structures</li>
+                    <li>Planifier routes et stratégie</li>
+                    <li>Craft défenses (matériaux → items)</li>
+                    <li>Collecter taxe loot, shop skins</li>
+                    <li>Leaderboards, statistiques</li>
+                    <li>Bouclier d'urgence (200 coins)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="alert golden">
+            <strong>🎯 Principe :</strong> Le salon prépare. Le terrain exécute. Tu ne peux JAMAIS capturer depuis chez
+            toi, mais tu peux optimiser ta stratégie pour que ta prochaine sortie soit ultra-efficace.
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ============ COLD START ============ -->
+    <section class="section" id="coldstart">
+        <div class="section-header">
+            <div class="section-tag green">🚀 Lancement</div>
+            <h2>Cold Start (0-100 joueurs)</h2>
+            <p class="subtitle">Le jeu doit être fun SEUL — les autres joueurs sont un bonus</p>
+        </div>
+
+        <div class="card-grid card-grid-3">
+            <div class="card">
+                <div class="card-icon purple">🤖</div>
+                <h3>Hexes PvE (IA)</h3>
+                <p>Hexes pré-occupés par des factions NPC. Le nouveau joueur a quelqu'un à "battre" dès le jour 1.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon green">🏅</div>
+                <h3>Progression solo</h3>
+                <p>Achievements, badges, % de carte dévoilée. La progression ne dépend pas des autres.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon cyan">🌫️</div>
+                <h3>Fog of War</h3>
+                <p>Dévoiler la carte est satisfaisant en soi. Score de découverte et badge "Premier Explorateur".</p>
+            </div>
+            <div class="card">
+                <div class="card-icon orange">🎯</div>
+                <h3>Events automatiques</h3>
+                <p>"Hex doré à Place des Arts à 17h" — fonctionne même avec 3 joueurs.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon blue">👻</div>
+                <h3>Joueurs fantômes</h3>
+                <p>IA qui possède des hexes stratégiques. Crée l'illusion de compétition.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon pink">📍</div>
+                <h3>Lancement local</h3>
+                <p>Montréal d'abord. 50 joueurs dans 1 ville > 50 joueurs sur la planète. Universités = meilleur spot.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ============ VAULT ============ -->
+    <section class="section" id="vault">
+        <div class="section-header">
+            <div class="section-tag orange">🏦 Stockage</div>
+            <h2>Coffre-fort (Style Rust)</h2>
+            <p class="subtitle">Tes coins sont stockés DANS tes hexes — volables en cas de raid</p>
+        </div>
+
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-icon orange">👤</div>
+                <h3>Inventaire personnel</h3>
+                <p>Max <strong>1,000 coins</strong> sur toi. Le surplus DOIT être stocké dans tes hexes. Tu deviens une
+                    cible mobile avec tes coins.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon purple">🏦</div>
+                <h3>Coffre dans l'hex</h3>
+                <p>Max <strong>5,000 coins</strong> par hex. Pour stocker ou retirer, tu dois être <strong>physiquement
+                        sur l'hex</strong>. Les richesses sont distribuées sur la carte.</p>
+            </div>
+        </div>
+
+        <div class="formula-box" style="margin-top: 1.5rem;">
+            <div class="formula" style="font-size: 1rem;">Raid réussi : 50% au voleur 💰 · 30% détruit 🔥 · 20% reste
+                dans l'hex</div>
+            <div class="formula-desc">Le raid détruit des coins → coin sink naturel qui stabilise l'économie</div>
+        </div>
+
+        <div class="alert golden">
+            <strong>🎯 Stratégie :</strong> Un gros coffre dans ta forteresse = gros gain pour les raiders = grosse
+            cible. Distribuer 500 coins dans 10 hexes = risque dilué mais plus de maintenance. Exactement comme dans
+            Rust : un gros base attire les raiders.
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ============ ANTI-ZERG ============ -->
+    <section class="section" id="antizerg">
+        <div class="section-header">
+            <div class="section-tag red">👥 Anti-Zerg</div>
+            <h2>Protection Anti-Groupe</h2>
+            <p class="subtitle">Pas de clans. Pas de groupes. 7 amis ensemble = MOINS efficaces qu'un solo</p>
+        </div>
+
+        <div class="solo-banner">
+            <h3>❌ Aucun système de clan/guilde/party</h3>
+            <p>Le jeu ne propose AUCUNE mécanique de groupe : pas de clan, pas de party, pas de bonus de duo, pas de
+                chat d'alliance, pas de partage de ressources. Le PvP est 100% émergent.</p>
+        </div>
+
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-icon red">⚡</div>
+                <h3>Géo-dispersion (le cœur du système)</h3>
+                <p>3+ joueurs capturent dans le même quartier en 1h → <strong>cooldown passe à 15 min</strong> pour TOUS
+                    dans la zone. Amis ou pas, le jeu ralentit tout le monde. 7 amis ensemble = chacun attend 15 min =
+                    pire qu'un solo à 5 min.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon orange">📉</div>
+                <h3>Fatigue de raid</h3>
+                <p>Raids #1-3 : normal. #4-6 : 75% butin. #7-10 : 50%. #11+ : 10%. Reset chaque 24h. Pas rentable de
+                    spammer.</p>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 1rem;">
+            <div class="card-icon cyan">📱</div>
+            <h3>Cooldown UX — Toujours visible, jamais un bug</h3>
+            <p>Le cooldown et le statut de la zone sont affichés en permanence dans le HUD. La première fois que le
+                cooldown augmente, un tutorial contextuel explique pourquoi.</p>
+            <div style="display: flex; gap: 2rem; flex-wrap: wrap; margin-top: 1rem;">
+                <div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">Zone calme :</div>
+                    <div class="hud-mockup">
+                        <div class="hud-row"><span class="hud-label">⏱️</span> <span class="hud-value">5:00</span></div>
+                        <div class="hud-row"><span class="hud-label">🌡️</span> <span class="hud-value">Calme</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">Zone contestée :
+                    </div>
+                    <div class="hud-mockup">
+                        <div class="hud-row"><span class="hud-label">⏱️</span> <span
+                                class="hud-value warning">15:00</span></div>
+                        <div class="hud-row"><span class="hud-label">🌡️</span> <span
+                                class="hud-value warning">Contestée ⚠️</span></div>
+                        <div class="hud-explain">Beaucoup d'activité dans ce quartier</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert danger" style="margin-top: 1.5rem;">
+            <strong>🛡️ Bouclier auto :</strong> Un joueur perd 3 hexes en 1h → tous ses hexes restants reçoivent un
+            <strong>bouclier gratuit de 6h</strong>. Peu importe si c'est 1 attaquant ou 20 — après 3 hexes volés, le
+            reste est protégé.
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ============ ANTI-RAGE-QUIT ============ -->
+    <section class="section" id="antiragequit">
+        <div class="section-header">
+            <div class="section-tag green">😤 Rétention</div>
+            <h2>Anti Rage-Quit</h2>
+            <p class="subtitle">La pire journée d'un joueur doit être réparable en 1 heure de jeu</p>
+        </div>
+
+        <div class="vs-grid">
+            <div class="vs-col">
+                <h4>💀 Rust (toxique)</h4>
+                <ul>
+                    <li>Tu perds TOUT d'un coup</li>
+                    <li>100h de grind = disparu</li>
+                    <li>Rien à faire après un raid</li>
+                    <li>Décourageant pour les nouveaux</li>
+                </ul>
+            </div>
+            <div class="vs-badge">VS</div>
+            <div class="vs-col">
+                <h4>✅ Projet Hexagon</h4>
+                <ul>
+                    <li>Max 3 hexes perdus (bouclier auto)</li>
+                    <li>Skins, badges = permanents</li>
+                    <li>Recapturer 3 hexes = 15 min</li>
+                    <li>Le nouveau risque presque rien</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="formula-box">
+            <div class="formula" style="font-size: 1.1rem;">Perte max d'un raid = 3 hexes + ~1,500 coins = récupérable
+                en 45 min</div>
+            <div class="formula-desc">Assez douloureux pour vouloir défendre. Pas assez pour rage quit.</div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ============ DEFENSE NOTIFICATION ============ -->
+    <section class="section" id="defense">
+        <div class="section-header">
+            <div class="section-tag cyan">📱 Temps Réel</div>
+            <h2>Défense par Notification</h2>
+            <p class="subtitle">Répondre à une notif push pour bloquer un raid — forcer l'attaquant à REVENIR
+                physiquement</p>
+        </div>
+
+        <div class="flow">
+            <div class="flow-step">
+                <div class="emoji">⚔️</div>
+                <div class="flow-title">Raid commence</div>
+                <div class="flow-desc">Attaquant sur ton hex</div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">
+                <div class="emoji">📱</div>
+                <div class="flow-title">Push envoyé</div>
+                <div class="flow-desc">Instantanément</div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">
+                <div class="emoji">🛡️</div>
+                <div class="flow-title">Tu défends</div>
+                <div class="flow-desc">Depuis ton salon</div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">
+                <div class="emoji">⏸️</div>
+                <div class="flow-title">Raid suspendu 2h</div>
+                <div class="flow-desc">Attaquant doit REVENIR</div>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Action depuis la notif</th>
+                        <th>Coût</th>
+                        <th>Effet</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>🛡️ Défendre</td>
+                        <td>100 coins</td>
+                        <td>Raid suspendu 2h — l'attaquant doit revenir physiquement</td>
+                    </tr>
+                    <tr>
+                        <td>⚡ Contre-attaque</td>
+                        <td>200 coins</td>
+                        <td>Raid annulé + attaquant a un cooldown 30 min dans la zone</td>
+                    </tr>
+                    <tr>
+                        <td>🏰 Bouclier d'urgence</td>
+                        <td>500 coins</td>
+                        <td>Hex invulnérable pendant 12h</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="alert info">
+            <strong>🔑 Avantage GPS :</strong> Dans Rust, "revenir" c'est courir 30 sec. Dans Projet Hexagon, "revenir"
+            c'est <strong>remarcher 20 minutes dans la vraie vie</strong>. Le déplacement physique réel est la meilleure
+            défense. Max 2 défenses à distance par hex par 24h — après, tu dois bouger tes pieds.
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ============ ANTI-CHEAT ============ -->
+    <section class="section" id="anticheat">
+        <div class="section-header">
+            <div class="section-tag red">🛡️ Sécurité</div>
+            <h2>Anti-Triche</h2>
+            <p class="subtitle">Multi-comptes, collusion, GPS spoofing — tout est couvert</p>
+        </div>
+
+        <div class="card-grid card-grid-3">
+            <div class="card">
+                <div class="card-icon red">📱</div>
+                <h3>1 Téléphone = 1 Compte</h3>
+                <p><strong>Google Sign-In + Device ID</strong>. Le tricheur aurait besoin de 10 téléphones physiques.
+                    Nouveau compte (&lt;7j) limité à 5 hexes.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon orange">🔄</div>
+                <h3>Anti ping-pong</h3>
+                <p>Même hex entre mêmes joueurs : 0 coins après le 1er vol. Cooldown 24h. Rendement décroissant entre
+                    même paire (100 → 50 → 25 → 0).</p>
+            </div>
+            <div class="card">
+                <div class="card-icon purple">🕵️</div>
+                <h3>Détection backend</h3>
+                <p>IP identique + GPS identique + pattern de vol mutuel = flag admin automatique. 3 flags = compte gelé.
+                </p>
+            </div>
+        </div>
+
+        <div class="alert danger" style="margin-top: 1.5rem;">
+            <strong>📐 Principe :</strong> La triche doit rapporter MOINS que le jeu légitime. Un multi-compteur gagne
+            ~50 coins par cycle de 24h. Un joueur normal gagne ~500 coins par jour. Pas rentable de tricher.
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ============ ROADMAP ============ -->
+    <section class="section" id="roadmap">
+        <div class="section-header">
+            <div class="section-tag purple">📍 Roadmap</div>
+            <h2>Plan de Lancement</h2>
+            <p class="subtitle">Du MVP solo au PvP compétitif — chaque phase construit sur la précédente</p>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-title">Phase 1 — MVP Solo (0-100 joueurs)</div>
+                <div class="timeline-desc">Le jeu est fun en solo. Exploration et progression personnelle.</div>
+                <div class="timeline-tags">
+                    <span>✅ Fog of war</span>
+                    <span>✅ Hex capture + cooldown</span>
+                    <span>Achievements solo</span>
+                    <span>Hexes PvE (IA)</span>
+                    <span>Leaderboard</span>
+                    <span>Daily login</span>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-title">Phase 2 — Social (100-1,000 joueurs)</div>
+                <div class="timeline-desc">La compétition émerge. Les joueurs se croisent et s'affrontent.</div>
+                <div class="timeline-tags">
+                    <span>Vol de territoire</span>
+                    <span>Système de coins</span>
+                    <span>Quêtes quotidiennes</span>
+                    <span>Events hebdo</span>
+                    <span>Skins T1 + T2</span>
+                    <span>Push notifications</span>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-title">Phase 3 — Compétitif (1,000+ joueurs)</div>
+                <div class="timeline-desc">Full PvP avec alliances, forteresses, et économie complète.</div>
+                <div class="timeline-tags">
+                    <span>Forteresses</span>
+                    <span>Alliances/clans</span>
+                    <span>Battle Pass + Saisons</span>
+                    <span>Skins T3 + T4</span>
+                    <span>Tower defense</span>
+                    <span>Trading skins</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer style="text-align: center; padding: 4rem 2rem; border-top: 1px solid var(--border);">
+        <div style="font-size: 2rem; margin-bottom: 1rem;">⬡</div>
+        <div style="font-weight: 700; font-size: 1.2rem; margin-bottom: 0.5rem;">Projet Hexagon</div>
+        <div style="color: var(--text-muted); font-size: 0.85rem;">Game Design Document v1.0 — Février 2026</div>
+        <div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.5rem;">Conquiers ta ville. Construis ton
+            empire. Défends-le en personne.</div>
+    </footer>
+
+</body>
+
+</html>
