@@ -2642,6 +2642,70 @@
             font-weight: 400;
         }
 
+        /* === ANNOTATION MARGIN MARKERS === */
+        .annotation-marker {
+            position: absolute;
+            left: -30px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .annotation-marker:hover {
+            transform: scale(1.3);
+        }
+
+        /* === SELF-EDIT BUTTONS === */
+        .comment-self {
+            display: flex;
+            gap: 0.4rem;
+            margin-top: 0.4rem;
+        }
+
+        .comment-self button {
+            padding: 0.15rem 0.5rem;
+            font-size: 0.65rem;
+            border-radius: 5px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .comment-self button:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* === ADMIN RESOLVE CHECKBOX === */
+        .resolve-check {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            margin-top: 0.3rem;
+            cursor: pointer;
+        }
+
+        .resolve-check input {
+            accent-color: #22c55e;
+            cursor: pointer;
+        }
+
+        .resolve-check label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
         /* === VERSION SELECTOR === */
         .version-selector {
             position: fixed;
@@ -2765,15 +2829,26 @@
                 // Pair comments with their keys for admin actions
                 const paired = comments.map((c, i) => ({ ...c, _key: keys ? keys[i] : i }));
                 paired.sort((a, b) => b.timestamp - a.timestamp);
+                const savedAuthorName = localStorage.getItem('gdd_author') || '';
                 paired.forEach(c => {
                     const card = document.createElement('div');
                     card.className = 'comment-card' + (c.resolved ? ' resolved' : '');
-                    let adminHtml = '';
+                    let actionsHtml = '';
+                    const isOwner = savedAuthorName && c.author === savedAuthorName;
                     if (isAdmin) {
-                        adminHtml = `
+                        actionsHtml = `
                         <div class="comment-admin">
-                            <button class="btn-resolve" onclick="toggleResolved('${sectionId}','${c._key}')">${c.resolved ? '↩️ Rouvrir' : '✅ Résolu'}</button>
-                            <button class="btn-delete" onclick="deleteComment('${sectionId}','${c._key}')">🗑️ Supprimer</button>
+                            <div class="resolve-check">
+                                <input type="checkbox" id="res-${sectionId}-${c._key}" ${c.resolved ? 'checked' : ''} onchange="toggleResolved('${sectionId}','${c._key}')" />
+                                <label for="res-${sectionId}-${c._key}">${c.resolved ? 'Résolu' : 'Marquer résolu'}</label>
+                            </div>
+                            <button class="btn-delete" onclick="deleteComment('${sectionId}','${c._key}')">🗑️</button>
+                        </div>`;
+                    } else if (isOwner) {
+                        actionsHtml = `
+                        <div class="comment-self">
+                            <button onclick="editComment('${sectionId}','${c._key}')">✏️ Modifier</button>
+                            <button onclick="deleteComment('${sectionId}','${c._key}')">🗑️ Supprimer</button>
                         </div>`;
                     }
                     card.innerHTML = `
@@ -2781,8 +2856,8 @@
                         <span class="comment-author">${c.author}</span>
                         <span class="comment-date">${new Date(c.timestamp).toLocaleDateString('fr-CA')} ${new Date(c.timestamp).toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' })}</span>
                     </div>
-                    <div class="comment-text">${c.text.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
-                    ${adminHtml}
+                    <div class="comment-text" id="ctext-${sectionId}-${c._key}">${c.text.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+                    ${actionsHtml}
                 `;
                     threadEl.appendChild(card);
                 });
@@ -2936,6 +3011,39 @@
         }
 
         // ========================================
+        // EDIT COMMENT
+        // ========================================
+        function editComment(sectionId, key) {
+            if (!firebaseReady || !db) return;
+            db.ref('comments/' + sectionId + '/' + key).once('value').then(snap => {
+                const c = snap.val();
+                if (!c) return;
+                const textEl = document.getElementById('ctext-' + sectionId + '-' + key);
+                if (!textEl) return;
+                textEl.innerHTML = `
+                    <textarea id="edit-${sectionId}-${key}" style="width:100%;min-height:50px;background:var(--bg-secondary);border:1px solid var(--accent-purple);border-radius:6px;padding:0.4rem;color:var(--text-primary);font-size:0.8rem;resize:vertical;box-sizing:border-box;">${c.text}</textarea>
+                    <div style="display:flex;gap:0.3rem;margin-top:0.3rem;">
+                        <button onclick="saveEdit('${sectionId}','${key}')" style="padding:0.2rem 0.6rem;background:linear-gradient(135deg,var(--accent-purple),var(--accent-blue));border:none;border-radius:5px;color:#fff;font-size:0.7rem;cursor:pointer;">Sauvegarder</button>
+                        <button onclick="renderComments('${sectionId}',document.getElementById('thread-${sectionId}'))" style="padding:0.2rem 0.5rem;background:transparent;border:1px solid var(--border);border-radius:5px;color:var(--text-muted);font-size:0.7rem;cursor:pointer;">Annuler</button>
+                    </div>
+                `;
+                document.getElementById('edit-' + sectionId + '-' + key)?.focus();
+            });
+        }
+
+        function saveEdit(sectionId, key) {
+            const textarea = document.getElementById('edit-' + sectionId + '-' + key);
+            if (!textarea) return;
+            const newText = textarea.value.trim();
+            if (!newText) return;
+            if (firebaseReady && db) {
+                db.ref('comments/' + sectionId + '/' + key + '/text').set(newText).then(() => {
+                    renderComments(sectionId, document.getElementById('thread-' + sectionId));
+                });
+            }
+        }
+
+        // ========================================
         // HIGHLIGHT & ANNOTATE SYSTEM
         // ========================================
         let highlightPopup = null;
@@ -3067,7 +3175,19 @@
                         showAnnotation(mark, h, key);
                     });
 
-                    try { range.surroundContents(mark); } catch (e) { /* cross-element selection */ }
+                    try {
+                        range.surroundContents(mark);
+                        // Add left-side margin marker
+                        const marker = document.createElement('div');
+                        marker.className = 'annotation-marker';
+                        marker.style.background = h.color.replace('0.2', '0.8');
+                        marker.textContent = '📌';
+                        marker.title = `${h.author}: ${h.comment}`;
+                        marker.addEventListener('click', (e) => { e.stopPropagation(); showAnnotation(mark, h, key); });
+                        // Position relative to the highlight's parent
+                        const parent = mark.parentElement;
+                        if (parent) { parent.style.position = 'relative'; parent.prepend(marker); }
+                    } catch (e) { /* cross-element selection */ }
                     break;
                 }
             }
@@ -3085,9 +3205,10 @@
                 padding:0.8rem 1rem; width:280px; box-shadow:0 8px 24px rgba(0,0,0,0.4);
             `;
 
-            let adminBtns = '';
-            if (isAdmin) {
-                adminBtns = `<button onclick="deleteHighlight('${key}')" style="margin-top:0.4rem;padding:0.2rem 0.5rem;background:transparent;border:1px solid rgba(239,68,68,0.3);border-radius:5px;color:#ef4444;font-size:0.7rem;cursor:pointer;">🗑️ Supprimer</button>`;
+            let actionBtns = '';
+            const savedAuthor = localStorage.getItem('gdd_author') || '';
+            if (isAdmin || h.author === savedAuthor) {
+                actionBtns = `<button onclick="deleteHighlight('${key}')" style="margin-top:0.4rem;padding:0.2rem 0.5rem;background:transparent;border:1px solid rgba(239,68,68,0.3);border-radius:5px;color:#ef4444;font-size:0.7rem;cursor:pointer;">🗑️ Supprimer</button>`;
             }
 
             popup.innerHTML = `
@@ -3097,7 +3218,7 @@
                 </div>
                 <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:0.3rem;line-height:1.4;">${h.comment}</div>
                 <div style="font-size:0.65rem;color:var(--text-muted);margin-top:0.3rem;">${new Date(h.timestamp).toLocaleDateString('fr-CA')}</div>
-                ${adminBtns}
+                ${actionBtns}
             `;
 
             const rect = mark.getBoundingClientRect();
