@@ -2594,6 +2594,54 @@
             display: none;
         }
 
+        /* === ADMIN CONTROLS === */
+        .comment-admin {
+            display: flex;
+            gap: 0.4rem;
+            margin-top: 0.5rem;
+        }
+
+        .comment-admin button {
+            padding: 0.2rem 0.6rem;
+            font-size: 0.7rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .comment-admin .btn-resolve {
+            border-color: rgba(34, 197, 94, 0.3);
+            color: #22c55e;
+        }
+
+        .comment-admin .btn-resolve:hover {
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        .comment-admin .btn-delete {
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+
+        .comment-admin .btn-delete:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .comment-card.resolved {
+            opacity: 0.5;
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        .comment-card.resolved .comment-author::after {
+            content: ' ✅ Résolu';
+            color: #22c55e;
+            font-size: 0.7rem;
+            font-weight: 400;
+        }
+
         /* === VERSION SELECTOR === */
         .version-selector {
             position: fixed;
@@ -2666,6 +2714,8 @@
 
         // Password required to post comments (shared via Discord)
         const COMMENT_PASSWORD = "2124";
+        const ADMIN_PASSWORD = "admin2124";
+        let isAdmin = localStorage.getItem('gdd_admin') === 'true';
 
         // Discord webhook URL — Create one in Discord > Server Settings > Integrations > Webhooks
         const DISCORD_WEBHOOK = ""; // Paste your webhook URL here
@@ -2707,21 +2757,32 @@
         function renderComments(sectionId, threadEl) {
             threadEl.innerHTML = '';
 
-            const renderList = (comments) => {
+            const renderList = (comments, keys) => {
                 if (comments.length === 0) {
                     threadEl.innerHTML = '<p style="color: var(--text-muted); font-size: 0.8rem; font-style: italic;">Aucun commentaire encore. Sois le premier!</p>';
                     return;
                 }
-                comments.sort((a, b) => b.timestamp - a.timestamp);
-                comments.forEach(c => {
+                // Pair comments with their keys for admin actions
+                const paired = comments.map((c, i) => ({ ...c, _key: keys ? keys[i] : i }));
+                paired.sort((a, b) => b.timestamp - a.timestamp);
+                paired.forEach(c => {
                     const card = document.createElement('div');
-                    card.className = 'comment-card';
+                    card.className = 'comment-card' + (c.resolved ? ' resolved' : '');
+                    let adminHtml = '';
+                    if (isAdmin) {
+                        adminHtml = `
+                        <div class="comment-admin">
+                            <button class="btn-resolve" onclick="toggleResolved('${sectionId}','${c._key}')">${c.resolved ? '↩️ Rouvrir' : '✅ Résolu'}</button>
+                            <button class="btn-delete" onclick="deleteComment('${sectionId}','${c._key}')">🗑️ Supprimer</button>
+                        </div>`;
+                    }
                     card.innerHTML = `
                     <div class="comment-meta">
                         <span class="comment-author">${c.author}</span>
                         <span class="comment-date">${new Date(c.timestamp).toLocaleDateString('fr-CA')} ${new Date(c.timestamp).toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' })}</span>
                     </div>
                     <div class="comment-text">${c.text.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+                    ${adminHtml}
                 `;
                     threadEl.appendChild(card);
                 });
@@ -2731,9 +2792,9 @@
             if (firebaseReady && db) {
                 db.ref('comments/' + sectionId).once('value').then(snap => {
                     const data = snap.val();
+                    const keys = data ? Object.keys(data) : [];
                     const comments = data ? Object.values(data) : [];
-                    renderList(comments);
-                    // Update count
+                    renderList(comments, keys);
                     const toggle = document.querySelector(`[data-section="${sectionId}"] .count`);
                     if (toggle) toggle.textContent = comments.length;
                 });
@@ -2799,10 +2860,15 @@
             const text = document.getElementById('text-' + sectionId).value.trim();
             const errEl = document.getElementById('err-' + sectionId);
 
-            if (pw !== COMMENT_PASSWORD) {
+            if (pw !== COMMENT_PASSWORD && pw !== ADMIN_PASSWORD) {
                 errEl.style.display = 'block';
                 setTimeout(() => errEl.style.display = 'none', 3000);
                 return;
+            }
+            // Activate admin mode if admin password used
+            if (pw === ADMIN_PASSWORD) {
+                isAdmin = true;
+                localStorage.setItem('gdd_admin', 'true');
             }
             if (!author || !text) return;
 
@@ -2844,6 +2910,266 @@
                     })
                 }).catch(() => { });
             }
+        }
+
+        // ========================================
+        // ADMIN: DELETE & RESOLVE
+        // ========================================
+        function deleteComment(sectionId, key) {
+            if (!confirm('Supprimer ce commentaire?')) return;
+            if (firebaseReady && db) {
+                db.ref('comments/' + sectionId + '/' + key).remove().then(() => {
+                    renderComments(sectionId, document.getElementById('thread-' + sectionId));
+                });
+            }
+        }
+
+        function toggleResolved(sectionId, key) {
+            if (firebaseReady && db) {
+                const ref = db.ref('comments/' + sectionId + '/' + key + '/resolved');
+                ref.once('value').then(snap => {
+                    ref.set(!snap.val()).then(() => {
+                        renderComments(sectionId, document.getElementById('thread-' + sectionId));
+                    });
+                });
+            }
+        }
+
+        // ========================================
+        // HIGHLIGHT & ANNOTATE SYSTEM
+        // ========================================
+        let highlightPopup = null;
+
+        function initHighlightSystem() {
+            // Create floating popup for adding highlights
+            highlightPopup = document.createElement('div');
+            highlightPopup.id = 'highlight-popup';
+            highlightPopup.style.cssText = `
+                display:none; position:fixed; z-index:500;
+                background:var(--bg-card); border:1px solid var(--accent-purple);
+                border-radius:12px; padding:1rem; width:300px;
+                box-shadow: 0 8px 32px rgba(0,0,0,0.4); backdrop-filter:blur(20px);
+            `;
+            highlightPopup.innerHTML = `
+                <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.5rem;">📌 Annoter la sélection</div>
+                <div id="hl-selected" style="font-size:0.8rem;color:var(--accent-cyan);margin-bottom:0.5rem;max-height:60px;overflow:hidden;font-style:italic;"></div>
+                <input type="text" id="hl-author" placeholder="Ton nom" style="width:100%;margin-bottom:0.4rem;background:var(--bg-secondary);border:1px solid var(--border);border-radius:6px;padding:0.4rem 0.6rem;color:var(--text-primary);font-size:0.8rem;box-sizing:border-box;" />
+                <textarea id="hl-comment" placeholder="Ton annotation..." style="width:100%;min-height:50px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:6px;padding:0.4rem 0.6rem;color:var(--text-primary);font-size:0.8rem;resize:vertical;box-sizing:border-box;"></textarea>
+                <div style="display:flex;gap:0.4rem;margin-top:0.5rem;">
+                    <select id="hl-color" style="flex:1;background:var(--bg-secondary);border:1px solid var(--border);border-radius:6px;padding:0.3rem;color:var(--text-primary);font-size:0.75rem;">
+                        <option value="rgba(168,85,247,0.2)">🟣 Question</option>
+                        <option value="rgba(34,197,94,0.2)">🟢 Bonne idée</option>
+                        <option value="rgba(245,158,11,0.2)">🟡 À discuter</option>
+                        <option value="rgba(239,68,68,0.2)">🔴 Problème</option>
+                        <option value="rgba(59,130,246,0.2)">🔵 Suggestion</option>
+                    </select>
+                    <button onclick="saveHighlight()" style="padding:0.3rem 0.8rem;background:linear-gradient(135deg,var(--accent-purple),var(--accent-blue));border:none;border-radius:6px;color:#fff;font-size:0.75rem;font-weight:600;cursor:pointer;">Annoter</button>
+                    <button onclick="closeHighlightPopup()" style="padding:0.3rem 0.6rem;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--text-muted);font-size:0.75rem;cursor:pointer;">✕</button>
+                </div>
+            `;
+            document.body.appendChild(highlightPopup);
+
+            // Listen for text selection
+            document.addEventListener('mouseup', (e) => {
+                const sel = window.getSelection();
+                if (!sel || sel.isCollapsed || sel.toString().trim().length < 3) return;
+                // Don't trigger on form elements
+                if (e.target.closest('.comment-form, .comment-area, #highlight-popup, input, textarea, select')) return;
+
+                const text = sel.toString().trim();
+                if (text.length > 500) return; // too long
+
+                // Get position info for storing
+                const range = sel.getRangeAt(0);
+                const section = range.startContainer.parentElement?.closest('.section');
+                if (!section) return;
+
+                // Store selection info
+                highlightPopup._selectionData = {
+                    text: text,
+                    sectionId: section.id,
+                    xpath: getXPath(range.startContainer),
+                    startOffset: range.startOffset,
+                    endOffset: range.endOffset
+                };
+
+                // Show popup near selection
+                const rect = range.getBoundingClientRect();
+                highlightPopup.style.display = 'block';
+                highlightPopup.style.left = Math.min(rect.left, window.innerWidth - 320) + 'px';
+                highlightPopup.style.top = (rect.bottom + 8) + 'px';
+                document.getElementById('hl-selected').textContent = '"' + text.substring(0, 80) + (text.length > 80 ? '...' : '') + '"';
+                document.getElementById('hl-author').value = localStorage.getItem('gdd_author') || '';
+            });
+
+            // Load existing highlights
+            if (firebaseReady && db) {
+                db.ref('highlights').on('value', snap => {
+                    // Clear old highlights
+                    document.querySelectorAll('.user-highlight').forEach(el => {
+                        const parent = el.parentNode;
+                        parent.replaceChild(document.createTextNode(el.textContent), el);
+                        parent.normalize();
+                    });
+                    const data = snap.val();
+                    if (data) {
+                        Object.entries(data).forEach(([key, h]) => {
+                            applyHighlight(h, key);
+                        });
+                    }
+                });
+            }
+        }
+
+        function getXPath(node) {
+            if (!node) return '';
+            if (node.nodeType === Node.TEXT_NODE) return getXPath(node.parentNode) + '/text()';
+            const parts = [];
+            while (node && node !== document.body) {
+                let idx = 1;
+                let sib = node.previousSibling;
+                while (sib) {
+                    if (sib.nodeType === Node.ELEMENT_NODE && sib.tagName === node.tagName) idx++;
+                    sib = sib.previousSibling;
+                }
+                parts.unshift(node.tagName.toLowerCase() + '[' + idx + ']');
+                node = node.parentNode;
+            }
+            return '/body/' + parts.join('/');
+        }
+
+        function applyHighlight(h, key) {
+            // Find the text in the section and wrap it
+            const section = document.getElementById(h.sectionId);
+            if (!section) return;
+
+            const walker = document.createTreeWalker(section, NodeFilter.SHOW_TEXT);
+            while (walker.nextNode()) {
+                const textNode = walker.currentNode;
+                const idx = textNode.textContent.indexOf(h.text.substring(0, 50));
+                if (idx !== -1) {
+                    const range = document.createRange();
+                    range.setStart(textNode, idx);
+                    range.setEnd(textNode, Math.min(idx + h.text.length, textNode.textContent.length));
+
+                    const mark = document.createElement('mark');
+                    mark.className = 'user-highlight';
+                    mark.style.cssText = `background:${h.color};border-radius:3px;padding:0 2px;cursor:pointer;position:relative;`;
+                    mark.title = `${h.author}: ${h.comment}`;
+                    mark.setAttribute('data-key', key);
+                    mark.setAttribute('data-author', h.author);
+                    mark.setAttribute('data-comment', h.comment);
+                    mark.setAttribute('data-color', h.color);
+
+                    // Click to show annotation
+                    mark.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        showAnnotation(mark, h, key);
+                    });
+
+                    try { range.surroundContents(mark); } catch (e) { /* cross-element selection */ }
+                    break;
+                }
+            }
+        }
+
+        function showAnnotation(mark, h, key) {
+            // Remove any existing annotation popup
+            document.getElementById('annotation-view')?.remove();
+
+            const popup = document.createElement('div');
+            popup.id = 'annotation-view';
+            popup.style.cssText = `
+                position:fixed; z-index:501; background:var(--bg-card);
+                border:1px solid ${h.color.replace('0.2', '0.5')}; border-radius:10px;
+                padding:0.8rem 1rem; width:280px; box-shadow:0 8px 24px rgba(0,0,0,0.4);
+            `;
+
+            let adminBtns = '';
+            if (isAdmin) {
+                adminBtns = `<button onclick="deleteHighlight('${key}')" style="margin-top:0.4rem;padding:0.2rem 0.5rem;background:transparent;border:1px solid rgba(239,68,68,0.3);border-radius:5px;color:#ef4444;font-size:0.7rem;cursor:pointer;">🗑️ Supprimer</button>`;
+            }
+
+            popup.innerHTML = `
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <span style="font-weight:600;font-size:0.85rem;color:var(--accent-cyan);">${h.author}</span>
+                    <button onclick="this.closest('#annotation-view').remove()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1rem;">✕</button>
+                </div>
+                <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:0.3rem;line-height:1.4;">${h.comment}</div>
+                <div style="font-size:0.65rem;color:var(--text-muted);margin-top:0.3rem;">${new Date(h.timestamp).toLocaleDateString('fr-CA')}</div>
+                ${adminBtns}
+            `;
+
+            const rect = mark.getBoundingClientRect();
+            popup.style.left = Math.min(rect.left, window.innerWidth - 300) + 'px';
+            popup.style.top = (rect.bottom + 6) + 'px';
+            document.body.appendChild(popup);
+
+            // Close on outside click
+            setTimeout(() => {
+                document.addEventListener('click', function close(e) {
+                    if (!popup.contains(e.target) && e.target !== mark) {
+                        popup.remove();
+                        document.removeEventListener('click', close);
+                    }
+                });
+            }, 100);
+        }
+
+        function saveHighlight() {
+            const data = highlightPopup._selectionData;
+            if (!data) return;
+            const author = document.getElementById('hl-author').value.trim();
+            const comment = document.getElementById('hl-comment').value.trim();
+            const color = document.getElementById('hl-color').value;
+            if (!author || !comment) return;
+
+            const highlight = {
+                text: data.text,
+                sectionId: data.sectionId,
+                author, comment, color,
+                timestamp: Date.now()
+            };
+
+            if (firebaseReady && db) {
+                db.ref('highlights').push(highlight);
+            }
+
+            localStorage.setItem('gdd_author', author);
+            closeHighlightPopup();
+            window.getSelection()?.removeAllRanges();
+
+            // Discord notification for highlights
+            if (DISCORD_WEBHOOK) {
+                const sectionTitle = document.querySelector(`#${data.sectionId} h2`)?.textContent || data.sectionId;
+                fetch(DISCORD_WEBHOOK, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        embeds: [{
+                            title: `📌 Annotation — ${sectionTitle}`,
+                            description: `**"${data.text.substring(0, 100)}"**\n\n${comment}`,
+                            color: 0xF59E0B,
+                            author: { name: author },
+                            footer: { text: `projethexagon.com/gameplay` },
+                            timestamp: new Date().toISOString()
+                        }]
+                    })
+                }).catch(() => { });
+            }
+        }
+
+        function closeHighlightPopup() {
+            highlightPopup.style.display = 'none';
+            document.getElementById('hl-comment').value = '';
+        }
+
+        function deleteHighlight(key) {
+            if (!confirm('Supprimer cette annotation?')) return;
+            if (firebaseReady && db) {
+                db.ref('highlights/' + key).remove();
+            }
+            document.getElementById('annotation-view')?.remove();
         }
 
         // ========================================
@@ -2901,6 +3227,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             initComments();
             initVersionSelector();
+            initHighlightSystem();
         });
     </script>
 
