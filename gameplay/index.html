@@ -2667,6 +2667,9 @@
         // Password required to post comments (shared via Discord)
         const COMMENT_PASSWORD = "2124";
 
+        // Discord webhook URL — Create one in Discord > Server Settings > Integrations > Webhooks
+        const DISCORD_WEBHOOK = ""; // Paste your webhook URL here
+
         // ========================================
         // INITIALIZATION
         // ========================================
@@ -2821,6 +2824,25 @@
             if (toggle) {
                 const current = parseInt(toggle.textContent) || 0;
                 toggle.textContent = current + 1;
+            }
+
+            // Send to Discord webhook
+            if (DISCORD_WEBHOOK) {
+                const sectionTitle = document.querySelector(`#${sectionId} h2`)?.textContent || sectionId;
+                fetch(DISCORD_WEBHOOK, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        embeds: [{
+                            title: `💬 Nouveau commentaire — ${sectionTitle}`,
+                            description: text,
+                            color: 0x7C3AED,
+                            author: { name: author },
+                            footer: { text: `Section: ${sectionId} • projethexagon.com/gameplay` },
+                            timestamp: new Date().toISOString()
+                        }]
+                    })
+                }).catch(() => { });
             }
         }
 
