@@ -2754,12 +2754,14 @@
                 // Create comment area
                 const area = document.createElement('div');
                 area.className = 'comment-area';
+                const savedAuthor = localStorage.getItem('gdd_author') || '';
+                const savedPw = localStorage.getItem('gdd_pw') || '';
                 area.innerHTML = `
                 <div class="comment-thread" id="thread-${sectionId}"></div>
                 <div class="comment-form">
                     <div class="form-row">
-                        <input type="text" placeholder="Ton nom" id="author-${sectionId}" />
-                        <input type="password" placeholder="Mot de passe (Discord)" id="pw-${sectionId}" />
+                        <input type="text" placeholder="Ton nom" id="author-${sectionId}" value="${savedAuthor}" />
+                        <input type="password" placeholder="Mot de passe (Discord)" id="pw-${sectionId}" value="${savedPw}" />
                     </div>
                     <textarea placeholder="Ton commentaire, idée, ou suggestion..." id="text-${sectionId}"></textarea>
                     <div class="error" id="err-${sectionId}">❌ Mot de passe incorrect</div>
@@ -2801,13 +2803,15 @@
             }
             if (!author || !text) return;
 
+            // Remember author and password for next time
+            localStorage.setItem('gdd_author', author);
+            localStorage.setItem('gdd_pw', pw);
+
             const comment = { author, text, timestamp: Date.now() };
             saveComment(sectionId, comment);
 
-            // Clear form
-            document.getElementById('author-' + sectionId).value = '';
+            // Clear only the text, keep author and pw
             document.getElementById('text-' + sectionId).value = '';
-            document.getElementById('pw-' + sectionId).value = '';
 
             // Re-render
             renderComments(sectionId, document.getElementById('thread-' + sectionId));
