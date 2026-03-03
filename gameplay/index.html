@@ -2833,22 +2833,22 @@
                 paired.forEach(c => {
                     const card = document.createElement('div');
                     card.className = 'comment-card' + (c.resolved ? ' resolved' : '');
-                    let actionsHtml = '';
                     const isOwner = savedAuthorName && c.author === savedAuthorName;
+                    let actionsHtml = '';
                     if (isAdmin) {
                         actionsHtml = `
                         <div class="comment-admin">
                             <div class="resolve-check">
-                                <input type="checkbox" id="res-${sectionId}-${c._key}" ${c.resolved ? 'checked' : ''} onchange="toggleResolved('${sectionId}','${c._key}')" />
-                                <label for="res-${sectionId}-${c._key}">${c.resolved ? 'Résolu' : 'Marquer résolu'}</label>
+                                <input type="checkbox" class="resolve-cb" data-section="${sectionId}" data-key="${c._key}" ${c.resolved ? 'checked' : ''} />
+                                <label>${c.resolved ? 'Résolu' : 'Marquer résolu'}</label>
                             </div>
-                            <button class="btn-delete" onclick="deleteComment('${sectionId}','${c._key}')">🗑️</button>
+                            <button class="btn-delete del-btn" data-section="${sectionId}" data-key="${c._key}">🗑️</button>
                         </div>`;
                     } else if (isOwner) {
                         actionsHtml = `
                         <div class="comment-self">
-                            <button onclick="editComment('${sectionId}','${c._key}')">✏️ Modifier</button>
-                            <button onclick="deleteComment('${sectionId}','${c._key}')">🗑️ Supprimer</button>
+                            <button class="edit-btn" data-section="${sectionId}" data-key="${c._key}">✏️ Modifier</button>
+                            <button class="del-btn" data-section="${sectionId}" data-key="${c._key}">🗑️ Supprimer</button>
                         </div>`;
                     }
                     card.innerHTML = `
@@ -2860,6 +2860,17 @@
                     ${actionsHtml}
                 `;
                     threadEl.appendChild(card);
+                });
+
+                // Event delegation for buttons
+                threadEl.querySelectorAll('.del-btn').forEach(btn => {
+                    btn.addEventListener('click', () => deleteComment(btn.dataset.section, btn.dataset.key));
+                });
+                threadEl.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', () => editComment(btn.dataset.section, btn.dataset.key));
+                });
+                threadEl.querySelectorAll('.resolve-cb').forEach(cb => {
+                    cb.addEventListener('change', () => toggleResolved(cb.dataset.section, cb.dataset.key));
                 });
             };
 
@@ -3065,11 +3076,11 @@
                 <textarea id="hl-comment" placeholder="Ton annotation..." style="width:100%;min-height:50px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:6px;padding:0.4rem 0.6rem;color:var(--text-primary);font-size:0.8rem;resize:vertical;box-sizing:border-box;"></textarea>
                 <div style="display:flex;gap:0.4rem;margin-top:0.5rem;">
                     <select id="hl-color" style="flex:1;background:var(--bg-secondary);border:1px solid var(--border);border-radius:6px;padding:0.3rem;color:var(--text-primary);font-size:0.75rem;">
-                        <option value="rgba(168,85,247,0.2)">🟣 Question</option>
-                        <option value="rgba(34,197,94,0.2)">🟢 Bonne idée</option>
-                        <option value="rgba(245,158,11,0.2)">🟡 À discuter</option>
-                        <option value="rgba(239,68,68,0.2)">🔴 Problème</option>
-                        <option value="rgba(59,130,246,0.2)">🔵 Suggestion</option>
+                        <option value="rgba(168,85,247,0.5)">🟣 Question</option>
+                        <option value="rgba(34,197,94,0.5)">🟢 Bonne idée</option>
+                        <option value="rgba(245,158,11,0.5)">🟡 À discuter</option>
+                        <option value="rgba(239,68,68,0.5)">🔴 Problème</option>
+                        <option value="rgba(59,130,246,0.5)">🔵 Suggestion</option>
                     </select>
                     <button onclick="saveHighlight()" style="padding:0.3rem 0.8rem;background:linear-gradient(135deg,var(--accent-purple),var(--accent-blue));border:none;border-radius:6px;color:#fff;font-size:0.75rem;font-weight:600;cursor:pointer;">Annoter</button>
                     <button onclick="closeHighlightPopup()" style="padding:0.3rem 0.6rem;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--text-muted);font-size:0.75rem;cursor:pointer;">✕</button>
