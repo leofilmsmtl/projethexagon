@@ -2991,7 +2991,6 @@
         // ADMIN: DELETE & RESOLVE
         // ========================================
         function deleteComment(sectionId, key) {
-            if (!confirm('Supprimer ce commentaire?')) return;
             if (firebaseReady && db) {
                 db.ref('comments/' + sectionId + '/' + key).remove().then(() => {
                     renderComments(sectionId, document.getElementById('thread-' + sectionId));
@@ -3294,7 +3293,6 @@
         }
 
         function deleteHighlight(key) {
-            if (!confirm('Supprimer cette annotation?')) return;
             if (firebaseReady && db) {
                 db.ref('highlights/' + key).remove();
             }
