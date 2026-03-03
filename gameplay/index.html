@@ -3349,6 +3349,37 @@
             initComments();
             initVersionSelector();
             initHighlightSystem();
+
+            // Admin unlock button (bottom-left)
+            const adminBtn = document.createElement('div');
+            adminBtn.style.cssText = 'position:fixed;bottom:12px;left:12px;z-index:200;cursor:pointer;font-size:1.2rem;opacity:0.5;transition:opacity 0.2s;';
+            adminBtn.title = isAdmin ? 'Mode admin actif' : 'Activer mode admin';
+            adminBtn.textContent = isAdmin ? '🔓' : '🔒';
+            adminBtn.addEventListener('mouseenter', () => adminBtn.style.opacity = '1');
+            adminBtn.addEventListener('mouseleave', () => adminBtn.style.opacity = '0.5');
+            adminBtn.addEventListener('click', () => {
+                if (isAdmin) {
+                    isAdmin = false;
+                    localStorage.removeItem('gdd_admin');
+                    adminBtn.textContent = '🔒';
+                    adminBtn.title = 'Activer mode admin';
+                    alert('Mode admin désactivé');
+                    location.reload();
+                } else {
+                    const pw = prompt('Mot de passe admin:');
+                    if (pw === ADMIN_PASSWORD) {
+                        isAdmin = true;
+                        localStorage.setItem('gdd_admin', 'true');
+                        adminBtn.textContent = '🔓';
+                        adminBtn.title = 'Mode admin actif (cliquer pour désactiver)';
+                        alert('Mode admin activé! ✅');
+                        location.reload();
+                    } else if (pw !== null) {
+                        alert('❌ Mot de passe incorrect');
+                    }
+                }
+            });
+            document.body.appendChild(adminBtn);
         });
     </script>
 
