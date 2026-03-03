@@ -3360,31 +3360,50 @@
 
             // Admin unlock button (bottom-left)
             const adminBtn = document.createElement('div');
-            adminBtn.style.cssText = 'position:fixed;bottom:12px;left:12px;z-index:200;cursor:pointer;font-size:1.2rem;opacity:0.5;transition:opacity 0.2s;';
+            adminBtn.style.cssText = 'position:fixed;bottom:12px;left:12px;z-index:200;cursor:pointer;font-size:1.2rem;opacity:0.6;transition:opacity 0.2s;';
             adminBtn.title = isAdmin ? 'Mode admin actif' : 'Activer mode admin';
             adminBtn.textContent = isAdmin ? '🔓' : '🔒';
             adminBtn.addEventListener('mouseenter', () => adminBtn.style.opacity = '1');
-            adminBtn.addEventListener('mouseleave', () => adminBtn.style.opacity = '0.5');
+            adminBtn.addEventListener('mouseleave', () => { if (!document.getElementById('admin-modal')) adminBtn.style.opacity = '0.6'; });
             adminBtn.addEventListener('click', () => {
                 if (isAdmin) {
                     isAdmin = false;
                     localStorage.removeItem('gdd_admin');
                     adminBtn.textContent = '🔒';
                     adminBtn.title = 'Activer mode admin';
-                    alert('Mode admin désactivé');
                     location.reload();
                 } else {
-                    const pw = prompt('Mot de passe admin:');
-                    if (pw === ADMIN_PASSWORD) {
-                        isAdmin = true;
-                        localStorage.setItem('gdd_admin', 'true');
-                        adminBtn.textContent = '🔓';
-                        adminBtn.title = 'Mode admin actif (cliquer pour désactiver)';
-                        alert('Mode admin activé! ✅');
-                        location.reload();
-                    } else if (pw !== null) {
-                        alert('❌ Mot de passe incorrect');
-                    }
+                    // Show inline modal
+                    if (document.getElementById('admin-modal')) return;
+                    const modal = document.createElement('div');
+                    modal.id = 'admin-modal';
+                    modal.style.cssText = 'position:fixed;bottom:40px;left:12px;z-index:300;background:var(--bg-card);border:1px solid var(--accent-purple);border-radius:10px;padding:0.8rem;width:200px;box-shadow:0 8px 24px rgba(0,0,0,0.5);';
+                    modal.innerHTML = `
+                        <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.4rem;">🔐 Mot de passe admin</div>
+                        <input type="password" id="admin-pw-input" style="width:100%;background:var(--bg-secondary);border:1px solid var(--border);border-radius:6px;padding:0.4rem;color:var(--text-primary);font-size:0.85rem;box-sizing:border-box;" />
+                        <div style="display:flex;gap:0.3rem;margin-top:0.4rem;">
+                            <button id="admin-submit" style="flex:1;padding:0.3rem;background:linear-gradient(135deg,var(--accent-purple),var(--accent-blue));border:none;border-radius:6px;color:#fff;font-size:0.75rem;cursor:pointer;">OK</button>
+                            <button id="admin-cancel" style="padding:0.3rem 0.5rem;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--text-muted);font-size:0.75rem;cursor:pointer;">✕</button>
+                        </div>
+                        <div id="admin-err" style="color:#ef4444;font-size:0.7rem;margin-top:0.3rem;display:none;">❌ Incorrect</div>
+                    `;
+                    document.body.appendChild(modal);
+                    const inp = document.getElementById('admin-pw-input');
+                    inp.focus();
+                    inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') document.getElementById('admin-submit').click(); });
+                    document.getElementById('admin-cancel').addEventListener('click', () => modal.remove());
+                    document.getElementById('admin-submit').addEventListener('click', () => {
+                        if (inp.value === ADMIN_PASSWORD) {
+                            isAdmin = true;
+                            localStorage.setItem('gdd_admin', 'true');
+                            modal.remove();
+                            location.reload();
+                        } else {
+                            document.getElementById('admin-err').style.display = 'block';
+                            inp.value = '';
+                            inp.focus();
+                        }
+                    });
                 }
             });
             document.body.appendChild(adminBtn);
