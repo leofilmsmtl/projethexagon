@@ -166,55 +166,6 @@
             fill: white;
         }
 
-
-        /* === DISCORD BUTTON === */
-        .discord-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            margin-top: 2rem;
-            padding: 0.7rem 1.5rem;
-            background: #5865F2;
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            border-radius: 10px;
-            transition: all 0.3s;
-        }
-
-        .discord-btn:hover {
-            background: #4752c4;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(88, 101, 242, 0.4);
-        }
-
-        .discord-btn svg {
-            width: 20px;
-            height: 20px;
-            fill: white;
-        }
-
-        /* === DETAILS/SUMMARY STYLING === */
-        details {
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 0.8rem 1.2rem;
-            background: rgba(26, 34, 52, 0.5);
-            margin-top: 1rem;
-        }
-
-        details[open] summary {
-            margin-bottom: 0.5rem;
-        }
-
-        details summary {
-            cursor: pointer;
-            color: var(--accent-cyan);
-            font-weight: 600;
-            padding: 0.3rem 0;
-        }
-
         /* === NAV === */
         .nav {
             position: sticky;
@@ -1116,22 +1067,22 @@
     <section class="hero">
         <div class="hex-grid-bg"></div>
         <div class="hero-content">
-            <div class="hero-badge">⬡ Game Design Document v3.0</div>
+            <div class="hero-badge">⬡ Game Design Document v2.0</div>
             <h1>Projet Hexagon</h1>
-            <p>Conquiers ton quartier à pied. Ramasse des gems, capture du territoire, construis ta forteresse — dans la
-                vraie vie.</p>
+            <p>Conquiers ta ville à pied, à vélo, en bougeant. Construis ton empire sur la vraie carte et défends-le en
+                personne.</p>
             <div class="hero-stats">
                 <div class="hero-stat">
                     <div class="number">👤</div>
-                    <div class="label">Solo-First</div>
+                    <div class="label">100% Solo</div>
                 </div>
                 <div class="hero-stat">
-                    <div class="number">🚶</div>
-                    <div class="label">Piéton est Roi</div>
+                    <div class="number">19</div>
+                    <div class="label">Systèmes</div>
                 </div>
                 <div class="hero-stat">
-                    <div class="number">15</div>
-                    <div class="label">Ressources</div>
+                    <div class="number">3</div>
+                    <div class="label">Phases</div>
                 </div>
                 <div class="hero-stat">
                     <div class="number">4</div>
@@ -1174,11 +1125,10 @@
 
     <!-- ============ CORE LOOP ============ -->
     <section class="section" id="loop">
-
         <div class="section-header">
-            <div class="section-tag cyan">🔄 Boucle</div>
-            <h2>Core Loop — 4 étapes</h2>
-            <p class="subtitle">Découvrir → Looter → Capturer → Défendre — chaque étape mène à la suivante</p>
+            <div class="section-tag cyan">⬡ Fondation</div>
+            <h2>Boucle de Gameplay</h2>
+            <p class="subtitle">Le cycle fondamental qui définit chaque session de jeu</p>
         </div>
 
         <div class="flow">
@@ -1189,59 +1139,53 @@
             </div>
             <div class="flow-arrow">→</div>
             <div class="flow-step float" style="animation-delay: 0.5s;">
-                <div class="emoji">💎</div>
-                <div class="flow-title">Looter</div>
-                <div class="flow-desc">Gratuit · Crate style</div>
+                <div class="emoji">⚔️</div>
+                <div class="flow-title">Capturer</div>
+                <div class="flow-desc">Actif · 5 sec arrêté</div>
             </div>
             <div class="flow-arrow">→</div>
             <div class="flow-step float" style="animation-delay: 1s;">
-                <div class="emoji">⚔️</div>
-                <div class="flow-title">Capturer</div>
-                <div class="flow-desc">Coûte 1 ressource</div>
+                <div class="emoji">🏴</div>
+                <div class="flow-title">Posséder</div>
+                <div class="flow-desc">Stratégique · Revenus</div>
             </div>
             <div class="flow-arrow">→</div>
             <div class="flow-step float" style="animation-delay: 1.5s;">
                 <div class="emoji">🛡️</div>
                 <div class="flow-title">Défendre</div>
-                <div class="flow-desc">Push notif · 2h window</div>
+                <div class="flow-desc">Rétention · Retourner</div>
             </div>
         </div>
 
         <div class="solo-banner">
-            <h3>👤 Solo-First — Alliances optionnelles, zéro avantage de groupe</h3>
-            <p>Hexagon est principalement solo. Pas de bonus pour les groupes, pas de coordination assistée. Les
-                alliances sont possibles mais ne donnent aucun avantage mécanique.</p>
+            <h3>👤 100% Solo — Pas de clans, pas de groupes</h3>
+            <p>Hexagon est un jeu SOLO. Pas de system de clan, pas de party, pas de bonus de groupe. Si deux joueurs se
+                croisent, c'est du PvP naturel — jamais de coordination assistée.</p>
         </div>
 
         <div class="alert golden">
-            <strong>⬡ Règle d'or :</strong> Loot ≠ Capture. Le loot est gratuit et séparé de la capture. La capture
-            coûte une ressource commune. Le <strong>cooldown dynamique</strong> est basé sur la distance en hexes (×6
-            min, cap 15 min). Le piéton est roi — pas de restriction de vitesse, c'est le cooldown seul qui régule.
+            <strong>⬡ Règle d'or :</strong> Découvrir ≠ Capturer. La découverte (fog of war) est passive et illimitée.
+            La capture demande un arrêt (&lt;5 km/h), du temps, et a un cooldown. Le piéton est roi — le cooldown est
+            calibré
+            sur le temps de marche entre 2 hexes (~500m). Pas de pénalité de vitesse : c'est le cooldown seul qui
+            régule.
         </div>
 
-        <details>
-            <summary>💡 Pourquoi ce design?</summary>
-            <div class="alert info" style="margin-top: 0.5rem;">
-                <p>Le v2.0 avait un cooldown fixe de 5 min et une restriction de vitesse (&lt;5 km/h). Le cooldown
-                    dynamique remplace les deux : il calcule le temps qu'un piéton prendrait pour marcher la distance.
-                    Un conducteur couvre la distance plus vite mais attend le même cooldown — frustrant = voulu. Pas de
-                    restriction de vitesse = pas d'accidents causés par des joueurs qui regardent leur téléphone au
-                    volant.</p>
-            </div>
-        </details>
-
+        <div class="alert danger">
+            <strong>🚗 Sécurité :</strong> La capture est impossible en mouvement (&gt;5 km/h). Le bouton HOLD
+            n'apparaît pas.
+            Le jeu ne doit JAMAIS encourager l'utilisation du téléphone au volant.
+        </div>
     </section>
 
     <div class="divider"></div>
 
     <!-- ============ ACTIONS TABLE ============ -->
     <section class="section" id="actions">
-
         <div class="section-header">
-            <div class="section-tag blue">⚔️ Capture</div>
-            <h2>Système de Capture — 2 Phases</h2>
-            <p class="subtitle">Chaque contestation déclenche une fenêtre de transformation. Le propriétaire a le temps
-                de réagir.</p>
+            <div class="section-tag blue">⚔️ Combat</div>
+            <h2>Actions & Récompenses</h2>
+            <p class="subtitle">Chaque action a un coût en temps et une récompense proportionnelle au risque</p>
         </div>
 
         <div class="table-wrap">
@@ -1249,208 +1193,110 @@
                 <thead>
                     <tr>
                         <th>Action</th>
-                        <th>Hold Time</th>
-                        <th>Transformation</th>
+                        <th>Condition</th>
+                        <th>Récompense</th>
                         <th>Cooldown</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>🌫️ Découvrir</td>
-                        <td>Automatique</td>
-                        <td>—</td>
+                        <td>Passer à travers (auto)</td>
+                        <td>Révèle la couleur de l'hex</td>
                         <td>Aucun</td>
                     </tr>
                     <tr>
-                        <td>💎 Looter un gem</td>
-                        <td>Instantané (gratuit)</td>
-                        <td>—</td>
-                        <td>4h par spot (6h 2e prise)</td>
-                    </tr>
-                    <tr>
                         <td>🟢 Capturer (neutre)</td>
-                        <td>3 sec</td>
+                        <td>Stationnaire &lt;5 km/h, 5 sec</td>
+                        <td>Loot ×1 (couleur de l'hex)</td>
+                        <td>5 min</td>
+                    </tr>
+                    <tr>
+                        <td>🟡 Voler (ennemi)</td>
+                        <td>Stationnaire, 15-30 sec</td>
+                        <td>Loot ×2 + taxe volée</td>
+                        <td>5 min</td>
+                    </tr>
+                    <tr>
+                        <td>🟠 Voler (protégé)</td>
+                        <td>Stationnaire, 60 sec</td>
+                        <td>Loot ×3 + ressources rares</td>
+                        <td>5 min</td>
+                    </tr>
+                    <tr>
+                        <td>🔴 Voler (forteresse)</td>
+                        <td>2 joueurs + 60 sec</td>
+                        <td>Loot ×5 + ressources stockées</td>
+                        <td>5 min</td>
+                    </tr>
+                    <tr>
+                        <td>🛡️ Défendre (succès)</td>
+                        <td>Automatique</td>
+                        <td>Bonus défense (ressource aléatoire)</td>
                         <td>—</td>
-                        <td>Dynamique (distance × 6 min)</td>
                     </tr>
                     <tr>
-                        <td>🟡 Contester (ennemi)</td>
-                        <td>15 sec</td>
-                        <td>2h (proprio peut défendre)</td>
-                        <td>Dynamique (cap 15 min)</td>
-                    </tr>
-                    <tr>
-                        <td>🟠 Contester (bouclier)</td>
-                        <td>60 sec</td>
-                        <td>12-24h</td>
-                        <td>Dynamique (cap 15 min)</td>
-                    </tr>
-                    <tr>
-                        <td>🔴 Raid forteresse</td>
-                        <td>Bélier + 30 sec</td>
-                        <td>24h</td>
-                        <td>—</td>
+                        <td>🔁 Reconquérir</td>
+                        <td>Stationnaire, 5 sec</td>
+                        <td>Loot ×2 + récupération taxe</td>
+                        <td>5 min</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="card-grid" style="margin-top: 1.5rem;">
-            <div class="card">
-                <div class="card-icon green">🚶</div>
-                <h3>Défense Physique (gratuit)</h3>
-                <p>Marcher sur l'hex dans la fenêtre de transformation annule la contestation. <strong>Zéro
-                        coût</strong> — le piéton local a toujours l'avantage.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon purple">🔮</div>
-                <h3>Défense Mana (gratuit)</h3>
-                <p>Se projeter sur un hex à <strong>≤3 hexes</strong> de distance. Consomme 1 charge de mana mais
-                    <strong>ne coûte pas de ressource</strong>.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon orange">📱</div>
-                <h3>Défense Remote (payant)</h3>
-                <p>Défendre via push notification de <strong>n'importe où</strong>. Coûte des ressources — l'économie de
-                    survie rend chaque défense remote un sacrifice.</p>
-            </div>
+        <div class="alert info">
+            <strong>🔑 Bonus de vol :</strong> Un hex possédé &lt;24h ne donne que du loot ×1 au voleur (pas de prime).
+            Le multiplicateur augmente avec l'ancienneté de possession — ça empêche l'exploit de ping-pong entre
+            comptes.
         </div>
-
-        <details>
-            <summary>💡 Pourquoi ce design?</summary>
-            <div class="alert info" style="margin-top: 0.5rem;">
-                <p>Le v2.0 avait un transfert instantané : tu voles un hex et il est à toi immédiatement. Le proprio n'a
-                    aucune chance de réagir. La transformation 2h donne le temps de recevoir une push notif et de
-                    décider : marcher (gratuit), mana (gratuit), ou remote (payant).</p>
-            </div>
-        </details>
-
-        <div class="alert info" style="margin-top: 1rem;">
-            <strong>🔑 Loot ≠ Capture :</strong> Ramasser un gem sur l'hex de quelqu'un d'autre est <strong>gratuit et
-                séparé</strong>. Le propriétaire ne perd rien. Ça encourage la cohabitation.
-        </div>
-
     </section>
 
     <div class="divider"></div>
 
     <!-- ============ HEAT SCORE ============ -->
     <section class="section" id="heatscore">
-
         <div class="section-header">
             <div class="section-tag red">🌡️ Zones</div>
-            <h2>Heat Zones — Bonus-Only</h2>
-            <p class="subtitle">Le jeu fonctionne à 100% partout. Les zones actives donnent un bonus, les zones calmes
-                ne sont PAS pénalisées.</p>
+            <h2>Heat Score &amp; Zones de Jeu</h2>
+            <p class="subtitle">Les gains dépendent de la compétition réelle dans ta zone — pas de farm solo en campagne
+            </p>
         </div>
 
         <div class="heat-bar">
-            <div class="heat-zone cold">🟢 Baseline<span>×1.0 (normal)</span></div>
-            <div class="heat-zone warm">🟡 Active<span>×1.5 bonus</span></div>
-            <div class="heat-zone hot">🔴 Hot<span>×2.0 bonus</span></div>
+            <div class="heat-zone cold">🟢 Cold<span>×0.1 gains</span></div>
+            <div class="heat-zone warm">🟡 Warm<span>×0.5 gains</span></div>
+            <div class="heat-zone hot">🔴 Hot<span>×1.0 gains</span></div>
         </div>
 
         <div class="table-wrap">
             <table>
                 <thead>
                     <tr>
-                        <th>Zone</th>
-                        <th>Joueurs actifs (7j)</th>
+                        <th>Zone Heat</th>
+                        <th>Joueurs uniques (7j)</th>
                         <th>Multiplicateur</th>
                         <th>Exemple</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>🟢 Baseline</td>
-                        <td>0–4</td>
-                        <td><strong>×1.0</strong></td>
-                        <td>Campagne — <strong>jeu complet</strong></td>
+                        <td>🟢 Cold</td>
+                        <td>0–9 joueurs</td>
+                        <td><strong>×0.1</strong></td>
+                        <td>Campagne, zone morte</td>
                     </tr>
                     <tr>
-                        <td>🟡 Active</td>
-                        <td>5–15</td>
-                        <td><strong>×1.5</strong></td>
-                        <td>Banlieue active</td>
+                        <td>🟡 Warm</td>
+                        <td>10–24 joueurs</td>
+                        <td><strong>×0.5</strong></td>
+                        <td>Banlieue, St-Lambert</td>
                     </tr>
                     <tr>
                         <td>🔴 Hot</td>
-                        <td>15+</td>
-                        <td><strong>×2.0</strong></td>
+                        <td>25+ joueurs</td>
+                        <td><strong>×1.0</strong></td>
                         <td>Centre-ville Montréal</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <details>
-            <summary>💡 Pourquoi ce design?</summary>
-            <div class="alert info" style="margin-top: 0.5rem;">
-                <p>Le v2.0 pénalisait les zones Cold (×0.1 gains). Un joueur solo en banlieue recevait 10× moins. Le
-                    modèle inversé garantit que le jeu est <strong>complet partout</strong>. Les zones actives sont un
-                    bonus, pas un prérequis.</p>
-            </div>
-        </details>
-
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- ============ ECONOMY ============ -->
-    <section class="section" id="economy">
-
-        <div class="section-header">
-            <div class="section-tag orange">💎 Économie</div>
-            <h2>Économie de Survie — Gems &amp; Ressources</h2>
-            <p class="subtitle">5 couleurs daltonien-safe × 3 raretés = 15 ressources. Chaque décision compte.</p>
-        </div>
-
-        <div class="table-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Couleur</th>
-                        <th>Type</th>
-                        <th>Forme (accessibilité)</th>
-                        <th>Spawn</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>🔵 Bleu</td>
-                        <td>Pierre</td>
-                        <td>Rond</td>
-                        <td>30%</td>
-                    </tr>
-                    <tr>
-                        <td>🟠 Orange</td>
-                        <td>Métal</td>
-                        <td>Carré</td>
-                        <td>25%</td>
-                    </tr>
-                    <tr>
-                        <td>🟡 Jaune</td>
-                        <td>Énergie</td>
-                        <td>Triangle</td>
-                        <td>20%</td>
-                    </tr>
-                    <tr>
-                        <td>🟣 Violet</td>
-                        <td>Cristal</td>
-                        <td>Losange</td>
-                        <td>15%</td>
-                    </tr>
-                    <tr>
-                        <td>⚪ Argent</td>
-                        <td>Artefact</td>
-                        <td>Étoile</td>
-                        <td>10%</td>
-                    </tr>
-                    <tr>
-                        <td>🌈 Mystère</td>
-                        <td>Random (rareté boostée)</td>
-                        <td>Pulse</td>
-                        <td>~1%</td>
                     </tr>
                 </tbody>
             </table>
@@ -1458,79 +1304,157 @@
 
         <div class="card-grid" style="margin-top: 1.5rem;">
             <div class="card">
-                <div class="card-icon blue">📦</div>
-                <h3>Caps d'inventaire par rareté</h3>
-                <p>⚪ Commun : <strong>max ~30/couleur</strong><br>⭐ Rare : <strong>max ~10/couleur</strong><br>💎 Épique
-                    : <strong>max ~2-5/couleur</strong></p>
+                <div class="card-icon red">🛡️</div>
+                <h3>Anti-manipulation (min. 10 comptes)</h3>
+                <p>Un « joueur unique » doit avoir : un <strong>Device ID unique</strong>, un <strong>domicile GPS
+                        distinct</strong>,
+                    un historique de <strong>7+ jours</strong>, et un minimum de <strong>5 captures dans la
+                        zone</strong>.
+                    3 multi-comptes ne peuvent PAS inflater une zone Cold → Warm.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon orange">🗺️</div>
+                <h3>Fog partout, loot en zone active</h3>
+                <p>Le fog of war se lève <strong>partout</strong> (même en campagne) — c'est satisfaisant.
+                    Mais le <strong>loot et les captures</strong> ne sont actifs qu'en zones de jeu.
+                    Le joueur en road trip voit sa carte se dévoiler sans pouvoir farmer.</p>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 1rem;">
+            <div class="card-icon cyan">📊</div>
+            <h3>Heatmap visible sur la carte</h3>
+            <p>Les zones Hot brillent en <strong>rouge/orange subtil</strong> sur la carte. Le joueur voit d'un coup
+                d'œil
+                où l'action est concentrée. La heatmap se met à jour <strong>1 fois par jour</strong> (backend-only, pas
+                manipulable).</p>
+        </div>
+
+        <div class="alert golden" style="margin-top: 1.5rem;">
+            <strong>💡 Logique narrative :</strong> Un hex en ville VAUT plus parce qu'il y a de la compétition.
+            Un hex au milieu d'un champ de maïs vaut rien parce que personne le veut. Le <strong>multiplicateur de
+                loot</strong> reflète la VALEUR
+            stratégique du territoire.
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ============ ECONOMY ============ -->
+    <section class="section" id="economy">
+        <div class="section-header">
+            <div class="section-tag orange">🪙 Économie</div>
+            <h2>Économie de Ressources</h2>
+            <p class="subtitle">6 types de ressources avec rareté croissante — tout se récolte, tout se dépense</p>
+        </div>
+
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-icon green">📥</div>
+                <h3>Sources (Récolte)</h3>
+                <p>
+                    Capturer un hex : <strong>Loot × couleur</strong><br>
+                    Voler un hex : <strong>Loot ×2–×5</strong><br>
+                    Taxe propriétaire : <strong>30% auto</strong><br>
+                    Quêtes quotidiennes : <strong>Ressources ciblées</strong><br>
+                    Reroll 24h : <strong>Nouvelles opportunités</strong>
+                </p>
             </div>
             <div class="card">
                 <div class="card-icon red">📤</div>
                 <h3>Dépenses (Resource Sinks)</h3>
-                <p>Capturer un hex : <strong>1 commune</strong><br>Bouclier : <strong>Rares</strong><br>Forteresse :
-                    <strong>Épiques</strong><br>Bélier : <strong>All-in épiques</strong></p>
+                <p>
+                    Bouclier 24h : <strong>Métal + Énergie</strong><br>
+                    Tour de guet : <strong>Bois + Pierre</strong><br>
+                    Fortification : <strong>Tous types requis</strong><br>
+                    Entretien forteresse : <strong>Ressources rares/jour</strong><br>
+                    Cap inventaire : <strong>10 max par type</strong>
+                </p>
             </div>
         </div>
 
-        <div class="alert danger" style="margin-top: 1rem;">
-            <strong>🚫 JAMAIS de pay-to-win :</strong> Les ressources viennent UNIQUEMENT du gameplay. L'argent réel =
-            cosmétiques seulement.
+        <div class="formula-box glow-pulse">
+            <div class="formula">Upkeep = taille forteresse × rareté croissante des ressources requises</div>
+            <div class="formula-desc">Petite forteresse = Bois/Pierre. Grande forteresse = Cristal + Artefact quotidien
+                💀</div>
         </div>
 
-        <details>
-            <summary>💡 Pourquoi ce design?</summary>
-            <div class="alert info" style="margin-top: 0.5rem;">
-                <p>Le v2.0 avait une taxe passive de 30% sur les hexes possédés → snowball. En la supprimant et en
-                    utilisant des <strong>quêtes de territoire</strong> comme seul reward, on force chaque joueur à
-                    rester actif. Les couleurs sont daltonien-safe + chaque type a une forme unique.</p>
-            </div>
-        </details>
+        <div class="alert danger">
+            <strong>🚫 JAMAIS de pay-to-win :</strong> Les ressources viennent UNIQUEMENT du gameplay (récolte, vol,
+            taxe). L'argent réel achète seulement des cosmétiques (skins). <em>Jamais de ressources achetables.</em>
+        </div>
 
+        <div class="card-grid" style="margin-top: 1.5rem;">
+            <div class="card">
+                <div class="card-icon blue">📦</div>
+                <h3>Cap d'inventaire strict</h3>
+                <p>Max <strong>10 de chaque ressource</strong>. Pas d'accumulation infinie — force le joueur à
+                    <strong>utiliser</strong> ses ressources dans ses structures, upgrades, ou défenses. Use it or lose
+                    it.
+                </p>
+            </div>
+            <div class="card">
+                <div class="card-icon purple">�</div>
+                <h3>Rareté = Stratégie</h3>
+                <p>Les ressources communes (Vert, Bleu) servent pour les structures de base. Les rares (Rouge, Violet,
+                    Gold) sont nécessaires pour les <strong>upgrades avancées</strong> et l'entretien des grosses
+                    forteresses.</p>
+            </div>
+        </div>
+
+        <div class="formula-box" style="margin-top: 1.5rem;">
+            <div class="formula" style="font-size: 1rem;">Loot = Couleur (type) × Forme (rareté) × Heat Score (0.1–1.0)
+                × Ancienneté bonus</div>
+            <div class="formula-desc">Le joueur voit la couleur de l'hex, évalue le risque, et décide : "Est-ce que ça
+                vaut le détour?"</div>
+        </div>
     </section>
 
     <div class="divider"></div>
 
     <!-- ============ ANTI-SNOWBALL ============ -->
     <section class="section" id="balance">
-
         <div class="section-header">
             <div class="section-tag red">⚖️ Balance</div>
-            <h2>Anti-Snowball — L'Économie EST le Mécanisme</h2>
-            <p class="subtitle">Pas de caps artificiels. L'économie de survie empêche naturellement la domination.</p>
+            <h2>Anti-Snowball</h2>
+            <p class="subtitle">Le joueur dominant ne doit JAMAIS devenir imprenable</p>
         </div>
 
         <div class="card-grid card-grid-3">
             <div class="card">
                 <div class="card-icon red">⏱️</div>
-                <h3>Cooldown Dynamique</h3>
-                <p>Basé sur la <strong>distance en hexes</strong> (×6 min, cap 15 min). Le piéton n'attend jamais.</p>
+                <h3>Cooldown 5 min</h3>
+                <p>Calibré sur le temps de marche entre 2 hexes (~500m). Le piéton n'attend jamais. L'auto attend
+                    toujours. ~12 captures/heure max.</p>
             </div>
             <div class="card">
-                <div class="card-icon orange">💸</div>
-                <h3>Économie = le cap</h3>
-                <p>Caps d'inventaire stricts + coût de chaque action = tu ne peux PAS tout faire en même temps.</p>
+                <div class="card-icon orange">📋</div>
+                <h3>Max 20 captures/jour</h3>
+                <p>Même en jouant 8 heures, tu captures 20 hexes max. Régénère +5 par 6h. Le casual de 15 min est
+                    presque aussi efficace que le grinder.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon purple">📈</div>
+                <h3>Upkeep par taille</h3>
+                <p>L'entretien en <strong>ressources</strong> augmente avec la taille de la forteresse. Plus elle est
+                    grande, plus elle demande des <strong>ressources rares</strong> quotidiennement.</p>
             </div>
             <div class="card">
                 <div class="card-icon cyan">⏳</div>
                 <h3>Decay territorial</h3>
-                <p>Hexes non-visités se dégradent. Simple, prévisible, visible. Tu dois <strong>physiquement
-                        revisiter</strong>.</p>
+                <p>Non-visité 3j → fane. 7j → -50% défense. 14j → neutre. Tu dois physiquement revisiter tes hexes.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon blue">🛡️</div>
+                <h3>Max 2 boucliers</h3>
+                <p>Sur 30 hexes, tu en protèges 2. Les 28 autres sont vulnérables. Après expiration, cooldown 48h avant
+                    de re-shielder le même hex. Bouclier = <strong>Métal + Énergie</strong>.</p>
             </div>
             <div class="card">
                 <div class="card-icon green">🔓</div>
                 <h3>Rien n'est invincible</h3>
-                <p>Les boucliers rallongent la transformation, ils ne l'empêchent PAS.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon purple">📈</div>
-                <h3>Plus d'hexes = plus vulnérable</h3>
-                <p>Chaque hex supplémentaire est un hex de plus à défendre avec des ressources
-                    <strong>limitées</strong>.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon blue">🛡️</div>
-                <h3>Pas de caps artificiels</h3>
-                <p>Pas de "max 20 captures/jour". Le <strong>coût en ressources rares</strong> est le seul cap naturel.
-                </p>
+                <p>Les boucliers rallongent le temps de capture, ils ne l'empêchent PAS. Un joueur déterminé peut
+                    toujours casser n'importe quoi.</p>
             </div>
         </div>
 
@@ -1540,8 +1464,8 @@
                     <tr>
                         <th>Transport</th>
                         <th>Trajet 500m</th>
-                        <th>Cooldown dynamique</th>
-                        <th>Total</th>
+                        <th>+ Cooldown</th>
+                        <th>Total / hex</th>
                         <th>Avantage</th>
                     </tr>
                 </thead>
@@ -1549,67 +1473,53 @@
                     <tr>
                         <td>🚶 Piéton</td>
                         <td>6 min</td>
-                        <td>0 min (déjà servi)</td>
+                        <td>0 min</td>
                         <td><strong>6 min</strong></td>
                         <td>👑 Meilleur UX</td>
                     </tr>
                     <tr>
                         <td>🚴 Vélo</td>
                         <td>2 min</td>
-                        <td>~4 min attente</td>
-                        <td><strong>6 min</strong></td>
-                        <td>Même temps</td>
+                        <td>3 min</td>
+                        <td><strong>5 min</strong></td>
+                        <td>Bon compromis</td>
                     </tr>
                     <tr>
                         <td>🚗 Auto</td>
                         <td>0.5 min</td>
-                        <td>~5.5 min attente</td>
-                        <td><strong>6 min</strong></td>
+                        <td>4.5 min</td>
+                        <td><strong>5 min</strong></td>
                         <td>😤 Frustrant = voulu</td>
                     </tr>
                 </tbody>
             </table>
         </div>
-
-        <details>
-            <summary>💡 Pourquoi ce design?</summary>
-            <div class="alert info" style="margin-top: 0.5rem;">
-                <p>Le v2.0 avait 6 mécanismes anti-snowball distincts (cooldown fixe, cap /jour, max 2 boucliers...).
-                    Trop complexe. L'<strong>économie de survie EST le mécanisme</strong>. Moins de règles = plus
-                    intuitif.</p>
-            </div>
-        </details>
-
     </section>
 
     <div class="divider"></div>
 
     <!-- ============ FORTIFICATION ============ -->
     <section class="section" id="fortification">
-
         <div class="section-header">
             <div class="section-tag purple">🏰 Forteresses</div>
-            <h2>Forteresse &amp; Raid Soft</h2>
-            <p class="subtitle">Le flex ultime — très cher à construire, rare à détruire, impossible à voler</p>
+            <h2>Forteresse &amp; Siège</h2>
+            <p class="subtitle">Le flex ultime — très cher à construire, épique à détruire</p>
         </div>
 
         <div class="card-grid">
             <div class="card">
                 <div class="card-icon purple">🏰</div>
-                <h3>Construction (3 hexes adjacents)</h3>
-                <p><strong>Prérequis :</strong> Quêtes de forteresse complétées<br>
-                    <strong>Coût :</strong> Ressources rares (vide le stock)<br>
-                    <strong>Durée :</strong> 3 jours avec visite physique 1×/jour<br>
-                    <strong>Limite :</strong> Max 1 forteresse par joueur<br>
-                    <strong>Distance :</strong> Min 5 hexes entre forteresses
-                </p>
+                <h3>Construction (7 hexes)</h3>
+                <p>Un cluster complet (1 centre + 6 adjacents) possédé depuis <strong>14+ jours</strong>.
+                    Coût : <strong>toutes les ressources requises</strong>. Zone <strong>Hot uniquement</strong>.
+                    Max <strong>1 forteresse</strong> par joueur.</p>
             </div>
             <div class="card">
-                <div class="card-icon cyan">🛡️</div>
-                <h3>Protection pendant construction</h3>
-                <p>Bouclier "chantier" auto (transformation 12h).<br>
-                    Si hex perdu → construction <strong>PAUSÉE</strong> (pas annulée).<br>
-                    48h pour recapturer. Échec = 75% refund.</p>
+                <div class="card-icon orange">�</div>
+                <h3>Entretien par taille</h3>
+                <p>Consomme des <strong>ressources quotidiennes</strong> proportionnelles à sa taille.
+                    Plus elle est grande → <strong>ressources rares</strong> requises.
+                    Si tu ne nourris pas → dégradation → redevient 7 hexes normaux en 7 jours.</p>
             </div>
         </div>
 
@@ -1617,325 +1527,464 @@
             <div class="card">
                 <div class="card-icon cyan">👁️</div>
                 <h3>Visible à travers le Fog</h3>
-                <p>Le <strong>prestige ultime</strong> — visible par tous, même sans exploration.</p>
+                <p>Icône spéciale, glow, effets 3D. Les forteresses sont visibles <strong>par-dessus le brouillard de
+                        guerre</strong> — même si tu n'as pas exploré la zone. C'est le <strong>prestige
+                        ultime</strong>, le show-off. Plate de flex si personne le voit!</p>
             </div>
             <div class="card">
                 <div class="card-icon pink">✏️</div>
                 <h3>Nom personnalisé</h3>
-                <p>« La Citadelle du Plateau ». Skin T4 exclusif.</p>
+                <p>Le joueur nomme sa forteresse : « La Citadelle du Plateau ». Prestige maximum.</p>
             </div>
             <div class="card">
                 <div class="card-icon green">🏆</div>
-                <h3>Monument permanent</h3>
-                <p>Les forteresses ne sont <strong>jamais prises</strong>. Détruites ou debout.</p>
+                <h3>Leaderboard</h3>
+                <p>Classement des forteresses les plus anciennes. Skin T4 (mesh 3D Blender) exclusif.</p>
             </div>
         </div>
 
         <div class="section-header" style="margin-top: 3rem;">
-            <div class="section-tag red">⚔️ Raid Soft</div>
-            <h2>Le Bélier — Événement Rare</h2>
-            <p class="subtitle">~1×/mois. Le raider détruit la forteresse. Il ne la prend PAS.</p>
+            <div class="section-tag red">⚔️ Siège</div>
+            <h2>Attaquer une Forteresse</h2>
+            <p class="subtitle">Un siège progressif — pas un smash-and-grab instantané</p>
         </div>
 
         <div class="siege-flow">
             <div class="siege-phase">
                 <div class="siege-number step1">1</div>
                 <div class="siege-info">
-                    <h4>🪓 Craft du Bélier — 72h</h4>
-                    <p>Consommable, max 1 en inventaire. Coûte des <strong>épiques multi-couleurs</strong>. All-in.</p>
-                    <span class="siege-detail">💎 Épiques multi-couleurs</span>
-                    <span class="siege-detail">⏱️ 72h de craft</span>
+                    <h4>🔓 Brèche — Capturer un hex périphérique</h4>
+                    <p>L'attaquant capture <strong>1 hex sur les 6</strong> autour du cœur.
+                        Solo : 5 min stationnaire. Le propriétaire reçoit une <strong>push notif immédiate</strong>
+                        et a <strong>24h pour reconquérir</strong> la brèche (= reset du siège).</p>
+                    <span class="siege-detail">⏱️ 5 min (solo)</span>
+                    <span class="siege-detail">📱 Push notif au proprio</span>
+                    <span class="siege-detail">🔄 Reconquête = siège annulé</span>
                 </div>
             </div>
             <div class="siege-phase">
                 <div class="siege-number step2">2</div>
                 <div class="siege-info">
-                    <h4>🏃 Raid physique — 60 sec</h4>
-                    <p>Marcher sur un hex de fondation, hold 60 sec. Push notif au proprio.</p>
-                    <span class="siege-detail">🚶 Physique obligatoire</span>
-                    <span class="siege-detail">📱 Push notif</span>
+                    <h4>⏳ Cooldown du siège — 6 à 12h</h4>
+                    <p>Après la brèche, l'attaquant doit <strong>attendre 6–12h</strong> avant de pouvoir
+                        attaquer le cœur. Le proprio utilise ce temps pour renforcer ses défenses
+                        ou reconquérir la brèche.</p>
+                    <span class="siege-detail">⏱ 6–12h selon la forteresse</span>
+                    <span class="siege-detail">🛡️ Temps pour défendre</span>
                 </div>
             </div>
             <div class="siege-phase">
                 <div class="siege-number step3">3</div>
                 <div class="siege-info">
-                    <h4>⏳ 24h pour défendre</h4>
-                    <p>Si défense réussie → Bélier perdu, forteresse debout. Échec → <strong>DÉTRUITE</strong>, hexes
-                        neutres.</p>
-                    <span class="siege-detail">🛡️ 50% refund + quêtes gardées</span>
-                    <span class="siege-detail">⚔️ Quête vengeance + Bélier gratuit</span>
+                    <h4>🪓 Bélier de Siège — Attaquer le cœur</h4>
+                    <p>Si la brèche tient, l'attaquant utilise un <strong>Bélier de Siège</strong> sur le cœur.
+                        Le bélier est un item spécial : <strong>ressources rares + 7 jours de craft</strong>,
+                        <strong>consommable</strong> (détruit même si le raid échoue), max <strong>1 par
+                            joueur</strong>.
+                        Si le cœur tombe → <strong>toute la forteresse tombe en cascade</strong>.
+                    </p>
+                    <span class="siege-detail">🪓 Item : Bélier de Siège</span>
+                    <span class="siege-detail">� Ressources rares + 7j craft</span>
+                    <span class="siege-detail">💥 Consommable (utilisé = détruit)</span>
+                    <span class="siege-detail">🏆 Loot ×5 des 7 hexes</span>
                 </div>
             </div>
         </div>
 
         <div class="formula-box glow-pulse">
-            <div class="formula">Construire = semaines · Détruire = rare et coûteux · Rebuilder = rapide</div>
-            <div class="formula-desc">50% refund + quêtes gardées → le défenseur se relève vite</div>
+            <div class="formula">Construire = semaines · Détruire = jours · Le drame = éternel</div>
+            <div class="formula-desc">Le propriétaire vit dans la tension. Le raider planifie une opération. Tout le
+                quartier regarde.</div>
         </div>
 
-        <details>
-            <summary>💡 Pourquoi ce design?</summary>
-            <div class="alert info" style="margin-top: 0.5rem;">
-                <p>Le v2.0 permettait de voler la forteresse → trop rewarding. Le <strong>raid soft</strong> détruit
-                    mais ne prend PAS. Le Bélier coûte 72h + épiques = all-in. Le défenseur a quête vengeance + refund
-                    50%. Le raid est un événement dramatique rare, pas un grief quotidien.</p>
-            </div>
-        </details>
+        <div class="alert golden" style="margin-top: 1.5rem;">
+            <strong>📍 Restriction :</strong> Aucune forteresse dans un rayon de 500m de ton « home hex ».
+            Ta forteresse doit être LOIN de chez toi → vulnérable quand tu dors → du vrai gameplay.
+            Seules les zones Hot sont constructibles.
+        </div>
 
+        <div class="alert danger" style="margin-top: 1rem;">
+            <strong>🚧 En travail :</strong> Le système de siège (destruction de forteresse) doit être réconcilié avec
+            la philosophie de <strong>Cohabitation Non-Toxique</strong>. Comment contester une forteresse sans la
+            détruire complètement? À définir.
+        </div>
     </section>
 
     <div class="divider"></div>
 
     <!-- ============ LOOT CASINO ============ -->
     <section class="section" id="loot">
-
         <div class="section-header">
-            <div class="section-tag green">💎 Loot</div>
-            <h2>Gem Crate System — Spawn Permanents</h2>
-            <p class="subtitle">Des spots fixes qui changent de couleur chaque jour. Rareté révélée au ramassage (style
-                CS:GO crate).</p>
+            <div class="section-tag green">🎰 Loot Casino</div>
+            <h2>Système de Loot — Couleur × Forme</h2>
+            <p class="subtitle">Chaque hex a une Couleur (ressource) et une Forme (rareté) — double aléatoire style loot
+                box</p>
         </div>
 
-        <div class="card-grid card-grid-3">
+        <div class="card-grid">
             <div class="card">
-                <div class="card-icon green">📍</div>
-                <h3>Spawn Points Fixes</h3>
-                <p>~80-90% des hexes ont un spot de loot. Chaque spot est <strong>fixé</strong> et persiste — tu
-                    apprends tes spots.</p>
+                <div class="card-icon green">🎨</div>
+                <h3>Couleur = Ressource</h3>
+                <p>Chaque hexagone (500m) possède une <strong>couleur</strong> qui détermine le type de ressource. Les
+                    couleurs ont des taux de spawn variés — certaines sont communes, d'autres extrêmement rares.</p>
             </div>
             <div class="card">
-                <div class="card-icon orange">🔄</div>
-                <h3>Reroll Quotidien</h3>
-                <p>À minuit, chaque spot change de <strong>couleur</strong>. Jour 15 : 🟣 VIOLET! J'y vais!</p>
-            </div>
-            <div class="card">
-                <div class="card-icon purple">🎰</div>
-                <h3>Crate-style Rarity</h3>
-                <p>La couleur est visible. La <strong>rareté</strong> (⚪⭐💎) est un <strong>mystery roll</strong> au
-                    ramassage.</p>
+                <div class="card-icon purple">🔷</div>
+                <h3>Forme = Rareté</h3>
+                <p>Lors de la récolte, la <strong>forme</strong> obtenue est soumise à une probabilité (style loot box /
+                    CS:GO). Chaque forme a un multiplicateur de valeur unique.</p>
             </div>
         </div>
 
-        <div class="card-grid" style="margin-top: 1rem;">
-            <div class="card">
-                <div class="card-icon cyan">⏱️</div>
-                <h3>Cooldown Escalant</h3>
-                <p>Après pickup : <strong>4h</strong> pour tous. <strong>6h</strong> pour le même joueur (2e prise). Max
-                    <strong>3/jour/spot</strong>.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon red">🌅</div>
-                <h3>Rituel Quotidien</h3>
-                <p>Ouvrir l'app le matin → <em>"Quelles couleurs aujourd'hui?"</em><br><strong>Triple raison de sortir :
-                        matin, midi, soir.</strong></p>
-            </div>
+        <div class="table-wrap" style="margin-top: 1.5rem;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Couleur</th>
+                        <th>Taux de Spawn</th>
+                        <th>Type</th>
+                        <th>Utilité</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>🟢 Vert</td>
+                        <td><strong>30%</strong></td>
+                        <td>Bois / Pierre</td>
+                        <td>Construction basique</td>
+                    </tr>
+                    <tr>
+                        <td>🔵 Bleu</td>
+                        <td><strong>25%</strong></td>
+                        <td>Métal</td>
+                        <td>Fortifications</td>
+                    </tr>
+                    <tr>
+                        <td>🟡 Jaune</td>
+                        <td><strong>20%</strong></td>
+                        <td>Énergie</td>
+                        <td>Mana, boucliers</td>
+                    </tr>
+                    <tr>
+                        <td>🔴 Rouge</td>
+                        <td><strong>10%</strong></td>
+                        <td>Cristal rare</td>
+                        <td>Upgrades avancées</td>
+                    </tr>
+                    <tr>
+                        <td>🟣 Violet</td>
+                        <td><strong>5%</strong></td>
+                        <td>Artefact</td>
+                        <td>Items spéciaux</td>
+                    </tr>
+                    <tr>
+                        <td>🥇 Gold</td>
+                        <td><strong>0.5%</strong></td>
+                        <td>Légendaire</td>
+                        <td>Skins exclusifs, prestige</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="formula-box glow-pulse" style="margin-top: 1.5rem;">
+            <div class="formula">Valeur = Couleur (rareté) × Forme (multiplicateur) × Heat Score</div>
+            <div class="formula-desc">Un Gold en forme Diamant en zone Hot = jackpot absolu → le joueur marche 2 km pour
+                ça</div>
         </div>
 
         <div class="alert golden" style="margin-top: 1.5rem;">
-            <strong>🌫️ Fog = Mystère :</strong> Les gems sont <strong>invisibles sous le fog</strong>. Notification
-            <em>"🟣 Loot rare près de toi!"</em> sans dire exactement où.
+            <strong>🎯 Chasse au trésor :</strong> Le joueur voit les <strong>couleurs des hexes</strong> sur sa carte
+            (après exploration). Apercevoir un hex Gold à 2 km crée une motivation viscérale : "Je DOIS aller là." C'est
+            du Pokémon GO meets casino slot machine.
         </div>
 
-        <details>
-            <summary>💡 Pourquoi ce design?</summary>
-            <div class="alert info" style="margin-top: 0.5rem;">
-                <p>Le v2.0 liait le loot à la capture. Le v3.0 les sépare : loot = gratuit, même sur l'hex d'un autre.
-                    Ça crée la cohabitation. Le reroll quotidien + crate reveal = daily hook addictif.</p>
+        <div class="card-grid" style="margin-top: 1.5rem;">
+            <div class="card">
+                <div class="card-icon orange">🏴</div>
+                <h3>Taxe Propriétaire</h3>
+                <p>Sur <strong>ton</strong> hex : 30% du loot récolté par d'autres va dans ton inventaire
+                    automatiquement. Tu profites même quand tu dors.</p>
             </div>
-        </details>
+            <div class="card">
+                <div class="card-icon cyan">📦</div>
+                <h3>Inventaire limité (Cap)</h3>
+                <p>Stockage restreint : max <strong>10 de chaque type</strong>. Force le joueur à
+                    <strong>dépenser</strong> dans ses bâtiments ou ses quêtes plutôt que d'accumuler indéfiniment.
+                </p>
+            </div>
+        </div>
 
+        <div class="card" style="margin-top: 1rem;">
+            <div class="card-icon purple">⏳</div>
+            <h3>Ancienneté = Meilleures chances</h3>
+            <p>Plus tu possèdes un hex longtemps, plus les <strong>formes rares</strong> ont de chances d'apparaître
+                lors de la récolte.
+                Hex &lt; 1 jour = formes communes uniquement. 7j+ = rares possibles. 30j+ = légendaires possibles.
+                Ta <strong>proximité physique</strong> à tes hexes anciens augmente aussi tes chances — récompense le
+                joueur fidèle à son quartier.</p>
+        </div>
     </section>
 
     <div class="divider"></div>
 
     <!-- ============ MANA MOVEMENT ============ -->
     <section class="section" id="mana">
-
         <div class="section-header">
-            <div class="section-tag purple">🔮 Mana</div>
-            <h2>Système de Mana — Loot &amp; Défense à Distance</h2>
-            <p class="subtitle">3 charges, portée 3 hexes. Peut looter et défendre, mais PAS capturer ni contester.</p>
+            <div class="section-tag purple">🔮 Gameplay Maison</div>
+            <h2>Système de Mana — Projection Virtuelle</h2>
+            <p class="subtitle">Bouge virtuellement jusqu'à 1.5 km depuis chez toi, mais utilise ta mana ou perds-la</p>
         </div>
 
         <div class="flow">
             <div class="flow-step float" style="animation-delay: 0s;">
                 <div class="emoji">🔮</div>
                 <div class="flow-title">3 Charges</div>
-                <div class="flow-desc">Max = 3</div>
+                <div class="flow-desc">Jauge pleine = 3 cases</div>
             </div>
             <div class="flow-arrow">→</div>
             <div class="flow-step float" style="animation-delay: 0.5s;">
-                <div class="emoji">📡</div>
-                <div class="flow-title">Portée 3 hexes</div>
-                <div class="flow-desc">~1.5 km</div>
+                <div class="emoji">👻</div>
+                <div class="flow-title">Projection</div>
+                <div class="flow-desc">1 case = 500m = 33%</div>
             </div>
             <div class="flow-arrow">→</div>
             <div class="flow-step float" style="animation-delay: 1s;">
                 <div class="emoji">⏱️</div>
                 <div class="flow-title">Recharge</div>
-                <div class="flow-desc">1 charge / heure</div>
+                <div class="flow-desc">1 segment / heure</div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step float" style="animation-delay: 1.5s;">
+                <div class="emoji">💀</div>
+                <div class="flow-title">Use it or Lose it</div>
+                <div class="flow-desc">Pas d'accumulation</div>
             </div>
         </div>
 
         <div class="card-grid" style="margin-top: 2rem;">
             <div class="card">
-                <div class="card-icon green">✅</div>
-                <h3>Peut faire (gratuit)</h3>
-                <p>💎 Ramasser un gem à distance<br>🛡️ Défendre un hex contesté<br>Les charges sont le seul coût.</p>
+                <div class="card-icon purple">🎯</div>
+                <h3>Portée : 3 cases (1.5 km)</h3>
+                <p>Depuis ta position GPS réelle, projette-toi <strong>virtuellement</strong> jusqu'à 3 hexes de
+                    distance. Chaque déplacement coûte 33% de ta jauge de mana. Actions possibles : récolter du loot,
+                    défendre, activer des structures.</p>
             </div>
             <div class="card">
-                <div class="card-icon red">❌</div>
-                <h3>Ne peut PAS faire</h3>
-                <p>⚔️ Capturer un hex neutre<br>🟡 Contester un hex ennemi<br>🪓 Raider une forteresse</p>
+                <div class="card-icon orange">⚡</div>
+                <h3>Anti-Stockage</h3>
+                <p>La mana <strong>ne s'accumule pas</strong> au-delà du maximum (3 charges). Si elle est pleine et que
+                    tu ne l'utilises pas, tu la perds. Force une <strong>rétention horaire</strong> : le joueur revient
+                    toutes les heures pour utiliser sa mana.</p>
             </div>
         </div>
 
-        <details>
-            <summary>💡 Pourquoi ce design?</summary>
-            <div class="alert info" style="margin-top: 0.5rem;">
-                <p>Le v2.0 permettait de capturer à distance via mana → trop puissant, le joueur canapé avait le même
-                    pouvoir que le piéton. Le v3.0 restreint la mana au loot + défense seulement. La capture exige
-                    d'être <strong>physiquement présent</strong>. Le piéton reste roi.</p>
-            </div>
-        </details>
+        <div class="formula-box glow-pulse" style="margin-top: 1.5rem;">
+            <div class="formula">1 charge = 1 heure de recharge · 3 charges max · 0 accumulation</div>
+            <div class="formula-desc">Le joueur qui check toutes les heures a 3× plus de portée que celui qui check 1×
+                par jour</div>
+        </div>
 
+        <div class="alert golden">
+            <strong>🎮 Gameplay de canap :</strong> Tu es chez toi, tu vois un hex Gold à 1 km → tu utilises 2 charges
+            de mana pour te projeter et le récolter. Reviens dans 2h pour tes prochaines charges. La mana transforme les
+            temps morts en micro-sessions.
+        </div>
     </section>
 
     <div class="divider"></div>
 
     <!-- ============ COHABITATION ============ -->
     <section class="section" id="cohabitation">
-
         <div class="section-header">
             <div class="section-tag green">🤝 Territoire</div>
-            <h2>Cohabitation Non-Toxique</h2>
+            <h2>Cohabitation — Conquête Non-Toxique</h2>
             <p class="subtitle">Se battre pour le contrôle sans détruire — compétition économique, pas militaire</p>
         </div>
 
         <div class="card-grid card-grid-3">
             <div class="card">
-                <div class="card-icon green">💎</div>
-                <h3>Loot gratuit partout</h3>
-                <p>Ramasser des gems sur l'hex d'un autre est <strong>gratuit</strong>. Le proprio ne perd rien → zéro
-                    raison de se battre pour du loot.</p>
+                <div class="card-icon green">💰</div>
+                <h3>Revenu Passif</h3>
+                <p>Posséder un hex = petite <strong>taxe automatique</strong> (bonus de ressources) lorsque d'autres
+                    joueurs y récoltent du loot. Plus ton hex est traversé, plus il rapporte.</p>
             </div>
             <div class="card">
-                <div class="card-icon cyan">⏳</div>
-                <h3>Transformation 2h</h3>
-                <p>Le proprio a toujours le temps de réagir. Pas de vol surprise nocturne → réduit la toxicité.</p>
+                <div class="card-icon cyan">🛡️</div>
+                <h3>Pas de Destruction</h3>
+                <p>On peut <strong>disputer le contrôle</strong> d'un hex (pour les revenus), mais on ne <strong>démolit
+                        pas</strong> les structures des autres. Le perdant garde ses bâtiments — il perd juste le flux
+                    de revenus.</p>
             </div>
             <div class="card">
-                <div class="card-icon purple">📈</div>
-                <h3>L'expansion coûte cher</h3>
-                <p>Plus d'hexes = plus de ressources pour défendre. Naturellement, les joueurs se stabilisent à un
-                    territoire gérable.</p>
+                <div class="card-icon purple">📊</div>
+                <h3>Compétition Économique</h3>
+                <p>La lutte se fait sur le <strong>contrôle des flux de ressources</strong> et le prestige, plutôt que
+                    sur la destruction pure. Le but : éviter le <strong>Rage Quit</strong>.</p>
             </div>
         </div>
 
-        <div class="alert golden" style="margin-top: 1.5rem;">
-            <strong>🎯 Philosophie :</strong> Le jeu encourage "fais tes trucs" plutôt que "détruis l'autre". Deux
-            joueurs dans le même quartier peuvent <strong>coexister</strong> en profitant chacun du loot, sans être
-            obligés de se battre.
+        <div class="vs-grid" style="margin-top: 2rem;">
+            <div class="vs-col">
+                <h4>💀 Modèle toxique (Rust)</h4>
+                <ul>
+                    <li>Tout détruit après un raid</li>
+                    <li>100h de travail = poussière</li>
+                    <li>Rage quit = perte de joueur</li>
+                    <li>Cycle de vengeance infini</li>
+                </ul>
+            </div>
+            <div class="vs-badge">VS</div>
+            <div class="vs-col">
+                <h4>✅ Projet Hexagon</h4>
+                <ul>
+                    <li>Structures intactes, revenus transférés</li>
+                    <li>Le perdant reprend facilement</li>
+                    <li>Compétition = motivation</li>
+                    <li>Les deux joueurs restent engagés</li>
+                </ul>
+            </div>
         </div>
 
-        <details>
-            <summary>💡 Pourquoi ce design?</summary>
-            <div class="alert info" style="margin-top: 0.5rem;">
-                <p>Les jeux territoriaux souffrent souvent de toxicité. La séparation loot/capture + la transformation
-                    2h + les 3 niveaux de défense créent un environnement où le conflit est <strong>possible mais pas
-                        obligatoire</strong>. Le joueur pacifique peut farmer du loot sans jamais capturer.</p>
-            </div>
-        </details>
-
+        <div class="alert info" style="margin-top: 1.5rem;">
+            <strong>🎯 Anti-toxicité :</strong> Un joueur qui perd un hex perd ses <strong>revenus passifs</strong>, pas
+            tout son travail. Il a envie de <strong>reconquérir</strong>, pas de désinstaller. La frustration est
+            calibrée pour motiver, jamais pour détruire.
+        </div>
     </section>
 
     <div class="divider"></div>
 
     <!-- ============ 24H WORLD CYCLE ============ -->
     <section class="section" id="worldcycle">
-
         <div class="section-header">
-            <div class="section-tag orange">🔄 Cycle</div>
-            <h2>Cycle Quotidien — Loot Respawn</h2>
-            <p class="subtitle">Chaque jour, les spots de loot changent de couleur. Chaque jour est une nouvelle chasse.
-            </p>
+            <div class="section-tag orange">🔄 Cycle Mondial</div>
+            <h2>Reset Quotidien — Le Reroll de 24h</h2>
+            <p class="subtitle">Chaque jour à heure fixe, tous les hexes du monde reçoivent de nouvelles couleurs de
+                loot</p>
         </div>
 
-        <div class="card-grid">
+        <div class="flow">
+            <div class="flow-step float" style="animation-delay: 0s;">
+                <div class="emoji">🌅</div>
+                <div class="flow-title">6h00 Reset</div>
+                <div class="flow-desc">Reroll mondial</div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step float" style="animation-delay: 0.5s;">
+                <div class="emoji">🗺️</div>
+                <div class="flow-title">Vérifier la carte</div>
+                <div class="flow-desc">Nouvelles couleurs!</div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step float" style="animation-delay: 1s;">
+                <div class="emoji">🎯</div>
+                <div class="flow-title">Planifier</div>
+                <div class="flow-desc">Trouver le Gold</div>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step float" style="animation-delay: 1.5s;">
+                <div class="emoji">🏃</div>
+                <div class="flow-title">Sortir!</div>
+                <div class="flow-desc">Avant les autres</div>
+            </div>
+        </div>
+
+        <div class="card-grid" style="margin-top: 2rem;">
             <div class="card">
-                <div class="card-icon orange">🌅</div>
-                <h3>Minuit = Reroll</h3>
-                <p>À minuit, chaque spot de loot reçoit une <strong>nouvelle couleur</strong> (random). Les gems
-                    non-ramassés de la veille ne disparaissent pas — ils changent juste de couleur.</p>
+                <div class="card-icon orange">📅</div>
+                <h3>Rituel Quotidien</h3>
+                <p>Le joueur <strong>vérifie sa carte au réveil</strong>. Un hex Gold a-t-il spawné dans son quartier?
+                    C'est le rituel matinal qui crée la rétention quotidienne naturelle — comme vérifier la météo.</p>
             </div>
             <div class="card">
-                <div class="card-icon purple">🟣</div>
-                <h3>L'excitation du reroll</h3>
-                <p>Ouvrir l'app le matin → scanner ses spots → voir un 🟣 ou un 🌈 = <strong>dopamine
-                        instantanée</strong>. C'est le daily hook.</p>
+                <div class="card-icon red">⏰</div>
+                <h3>Urgence Constante</h3>
+                <p>Les couleurs rares <strong>disparaissent dans 24h</strong>. Pas le temps d'attendre demain — l'hex
+                    Gold que tu vois maintenant sera peut-être Vert demain. FOMO naturel.</p>
             </div>
         </div>
 
-        <div class="card" style="margin-top: 1rem;">
-            <div class="card-icon cyan">📱</div>
-            <h3>Scanner de départ (Onboarding)</h3>
-            <p>Nouveau joueur reçoit un <strong>Scanner</strong> (item unique) qui révèle <strong>10 hexes autour de
-                    lui</strong>. Le joueur voit immédiatement le jeu : du loot sur les hexes, des territoires, etc. Pas
-                de confusion Jour 1.</p>
+        <div class="formula-box glow-pulse" style="margin-top: 1.5rem;">
+            <div class="formula">Jour 1 : Gold chez toi! 🎉 · Jour 2 : Gold à 2 km... 🚶 · Jour 3 : Pas de Gold 😤 →
+                encore plus motivé</div>
+            <div class="formula-desc">Le caractère aléatoire crée de la variété et empêche les "routes optimales" figées
+            </div>
         </div>
 
-        <details>
-            <summary>💡 Pourquoi ce design?</summary>
-            <div class="alert info" style="margin-top: 0.5rem;">
-                <p>Le v2.0 parlait de "couleurs d'hex qui rerollent". Le v3.0 clarifie : ce sont les <strong>spots de
-                        loot</strong> (gems) qui changent de couleur, pas les hexes eux-mêmes. Combiné avec le Scanner
-                    de départ, le Jour 1 est une expérience immédiate et claire.</p>
-            </div>
-        </details>
-
+        <div class="alert info">
+            <strong>🌍 Impact serveur :</strong> Le reroll est calculé <strong>backend-side</strong> à heure fixe (ex:
+            6h00 heure locale). Les couleurs sont déterminées par un seed quotidien + coordonnées hex. Pas de triche
+            possible, chaque joueur voit le même monde.
+        </div>
     </section>
 
     <div class="divider"></div>
 
     <!-- ============ CATALOGUAGE ============ -->
     <section class="section" id="cataloguage">
-
         <div class="section-header">
-            <div class="section-tag cyan">📸 Collection</div>
-            <h2>Cataloguage — Pokédex Urbain</h2>
-            <p class="subtitle">Scanner des points d'intérêt réels pour compléter ton catalogue. Contenu solo pur, zéro
-                PvP.</p>
+            <div class="section-tag green">📚 Collection</div>
+            <h2>Cataloguage — Le Pokédex Urbain</h2>
+            <p class="subtitle">Pour les explorateurs qui s'en foutent du PvP — la complétude est le hook ultime</p>
         </div>
 
-        <div class="card-grid card-grid-3">
-            <div class="card">
-                <div class="card-icon cyan">📸</div>
-                <h3>Scanner des POIs</h3>
-                <p>Murales, monuments, bâtiments historiques. Validation par <strong>photo + IA</strong> (hash
-                    perceptuel).</p>
+        <div class="pokedex-grid">
+            <div class="pokedex-item">
+                <div class="pokedex-icon">🎨</div>
+                <h4>Murales</h4>
+                <p>Partenariat Tourisme MTL</p>
             </div>
+            <div class="pokedex-item">
+                <div class="pokedex-icon">🏛️</div>
+                <h4>Monuments</h4>
+                <p>Sites historiques</p>
+            </div>
+            <div class="pokedex-item">
+                <div class="pokedex-icon">🌳</div>
+                <h4>Parcs</h4>
+                <p>Espaces verts</p>
+            </div>
+            <div class="pokedex-item">
+                <div class="pokedex-icon">🍕</div>
+                <h4>Restaurants</h4>
+                <p>Partenaires sponsors</p>
+            </div>
+            <div class="pokedex-item">
+                <div class="pokedex-icon">🏅</div>
+                <h4>Badges quartier</h4>
+                <p>100% du Plateau!</p>
+            </div>
+            <div class="pokedex-item">
+                <div class="pokedex-icon">❄️</div>
+                <h4>Badges saison</h4>
+                <p>50 hexes en janvier</p>
+            </div>
+        </div>
+
+        <div class="card-grid" style="margin-top: 1.5rem;">
             <div class="card">
-                <div class="card-icon green">📊</div>
-                <h3>Barre de progression</h3>
-                <p>Catalogue par catégorie → hook <strong>complétionniste OCD</strong>. "Il me manque 3 murales dans le
-                    Plateau!"</p>
+                <div class="card-icon purple">🧠</div>
+                <h3>Le hook OCD</h3>
+                <p>Les gens deviennent obsessifs quand il faut remplir des listes. « Il me manque 3 murales
+                    dans Hochelaga… » — c'est de la rétention pure sans aucun PvP.
+                    Collections complétées = récompenses cosmétiques exclusives.</p>
             </div>
             <div class="card">
                 <div class="card-icon orange">💼</div>
-                <h3>Modèle B2B</h3>
-                <p>Partenariats avec municipalités, tourisme, festivals. <strong>Foot traffic payé</strong> — les
-                    commerces payent pour être des POIs.</p>
+                <h3>Business model intégré</h3>
+                <p>Un restaurant paye pour être un « point d'intérêt rare ». Le joueur doit <strong>physiquement y
+                        aller</strong>
+                    pour le cataloguer → le restaurant reçoit du <strong>foot traffic réel</strong>.
+                    Comme les Pokéstops sponsorisés de Pokémon GO.</p>
             </div>
         </div>
 
-        <details>
-            <summary>💡 Pourquoi ce design?</summary>
-            <div class="alert info" style="margin-top: 0.5rem;">
-                <p>Le cataloguage est du contenu solo pur. Un joueur qui ne veut pas de PvP peut quand même progresser.
-                    Le modèle B2B = source de revenus complémentaire aux skins cosmétiques.</p>
-            </div>
-        </details>
-
+        <div class="alert info" style="margin-top: 1rem;">
+            <strong>🎯 Inclusivité :</strong> Le joueur explorateur et le joueur compétitif jouent au même jeu.
+            L'un collectionne, l'autre conquiert. Les deux débloquent du contenu différent sur les mêmes hexes.
+            Aucun joueur n'est laissé de côté.
+        </div>
     </section>
 
     <div class="divider"></div>
@@ -1999,72 +2048,68 @@
 
     <!-- ============ SKINS ============ -->
     <section class="section" id="skins">
-
         <div class="section-header">
-            <div class="section-tag pink">🎨 Cosmétiques</div>
-            <h2>Skins — 4 Tiers de Personnalisation</h2>
-            <p class="subtitle">Flex visuel sur tes hexes, visible par tous les joueurs. Zéro avantage mécanique.</p>
+            <div class="section-tag cyan">🎨 Personnalisation</div>
+            <h2>Système de Skins</h2>
+            <p class="subtitle">4 tiers de personnalisation — du flat au 3D importé de Blender</p>
         </div>
 
-        <div class="table-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Tier</th>
-                        <th>Type</th>
-                        <th>Acquisition</th>
-                        <th>Visible par</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>T1</td>
-                        <td>Couleur flat</td>
-                        <td>Gratuit (default)</td>
-                        <td>Tous</td>
-                    </tr>
-                    <tr>
-                        <td>T2</td>
-                        <td>Texture seamless</td>
-                        <td>Quêtes / Achat $</td>
-                        <td>Tous</td>
-                    </tr>
-                    <tr>
-                        <td>T3</td>
-                        <td>Animation shader</td>
-                        <td>Quêtes / Achat $</td>
-                        <td>Tous</td>
-                    </tr>
-                    <tr>
-                        <td>T4</td>
-                        <td>Forteresse 3D</td>
-                        <td>Quêtes / Achat $</td>
-                        <td>Tous</td>
-                    </tr>
-                    <tr>
-                        <td>Puck</td>
-                        <td>Curseur GPS perso</td>
-                        <td>Quêtes / Achat $</td>
-                        <td>Soi-même</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="alert danger" style="margin-top: 1.5rem;">
-            <strong>🚫 Zéro pay-to-win. Jamais.</strong> Les skins sont la SEULE source de monétisation avec le modèle
-            B2B du cataloguage. Aucun achat ne donne d'avantage mécanique.
-        </div>
-
-        <details>
-            <summary>💡 Pourquoi ce design?</summary>
-            <div class="alert info" style="margin-top: 0.5rem;">
-                <p>Les skins sont visibles par les AUTRES joueurs — c'est le flex social. Un hex T3 avec animation
-                    shader qui pulse est un statement. Le modèle Fortnite/Rust prouve que les cosmétiques seuls peuvent
-                    financer un jeu.</p>
+        <div class="tier-list">
+            <div class="tier">
+                <div class="tier-header">T1 · Flat</div>
+                <div class="tier-body">
+                    <h4>Couleur unie</h4>
+                    <p>Système actuel</p>
+                    <div class="tier-examples">
+                        <span>Classic Blue</span>
+                        <span>Crimson</span>
+                        <span>Emerald</span>
+                    </div>
+                </div>
             </div>
-        </details>
+            <div class="tier">
+                <div class="tier-header">T2 · Textured</div>
+                <div class="tier-body">
+                    <h4>Texture UV</h4>
+                    <p>Substance Painter</p>
+                    <div class="tier-examples">
+                        <span>Carbon Fiber</span>
+                        <span>Marble</span>
+                        <span>Wood Grain</span>
+                    </div>
+                </div>
+            </div>
+            <div class="tier">
+                <div class="tier-header">T3 · Animated</div>
+                <div class="tier-body">
+                    <h4>Shader animé</h4>
+                    <p>GPU-only, 0 CPU</p>
+                    <div class="tier-examples">
+                        <span>Neon Pulse</span>
+                        <span>Lava Flow</span>
+                        <span>Aurora</span>
+                    </div>
+                </div>
+            </div>
+            <div class="tier">
+                <div class="tier-header">T4 · 3D</div>
+                <div class="tier-body">
+                    <h4>Mesh importé</h4>
+                    <p>Blender → .fbx</p>
+                    <div class="tier-examples">
+                        <span>Crystal Tower</span>
+                        <span>Fortress Wall</span>
+                        <span>Hologram</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <div class="alert info">
+            <strong>📦 Pipeline d'import :</strong> Modéliser dans Blender/Maya (100-500 poly) → Texturer dans Substance
+            Painter → Animer si nécessaire → Exporter .fbx → Unity Assets/Skins/ → Créer HexSkinDefinition
+            (ScriptableObject)
+        </div>
     </section>
 
     <div class="divider"></div>
@@ -2114,35 +2159,45 @@
 
     <!-- ============ COLD START ============ -->
     <section class="section" id="coldstart">
-
         <div class="section-header">
-            <div class="section-tag cyan">🚀 Lancement</div>
-            <h2>Cold Start — Map Vide au Début</h2>
-            <p class="subtitle">Pas de NPC, pas de bots. La map vide est une opportunité de pionnier.</p>
+            <div class="section-tag green">🚀 Lancement</div>
+            <h2>Cold Start (0-100 joueurs)</h2>
+            <p class="subtitle">Le jeu doit être fun SEUL — les autres joueurs sont un bonus</p>
         </div>
 
-        <div class="card-grid">
+        <div class="card-grid card-grid-3">
             <div class="card">
-                <div class="card-icon green">🌱</div>
-                <h3>Pionnier = Avantage</h3>
-                <p>Les premiers joueurs ont le choix du territoire. Pas besoin de bots : le loot existe déjà partout,
-                    les gems spawnent même sans autres joueurs.</p>
+                <div class="card-icon purple">🤖</div>
+                <h3>Hexes PvE (IA)</h3>
+                <p>Hexes pré-occupés par des factions NPC. Le nouveau joueur a quelqu'un à "battre" dès le jour 1.</p>
             </div>
             <div class="card">
-                <div class="card-icon orange">📱</div>
-                <h3>Onboarding progressif</h3>
-                <p>Jour 1 : juste des gems. Scanner de départ = 10 hexes révélés. Territoire se débloque après X gems
-                    ramassés. Forteresse = endgame via quêtes.</p>
+                <div class="card-icon green">🏅</div>
+                <h3>Progression solo</h3>
+                <p>Achievements, badges, % de carte dévoilée. La progression ne dépend pas des autres.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon cyan">🌫️</div>
+                <h3>Fog of War</h3>
+                <p>Dévoiler la carte est satisfaisant en soi. Score de découverte et badge "Premier Explorateur".</p>
+            </div>
+            <div class="card">
+                <div class="card-icon orange">🎯</div>
+                <h3>Events automatiques</h3>
+                <p>"Hex doré à Place des Arts à 17h" — fonctionne même avec 3 joueurs.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon blue">👻</div>
+                <h3>Joueurs fantômes</h3>
+                <p>IA qui possède des hexes stratégiques. Crée l'illusion de compétition.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon pink">📍</div>
+                <h3>Lancement local</h3>
+                <p>Montréal d'abord. 50 joueurs dans 1 ville > 50 joueurs sur la planète. Universités = meilleur spot.
+                </p>
             </div>
         </div>
-
-        <div class="card" style="margin-top: 1rem;">
-            <div class="card-icon purple">📢</div>
-            <h3>Événements de lancement</h3>
-            <p>La Bataille de Montréal, événements physiques de quartier, Wrap territorial (style Spotify Wrapped).
-                <strong>Pas d'AR</strong> — identité propre, pas une copie Pokémon GO.</p>
-        </div>
-
     </section>
 
 
@@ -2329,55 +2384,38 @@
 
     <!-- ============ ANTI-CHEAT ============ -->
     <section class="section" id="anticheat">
-
         <div class="section-header">
             <div class="section-tag red">🛡️ Sécurité</div>
             <h2>Anti-Triche</h2>
-            <p class="subtitle">Chaque exploit a une contre-mesure concrète</p>
+            <p class="subtitle">Multi-comptes, collusion, GPS spoofing — tout est couvert</p>
         </div>
 
-        <div class="table-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Triche</th>
-                        <th>Protection</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Multi-comptes</td>
-                        <td>Device ID unique + compte &lt;30j = non-raidable</td>
-                    </tr>
-                    <tr>
-                        <td>GPS spoofing</td>
-                        <td>Cooldown dynamique + Google/Apple Integrity API</td>
-                    </tr>
-                    <tr>
-                        <td>Photo spoofing (catalogue)</td>
-                        <td>Hash perceptuel + IA de détection</td>
-                    </tr>
-                    <tr>
-                        <td>Collusion</td>
-                        <td>Pas de taxe passive = pas d'incentive à collaborer</td>
-                    </tr>
-                    <tr>
-                        <td>Camping</td>
-                        <td>Cooldown escalant sur spots de loot</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <details>
-            <summary>💡 Pourquoi ce design?</summary>
-            <div class="alert info" style="margin-top: 0.5rem;">
-                <p>Le cooldown dynamique est la protection anti-spoof principale : même avec un faux GPS, le cooldown
-                    basé sur la distance empêche le farm rapide. L'absence de taxe passive élimine l'incentive pour les
-                    multi-comptes.</p>
+        <div class="card-grid card-grid-3">
+            <div class="card">
+                <div class="card-icon red">📱</div>
+                <h3>1 Téléphone = 1 Compte</h3>
+                <p><strong>Google Sign-In + Device ID</strong>. Le tricheur aurait besoin de 10 téléphones physiques.
+                    Nouveau compte (&lt;7j) limité à 5 hexes.</p>
             </div>
-        </details>
+            <div class="card">
+                <div class="card-icon orange">🔄</div>
+                <h3>Anti ping-pong</h3>
+                <p>Même hex entre mêmes joueurs : 0 loot après le 1er vol. Cooldown 24h. Rendement décroissant entre
+                    même paire (×1 → ×0.5 → ×0.25 → 0).</p>
+            </div>
+            <div class="card">
+                <div class="card-icon purple">🕵️</div>
+                <h3>Détection backend</h3>
+                <p>IP identique + GPS identique + pattern de vol mutuel = flag admin automatique. 3 flags = compte gelé.
+                </p>
+            </div>
+        </div>
 
+        <div class="alert danger" style="margin-top: 1.5rem;">
+            <strong>📐 Principe :</strong> La triche doit rapporter MOINS que le jeu légitime. Un multi-compteur gagne
+            presque rien en ressources par cycle de 24h. Un joueur normal récolte 10× plus par jour. Pas rentable de
+            tricher.
+        </div>
     </section>
 
     <div class="divider"></div>
@@ -2437,7 +2475,7 @@
     <footer style="text-align: center; padding: 4rem 2rem; border-top: 1px solid var(--border);">
         <div style="font-size: 2rem; margin-bottom: 1rem;">⬡</div>
         <div style="font-weight: 700; font-size: 1.2rem; margin-bottom: 0.5rem;">Projet Hexagon</div>
-        <div style="color: var(--text-muted); font-size: 0.85rem;">Game Design Document v3.0 — Mars 2026</div>
+        <div style="color: var(--text-muted); font-size: 0.85rem;">Game Design Document v2.0 — Mars 2026</div>
         <div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.5rem;">Conquiers ta ville. Construis ton
             empire. Défends-le en personne.</div>
     </footer>
@@ -3059,9 +3097,7 @@
                         <option value="rgba(245,158,11,0.5)">🟡 À discuter</option>
                         <option value="rgba(239,68,68,0.5)">🔴 Problème</option>
                         <option value="rgba(59,130,246,0.5)">🔵 Suggestion</option>
-                                    <option value="projet_hexagon_gdd_v2_0.html">v2.0</option>
-                <option value="projet_hexagon_gdd_v1_0.html">v1.0</option>
-            </select>
+                    </select>
                     <button onclick="saveHighlight()" style="padding:0.3rem 0.8rem;background:linear-gradient(135deg,var(--accent-purple),var(--accent-blue));border:none;border-radius:6px;color:#fff;font-size:0.75rem;font-weight:600;cursor:pointer;">Annoter</button>
                     <button onclick="closeHighlightPopup()" style="padding:0.3rem 0.6rem;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--text-muted);font-size:0.75rem;cursor:pointer;">✕</button>
                 </div>
@@ -3295,8 +3331,7 @@
         // VERSION HISTORY
         // ========================================
         const VERSIONS = {
-            "v3.0": { date: "Mars 2026", label: "v3.0 — Gems + Raid Soft + Cohabitation (actuel)" },
-            "v2.0": { date: "Mars 2026", label: "v2.0 — Ressources + Mana + Casino" },
+            "v2.0": { date: "Mars 2026", label: "v2.0 — Ressources + Mana + Casino (actuel)" },
             "v1.0": { date: "Février 2026", label: "v1.0 — Coins + Loot original" }
         };
 
@@ -3305,9 +3340,9 @@
             selector.className = 'version-selector';
             selector.innerHTML = `
             <label>📋 Version:</label>
-            <select id="version-select" style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:6px;padding:0.3rem 0.5rem;color:var(--text-primary);font-size:0.75rem;">
+            <select id="version-select">
                 ${Object.entries(VERSIONS).map(([k, v]) =>
-                `<option value="${k}" ${k === 'v3.0' ? 'selected' : ''}>${v.label}</option>`
+                `<option value="${k}" ${k === 'v2.0' ? 'selected' : ''}>${v.label}</option>`
             ).join('')}
             </select>
         `;
@@ -3319,7 +3354,7 @@
             banner.id = 'version-banner';
             banner.innerHTML = `
             ⚠️ Vous consultez une version archivée
-            <button onclick="document.getElementById('version-select').value='v3.0'; switchVersion('v3.0')">Retour à la version actuelle</button>
+            <button onclick="document.getElementById('version-select').value='v2.0'; switchVersion('v2.0')">Retour à la version actuelle</button>
         `;
             document.body.prepend(banner);
 
@@ -3330,7 +3365,7 @@
 
         function switchVersion(version) {
             const banner = document.getElementById('version-banner');
-            if (version === 'v3.0') {
+            if (version === 'v2.0') {
                 banner.style.display = 'none';
                 // Current version — just reload
                 window.location.href = window.location.pathname;
