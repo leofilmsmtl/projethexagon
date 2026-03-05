@@ -1116,7 +1116,7 @@
     <section class="hero">
         <div class="hex-grid-bg"></div>
         <div class="hero-content">
-            <div class="hero-badge">⬡ Game Design Document v4.0</div>
+            <div class="hero-badge">⬡ Game Design Document v3.0</div>
             <h1>Projet Hexagon</h1>
             <p>Conquiers ton quartier à pied. Ramasse des gems, capture du territoire, construis ta forteresse — dans la
                 vraie vie.</p>
@@ -1138,7 +1138,7 @@
                     <div class="label">Tiers de Skins</div>
                 </div>
             </div>
-            <a href="https://discord.gg/2RGzMDyMrW" target="_blank" class="discord-btn">
+            <a href="https://discord.gg/uBrmertx" target="_blank" class="discord-btn">
                 <svg viewBox="0 0 24 24">
                     <path
                         d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
@@ -1159,9 +1159,6 @@
         <a href="#loot">🎰 Loot Casino</a>
         <a href="#mana">🔮 Mana</a>
         <a href="#cohabitation">🤝 Cohabitation</a>
-        <a href="#saisons">📅 Saisons</a>
-        <a href="#empreinte">👣 Empreinte</a>
-        <a href="#duolink">👫 Duo Link</a>
         <a href="#worldcycle">🔄 Cycle 24h</a>
         <a href="#cataloguage">📚 Cataloguage</a>
         <a href="#retention">🔥 Rétention</a>
@@ -1179,8 +1176,7 @@
     <section class="section" id="loop">
 
         <div class="section-header">
-            <div class="section-tag cyan">🔄 Boucle <span class="version-badge unchanged">✓ Non changé depuis
-                    v3.0</span></div>
+            <div class="section-tag cyan">🔄 Boucle</div>
             <h2>Core Loop — 4 étapes</h2>
             <p class="subtitle">Découvrir → Looter → Capturer → Défendre — chaque étape mène à la suivante</p>
         </div>
@@ -1310,8 +1306,7 @@
                 <div class="card-icon purple">🔮</div>
                 <h3>Défense Mana (gratuit)</h3>
                 <p>Se projeter sur un hex à <strong>≤3 hexes</strong> de distance. Consomme 1 charge de mana mais
-                    <strong>ne coûte pas de ressource</strong>.
-                </p>
+                    <strong>ne coûte pas de ressource</strong>.</p>
             </div>
             <div class="card">
                 <div class="card-icon orange">📱</div>
@@ -1405,10 +1400,9 @@
     <section class="section" id="economy">
 
         <div class="section-header">
-            <div class="section-tag orange">💎 Économie <span class="version-badge changed">🔄 Modifié v4.0</span></div>
+            <div class="section-tag orange">💎 Économie</div>
             <h2>Économie de Survie — Gems &amp; Ressources</h2>
-            <p class="subtitle">5 couleurs × 3 raretés = 15 ressources. Un seul modèle 3D de gem, couleur = texture.
-                Zéro crafting, zéro trade.</p>
+            <p class="subtitle">5 couleurs daltonien-safe × 3 raretés = 15 ressources. Chaque décision compte.</p>
         </div>
 
         <div class="table-wrap">
@@ -1417,60 +1411,46 @@
                     <tr>
                         <th>Couleur</th>
                         <th>Type</th>
-                        <th>Spawn %</th>
-                        <th>Commun</th>
-                        <th>Rare</th>
-                        <th>Épique</th>
+                        <th>Forme (accessibilité)</th>
+                        <th>Spawn</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>🔵 Bleu</td>
                         <td>Pierre</td>
-                        <td><strong>40%</strong></td>
-                        <td>90%</td>
-                        <td>8%</td>
-                        <td>2%</td>
+                        <td>Rond</td>
+                        <td>30%</td>
                     </tr>
                     <tr>
                         <td>🟠 Orange</td>
                         <td>Métal</td>
-                        <td><strong>30%</strong></td>
-                        <td>90%</td>
-                        <td>8%</td>
-                        <td>2%</td>
+                        <td>Carré</td>
+                        <td>25%</td>
                     </tr>
                     <tr>
                         <td>🟡 Jaune</td>
                         <td>Énergie</td>
-                        <td><strong>18%</strong></td>
-                        <td>90%</td>
-                        <td>8%</td>
-                        <td>2%</td>
+                        <td>Triangle</td>
+                        <td>20%</td>
                     </tr>
                     <tr>
                         <td>🟣 Violet</td>
                         <td>Cristal</td>
-                        <td><strong>8%</strong></td>
-                        <td>70%</td>
-                        <td>20%</td>
-                        <td>10%</td>
+                        <td>Losange</td>
+                        <td>15%</td>
                     </tr>
                     <tr>
                         <td>⚪ Argent</td>
                         <td>Artefact</td>
-                        <td><strong>3%</strong></td>
-                        <td>70%</td>
-                        <td>20%</td>
+                        <td>Étoile</td>
                         <td>10%</td>
                     </tr>
                     <tr>
                         <td>🌈 Mystère</td>
-                        <td>Choix couleur + probas boostées</td>
-                        <td><strong>1%</strong></td>
-                        <td>30%</td>
-                        <td>40%</td>
-                        <td>30%</td>
+                        <td>Random (rareté boostée)</td>
+                        <td>Pulse</td>
+                        <td>~1%</td>
                     </tr>
                 </tbody>
             </table>
@@ -1486,61 +1466,22 @@
             <div class="card">
                 <div class="card-icon red">📤</div>
                 <h3>Dépenses (Resource Sinks)</h3>
-                <p>Capturer un hex : <strong>1 commune (couleur au choix)</strong><br>
-                    Bouclier : <strong>3 rares (couleur au choix)</strong><br>
-                    Forteresse Lv1 : <strong>1 épique × 5 couleurs</strong><br>
-                    Bélier : <strong>2 épiques × 5 couleurs (10 total)</strong></p>
-            </div>
-        </div>
-
-        <div class="card-grid" style="margin-top: 1rem;">
-            <div class="card">
-                <div class="card-icon green">💰</div>
-                <h3>Taxe Loot Passive</h3>
-                <p>Quand un joueur ramasse un gem sur <strong>ton hex</strong>, tu reçois <strong>1 commune de la même
-                        couleur</strong>. Le proprio ne perd rien → zéro raison d'être hostile. Win-win.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon cyan">📱</div>
-                <h3>Défense Remote (Cascade)</h3>
-                <p>Coût : <strong>5 communes</strong>. Si plus de communes → <strong>1 rare</strong>. Si plus de rares →
-                    <strong>1 épique</strong>.<br>
-                    Marcher physiquement = <strong>GRATUIT</strong>. Le piéton reste roi.
-                </p>
-            </div>
-        </div>
-
-        <div class="card-grid" style="margin-top: 1rem;">
-            <div class="card">
-                <div class="card-icon orange">🪙</div>
-                <h3>Hex Coins (Monnaie Premium)</h3>
-                <p>Achetable en $. <strong>UNIQUEMENT</strong> pour cosmétiques (skins T2/T3/T4, puck skins).
-                    <strong>Jamais</strong> utilisable pour un avantage mécanique.
-                </p>
-            </div>
-            <div class="card">
-                <div class="card-icon purple">🎫</div>
-                <h3>Battle Pass (Gratuit + Premium)</h3>
-                <p>Track gratuite pour tous + track premium (~10$/saison). Skins exclusifs saisonniers, XP d'Empreinte
-                    bonus.
-                    <strong>4 saisons/an</strong>.
-                </p>
+                <p>Capturer un hex : <strong>1 commune</strong><br>Bouclier : <strong>Rares</strong><br>Forteresse :
+                    <strong>Épiques</strong><br>Bélier : <strong>All-in épiques</strong></p>
             </div>
         </div>
 
         <div class="alert danger" style="margin-top: 1rem;">
             <strong>🚫 JAMAIS de pay-to-win :</strong> Les ressources viennent UNIQUEMENT du gameplay. L'argent réel =
-            cosmétiques seulement. Les boucliers, forteresses et béliers ne sont <strong>JAMAIS en vente</strong>.
+            cosmétiques seulement.
         </div>
 
         <details>
             <summary>💡 Pourquoi ce design?</summary>
             <div class="alert info" style="margin-top: 0.5rem;">
-                <p>Le v3.0 avait des coûts vagues. Le v4.0 chiffre chaque action. La taxe loot crée la cohabitation :
-                    quelqu'un
-                    qui loote sur ton hex <strong>te profite</strong>. Zéro crafting = pas de spreadsheet simulator.
-                    Zéro trade
-                    = pas de bots/RMT. L'économie est simple, brutale, et lisible.</p>
+                <p>Le v2.0 avait une taxe passive de 30% sur les hexes possédés → snowball. En la supprimant et en
+                    utilisant des <strong>quêtes de territoire</strong> comme seul reward, on force chaque joueur à
+                    rester actif. Les couleurs sont daltonien-safe + chaque type a une forme unique.</p>
             </div>
         </details>
 
@@ -1552,7 +1493,7 @@
     <section class="section" id="balance">
 
         <div class="section-header">
-            <div class="section-tag red">⚖️ Balance <span class="version-badge changed">🔄 Modifié v4.0</span></div>
+            <div class="section-tag red">⚖️ Balance</div>
             <h2>Anti-Snowball — L'Économie EST le Mécanisme</h2>
             <p class="subtitle">Pas de caps artificiels. L'économie de survie empêche naturellement la domination.</p>
         </div>
@@ -1571,8 +1512,8 @@
             <div class="card">
                 <div class="card-icon cyan">⏳</div>
                 <h3>Decay territorial</h3>
-                <p><strong>14 jours</strong> sans visite → dégradation. <strong>30 jours</strong> → hex neutre.
-                    Maintenance gratuite à pied, <strong>5 communes</strong> en remote.</p>
+                <p>Hexes non-visités se dégradent. Simple, prévisible, visible. Tu dois <strong>physiquement
+                        revisiter</strong>.</p>
             </div>
             <div class="card">
                 <div class="card-icon green">🔓</div>
@@ -1583,8 +1524,7 @@
                 <div class="card-icon purple">📈</div>
                 <h3>Plus d'hexes = plus vulnérable</h3>
                 <p>Chaque hex supplémentaire est un hex de plus à défendre avec des ressources
-                    <strong>limitées</strong>.
-                </p>
+                    <strong>limitées</strong>.</p>
             </div>
             <div class="card">
                 <div class="card-icon blue">🛡️</div>
@@ -1648,23 +1588,20 @@
     <section class="section" id="fortification">
 
         <div class="section-header">
-            <div class="section-tag purple">🏰 Forteresses <span class="version-badge changed">🔄 Modifié v4.0</span>
-            </div>
+            <div class="section-tag purple">🏰 Forteresses</div>
             <h2>Forteresse &amp; Raid Soft</h2>
-            <p class="subtitle">Niveaux illimités, prestige pur. Coût Lv×5 épiques. Rebuilt au même niveau après
-                destruction.</p>
+            <p class="subtitle">Le flex ultime — très cher à construire, rare à détruire, impossible à voler</p>
         </div>
 
         <div class="card-grid">
             <div class="card">
                 <div class="card-icon purple">🏰</div>
                 <h3>Construction (3 hexes adjacents)</h3>
-                <p><strong>Coût Lv1 :</strong> 1 épique × 5 couleurs (5 total)<br>
-                    <strong>Coût LvN :</strong> N épiques × 5 couleurs (illimité!)<br>
+                <p><strong>Prérequis :</strong> Quêtes de forteresse complétées<br>
+                    <strong>Coût :</strong> Ressources rares (vide le stock)<br>
                     <strong>Durée :</strong> 3 jours avec visite physique 1×/jour<br>
                     <strong>Limite :</strong> Max 1 forteresse par joueur<br>
-                    <strong>Distance :</strong> Min 5 hexes (~1.5km) entre forteresses<br>
-                    <strong>Avantage :</strong> ZÉRO — prestige pur, visuels par milestones tous les 5 niveaux
+                    <strong>Distance :</strong> Min 5 hexes entre forteresses
                 </p>
             </div>
             <div class="card">
@@ -1705,9 +1642,8 @@
                 <div class="siege-number step1">1</div>
                 <div class="siege-info">
                     <h4>🪓 Craft du Bélier — 72h</h4>
-                    <p>Consommable, max 1 en inventaire. Coûte <strong>2 épiques × 5 couleurs (10 total)</strong>.
-                        All-in.</p>
-                    <span class="siege-detail">💎 10 épiques (2 par couleur)</span>
+                    <p>Consommable, max 1 en inventaire. Coûte des <strong>épiques multi-couleurs</strong>. All-in.</p>
+                    <span class="siege-detail">💎 Épiques multi-couleurs</span>
                     <span class="siege-detail">⏱️ 72h de craft</span>
                 </div>
             </div>
@@ -1725,16 +1661,16 @@
                 <div class="siege-info">
                     <h4>⏳ 24h pour défendre</h4>
                     <p>Si défense réussie → Bélier perdu, forteresse debout. Échec → <strong>DÉTRUITE</strong>, hexes
-                        neutres. <strong>Niveau gardé</strong>, rebuild = 5 épiques (coût Lv1).</p>
-                    <span class="siege-detail">🏰 Rebuild au même niveau pour 5 épiques</span>
+                        neutres.</p>
+                    <span class="siege-detail">🛡️ 50% refund + quêtes gardées</span>
                     <span class="siege-detail">⚔️ Quête vengeance + Bélier gratuit</span>
                 </div>
             </div>
         </div>
 
         <div class="formula-box glow-pulse">
-            <div class="formula">Construire = semaines · Détruire = rare et coûteux · Niveau = permanent</div>
-            <div class="formula-desc">Rebuild au même niveau pour 5 épiques → le défenseur se relève vite</div>
+            <div class="formula">Construire = semaines · Détruire = rare et coûteux · Rebuilder = rapide</div>
+            <div class="formula-desc">50% refund + quêtes gardées → le défenseur se relève vite</div>
         </div>
 
         <details>
@@ -1754,46 +1690,44 @@
     <section class="section" id="loot">
 
         <div class="section-header">
-            <div class="section-tag green">💎 Loot <span class="version-badge changed">🔄 Modifié v4.0</span></div>
-            <h2>Gem Crate System — Spawn Dynamiques</h2>
-            <p class="subtitle">~85% des hexes. Positions ET couleurs redistribuées chaque nuit (seed global partagé).
-                Rareté révélée au ramassage. 1 gem 3D unique par hex, couleur = texture.</p>
+            <div class="section-tag green">💎 Loot</div>
+            <h2>Gem Crate System — Spawn Permanents</h2>
+            <p class="subtitle">Des spots fixes qui changent de couleur chaque jour. Rareté révélée au ramassage (style
+                CS:GO crate).</p>
         </div>
 
         <div class="card-grid card-grid-3">
             <div class="card">
                 <div class="card-icon green">📍</div>
-                <h3>Spawns Dynamiques</h3>
-                <p>~85% des hexes ont un gem. Positions ET couleurs <strong>redistribuées chaque nuit</strong> (seed
-                    global partagé). L'exploration est toujours pertinente.</p>
+                <h3>Spawn Points Fixes</h3>
+                <p>~80-90% des hexes ont un spot de loot. Chaque spot est <strong>fixé</strong> et persiste — tu
+                    apprends tes spots.</p>
             </div>
             <div class="card">
-                <div class="card-icon orange">🎰</div>
-                <h3>Casino Roll au Pickup</h3>
-                <p>Commun → toast rapide "+1 🔵".<br>Rare/Épique → <strong>casino roll animé</strong> (suspense réel,
-                    même animation pour rare et épique).</p>
+                <div class="card-icon orange">🔄</div>
+                <h3>Reroll Quotidien</h3>
+                <p>À minuit, chaque spot change de <strong>couleur</strong>. Jour 15 : 🟣 VIOLET! J'y vais!</p>
             </div>
             <div class="card">
-                <div class="card-icon purple">🌈</div>
-                <h3>Gem Mystère</h3>
-                <p>Visible sur la map. Le joueur <strong>choisit la couleur</strong> puis déclenche un casino roll
-                    boosté (30% commun / 40% rare / 30% épique).</p>
+                <div class="card-icon purple">🎰</div>
+                <h3>Crate-style Rarity</h3>
+                <p>La couleur est visible. La <strong>rareté</strong> (⚪⭐💎) est un <strong>mystery roll</strong> au
+                    ramassage.</p>
             </div>
         </div>
 
         <div class="card-grid" style="margin-top: 1rem;">
             <div class="card">
                 <div class="card-icon cyan">⏱️</div>
-                <h3>Cooldown Global</h3>
-                <p>Après pickup : <strong>4h fixe GLOBAL</strong> (pas per-player). Premier arrivé, premier servi! Max
-                    <strong>3/jour/spot</strong>.
-                </p>
+                <h3>Cooldown Escalant</h3>
+                <p>Après pickup : <strong>4h</strong> pour tous. <strong>6h</strong> pour le même joueur (2e prise). Max
+                    <strong>3/jour/spot</strong>.</p>
             </div>
             <div class="card">
-                <div class="card-icon red">🎯</div>
-                <h3>Pity System (Caché)</h3>
-                <p>Côté serveur, invisible au joueur. Après <strong>50 gems</strong> (commun) ou <strong>15
-                        gems</strong> (rare) sans épique d'une couleur → prochain garanti épique.</p>
+                <div class="card-icon red">🌅</div>
+                <h3>Rituel Quotidien</h3>
+                <p>Ouvrir l'app le matin → <em>"Quelles couleurs aujourd'hui?"</em><br><strong>Triple raison de sortir :
+                        matin, midi, soir.</strong></p>
             </div>
         </div>
 
@@ -1805,10 +1739,8 @@
         <details>
             <summary>💡 Pourquoi ce design?</summary>
             <div class="alert info" style="margin-top: 0.5rem;">
-                <p>Le v3.0 avait des spots fixes. Le v4.0 redistribue tout chaque nuit — l'exploration est toujours
-                    fraîche.
-                    Le cooldown global crée la compétition ("j'y cours avant l'autre!"). Le pity caché empêche le RNG
-                    frustrant sans que le joueur le sache.</p>
+                <p>Le v2.0 liait le loot à la capture. Le v3.0 les sépare : loot = gratuit, même sur l'hex d'un autre.
+                    Ça crée la cohabitation. Le reroll quotidien + crate reveal = daily hook addictif.</p>
             </div>
         </details>
 
@@ -1820,8 +1752,7 @@
     <section class="section" id="mana">
 
         <div class="section-header">
-            <div class="section-tag purple">🔮 Mana <span class="version-badge unchanged">✓ Non changé depuis
-                    v3.0</span></div>
+            <div class="section-tag purple">🔮 Mana</div>
             <h2>Système de Mana — Loot &amp; Défense à Distance</h2>
             <p class="subtitle">3 charges, portée 3 hexes. Peut looter et défendre, mais PAS capturer ni contester.</p>
         </div>
@@ -1876,8 +1807,7 @@
     <section class="section" id="cohabitation">
 
         <div class="section-header">
-            <div class="section-tag green">🤝 Territoire <span class="version-badge unchanged">✓ Non changé depuis
-                    v3.0</span></div>
+            <div class="section-tag green">🤝 Territoire</div>
             <h2>Cohabitation Non-Toxique</h2>
             <p class="subtitle">Se battre pour le contrôle sans détruire — compétition économique, pas militaire</p>
         </div>
@@ -1916,160 +1846,6 @@
                         obligatoire</strong>. Le joueur pacifique peut farmer du loot sans jamais capturer.</p>
             </div>
         </details>
-
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- ============ SAISONS ============ -->
-    <section class="section" id="saisons">
-
-        <div class="section-header">
-            <div class="section-tag cyan">📅 Saisons <span class="version-badge new-section">✨ Nouveau v4.0</span></div>
-            <h2>Cycle Saisonnier — Wipe &amp; Renouveau</h2>
-            <p class="subtitle">Tous les 3 mois : forteresses reset, fog reset, hexes gardés. Titres permanents comme
-                Rocket League.</p>
-        </div>
-
-        <div class="card-grid card-grid-3">
-            <div class="card">
-                <div class="card-icon red">🏰</div>
-                <h3>Forteresses Reset</h3>
-                <p>Toutes les forteresses sont <strong>détruites</strong>. Le niveau max atteint devient un
-                    <strong>titre permanent</strong> (ex: "Légende S3").
-                </p>
-            </div>
-            <div class="card">
-                <div class="card-icon cyan">🌫️</div>
-                <h3>Fog Reset</h3>
-                <p>Le fog of war est <strong>réinitialisé</strong>. Re-explore ton quartier! Tes hexes restent
-                    <strong>visibles</strong>, mais le loot dessus est caché jusqu'à revisite.
-                </p>
-            </div>
-            <div class="card">
-                <div class="card-icon green">⬡</div>
-                <h3>Hexes Gardés</h3>
-                <p>Ton territoire reste à toi. Seule la forteresse et le fog sont reset. Pas de rage-quit.</p>
-            </div>
-        </div>
-
-        <div class="table-wrap" style="margin-top: 1.5rem;">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Niveau Forteresse</th>
-                        <th>Titre Saisonnier</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Lv 1-3</td>
-                        <td>🏗️ Bâtisseur</td>
-                    </tr>
-                    <tr>
-                        <td>Lv 4-7</td>
-                        <td>🏛️ Architecte</td>
-                    </tr>
-                    <tr>
-                        <td>Lv 8-12</td>
-                        <td>👑 Seigneur</td>
-                    </tr>
-                    <tr>
-                        <td>Lv 13-19</td>
-                        <td>⭐ Légende</td>
-                    </tr>
-                    <tr>
-                        <td>Lv 20+</td>
-                        <td>🔮 Mythique</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="alert golden" style="margin-top: 1rem;">
-            <strong>🏷️ Titres stackables :</strong> "Légende S1 · Architecte S2 · Mythique S3". Plus t'as de titres,
-            plus ton profil impressionne.
-        </div>
-
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- ============ EMPREINTE ============ -->
-    <section class="section" id="empreinte">
-
-        <div class="section-header">
-            <div class="section-tag purple">👣 Empreinte <span class="version-badge new-section">✨ Nouveau v4.0</span>
-            </div>
-            <h2>Score Permanent — Prestige à Vie</h2>
-            <p class="subtitle">Un nombre qui monte et ne descend JAMAIS. Zéro avantage mécanique — pur prestige.</p>
-        </div>
-
-        <div class="card-grid">
-            <div class="card">
-                <div class="card-icon purple">📊</div>
-                <h3>Sources de points</h3>
-                <p>Chaque hex exploré : <strong>+1</strong><br>
-                    Chaque gem ramassé : <strong>+1</strong><br>
-                    Chaque capture : <strong>+5</strong><br>
-                    Chaque défense réussie : <strong>+10</strong><br>
-                    Niveau de forteresse : <strong>+50</strong><br>
-                    Saison complétée : <strong>+100</strong></p>
-            </div>
-            <div class="card">
-                <div class="card-icon green">🏷️</div>
-                <h3>Titres par paliers</h3>
-                <p>1,000 : <strong>Marcheur</strong><br>
-                    5,000 : <strong>Explorateur</strong><br>
-                    10,000 : <strong>Légende</strong><br>
-                    50,000 : <strong>Titan</strong><br>
-                    Affiché sur le profil : <em>"Empreinte : 12,847"</em></p>
-            </div>
-        </div>
-
-        <div class="alert info" style="margin-top: 1rem;">
-            <strong>🎯 Anti-treadmill :</strong> C'est LA progression permanente du jeu. Un vétéran de 1 an a une
-            Empreinte massive — ça ne lui donne AUCUN avantage, mais ça dit "j'étais là".
-        </div>
-
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- ============ DUO LINK ============ -->
-    <section class="section" id="duolink">
-
-        <div class="section-header">
-            <div class="section-tag pink">👫 Duo Link <span class="version-badge new-section">✨ Nouveau v4.0</span>
-            </div>
-            <h2>Social — Loot Partagé en Duo</h2>
-            <p class="subtitle">Max 2 joueurs liés. Le gem est dupliqué pour les deux dans les 60 sec. Pas de party 3+.
-            </p>
-        </div>
-
-        <div class="card-grid card-grid-3">
-            <div class="card">
-                <div class="card-icon pink">🔗</div>
-                <h3>Activation</h3>
-                <p>Invite 1 joueur → Duo Link actif pour la session. Coûte <strong>1 charge mana</strong>.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon green">💎</div>
-                <h3>Loot Partagé</h3>
-                <p>Quand l'un ramasse un gem, l'autre a <strong>60 sec</strong> pour le prendre aussi. Chacun fait son
-                    propre <strong>mystery roll</strong>.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon red">⚔️</div>
-                <h3>Pas de stacking</h3>
-                <p>Capture reste <strong>individuelle</strong>. Duo = loot seulement. Anti-zerg intact.</p>
-            </div>
-        </div>
-
-        <div class="alert golden" style="margin-top: 1rem;">
-            <strong>❤️ Cas d'usage :</strong> Tu marches avec ta blonde. Vous voyez un 🟣. Vous le ramassez TOUS LES
-            DEUX. Elle a Commun, toi Rare. Win-win.
-        </div>
 
     </section>
 
@@ -2364,8 +2140,7 @@
             <div class="card-icon purple">📢</div>
             <h3>Événements de lancement</h3>
             <p>La Bataille de Montréal, événements physiques de quartier, Wrap territorial (style Spotify Wrapped).
-                <strong>Pas d'AR</strong> — identité propre, pas une copie Pokémon GO.
-            </p>
+                <strong>Pas d'AR</strong> — identité propre, pas une copie Pokémon GO.</p>
         </div>
 
     </section>
@@ -2860,49 +2635,23 @@
         /* === ANNOTATION MARGIN MARKERS === */
         .annotation-marker {
             position: absolute;
-            left: -45px;
-            width: 28px;
-            height: 28px;
+            left: -30px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             cursor: pointer;
             z-index: 10;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
-            box-shadow: 0 2px 10px rgba(168, 85, 247, 0.4);
-            transition: transform 0.2s, box-shadow 0.2s;
-            border: 2px solid rgba(168, 85, 247, 0.5);
-            background: var(--bg-card);
-            animation: marker-pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes marker-pulse {
-
-            0%,
-            100% {
-                box-shadow: 0 2px 10px rgba(168, 85, 247, 0.3);
-            }
-
-            50% {
-                box-shadow: 0 2px 18px rgba(168, 85, 247, 0.6);
-            }
+            font-size: 0.6rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+            border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
         .annotation-marker:hover {
             transform: scale(1.3);
-            box-shadow: 0 4px 20px rgba(168, 85, 247, 0.6);
-        }
-
-        .annotation-marker::after {
-            content: '';
-            position: absolute;
-            left: 100%;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 16px;
-            height: 2px;
-            background: linear-gradient(90deg, rgba(168, 85, 247, 0.5), transparent);
         }
 
         /* === SELF-EDIT BUTTONS === */
@@ -3000,218 +2749,6 @@
             margin-left: 1rem;
             cursor: pointer;
             font-size: 0.8rem;
-        }
-
-        /* === VERSION CHANGE BADGES === */
-        .version-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            padding: 0.2rem 0.7rem;
-            border-radius: 50px;
-            font-size: 0.65rem;
-            font-weight: 600;
-            letter-spacing: 0.03em;
-            text-transform: uppercase;
-            margin-left: 0.8rem;
-            vertical-align: middle;
-        }
-
-        .version-badge.changed {
-            background: rgba(16, 185, 129, 0.15);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            color: #10b981;
-        }
-
-        .version-badge.new-section {
-            background: rgba(168, 85, 247, 0.15);
-            border: 1px solid rgba(168, 85, 247, 0.3);
-            color: #a855f7;
-        }
-
-        .version-badge.unchanged {
-            background: rgba(100, 116, 139, 0.1);
-            border: 1px solid rgba(100, 116, 139, 0.2);
-            color: #64748b;
-        }
-
-        /* === ANNOTATION PANEL === */
-        .annotation-panel-toggle {
-            position: fixed;
-            bottom: 90px;
-            left: 12px;
-            z-index: 200;
-            background: rgba(30, 30, 40, 0.8);
-            border: 1px solid var(--accent-purple);
-            border-radius: 10px;
-            padding: 6px 12px;
-            color: var(--accent-purple);
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            backdrop-filter: blur(20px);
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            opacity: 0.6;
-        }
-
-        .annotation-panel-toggle:hover {
-            opacity: 1;
-            background: rgba(168, 85, 247, 0.15);
-        }
-
-        .annotation-panel {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 400;
-            background: var(--bg-secondary);
-            border-top: 2px solid var(--accent-purple);
-            max-height: 50vh;
-            overflow-y: auto;
-            padding: 1rem 2rem;
-            display: none;
-            backdrop-filter: blur(20px);
-        }
-
-        .annotation-panel.open {
-            display: block;
-        }
-
-        .annotation-panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .annotation-panel-header h3 {
-            font-size: 1rem;
-            color: var(--accent-purple);
-        }
-
-        .annotation-panel-item {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 0.6rem 0.8rem;
-            margin-bottom: 0.5rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            gap: 0.8rem;
-            align-items: flex-start;
-        }
-
-        .annotation-panel-item:hover {
-            border-color: var(--accent-purple);
-            background: var(--bg-card-hover);
-        }
-
-        .annotation-panel-item .color-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            margin-top: 0.4rem;
-            flex-shrink: 0;
-        }
-
-        .annotation-panel-item .panel-item-content {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .annotation-panel-item .panel-item-section {
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .annotation-panel-item .panel-item-text {
-            font-size: 0.75rem;
-            color: var(--accent-cyan);
-            font-style: italic;
-            margin: 0.15rem 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .annotation-panel-item .panel-item-comment {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-
-        .annotation-panel-item .panel-item-meta {
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            margin-top: 0.2rem;
-        }
-
-        .annotation-panel-item .panel-item-replies {
-            font-size: 0.65rem;
-            color: var(--accent-purple);
-            margin-top: 0.15rem;
-        }
-
-        /* Reply thread styles */
-        .annotation-replies {
-            margin-top: 0.5rem;
-            padding-top: 0.4rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            max-height: 150px;
-            overflow-y: auto;
-        }
-
-        .annotation-reply {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 6px;
-            padding: 0.3rem 0.5rem;
-            margin-bottom: 0.3rem;
-            font-size: 0.75rem;
-        }
-
-        .annotation-reply .reply-author {
-            font-weight: 600;
-            color: var(--accent-cyan);
-            font-size: 0.7rem;
-        }
-
-        .annotation-reply .reply-text {
-            color: var(--text-secondary);
-            margin-top: 0.1rem;
-        }
-
-        .annotation-reply-form {
-            display: flex;
-            gap: 0.3rem;
-            margin-top: 0.4rem;
-        }
-
-        .annotation-reply-form input {
-            flex: 1;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 5px;
-            padding: 0.25rem 0.4rem;
-            color: var(--text-primary);
-            font-size: 0.7rem;
-        }
-
-        .annotation-reply-form button {
-            padding: 0.25rem 0.5rem;
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
-            border: none;
-            border-radius: 5px;
-            color: #fff;
-            font-size: 0.65rem;
-            cursor: pointer;
         }
     </style>
 
@@ -3521,7 +3058,10 @@
                         <option value="rgba(34,197,94,0.5)">🟢 Bonne idée</option>
                         <option value="rgba(245,158,11,0.5)">🟡 À discuter</option>
                         <option value="rgba(239,68,68,0.5)">🔴 Problème</option>
-                    </select>
+                        <option value="rgba(59,130,246,0.5)">🔵 Suggestion</option>
+                                    <option value="projet_hexagon_gdd_v2_0.html">v2.0</option>
+                <option value="projet_hexagon_gdd_v1_0.html">v1.0</option>
+            </select>
                     <button onclick="saveHighlight()" style="padding:0.3rem 0.8rem;background:linear-gradient(135deg,var(--accent-purple),var(--accent-blue));border:none;border-radius:6px;color:#fff;font-size:0.75rem;font-weight:600;cursor:pointer;">Annoter</button>
                     <button onclick="closeHighlightPopup()" style="padding:0.3rem 0.6rem;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--text-muted);font-size:0.75rem;cursor:pointer;">✕</button>
                 </div>
@@ -3571,13 +3111,9 @@
                         parent.normalize();
                     });
                     const data = snap.val();
-                    window._orphanAnnotations = [];
                     if (data) {
                         Object.entries(data).forEach(([key, h]) => {
-                            const found = applyHighlight(h, key);
-                            if (!found) {
-                                window._orphanAnnotations.push({ key, ...h });
-                            }
+                            applyHighlight(h, key);
                         });
                     }
                 });
@@ -3604,7 +3140,7 @@
         function applyHighlight(h, key) {
             // Find the text in the section and wrap it
             const section = document.getElementById(h.sectionId);
-            if (!section) return false;
+            if (!section) return;
 
             const walker = document.createTreeWalker(section, NodeFilter.SHOW_TEXT);
             while (walker.nextNode()) {
@@ -3643,10 +3179,9 @@
                         const parent = mark.parentElement;
                         if (parent) { parent.style.position = 'relative'; parent.prepend(marker); }
                     } catch (e) { /* cross-element selection */ }
-                    return true;
+                    break;
                 }
             }
-            return false;
         }
 
         function showAnnotation(mark, h, key) {
@@ -3658,8 +3193,7 @@
             popup.style.cssText = `
                 position:fixed; z-index:501; background:var(--bg-card);
                 border:1px solid ${h.color.replace('0.2', '0.5')}; border-radius:10px;
-                padding:0.8rem 1rem; width:320px; max-height:400px; overflow-y:auto;
-                box-shadow:0 8px 24px rgba(0,0,0,0.4);
+                padding:0.8rem 1rem; width:280px; box-shadow:0 8px 24px rgba(0,0,0,0.4);
             `;
 
             let actionBtns = '';
@@ -3674,30 +3208,18 @@
                     <button class="hl-close-btn" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1rem;">✕</button>
                 </div>
                 <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:0.3rem;line-height:1.4;">${h.comment}</div>
-                <div style="font-size:0.65rem;color:var(--text-muted);margin-top:0.3rem;">${new Date(h.timestamp).toLocaleDateString('fr-CA')}${h.gddVersion ? ` · Créé en <strong>${h.gddVersion}</strong>` : ''}</div>
+                <div style="font-size:0.65rem;color:var(--text-muted);margin-top:0.3rem;">${new Date(h.timestamp).toLocaleDateString('fr-CA')}</div>
                 ${actionBtns}
-                <div class="annotation-replies" id="replies-${key}"></div>
-                <div class="annotation-reply-form">
-                    <input type="text" id="reply-input-${key}" placeholder="Répondre..." />
-                    <button class="reply-submit" data-key="${key}">↩</button>
-                </div>
             `;
 
             // Wire up buttons via addEventListener
             popup.querySelector('.hl-close-btn')?.addEventListener('click', () => popup.remove());
             popup.querySelector('.hl-del-btn')?.addEventListener('click', () => deleteHighlight(key));
-            popup.querySelector('.reply-submit')?.addEventListener('click', () => submitReply(key));
-            popup.querySelector(`#reply-input-${key}`)?.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') submitReply(key);
-            });
 
             const rect = mark.getBoundingClientRect();
-            popup.style.left = Math.min(rect.left, window.innerWidth - 340) + 'px';
-            popup.style.top = Math.min(rect.bottom + 6, window.innerHeight - 420) + 'px';
+            popup.style.left = Math.min(rect.left, window.innerWidth - 300) + 'px';
+            popup.style.top = (rect.bottom + 6) + 'px';
             document.body.appendChild(popup);
-
-            // Load replies
-            loadReplies(key);
 
             // Close on outside click
             setTimeout(() => {
@@ -3722,8 +3244,7 @@
                 text: data.text,
                 sectionId: data.sectionId,
                 author, comment, color,
-                timestamp: Date.now(),
-                gddVersion: 'v4.0'
+                timestamp: Date.now()
             };
 
             if (firebaseReady && db) {
@@ -3771,291 +3292,10 @@
         }
 
         // ========================================
-        // ANNOTATION REPLIES
-        // ========================================
-        function loadReplies(highlightKey) {
-            const container = document.getElementById('replies-' + highlightKey);
-            if (!container || !firebaseReady || !db) return;
-
-            db.ref('highlight_replies/' + highlightKey).on('value', snap => {
-                container.innerHTML = '';
-                const data = snap.val();
-                if (!data) return;
-                Object.entries(data).sort((a, b) => a[1].timestamp - b[1].timestamp).forEach(([rKey, r]) => {
-                    const div = document.createElement('div');
-                    div.className = 'annotation-reply';
-                    let delBtn = '';
-                    if (isAdmin || r.author === (localStorage.getItem('gdd_author') || '')) {
-                        delBtn = `<span class="reply-del" data-hkey="${highlightKey}" data-rkey="${rKey}" style="cursor:pointer;margin-left:0.3rem;font-size:0.6rem;color:#ef4444;">🗑️</span>`;
-                    }
-                    div.innerHTML = `
-                        <div class="reply-author">${r.author} ${delBtn}<span style="color:var(--text-muted);font-weight:400;margin-left:0.3rem;">${new Date(r.timestamp).toLocaleDateString('fr-CA')}</span></div>
-                        <div class="reply-text">${r.text.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
-                    `;
-                    container.appendChild(div);
-                });
-                // Wire delete buttons
-                container.querySelectorAll('.reply-del').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        if (firebaseReady && db) {
-                            db.ref('highlight_replies/' + btn.dataset.hkey + '/' + btn.dataset.rkey).remove();
-                        }
-                    });
-                });
-            });
-        }
-
-        function submitReply(highlightKey) {
-            const input = document.getElementById('reply-input-' + highlightKey);
-            if (!input) return;
-            const text = input.value.trim();
-            if (!text) return;
-            const author = localStorage.getItem('gdd_author') || 'Anonyme';
-
-            if (firebaseReady && db) {
-                db.ref('highlight_replies/' + highlightKey).push({
-                    author, text, timestamp: Date.now()
-                });
-            }
-            input.value = '';
-
-            // Discord notification for replies
-            if (DISCORD_WEBHOOK) {
-                fetch(DISCORD_WEBHOOK, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        embeds: [{
-                            title: `💬 Réponse à une annotation`,
-                            description: text,
-                            color: 0xA855F7,
-                            author: { name: author },
-                            footer: { text: 'projethexagon.com/gameplay' },
-                            timestamp: new Date().toISOString()
-                        }]
-                    })
-                }).catch(() => { });
-            }
-        }
-
-        // ========================================
-        // ANNOTATION PANEL (bottom of page)
-        // ========================================
-        function initAnnotationPanel() {
-            // Toggle button
-            const toggle = document.createElement('div');
-            toggle.className = 'annotation-panel-toggle';
-            toggle.innerHTML = '📌 Annotations <span id="annotation-panel-count">0</span>';
-            document.body.appendChild(toggle);
-
-            // Panel
-            const panel = document.createElement('div');
-            panel.className = 'annotation-panel';
-            panel.id = 'annotation-panel';
-            panel.innerHTML = `
-                <div class="annotation-panel-header">
-                    <h3>📌 Toutes les annotations</h3>
-                    <div style="display:flex;gap:0.5rem;align-items:center;">
-                        <button id="export-annotations-btn" style="padding:0.3rem 0.7rem;background:linear-gradient(135deg,var(--accent-cyan),var(--accent-blue));border:none;border-radius:6px;color:#fff;font-size:0.7rem;font-weight:600;cursor:pointer;display:${isAdmin ? 'block' : 'none'};">📋 Exporter pour AI</button>
-                        <button id="close-annotation-panel" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1.2rem;">✕</button>
-                    </div>
-                </div>
-                <div id="annotation-panel-list"></div>
-            `;
-            document.body.appendChild(panel);
-
-            toggle.addEventListener('click', () => {
-                panel.classList.toggle('open');
-                if (panel.classList.contains('open')) {
-                    toggle.style.display = 'none';
-                    refreshAnnotationPanel();
-                } else {
-                    toggle.style.display = 'flex';
-                }
-            });
-
-            panel.querySelector('#close-annotation-panel').addEventListener('click', () => {
-                panel.classList.remove('open');
-                toggle.style.display = 'flex';
-            });
-
-            panel.querySelector('#export-annotations-btn').addEventListener('click', exportAnnotations);
-
-            // Update count from Firebase
-            if (firebaseReady && db) {
-                db.ref('highlights').on('value', snap => {
-                    const data = snap.val();
-                    const count = data ? Object.keys(data).length : 0;
-                    document.getElementById('annotation-panel-count').textContent = count;
-                });
-            }
-        }
-
-        function refreshAnnotationPanel() {
-            const list = document.getElementById('annotation-panel-list');
-            if (!list || !firebaseReady || !db) return;
-
-            db.ref('highlights').once('value').then(async snap => {
-                const data = snap.val();
-                list.innerHTML = '';
-                if (!data) {
-                    list.innerHTML = '<p style="color:var(--text-muted);font-size:0.8rem;font-style:italic;">Aucune annotation.</p>';
-                    return;
-                }
-
-                // Also load all replies
-                const repliesSnap = await db.ref('highlight_replies').once('value');
-                const allReplies = repliesSnap.val() || {};
-
-                // Separate active vs orphan
-                const orphanKeys = (window._orphanAnnotations || []).map(o => o.key);
-                const entries = Object.entries(data).sort((a, b) => b[1].timestamp - a[1].timestamp);
-                const activeEntries = entries.filter(([key]) => !orphanKeys.includes(key));
-                const orphanEntries = entries.filter(([key]) => orphanKeys.includes(key));
-
-                // Active annotations
-                activeEntries.forEach(([key, h]) => {
-                    const sectionTitle = document.querySelector(`#${h.sectionId} h2`)?.textContent || h.sectionId;
-                    const replies = allReplies[key] ? Object.values(allReplies[key]) : [];
-                    const item = document.createElement('div');
-                    item.className = 'annotation-panel-item';
-                    item.innerHTML = `
-                        <div class="color-dot" style="background:${h.color};"></div>
-                        <div class="panel-item-content">
-                            <div class="panel-item-section">${sectionTitle}${h.gddVersion ? ` · ${h.gddVersion}` : ''}</div>
-                            <div class="panel-item-text">"${h.text.substring(0, 80)}${h.text.length > 80 ? '...' : ''}"</div>
-                            <div class="panel-item-comment"><strong>${h.author}:</strong> ${h.comment}</div>
-                            <div class="panel-item-meta">${new Date(h.timestamp).toLocaleDateString('fr-CA')}</div>
-                            ${replies.length > 0 ? `<div class="panel-item-replies">\ud83d\udcac ${replies.length} r\u00e9ponse${replies.length > 1 ? 's' : ''}</div>` : ''}
-                        </div>
-                    `;
-                    item.addEventListener('click', () => {
-                        const mark = document.querySelector(`mark[data-key="${key}"]`);
-                        if (mark) {
-                            mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            mark.style.outline = '2px solid var(--accent-purple)';
-                            setTimeout(() => mark.style.outline = '', 2000);
-                            showAnnotation(mark, h, key);
-                        } else {
-                            const section = document.getElementById(h.sectionId);
-                            if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }
-                    });
-                    list.appendChild(item);
-                });
-
-                // Orphan annotations section
-                if (orphanEntries.length > 0) {
-                    const orphanHeader = document.createElement('div');
-                    orphanHeader.style.cssText = 'margin-top:1rem;padding:0.5rem 0;border-top:2px solid rgba(245,158,11,0.3);';
-                    orphanHeader.innerHTML = `<h4 style="font-size:0.85rem;color:#f59e0b;margin:0;">\u26a0\ufe0f Annotations orphelines (${orphanEntries.length}) \u2014 Texte non trouv\u00e9 dans la version actuelle</h4>`;
-                    list.appendChild(orphanHeader);
-
-                    orphanEntries.forEach(([key, h]) => {
-                        const replies = allReplies[key] ? Object.values(allReplies[key]) : [];
-                        const item = document.createElement('div');
-                        item.className = 'annotation-panel-item';
-                        item.style.borderColor = 'rgba(245,158,11,0.3)';
-                        item.innerHTML = `
-                            <div class="color-dot" style="background:#f59e0b;"></div>
-                            <div class="panel-item-content">
-                                <div class="panel-item-section" style="color:#f59e0b;">\u26a0\ufe0f ${h.sectionId}${h.gddVersion ? ` \u00b7 Cr\u00e9\u00e9 en ${h.gddVersion}` : ' \u00b7 Version inconnue'}</div>
-                                <div class="panel-item-text">"${h.text.substring(0, 80)}${h.text.length > 80 ? '...' : ''}"</div>
-                                <div class="panel-item-comment"><strong>${h.author}:</strong> ${h.comment}</div>
-                                <div class="panel-item-meta">${new Date(h.timestamp).toLocaleDateString('fr-CA')}</div>
-                                ${replies.length > 0 ? `<div class="panel-item-replies">\ud83d\udcac ${replies.length} r\u00e9ponse${replies.length > 1 ? 's' : ''}</div>` : ''}
-                                ${isAdmin ? `<button class="orphan-del" data-key="${key}" style="margin-top:0.3rem;padding:0.2rem 0.6rem;background:transparent;border:1px solid rgba(239,68,68,0.3);border-radius:5px;color:#ef4444;font-size:0.65rem;cursor:pointer;">\ud83d\uddd1\ufe0f Supprimer cette annotation</button>` : ''}
-                            </div>
-                        `;
-                        list.appendChild(item);
-                    });
-
-                    // Wire orphan delete buttons
-                    list.querySelectorAll('.orphan-del').forEach(btn => {
-                        btn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            deleteHighlight(btn.dataset.key);
-                            setTimeout(() => refreshAnnotationPanel(), 500);
-                        });
-                    });
-                }
-            });
-        }
-
-        // ========================================
-        // ADMIN EXPORT (copy-paste for AI)
-        // ========================================
-        async function exportAnnotations() {
-            if (!firebaseReady || !db) return;
-
-            const [hlSnap, repliesSnap, commentsSnap] = await Promise.all([
-                db.ref('highlights').once('value'),
-                db.ref('highlight_replies').once('value'),
-                db.ref('comments').once('value')
-            ]);
-
-            const highlights = hlSnap.val() || {};
-            const allReplies = repliesSnap.val() || {};
-            const allComments = commentsSnap.val() || {};
-
-            let output = '# GDD Annotations & Comments Export\n';
-            output += `Exported: ${new Date().toISOString()}\n\n`;
-
-            // Annotations
-            output += '## 📌 Annotations\n\n';
-            Object.entries(highlights).sort((a, b) => b[1].timestamp - a[1].timestamp).forEach(([key, h]) => {
-                const sectionTitle = document.querySelector(`#${h.sectionId} h2`)?.textContent || h.sectionId;
-                output += `### [${sectionTitle}] Section: #${h.sectionId}\n`;
-                output += `**Texte surligné:** "${h.text}"\n`;
-                output += `**${h.author}** (${new Date(h.timestamp).toLocaleDateString('fr-CA')}): ${h.comment}\n`;
-
-                const replies = allReplies[key] ? Object.values(allReplies[key]).sort((a, b) => a.timestamp - b.timestamp) : [];
-                if (replies.length > 0) {
-                    output += `**Réponses (${replies.length}):**\n`;
-                    replies.forEach(r => {
-                        output += `  - **${r.author}** (${new Date(r.timestamp).toLocaleDateString('fr-CA')}): ${r.text}\n`;
-                    });
-                }
-                output += '\n---\n\n';
-            });
-
-            // Section comments
-            output += '## 💬 Commentaires par section\n\n';
-            Object.entries(allComments).forEach(([sectionId, comments]) => {
-                const sectionTitle = document.querySelector(`#${sectionId} h2`)?.textContent || sectionId;
-                const commentList = Object.values(comments).sort((a, b) => b.timestamp - a.timestamp);
-                if (commentList.length === 0) return;
-                output += `### [${sectionTitle}] Section: #${sectionId}\n`;
-                commentList.forEach(c => {
-                    output += `- **${c.author}** (${new Date(c.timestamp).toLocaleDateString('fr-CA')}): ${c.text}${c.resolved ? ' ✅ Résolu' : ''}\n`;
-                });
-                output += '\n';
-            });
-
-            // Copy to clipboard
-            try {
-                await navigator.clipboard.writeText(output);
-                const btn = document.getElementById('export-annotations-btn');
-                btn.textContent = '✅ Copié!';
-                setTimeout(() => btn.textContent = '📋 Exporter pour AI', 2000);
-            } catch (e) {
-                // Fallback - select textarea
-                const ta = document.createElement('textarea');
-                ta.value = output;
-                ta.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:80%;height:60%;z-index:9999;background:var(--bg-primary);color:var(--text-primary);font-family:monospace;font-size:0.8rem;padding:1rem;border:2px solid var(--accent-purple);border-radius:10px;';
-                document.body.appendChild(ta);
-                ta.select();
-                ta.addEventListener('keydown', (e) => { if (e.key === 'Escape') ta.remove(); });
-            }
-        }
-
-        // ========================================
         // VERSION HISTORY
         // ========================================
         const VERSIONS = {
-            "v4.0": { date: "Mars 2026", label: "v4.0 — Économie complète + Saisons + Duo Link (actuel)" },
-            "v3.0": { date: "Mars 2026", label: "v3.0 — Gems + Raid Soft + Cohabitation" },
+            "v3.0": { date: "Mars 2026", label: "v3.0 — Gems + Raid Soft + Cohabitation (actuel)" },
             "v2.0": { date: "Mars 2026", label: "v2.0 — Ressources + Mana + Casino" },
             "v1.0": { date: "Février 2026", label: "v1.0 — Coins + Loot original" }
         };
@@ -4067,7 +3307,7 @@
             <label>📋 Version:</label>
             <select id="version-select" style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:6px;padding:0.3rem 0.5rem;color:var(--text-primary);font-size:0.75rem;">
                 ${Object.entries(VERSIONS).map(([k, v]) =>
-                `<option value="${k}" ${k === 'v4.0' ? 'selected' : ''}>${v.label}</option>`
+                `<option value="${k}" ${k === 'v3.0' ? 'selected' : ''}>${v.label}</option>`
             ).join('')}
             </select>
         `;
@@ -4079,7 +3319,7 @@
             banner.id = 'version-banner';
             banner.innerHTML = `
             ⚠️ Vous consultez une version archivée
-            <button onclick="document.getElementById('version-select').value='v4.0'; switchVersion('v4.0')">Retour à la version actuelle</button>
+            <button onclick="document.getElementById('version-select').value='v3.0'; switchVersion('v3.0')">Retour à la version actuelle</button>
         `;
             document.body.prepend(banner);
 
@@ -4090,7 +3330,7 @@
 
         function switchVersion(version) {
             const banner = document.getElementById('version-banner');
-            if (version === 'v4.0') {
+            if (version === 'v3.0') {
                 banner.style.display = 'none';
                 // Current version — just reload
                 window.location.href = window.location.pathname;
@@ -4108,7 +3348,6 @@
             initComments();
             initVersionSelector();
             initHighlightSystem();
-            initAnnotationPanel();
 
             // Admin unlock button (bottom-left)
             const adminBtn = document.createElement('div');
