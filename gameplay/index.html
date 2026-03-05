@@ -3577,11 +3577,32 @@
                             const found = applyHighlight(h, key);
                             if (!found) {
                                 window._orphanAnnotations.push({ key, ...h });
+                                // Auto-migrate orphan to comment section (once)
+                                if (!h.migratedToComment) {
+                                    migrateOrphanToComment(key, h);
+                                }
                             }
                         });
                     }
                 });
             }
+        }
+
+        function migrateOrphanToComment(key, h) {
+            if (!firebaseReady || !db) return;
+            const sectionId = h.sectionId || 'general';
+            const versionInfo = h.gddVersion ? ` (annotation ${h.gddVersion})` : ' (annotation ancienne version)';
+            const migratedComment = {
+                author: h.author,
+                text: `[📌 Annotation migrée${versionInfo}] Sur le texte: "${h.text.substring(0, 100)}${h.text.length > 100 ? '...' : ''}" — ${h.comment}`,
+                timestamp: h.timestamp || Date.now(),
+                migratedFrom: 'annotation',
+                originalKey: key
+            };
+            // Save as comment in the section
+            db.ref('comments/' + sectionId).push(migratedComment);
+            // Mark annotation as migrated (don't delete — keep history)
+            db.ref('highlights/' + key + '/migratedToComment').set(true);
         }
 
         function getXPath(node) {
