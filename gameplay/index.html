@@ -1173,7 +1173,7 @@
         <a href="#balance">⚖️ Anti-Snowball</a>
         <a href="#fortification">🏰 Forteresses</a>
         <a href="#loot">🎰 Loot Casino</a>
-        <a href="#mana">🔮 Mana</a>
+        <a href="#mana">🔮 Hex Jump</a>
         <a href="#cohabitation">🤝 Cohabitation</a>
         <a href="#saisons">📅 Saisons</a>
         <a href="#empreinte">👣 Empreinte</a>
@@ -1325,8 +1325,8 @@
             </div>
             <div class="card">
                 <div class="card-icon purple">🔮</div>
-                <h3>Défense Mana (gratuit)</h3>
-                <p>Se projeter sur un hex à <strong>≤3 hexes</strong> de distance. Consomme 1 charge de mana mais
+                <h3>Défense Hex Jump (gratuit)</h3>
+                <p>Se projeter sur un hex à <strong>≤3 hexes</strong> de distance. Consomme 1 charge Hex Jump mais
                     <strong>ne coûte pas de ressource</strong>.
                 </p>
             </div>
@@ -1343,7 +1343,7 @@
             <div class="alert info" style="margin-top: 0.5rem;">
                 <p>Le v2.0 avait un transfert instantané : tu voles un hex et il est à toi immédiatement. Le proprio n'a
                     aucune chance de réagir. La transformation 2h donne le temps de recevoir une push notif et de
-                    décider : marcher (gratuit), mana (gratuit), ou remote (payant).</p>
+                    décider : marcher (gratuit), Hex Jump (gratuit), ou remote (payant).</p>
             </div>
         </details>
 
@@ -1822,9 +1822,9 @@
     <section class="section" id="loot">
 
         <div class="section-header">
-            <div class="section-tag green">💎 Loot <span class="version-badge changed">🔄 Modifié v4.0</span></div>
+            <div class="section-tag green">💎 Loot <span class="version-badge changed">🔄 Modifié v4.1</span></div>
             <h2>Gem Crate System — Spawn Dynamiques</h2>
-            <p class="subtitle">~85% des hexes. Positions ET couleurs redistribuées chaque nuit (seed global partagé).
+            <p class="subtitle">~60% des hexes. Positions ET couleurs redistribuées chaque nuit (minuit).
                 Rareté révélée au ramassage. 1 gem 3D unique par hex, couleur = texture.</p>
         </div>
 
@@ -1832,8 +1832,8 @@
             <div class="card">
                 <div class="card-icon green">📍</div>
                 <h3>Spawns Dynamiques</h3>
-                <p>~85% des hexes ont un gem. Positions ET couleurs <strong>redistribuées chaque nuit</strong> (seed
-                    global partagé). L'exploration est toujours pertinente.</p>
+                <p>~60% des hexes ont un gem. Positions ET couleurs <strong>redistribuées chaque nuit à minuit</strong>.
+                    L'exploration est toujours pertinente.</p>
             </div>
             <div class="card">
                 <div class="card-icon orange">🎰</div>
@@ -1844,8 +1844,17 @@
             <div class="card">
                 <div class="card-icon purple">🌈</div>
                 <h3>Gem Mystère</h3>
-                <p>Visible sur la map. Le joueur <strong>choisit la couleur</strong> puis déclenche un casino roll
-                    boosté (30% commun / 40% rare / 30% épique).</p>
+                <p>Visible sur la map (cycle rainbow). Le joueur <strong>choisit la couleur</strong> puis déclenche un
+                    casino roll
+                    boosté (0% commun / 60% rare / 40% épique). 5% de spawn rate.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon orange">🎨</div>
+                <h3>Base = Odds <span class="version-badge new">✨ v4.1</span></h3>
+                <p>Le <strong>socle du gem</strong> indique les chances de meilleur roll :<br>
+                    🟤 Sombre = normal (90/8/2)<br>
+                    ⚪ Argenté = meilleur (70/20/10)<br>
+                    🟡 Doré = excellent (50/30/20)</p>
             </div>
         </div>
 
@@ -1888,9 +1897,8 @@
     <section class="section" id="mana">
 
         <div class="section-header">
-            <div class="section-tag purple">🔮 Mana <span class="version-badge unchanged">✓ Non changé depuis
-                    v3.0</span></div>
-            <h2>Système de Mana — Loot &amp; Défense à Distance</h2>
+            <div class="section-tag purple">🔮 Hex Jump <span class="version-badge changed">🔄 Modifié v4.1</span></div>
+            <h2>Système Hex Jump — Loot &amp; Défense à Distance</h2>
             <p class="subtitle">3 charges, portée 3 hexes. Peut looter et défendre, mais PAS capturer ni contester.</p>
         </div>
 
