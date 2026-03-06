@@ -1422,10 +1422,11 @@
     <section class="section" id="economy">
 
         <div class="section-header">
-            <div class="section-tag orange">💎 Économie <span class="version-badge changed">🔄 Modifié v4.0</span></div>
+            <div class="section-tag orange">💎 Économie <span class="version-badge changed">🔄 Modifié v4.1</span></div>
             <h2>Économie de Survie — Gems &amp; Ressources</h2>
-            <p class="subtitle">5 couleurs × 3 raretés = 15 ressources. Un seul modèle 3D de gem, couleur = texture.
-                Zéro crafting, zéro trade.</p>
+            <p class="subtitle">5 couleurs × 3 raretés = 15 ressources. Distribution égale par couleur + Mystère
+                ultra-rare.
+                Un seul modèle 3D de gem, couleur = texture. Zéro crafting, zéro trade.</p>
         </div>
 
         <div class="table-wrap">
@@ -1442,25 +1443,25 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>🔵 Bleu</td>
+                        <td>🟤 Brun</td>
                         <td>Pierre</td>
-                        <td><strong>40%</strong></td>
+                        <td><strong>19%</strong></td>
                         <td>90%</td>
                         <td>8%</td>
                         <td>2%</td>
                     </tr>
                     <tr>
-                        <td>🟠 Orange</td>
+                        <td>⚪ Argent</td>
                         <td>Métal</td>
-                        <td><strong>30%</strong></td>
+                        <td><strong>19%</strong></td>
                         <td>90%</td>
                         <td>8%</td>
                         <td>2%</td>
                     </tr>
                     <tr>
-                        <td>🟡 Jaune</td>
+                        <td>🔵 Cyan</td>
                         <td>Énergie</td>
-                        <td><strong>18%</strong></td>
+                        <td><strong>19%</strong></td>
                         <td>90%</td>
                         <td>8%</td>
                         <td>2%</td>
@@ -1468,29 +1469,55 @@
                     <tr>
                         <td>🟣 Violet</td>
                         <td>Cristal</td>
-                        <td><strong>8%</strong></td>
-                        <td>70%</td>
-                        <td>20%</td>
-                        <td>10%</td>
+                        <td><strong>19%</strong></td>
+                        <td>90%</td>
+                        <td>8%</td>
+                        <td>2%</td>
                     </tr>
                     <tr>
-                        <td>⚪ Argent</td>
+                        <td>🟡 Or</td>
                         <td>Artefact</td>
-                        <td><strong>3%</strong></td>
-                        <td>70%</td>
-                        <td>20%</td>
-                        <td>10%</td>
+                        <td><strong>19%</strong></td>
+                        <td>90%</td>
+                        <td>8%</td>
+                        <td>2%</td>
                     </tr>
                     <tr>
                         <td>🌈 Mystère</td>
                         <td>Choix couleur + probas boostées</td>
-                        <td><strong>1%</strong></td>
+                        <td><strong>5%</strong></td>
                         <td>30%</td>
                         <td>40%</td>
                         <td>30%</td>
                     </tr>
                 </tbody>
             </table>
+        </div>
+
+        <div class="card-grid" style="margin-top: 1.5rem;">
+            <div class="card">
+                <div class="card-icon green">🎲</div>
+                <h3>Mécanique de Spawn <span class="version-badge new">✨ Nouveau v4.1</span></h3>
+                <div class="v41-modified">
+                    <p><strong>60% de chance</strong> par hex découvert (Math.random uniforme, pas de clustering).<br>
+                        Marqueurs <code>value=0</code> pour les hex vides : les reboots serveur ne re-rollent
+                        jamais.<br>
+                        Gems globales : visibles par tous, disparaissent à la capture.<br>
+                        Seed instantané à l'exploration : le monde est peuplé dès que le fog se lève.<br>
+                        <strong>Sécurité :</strong> loot filtré côté serveur via JOIN discovered_hexes (anti-fog-cheat).
+                    </p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon purple">👁️</div>
+                <h3>Visuels de Rareté <span class="version-badge new">✨ Nouveau v4.1</span></h3>
+                <div class="v41-modified">
+                    <p>⚪ <strong>Commun</strong> : base sombre, taille 1×, pas de glow<br>
+                        ⭐ <strong>Rare</strong> : base argentée, taille 1.3×, émission subtile<br>
+                        💎 <strong>Épique</strong> : base dorée, taille 1.6×, émission forte<br>
+                        🌈 <strong>Mystère</strong> : cycle rainbow (effet étoile Mario)</p>
+                </div>
+            </div>
         </div>
 
         <div class="card-grid" style="margin-top: 1.5rem;">
