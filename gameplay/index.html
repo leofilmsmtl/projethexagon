@@ -167,33 +167,6 @@
         }
 
 
-        /* === DISCORD BUTTON === */
-        .discord-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            margin-top: 2rem;
-            padding: 0.7rem 1.5rem;
-            background: #5865F2;
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            border-radius: 10px;
-            transition: all 0.3s;
-        }
-
-        .discord-btn:hover {
-            background: #4752c4;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(88, 101, 242, 0.4);
-        }
-
-        .discord-btn svg {
-            width: 20px;
-            height: 20px;
-            fill: white;
-        }
 
         /* === DETAILS/SUMMARY STYLING === */
         details {
@@ -802,11 +775,54 @@
             .flow-arrow {
                 transform: rotate(90deg);
             }
+
+            /* Mobile: stack bottom controls vertically */
+            .version-selector {
+                bottom: 0.75rem;
+                right: 0.75rem;
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 0.3rem;
+            }
+
+            .version-selector select {
+                font-size: 0.7rem;
+                padding: 0.4rem 0.5rem;
+                max-width: 180px;
+            }
+
+            .annotation-panel-toggle {
+                bottom: 70px;
+                left: 0.75rem;
+                font-size: 0.7rem;
+                padding: 5px 10px;
+            }
+
+            .annotation-panel {
+                max-height: 60vh;
+                padding: 0.75rem 1rem;
+            }
         }
 
         @media (max-width: 500px) {
             .tier-list {
                 grid-template-columns: 1fr;
+            }
+
+            /* Small phones: prevent overlap of admin + annotation + version */
+            .version-selector {
+                bottom: 0.5rem;
+                right: 0.5rem;
+            }
+
+            .version-selector label {
+                display: none;
+            }
+
+            .annotation-panel-toggle {
+                bottom: 55px;
+                left: 0.5rem;
+                font-size: 0.65rem;
             }
         }
 
@@ -1116,7 +1132,7 @@
     <section class="hero">
         <div class="hex-grid-bg"></div>
         <div class="hero-content">
-            <div class="hero-badge">⬡ Game Design Document v4.0</div>
+            <div class="hero-badge">⬡ Game Design Document v4.1</div>
             <h1>Projet Hexagon</h1>
             <p>Conquiers ton quartier à pied. Ramasse des gems, capture du territoire, construis ta forteresse — dans la
                 vraie vie.</p>
@@ -1201,7 +1217,7 @@
             <div class="flow-step float" style="animation-delay: 1s;">
                 <div class="emoji">⚔️</div>
                 <div class="flow-title">Capturer</div>
-                <div class="flow-desc">Coûte 1 ressource</div>
+                <div class="flow-desc">Coûte 3 communes</div>
             </div>
             <div class="flow-arrow">→</div>
             <div class="flow-step float" style="animation-delay: 1.5s;">
@@ -1212,14 +1228,15 @@
         </div>
 
         <div class="solo-banner">
-            <h3>👤 Solo-First — Alliances optionnelles, zéro avantage de groupe</h3>
-            <p>Hexagon est principalement solo. Pas de bonus pour les groupes, pas de coordination assistée. Les
-                alliances sont possibles mais ne donnent aucun avantage mécanique.</p>
+            <h3>👤 Solo-First — Aucun système de groupe</h3>
+            <p>Hexagon est 100% solo. Pas de clans, pas de guildes, pas de bonus de groupe. Le PvP est entièrement
+                émergent — les joueurs se croisent naturellement sans coordination assistée.</p>
         </div>
 
         <div class="alert golden">
             <strong>⬡ Règle d'or :</strong> Loot ≠ Capture. Le loot est gratuit et séparé de la capture. La capture
-            coûte une ressource commune. Le <strong>cooldown dynamique</strong> est basé sur la distance en hexes (×6
+            coûte <strong>3 communes</strong>. Le <strong>cooldown dynamique</strong> est basé sur la distance en hexes
+            (×6
             min, cap 15 min). Le piéton est roi — pas de restriction de vitesse, c'est le cooldown seul qui régule.
         </div>
 
@@ -1279,8 +1296,8 @@
                     </tr>
                     <tr>
                         <td>🟡 Contester (ennemi)</td>
-                        <td>15 sec</td>
-                        <td>2h (proprio peut défendre)</td>
+                        <td>5 sec (fire-and-forget)</td>
+                        <td>5 min grace + 2h</td>
                         <td>Dynamique (cap 15 min)</td>
                     </tr>
                     <tr>
@@ -1480,16 +1497,21 @@
             <div class="card">
                 <div class="card-icon blue">📦</div>
                 <h3>Caps d'inventaire par rareté</h3>
-                <p>⚪ Commun : <strong>max ~30/couleur</strong><br>⭐ Rare : <strong>max ~10/couleur</strong><br>💎 Épique
-                    : <strong>max ~2-5/couleur</strong></p>
+                <div class="v41-modified">
+                    <p>⚪ Commun : <strong>max 15/couleur</strong><br>⭐ Rare : <strong>max 8/couleur</strong><br>💎
+                        Épique : <strong>max 3/couleur</strong></p>
+                </div>
             </div>
             <div class="card">
                 <div class="card-icon red">📤</div>
                 <h3>Dépenses (Resource Sinks)</h3>
-                <p>Capturer un hex : <strong>1 commune (couleur au choix)</strong><br>
-                    Bouclier : <strong>3 rares (couleur au choix)</strong><br>
-                    Forteresse Lv1 : <strong>1 épique × 5 couleurs</strong><br>
-                    Bélier : <strong>2 épiques × 5 couleurs (10 total)</strong></p>
+                <div class="v41-modified">
+                    <p>Capturer un hex : <strong>3 communes</strong><br>
+                        Bouclier préventif : <strong>3 rares</strong><br>
+                        Forteresse Lv0 : <strong>5 rares (1/couleur)</strong><br>
+                        Forteresse Lv1 : <strong>1 épique × 5 couleurs</strong><br>
+                        Bélier : <strong>1 épique × 5 couleurs</strong></p>
+                </div>
             </div>
         </div>
 
@@ -1502,11 +1524,14 @@
             </div>
             <div class="card">
                 <div class="card-icon cyan">📱</div>
-                <h3>Défense Remote (Cascade)</h3>
-                <p>Coût : <strong>5 communes</strong>. Si plus de communes → <strong>1 rare</strong>. Si plus de rares →
-                    <strong>1 épique</strong>.<br>
-                    Marcher physiquement = <strong>GRATUIT</strong>. Le piéton reste roi.
-                </p>
+                <h3>Défense Remote</h3>
+                <div class="v41-modified">
+                    <p>🛡️ Défendre : <strong>5 communes</strong><br>
+                        ⚡ Répulsion : <strong>1 rare</strong> (+ cooldown 30 min)<br>
+                        🏰 Bouclier urgence : <strong>5 rares</strong> (12h invulnérable)<br>
+                        Marcher physiquement = <strong>GRATUIT</strong>. Le piéton reste roi.
+                    </p>
+                </div>
             </div>
         </div>
 
@@ -1536,7 +1561,7 @@
         <details>
             <summary>💡 Pourquoi ce design?</summary>
             <div class="alert info" style="margin-top: 0.5rem;">
-                <p>Le v3.0 avait des coûts vagues. Le v4.0 chiffre chaque action. La taxe loot crée la cohabitation :
+                <p>Le v3.0 avait des coûts vagues. Le v4.1 chiffre chaque action. La taxe loot crée la cohabitation :
                     quelqu'un
                     qui loote sur ton hex <strong>te profite</strong>. Zéro crafting = pas de spreadsheet simulator.
                     Zéro trade
@@ -1561,7 +1586,13 @@
             <div class="card">
                 <div class="card-icon red">⏱️</div>
                 <h3>Cooldown Dynamique</h3>
-                <p>Basé sur la <strong>distance en hexes</strong> (×6 min, cap 15 min). Le piéton n'attend jamais.</p>
+                <div class="v41-modified">
+                    <p>Basé sur la <strong>distance en hexes</strong> (×6 min, cap 15 min). Le piéton n'attend jamais.
+                        <br><strong>⚡ Cumulatif :</strong> Hex 1 = 0 min, Hex 2 = 5 min, Hex 3 = 10 min, Hex 4+ = 15 min
+                        max. Le joueur rapide (auto/vélo) accumule du cooldown. Le piéton marche le cooldown
+                        naturellement.
+                    </p>
+                </div>
             </div>
             <div class="card">
                 <div class="card-icon orange">💸</div>
@@ -1573,6 +1604,10 @@
                 <h3>Decay territorial</h3>
                 <p><strong>14 jours</strong> sans visite → dégradation. <strong>30 jours</strong> → hex neutre.
                     Maintenance gratuite à pied, <strong>5 communes</strong> en remote.</p>
+                <div class="v41-new">
+                    <p>💎 <strong>Extension payante :</strong> Dépense des gems pour allonger le timer de decay avant de
+                        partir. Resource sink stratégique pour les joueurs en vacances.</p>
+                </div>
             </div>
             <div class="card">
                 <div class="card-icon green">🔓</div>
@@ -1651,21 +1686,24 @@
             <div class="section-tag purple">🏰 Forteresses <span class="version-badge changed">🔄 Modifié v4.0</span>
             </div>
             <h2>Forteresse &amp; Raid Soft</h2>
-            <p class="subtitle">Niveaux illimités, prestige pur. Coût Lv×5 épiques. Rebuilt au même niveau après
-                destruction.</p>
+            <p class="subtitle">Lv0 en rares (semaine 1), Lv1+ en épiques. Niveaux illimités, prestige pur. Rebuilt au
+                même niveau après destruction.</p>
         </div>
 
         <div class="card-grid">
             <div class="card">
                 <div class="card-icon purple">🏰</div>
                 <h3>Construction (3 hexes adjacents)</h3>
-                <p><strong>Coût Lv1 :</strong> 1 épique × 5 couleurs (5 total)<br>
-                    <strong>Coût LvN :</strong> N épiques × 5 couleurs (illimité!)<br>
-                    <strong>Durée :</strong> 3 jours avec visite physique 1×/jour<br>
-                    <strong>Limite :</strong> Max 1 forteresse par joueur<br>
-                    <strong>Distance :</strong> Min 5 hexes (~1.5km) entre forteresses<br>
-                    <strong>Avantage :</strong> ZÉRO — prestige pur, visuels par milestones tous les 5 niveaux
-                </p>
+                <div class="v41-modified">
+                    <p><strong>Coût Lv0 :</strong> 5 rares (1/couleur) — 1 hex, accessible semaine 1<br>
+                        <strong>Coût Lv1 :</strong> 1 épique × 5 couleurs (5 total)<br>
+                        <strong>Coût LvN :</strong> N épiques × 5 couleurs (illimité!)<br>
+                        <strong>Durée :</strong> 3 jours avec visite physique 1×/jour<br>
+                        <strong>Limite :</strong> Max 1 forteresse par joueur<br>
+                        <strong>Distance :</strong> Min 5 hexes (~1.5km) entre forteresses<br>
+                        <strong>Avantage :</strong> ZÉRO — prestige pur, visuels par milestones tous les 5 niveaux
+                    </p>
+                </div>
             </div>
             <div class="card">
                 <div class="card-icon cyan">🛡️</div>
@@ -1705,9 +1743,9 @@
                 <div class="siege-number step1">1</div>
                 <div class="siege-info">
                     <h4>🪓 Craft du Bélier — 72h</h4>
-                    <p>Consommable, max 1 en inventaire. Coûte <strong>2 épiques × 5 couleurs (10 total)</strong>.
-                        All-in.</p>
-                    <span class="siege-detail">💎 10 épiques (2 par couleur)</span>
+                    <p>Consommable, max 1 en inventaire. Coûte <strong>1 épique × 5 couleurs (5 total)</strong>. All-in.
+                    </p>
+                    <span class="siege-detail v41-modified">💎 5 épiques (1 par couleur)</span>
                     <span class="siege-detail">⏱️ 72h de craft</span>
                 </div>
             </div>
@@ -2176,13 +2214,18 @@
             <div class="card">
                 <div class="card-icon orange">📅</div>
                 <h3>Daily Login</h3>
-                <p>J1: 50 → J2: 100 → ... → J7: 🎁 Skin rare.<br>Jour manqué = reset à J1.</p>
+                <p>J1: 50 → J2: 100 → ... → J7: 🎁 Skin rare.</p>
+                <div class="v41-modified">
+                    <p>🛡️ <strong>Bouclier de streak :</strong> 1 gratuit par semaine (ou achetable en gems). Absorbe 1
+                        jour manqué sans reset. Protège les casuals sans supprimer la pression pour les hardcore.</p>
+                </div>
                 <span class="tag phase1">Phase 1</span>
             </div>
             <div class="card">
                 <div class="card-icon red">💀</div>
                 <h3>Decay Territorial</h3>
-                <p>3j → fane. 7j → -50% def. 14j → neutre. Tu DOIS retourner physiquement.</p>
+                <p>14j → dégradation. 30j → neutre. Tu DOIS retourner physiquement (ou payer des gems pour allonger).
+                </p>
                 <span class="tag phase1">Phase 1</span>
             </div>
             <div class="card">
@@ -2269,7 +2312,7 @@
                         <td>Puck</td>
                         <td>Curseur GPS perso</td>
                         <td>Quêtes / Achat $</td>
-                        <td>Soi-même</td>
+                        <td class="v41-modified" style="padding:0.4rem 0.6rem;">Soi-même + joueurs à proximité</td>
                     </tr>
                 </tbody>
             </table>
@@ -2321,7 +2364,7 @@
                     <li>Craft défenses (ressources → items)</li>
                     <li>Collecter taxe loot, shop skins</li>
                     <li>Leaderboards, statistiques</li>
-                    <li>Bouclier d'urgence (Métal + Énergie)</li>
+                    <li>Bouclier d'urgence (5 rares)</li>
                 </ul>
             </div>
         </div>
@@ -2356,8 +2399,56 @@
                 <div class="card-icon orange">📱</div>
                 <h3>Onboarding progressif</h3>
                 <p>Jour 1 : juste des gems. Scanner de départ = 10 hexes révélés. Territoire se débloque après X gems
-                    ramassés. Forteresse = endgame via quêtes.</p>
+                    ramassés. Forteresse = endgame via quêtes. Le tutoriel suit les phases du roadmap — on ne montre que
+                    ce qui est actif.</p>
             </div>
+        </div>
+
+        <div class="v41-new" style="margin-top: 1rem;">
+            <h3>👻 Fog Fantôme — Voir les autres à travers le brouillard</h3>
+            <p>Les hexes possédés par d'autres joueurs sont <strong>visibles à travers le fog</strong> sous forme de
+                silhouettes colorées atténuées. Pas de loot visible, pas de détails de tile — juste la couleur du
+                propriétaire.
+                <br>Effet : la map paraît <strong>vivante dès le premier jour</strong>. Même 5 joueurs actifs créent de
+                l'activité visible pour tous. Le nouveau joueur voit immédiatement "il y a du monde ici" et est motivé à
+                explorer.
+            </p>
+        </div>
+
+        <div class="v41-new" style="margin-top: 1rem;">
+            <h3>🏆 Milestones Solo — Progression Première Semaine</h3>
+            <p>Des objectifs visuels qui donnent une destination concrète au joueur solo :</p>
+            <ul style="margin-top: 0.5rem; padding-left: 1.2rem;">
+                <li><strong>5 hexes</strong> → Débloques le blueprint de ta forteresse (visible sur ta map en fantôme)
+                </li>
+                <li><strong>10 hexes</strong> → Premier skin T2 gratuit</li>
+                <li><strong>20 hexes</strong> → Tu choisis ton nom de territoire (affiché sur la map)</li>
+                <li><strong>50 hexes</strong> → Skin de puck exclusif "Pionnier"</li>
+            </ul>
+            <p style="margin-top: 0.5rem;">Le joueur ne marche pas pour capturer du vide. Il marche pour
+                <strong>construire quelque chose de visible</strong> que les futurs joueurs verront.
+            </p>
+        </div>
+
+        <div class="v41-new" style="margin-top: 1rem;">
+            <h3>📡 Ping de Proximité — Présence des Joueurs</h3>
+            <p>"Un joueur est actif à ~200m de toi." Pas de position exacte (privacy), juste un signal.
+                <br>Les <strong>skins de puck sont visibles</strong> pour les joueurs à proximité — pas juste local.
+                <br>Crée des moments sociaux organiques, motive l'achat de skins, et génère le "moment Instagram" du
+                jeu.
+            </p>
+        </div>
+
+        <div class="v41-new" style="margin-top: 1rem;">
+            <h3>📸 Viral Loop — Croissance Organique</h3>
+            <p>Mécanismes pour transformer 1 joueur en 2 :</p>
+            <ul style="margin-top: 0.5rem; padding-left: 1.2rem;">
+                <li><strong>Carte de visite</strong> — Screenshot stylisé auto-généré de ton territoire + lien
+                    d'invitation. "Regarde mon empire."</li>
+                <li><strong>Notification de voisinage</strong> — "Un nouveau joueur a rejoint ton quartier!"</li>
+                <li><strong>Leaderboard de quartier</strong> — Classement automatique par zone géographique. Pas de
+                    clan, juste l'ego. "Je suis #1 à Rosemont."</li>
+            </ul>
         </div>
 
         <div class="card" style="margin-top: 1rem;">
@@ -2526,17 +2617,17 @@
                 <tbody>
                     <tr>
                         <td>🛡️ Défendre</td>
-                        <td>Énergie ×1</td>
-                        <td>Raid suspendu 2h — l'attaquant doit revenir physiquement</td>
+                        <td class="v41-modified">5 communes</td>
+                        <td>Attaque annulée, attaquant doit revenir physiquement</td>
                     </tr>
                     <tr>
-                        <td>⚡ Contre-attaque</td>
-                        <td>Énergie ×2</td>
+                        <td class="v41-modified">⚡ Répulsion</td>
+                        <td class="v41-modified">1 rare</td>
                         <td>Raid annulé + attaquant a un cooldown 30 min dans la zone</td>
                     </tr>
                     <tr>
                         <td>🏰 Bouclier d'urgence</td>
-                        <td>Métal + Énergie ×2</td>
+                        <td class="v41-modified">5 rares</td>
                         <td>Hex invulnérable pendant 12h</td>
                     </tr>
                 </tbody>
@@ -2547,6 +2638,27 @@
             <strong>🔑 Avantage GPS :</strong> Dans Rust, "revenir" c'est courir 30 sec. Dans Projet Hexagon, "revenir"
             c'est <strong>remarcher 20 minutes dans la vraie vie</strong>. Le déplacement physique réel est la meilleure
             défense. Max 2 défenses à distance par hex par 24h — après, tu dois bouger tes pieds.
+        </div>
+
+        <div class="v41-new" style="margin-top: 1rem;">
+            <h3>💎 Conversion d'urgence</h3>
+            <p>Plus de communes? Le jeu propose : <strong>"Convertir 1 rare → 10 communes?"</strong> Choix
+                explicite, jamais automatique. Conversion one-way seulement (rare → communes, jamais l'inverse).
+                <br>Le joueur ne perd jamais une épique sans le vouloir.
+            </p>
+        </div>
+
+        <div class="v41-new" style="margin-top: 1rem;">
+            <h3>📡 Flow d'attaque — Fire-and-Forget</h3>
+            <p>L'attaquant lance l'attaque et <strong>part immédiatement</strong>. Pas besoin de rester sur place.</p>
+            <ul style="margin-top: 0.5rem; padding-left: 1.2rem;">
+                <li><strong>0-5 min</strong> — Grace period. Push envoyé au défenseur. S'il réagit → attaque annulée.
+                </li>
+                <li><strong>5 min - 2h</strong> — Transformation en cours. Le défenseur peut encore réagir.</li>
+                <li><strong>Après 2h</strong> — Hex change de mains si aucune défense.</li>
+            </ul>
+            <p style="margin-top: 0.5rem;">🔔 <strong>Notifs bidirectionnelles :</strong> l'attaquant reçoit aussi une
+                notif si sa tentative est repoussée, avec le type de défense utilisé.</p>
         </div>
     </section>
 
@@ -2645,14 +2757,17 @@
             <div class="timeline-item">
                 <div class="timeline-dot"></div>
                 <div class="timeline-title">Phase 3 — Compétitif (1,000+ joueurs)</div>
-                <div class="timeline-desc">Full PvP avec alliances, forteresses, et économie complète.</div>
+                <div class="timeline-desc v41-modified">Full PvP avec forteresses, économie complète, et événements
+                    compétitifs.</div>
                 <div class="timeline-tags">
                     <span>Forteresses</span>
-                    <span>Alliances/clans</span>
+                    <span class="v41-removed">Alliances/clans</span>
                     <span>Battle Pass + Saisons</span>
                     <span>Skins T3 + T4</span>
                     <span>Tower defense</span>
-                    <span>Trading skins</span>
+                    <span class="v41-removed">Trading skins</span>
+                    <span class="v41-new">Leaderboard quartier</span>
+                    <span class="v41-new">Ping proximité</span>
                 </div>
             </div>
         </div>
@@ -2662,7 +2777,7 @@
     <footer style="text-align: center; padding: 4rem 2rem; border-top: 1px solid var(--border);">
         <div style="font-size: 2rem; margin-bottom: 1rem;">⬡</div>
         <div style="font-weight: 700; font-size: 1.2rem; margin-bottom: 0.5rem;">Projet Hexagon</div>
-        <div style="color: var(--text-muted); font-size: 0.85rem;">Game Design Document v3.0 — Mars 2026</div>
+        <div style="color: var(--text-muted); font-size: 0.85rem;">Game Design Document v4.1 — Mars 2026</div>
         <div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.5rem;">Conquiers ta ville. Construis ton
             empire. Défends-le en personne.</div>
     </footer>
@@ -3035,6 +3150,197 @@
             color: #64748b;
         }
 
+        /* === v4.1 CHANGE HIGHLIGHTING === */
+        .v41-new,
+        .v41-modified,
+        .v41-removed {
+            position: relative;
+            border-radius: 8px;
+            padding: 1.6rem 1.2rem 1rem 1.5rem;
+            margin: 0.8rem 0;
+        }
+
+        .v41-new::before,
+        .v41-modified::before,
+        .v41-removed::before {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            border-radius: 8px 0 0 8px;
+            content: '';
+        }
+
+        .v41-new::after,
+        .v41-modified::after,
+        .v41-removed::after {
+            position: absolute;
+            top: 0.35rem;
+            left: 1.5rem;
+            font-size: 0.55rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.1rem 0.5rem;
+            border-radius: 50px;
+        }
+
+        /* NEW — Green glow */
+        .v41-new {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(16, 185, 129, 0.02));
+            border: 1px solid rgba(16, 185, 129, 0.15);
+            animation: v41-pulse-new 3s ease-in-out infinite;
+        }
+
+        .v41-new::before {
+            background: linear-gradient(180deg, #10b981, #059669);
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .v41-new::after {
+            content: '✨ NOUVEAU v4.1';
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        /* MODIFIED — Cyan glow */
+        .v41-modified {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(6, 182, 212, 0.02));
+            border: 1px solid rgba(6, 182, 212, 0.15);
+            animation: v41-pulse-mod 3s ease-in-out infinite;
+        }
+
+        .v41-modified::before {
+            background: linear-gradient(180deg, #06b6d4, #0891b2);
+            box-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
+        }
+
+        .v41-modified::after {
+            content: '🔄 MODIFIÉ v4.1';
+            background: rgba(6, 182, 212, 0.15);
+            color: #06b6d4;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        /* REMOVED — Red strikethrough */
+        .v41-removed {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.06), rgba(239, 68, 68, 0.02));
+            border: 1px solid rgba(239, 68, 68, 0.15);
+            opacity: 0.7;
+        }
+
+        .v41-removed::before {
+            background: linear-gradient(180deg, #ef4444, #dc2626);
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+        }
+
+        .v41-removed::after {
+            content: '🗑️ RETIRÉ v4.1';
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .v41-removed>* {
+            text-decoration: line-through;
+            text-decoration-color: rgba(239, 68, 68, 0.4);
+        }
+
+        /* Inline variant — for small elements like timeline tags, table cells */
+        span.v41-new,
+        span.v41-modified,
+        span.v41-removed,
+        td.v41-new,
+        td.v41-modified,
+        td.v41-removed {
+            padding: 0.3rem 0.5rem;
+            margin: 0;
+            display: inline-block;
+        }
+
+        span.v41-new::after,
+        span.v41-modified::after,
+        span.v41-removed::after,
+        td.v41-new::after,
+        td.v41-modified::after,
+        td.v41-removed::after {
+            content: none;
+        }
+
+        @keyframes v41-pulse-new {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 rgba(16, 185, 129, 0);
+            }
+
+            50% {
+                box-shadow: 0 0 20px rgba(16, 185, 129, 0.1), inset 0 0 20px rgba(16, 185, 129, 0.03);
+            }
+        }
+
+        @keyframes v41-pulse-mod {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 rgba(6, 182, 212, 0);
+            }
+
+            50% {
+                box-shadow: 0 0 20px rgba(6, 182, 212, 0.1), inset 0 0 20px rgba(6, 182, 212, 0.03);
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            .v41-new,
+            .v41-modified,
+            .v41-removed {
+                padding: 1.4rem 0.8rem 0.8rem 1rem;
+            }
+
+            .v41-new::after,
+            .v41-modified::after,
+            .v41-removed::after {
+                font-size: 0.5rem;
+                left: 1rem;
+            }
+
+            .nouveautes-toggle {
+                bottom: 125px;
+                font-size: 0.7rem;
+                padding: 5px 10px;
+            }
+        }
+
+        /* === PANEL FILTER TABS === */
+        .panel-tab {
+            padding: 0.3rem 0.7rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .panel-tab:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+        }
+
+        .panel-tab.active {
+            background: rgba(168, 85, 247, 0.15);
+            border-color: rgba(168, 85, 247, 0.3);
+            color: var(--accent-purple);
+            font-weight: 600;
+        }
+
         /* === ANNOTATION PANEL === */
         .annotation-panel-toggle {
             position: fixed;
@@ -3062,6 +3368,32 @@
             background: rgba(168, 85, 247, 0.15);
         }
 
+        .nouveautes-toggle {
+            position: fixed;
+            bottom: 130px;
+            left: 12px;
+            z-index: 200;
+            background: rgba(30, 30, 40, 0.8);
+            border: 1px solid #10b981;
+            border-radius: 10px;
+            padding: 6px 12px;
+            color: #10b981;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            backdrop-filter: blur(20px);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            opacity: 0.6;
+        }
+
+        .nouveautes-toggle:hover {
+            opacity: 1;
+            background: rgba(16, 185, 129, 0.15);
+        }
+
         .annotation-panel {
             position: fixed;
             bottom: 0;
@@ -3070,7 +3402,7 @@
             z-index: 400;
             background: var(--bg-secondary);
             border-top: 2px solid var(--accent-purple);
-            max-height: 50vh;
+            max-height: 35vh;
             overflow-y: auto;
             padding: 1rem 2rem;
             display: none;
@@ -3744,7 +4076,7 @@
                 sectionId: data.sectionId,
                 author, comment, color,
                 timestamp: Date.now(),
-                gddVersion: 'v4.0'
+                gddVersion: 'v4.1'
             };
 
             if (firebaseReady && db) {
@@ -3861,13 +4193,15 @@
         }
 
         // ========================================
-        // ANNOTATION PANEL (bottom of page)
+        // HYBRID INTERACTIONS PANEL (annotations + comments)
         // ========================================
+        let _panelFilter = 'all'; // 'all', 'annotations', 'comments'
+
         function initAnnotationPanel() {
             // Toggle button
             const toggle = document.createElement('div');
             toggle.className = 'annotation-panel-toggle';
-            toggle.innerHTML = '📌 Annotations <span id="annotation-panel-count">0</span>';
+            toggle.innerHTML = '💬 Interactions <span id="annotation-panel-count">0</span>';
             document.body.appendChild(toggle);
 
             // Panel
@@ -3876,15 +4210,30 @@
             panel.id = 'annotation-panel';
             panel.innerHTML = `
                 <div class="annotation-panel-header">
-                    <h3>📌 Toutes les annotations</h3>
+                    <h3>💬 Toutes les interactions</h3>
                     <div style="display:flex;gap:0.5rem;align-items:center;">
                         <button id="export-annotations-btn" style="padding:0.3rem 0.7rem;background:linear-gradient(135deg,var(--accent-cyan),var(--accent-blue));border:none;border-radius:6px;color:#fff;font-size:0.7rem;font-weight:600;cursor:pointer;display:${isAdmin ? 'block' : 'none'};">📋 Exporter pour AI</button>
                         <button id="close-annotation-panel" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1.2rem;">✕</button>
                     </div>
                 </div>
+                <div id="panel-tabs" style="display:flex;gap:0.3rem;margin-bottom:0.75rem;">
+                    <button class="panel-tab active" data-filter="all">Tout</button>
+                    <button class="panel-tab" data-filter="annotations">📌 Annotations</button>
+                    <button class="panel-tab" data-filter="comments">💬 Commentaires</button>
+                </div>
                 <div id="annotation-panel-list"></div>
             `;
             document.body.appendChild(panel);
+
+            // Tab click handlers
+            panel.querySelectorAll('.panel-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    panel.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    _panelFilter = tab.dataset.filter;
+                    refreshAnnotationPanel();
+                });
+            });
 
             toggle.addEventListener('click', () => {
                 panel.classList.toggle('open');
@@ -3901,15 +4250,34 @@
                 toggle.style.display = 'flex';
             });
 
+            // Click outside to close
+            document.addEventListener('click', (e) => {
+                if (panel.classList.contains('open') && !panel.contains(e.target) && !toggle.contains(e.target)) {
+                    panel.classList.remove('open');
+                    toggle.style.display = 'flex';
+                }
+            });
+
             panel.querySelector('#export-annotations-btn').addEventListener('click', exportAnnotations);
 
-            // Update count from Firebase
+            // Update total count from Firebase (annotations + comments)
             if (firebaseReady && db) {
-                db.ref('highlights').on('value', snap => {
-                    const data = snap.val();
-                    const count = data ? Object.keys(data).length : 0;
-                    document.getElementById('annotation-panel-count').textContent = count;
-                });
+                const updateCount = () => {
+                    Promise.all([
+                        db.ref('highlights').once('value'),
+                        db.ref('comments').once('value')
+                    ]).then(([hlSnap, cmSnap]) => {
+                        const hlCount = hlSnap.val() ? Object.keys(hlSnap.val()).length : 0;
+                        const cmData = cmSnap.val() || {};
+                        let cmCount = 0;
+                        Object.values(cmData).forEach(section => {
+                            cmCount += section ? Object.keys(section).length : 0;
+                        });
+                        document.getElementById('annotation-panel-count').textContent = hlCount + cmCount;
+                    });
+                };
+                db.ref('highlights').on('value', updateCount);
+                db.ref('comments').on('value', updateCount);
             }
         }
 
@@ -3917,91 +4285,172 @@
             const list = document.getElementById('annotation-panel-list');
             if (!list || !firebaseReady || !db) return;
 
-            db.ref('highlights').once('value').then(async snap => {
-                const data = snap.val();
+            Promise.all([
+                db.ref('highlights').once('value'),
+                db.ref('highlight_replies').once('value'),
+                db.ref('comments').once('value')
+            ]).then(([hlSnap, repliesSnap, cmSnap]) => {
                 list.innerHTML = '';
-                if (!data) {
-                    list.innerHTML = '<p style="color:var(--text-muted);font-size:0.8rem;font-style:italic;">Aucune annotation.</p>';
-                    return;
+                const hlData = hlSnap.val() || {};
+                const allReplies = repliesSnap.val() || {};
+                const cmData = cmSnap.val() || {};
+
+                // Build unified items list
+                const items = [];
+
+                // --- Annotations ---
+                if (_panelFilter === 'all' || _panelFilter === 'annotations') {
+                    const orphanKeys = (window._orphanAnnotations || []).map(o => o.key);
+                    Object.entries(hlData).forEach(([key, h]) => {
+                        const isOrphan = orphanKeys.includes(key);
+                        items.push({ type: 'annotation', key, data: h, isOrphan, timestamp: h.timestamp });
+                    });
                 }
 
-                // Also load all replies
-                const repliesSnap = await db.ref('highlight_replies').once('value');
-                const allReplies = repliesSnap.val() || {};
-
-                // Separate active vs orphan
-                const orphanKeys = (window._orphanAnnotations || []).map(o => o.key);
-                const entries = Object.entries(data).sort((a, b) => b[1].timestamp - a[1].timestamp);
-                const activeEntries = entries.filter(([key]) => !orphanKeys.includes(key));
-                const orphanEntries = entries.filter(([key]) => orphanKeys.includes(key));
-
-                // Active annotations
-                activeEntries.forEach(([key, h]) => {
-                    const sectionTitle = document.querySelector(`#${h.sectionId} h2`)?.textContent || h.sectionId;
-                    const replies = allReplies[key] ? Object.values(allReplies[key]) : [];
-                    const item = document.createElement('div');
-                    item.className = 'annotation-panel-item';
-                    item.innerHTML = `
-                        <div class="color-dot" style="background:${h.color};"></div>
-                        <div class="panel-item-content">
-                            <div class="panel-item-section">${sectionTitle}${h.gddVersion ? ` · ${h.gddVersion}` : ''}</div>
-                            <div class="panel-item-text">"${h.text.substring(0, 80)}${h.text.length > 80 ? '...' : ''}"</div>
-                            <div class="panel-item-comment"><strong>${h.author}:</strong> ${h.comment}</div>
-                            <div class="panel-item-meta">${new Date(h.timestamp).toLocaleDateString('fr-CA')}</div>
-                            ${replies.length > 0 ? `<div class="panel-item-replies">\ud83d\udcac ${replies.length} r\u00e9ponse${replies.length > 1 ? 's' : ''}</div>` : ''}
-                        </div>
-                    `;
-                    item.addEventListener('click', () => {
-                        const mark = document.querySelector(`mark[data-key="${key}"]`);
-                        if (mark) {
-                            mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            mark.style.outline = '2px solid var(--accent-purple)';
-                            setTimeout(() => mark.style.outline = '', 2000);
-                            showAnnotation(mark, h, key);
-                        } else {
-                            const section = document.getElementById(h.sectionId);
-                            if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }
-                    });
-                    list.appendChild(item);
-                });
-
-                // Orphan annotations section
-                if (orphanEntries.length > 0) {
-                    const orphanHeader = document.createElement('div');
-                    orphanHeader.style.cssText = 'margin-top:1rem;padding:0.5rem 0;border-top:2px solid rgba(245,158,11,0.3);';
-                    orphanHeader.innerHTML = `<h4 style="font-size:0.85rem;color:#f59e0b;margin:0;">\u26a0\ufe0f Annotations orphelines (${orphanEntries.length}) \u2014 Texte non trouv\u00e9 dans la version actuelle</h4>`;
-                    list.appendChild(orphanHeader);
-
-                    orphanEntries.forEach(([key, h]) => {
-                        const replies = allReplies[key] ? Object.values(allReplies[key]) : [];
-                        const item = document.createElement('div');
-                        item.className = 'annotation-panel-item';
-                        item.style.borderColor = 'rgba(245,158,11,0.3)';
-                        item.innerHTML = `
-                            <div class="color-dot" style="background:#f59e0b;"></div>
-                            <div class="panel-item-content">
-                                <div class="panel-item-section" style="color:#f59e0b;">\u26a0\ufe0f ${h.sectionId}${h.gddVersion ? ` \u00b7 Cr\u00e9\u00e9 en ${h.gddVersion}` : ' \u00b7 Version inconnue'}</div>
-                                <div class="panel-item-text">"${h.text.substring(0, 80)}${h.text.length > 80 ? '...' : ''}"</div>
-                                <div class="panel-item-comment"><strong>${h.author}:</strong> ${h.comment}</div>
-                                <div class="panel-item-meta">${new Date(h.timestamp).toLocaleDateString('fr-CA')}</div>
-                                ${replies.length > 0 ? `<div class="panel-item-replies">\ud83d\udcac ${replies.length} r\u00e9ponse${replies.length > 1 ? 's' : ''}</div>` : ''}
-                                ${isAdmin ? `<button class="orphan-del" data-key="${key}" style="margin-top:0.3rem;padding:0.2rem 0.6rem;background:transparent;border:1px solid rgba(239,68,68,0.3);border-radius:5px;color:#ef4444;font-size:0.65rem;cursor:pointer;">\ud83d\uddd1\ufe0f Supprimer cette annotation</button>` : ''}
-                            </div>
-                        `;
-                        list.appendChild(item);
-                    });
-
-                    // Wire orphan delete buttons
-                    list.querySelectorAll('.orphan-del').forEach(btn => {
-                        btn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            deleteHighlight(btn.dataset.key);
-                            setTimeout(() => refreshAnnotationPanel(), 500);
+                // --- Comments ---
+                if (_panelFilter === 'all' || _panelFilter === 'comments') {
+                    Object.entries(cmData).forEach(([sectionId, sectionComments]) => {
+                        if (!sectionComments) return;
+                        Object.entries(sectionComments).forEach(([key, c]) => {
+                            items.push({ type: 'comment', key, sectionId, data: c, timestamp: c.timestamp });
                         });
                     });
                 }
+
+                // Sort all by timestamp descending
+                items.sort((a, b) => b.timestamp - a.timestamp);
+
+                if (items.length === 0) {
+                    list.innerHTML = '<p style="color:var(--text-muted);font-size:0.8rem;font-style:italic;">Aucune interaction.</p>';
+                    return;
+                }
+
+                // Render each item
+                items.forEach(entry => {
+                    if (entry.type === 'annotation') {
+                        renderAnnotationPanelItem(list, entry.key, entry.data, allReplies, entry.isOrphan);
+                    } else {
+                        renderCommentPanelItem(list, entry.sectionId, entry.key, entry.data);
+                    }
+                });
+
+                // Wire orphan delete buttons
+                list.querySelectorAll('.orphan-del').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        deleteHighlight(btn.dataset.key);
+                        setTimeout(() => refreshAnnotationPanel(), 500);
+                    });
+                });
             });
+        }
+
+        function renderAnnotationPanelItem(list, key, h, allReplies, isOrphan) {
+            const sectionTitle = document.querySelector(`#${h.sectionId} h2`)?.textContent || h.sectionId;
+            const replies = allReplies[key] ? Object.values(allReplies[key]) : [];
+            const item = document.createElement('div');
+            item.className = 'annotation-panel-item';
+            if (isOrphan) item.style.borderColor = 'rgba(245,158,11,0.3)';
+
+            const typeTag = isOrphan
+                ? `<span style="color:#f59e0b;font-size:0.6rem;font-weight:700;text-transform:uppercase;">⚠️ ORPHELIN</span>`
+                : `<span style="color:var(--accent-purple);font-size:0.6rem;font-weight:700;text-transform:uppercase;">📌 ANNOTATION</span>`;
+
+            item.innerHTML = `
+                <div class="color-dot" style="background:${isOrphan ? '#f59e0b' : h.color};"></div>
+                <div class="panel-item-content">
+                    ${typeTag}
+                    <div class="panel-item-section">${sectionTitle}${h.gddVersion ? ` · ${h.gddVersion}` : ''}</div>
+                    <div class="panel-item-text">"${h.text.substring(0, 80)}${h.text.length > 80 ? '...' : ''}"</div>
+                    <div class="panel-item-comment"><strong>${h.author}:</strong> ${h.comment}</div>
+                    <div class="panel-item-meta">${new Date(h.timestamp).toLocaleDateString('fr-CA')}</div>
+                    ${replies.length > 0 ? `<div class="panel-item-replies">💬 ${replies.length} réponse${replies.length > 1 ? 's' : ''}</div>` : ''}
+                    ${isOrphan && isAdmin ? `<button class="orphan-del" data-key="${key}" style="margin-top:0.3rem;padding:0.2rem 0.6rem;background:transparent;border:1px solid rgba(239,68,68,0.3);border-radius:5px;color:#ef4444;font-size:0.65rem;cursor:pointer;">🗑️ Supprimer</button>` : ''}
+                </div>
+            `;
+            item.addEventListener('click', () => {
+                const mark = document.querySelector(`mark[data-key="${key}"]`);
+                if (mark) {
+                    mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    flashHighlight(mark);
+                } else {
+                    const section = document.getElementById(h.sectionId);
+                    if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+            list.appendChild(item);
+        }
+
+        function renderCommentPanelItem(list, sectionId, key, c) {
+            const sectionTitle = document.querySelector(`#${sectionId} h2`)?.textContent || sectionId;
+            const item = document.createElement('div');
+            item.className = 'annotation-panel-item';
+            item.innerHTML = `
+                <div class="color-dot" style="background:var(--accent-cyan);"></div>
+                <div class="panel-item-content">
+                    <span style="color:var(--accent-cyan);font-size:0.6rem;font-weight:700;text-transform:uppercase;">💬 COMMENTAIRE</span>
+                    <div class="panel-item-section">${sectionTitle}</div>
+                    <div class="panel-item-comment"><strong>${c.author}:</strong> ${c.text.substring(0, 120).replace(/</g, '&lt;')}${c.text.length > 120 ? '...' : ''}${c.resolved ? ' <span style="color:#22c55e;">✅</span>' : ''}</div>
+                    <div class="panel-item-meta">${new Date(c.timestamp).toLocaleDateString('fr-CA')}</div>
+                </div>
+            `;
+            item.addEventListener('click', () => {
+                const section = document.getElementById(sectionId);
+                if (!section) return;
+
+                // Open comment thread if not already open
+                const area = section.querySelector('.comment-area');
+                if (area && !area.classList.contains('open')) {
+                    const toggle = section.querySelector('.comment-toggle');
+                    if (toggle) toggle.click();
+                }
+
+                // Find the specific comment card by matching author + timestamp
+                setTimeout(() => {
+                    const thread = document.getElementById('thread-' + sectionId);
+                    if (!thread) return;
+                    const cards = thread.querySelectorAll('.comment-card');
+                    let target = null;
+                    cards.forEach(card => {
+                        const authorEl = card.querySelector('.comment-author');
+                        const textEl = card.querySelector('.comment-text');
+                        if (authorEl && textEl && authorEl.textContent.trim() === c.author && textEl.textContent.trim().substring(0, 30) === c.text.substring(0, 30)) {
+                            target = card;
+                        }
+                    });
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        flashHighlight(target);
+                    } else {
+                        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 300);
+            });
+            list.appendChild(item);
+        }
+
+        // Shared flash highlight effect
+        function flashHighlight(el) {
+            el.style.transition = 'box-shadow 0.3s, outline 0.3s';
+            el.style.outline = '2px solid var(--accent-purple)';
+            el.style.boxShadow = '0 0 20px rgba(168, 85, 247, 0.6), 0 0 40px rgba(168, 85, 247, 0.3)';
+            // Pulse 3 times then fade
+            let count = 0;
+            const pulse = setInterval(() => {
+                count++;
+                if (count % 2 === 0) {
+                    el.style.boxShadow = '0 0 20px rgba(168, 85, 247, 0.6), 0 0 40px rgba(168, 85, 247, 0.3)';
+                    el.style.outline = '2px solid var(--accent-purple)';
+                } else {
+                    el.style.boxShadow = '0 0 8px rgba(168, 85, 247, 0.2)';
+                    el.style.outline = '2px solid rgba(168, 85, 247, 0.3)';
+                }
+                if (count >= 6) {
+                    clearInterval(pulse);
+                    el.style.outline = '';
+                    el.style.boxShadow = '';
+                }
+            }, 400);
         }
 
         // ========================================
@@ -4075,7 +4524,8 @@
         // VERSION HISTORY
         // ========================================
         const VERSIONS = {
-            "v4.0": { date: "Mars 2026", label: "v4.0 — Économie complète + Saisons + Duo Link (actuel)" },
+            "v4.1": { date: "Mars 2026", label: "v4.1 — Cold Start + Viral Loop + Défense simplifiée (actuel)" },
+            "v4.0": { date: "Mars 2026", label: "v4.0 — Économie complète + Saisons + Duo Link" },
             "v3.0": { date: "Mars 2026", label: "v3.0 — Gems + Raid Soft + Cohabitation" },
             "v2.0": { date: "Mars 2026", label: "v2.0 — Ressources + Mana + Casino" },
             "v1.0": { date: "Février 2026", label: "v1.0 — Coins + Loot original" }
@@ -4088,7 +4538,7 @@
             <label>📋 Version:</label>
             <select id="version-select" style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:6px;padding:0.3rem 0.5rem;color:var(--text-primary);font-size:0.75rem;">
                 ${Object.entries(VERSIONS).map(([k, v]) =>
-                `<option value="${k}" ${k === 'v4.0' ? 'selected' : ''}>${v.label}</option>`
+                `<option value="${k}" ${k === 'v4.1' ? 'selected' : ''}>${v.label}</option>`
             ).join('')}
             </select>
         `;
@@ -4100,7 +4550,7 @@
             banner.id = 'version-banner';
             banner.innerHTML = `
             ⚠️ Vous consultez une version archivée
-            <button onclick="document.getElementById('version-select').value='v4.0'; switchVersion('v4.0')">Retour à la version actuelle</button>
+            <button onclick="document.getElementById('version-select').value='v4.1'; switchVersion('v4.1')">Retour à la version actuelle</button>
         `;
             document.body.prepend(banner);
 
@@ -4111,7 +4561,7 @@
 
         function switchVersion(version) {
             const banner = document.getElementById('version-banner');
-            if (version === 'v4.0') {
+            if (version === 'v4.1') {
                 banner.style.display = 'none';
                 // Current version — just reload
                 window.location.href = window.location.pathname;
@@ -4123,6 +4573,115 @@
         }
 
         // ========================================
+        // NOUVEAUTÉS PANEL (changelog navigation)
+        // ========================================
+        function initNouveautesPanel() {
+            const toggle = document.createElement('div');
+            toggle.className = 'nouveautes-toggle';
+            toggle.id = 'nouveautes-toggle';
+            document.body.appendChild(toggle);
+
+            const panel = document.createElement('div');
+            panel.className = 'annotation-panel';
+            panel.id = 'nouveautes-panel';
+            panel.innerHTML = `
+                <div class="annotation-panel-header">
+                    <h3>✨ Nouveautés</h3>
+                    <button id="close-nouveautes-panel" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1.2rem;">✕</button>
+                </div>
+                <div id="nouveautes-panel-list"></div>
+            `;
+            document.body.appendChild(panel);
+
+            toggle.addEventListener('click', () => {
+                panel.classList.toggle('open');
+                if (panel.classList.contains('open')) {
+                    toggle.style.display = 'none';
+                    refreshNouveautesPanel();
+                }
+            });
+
+            document.getElementById('close-nouveautes-panel').addEventListener('click', () => {
+                panel.classList.remove('open');
+                toggle.style.display = 'flex';
+            });
+
+            // Click outside to close
+            document.addEventListener('click', (e) => {
+                if (panel.classList.contains('open') && !panel.contains(e.target) && !toggle.contains(e.target)) {
+                    panel.classList.remove('open');
+                    toggle.style.display = 'flex';
+                }
+            });
+
+            refreshNouveautesPanel();
+        }
+
+        function refreshNouveautesPanel() {
+            const list = document.getElementById('nouveautes-panel-list');
+            const toggle = document.getElementById('nouveautes-toggle');
+            if (!list) return;
+
+            const items = [];
+            const types = [
+                { cls: 'v41-new', label: '✨ NOUVEAU', color: '#10b981' },
+                { cls: 'v41-modified', label: '🔄 MODIFIÉ', color: '#06b6d4' },
+                { cls: 'v41-removed', label: '🗑️ RETIRÉ', color: '#ef4444' }
+            ];
+
+            types.forEach(t => {
+                document.querySelectorAll('.' + t.cls).forEach(el => {
+                    // Find nearest section heading
+                    const section = el.closest('section.section');
+                    const sectionTitle = section ? (section.querySelector('h2')?.textContent || section.id) : '—';
+
+                    // Get a preview of the content
+                    const h3 = el.querySelector('h3');
+                    const p = el.querySelector('p');
+                    let preview = '';
+                    if (h3) {
+                        preview = h3.textContent.trim();
+                    } else if (p) {
+                        preview = p.textContent.trim().substring(0, 80) + (p.textContent.length > 80 ? '...' : '');
+                    } else {
+                        preview = el.textContent.trim().substring(0, 80) + (el.textContent.length > 80 ? '...' : '');
+                    }
+
+                    items.push({ el, label: t.label, color: t.color, sectionTitle, preview });
+                });
+            });
+
+            // Update toggle count
+            if (toggle) {
+                toggle.innerHTML = `✨ Nouveautés v4.1 <span style="background:rgba(16,185,129,0.2);padding:1px 6px;border-radius:8px;font-size:0.7rem;">${items.length}</span>`;
+            }
+
+            if (items.length === 0) {
+                list.innerHTML = '<p style="color:var(--text-muted);font-size:0.8rem;font-style:italic;">Aucune nouveauté dans cette version.</p>';
+                return;
+            }
+
+            list.innerHTML = '';
+            items.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'annotation-panel-item';
+                div.innerHTML = `
+                    <div class="color-dot" style="background:${item.color};"></div>
+                    <div class="panel-item-content">
+                        <span style="color:${item.color};font-size:0.6rem;font-weight:700;text-transform:uppercase;">${item.label}</span>
+                        <div class="panel-item-section">${item.sectionTitle}</div>
+                        <div class="panel-item-text">${item.preview}</div>
+                    </div>
+                `;
+                div.addEventListener('click', () => {
+                    item.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    flashHighlight(item.el);
+                });
+                list.appendChild(div);
+            });
+        }
+
+        // ========================================
         // INIT
         // ========================================
         document.addEventListener('DOMContentLoaded', () => {
@@ -4130,6 +4689,7 @@
             initVersionSelector();
             initHighlightSystem();
             initAnnotationPanel();
+            initNouveautesPanel();
 
             // Admin unlock button (bottom-left)
             const adminBtn = document.createElement('div');
