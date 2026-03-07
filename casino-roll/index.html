@@ -460,18 +460,10 @@
         </div>
     </div>
 
-    <!-- Controls for testing -->
     <div class="controls">
-        <button onclick="spawnGem('pierre', 'dark')">🟤 Pierre — Normal</button>
-        <button onclick="spawnGem('pierre', 'gold')">🟤 Pierre — Gold</button>
-        <button onclick="spawnGem('metal', 'dark')">⚪ Métal — Normal</button>
-        <button onclick="spawnGem('metal', 'gold')">⚪ Métal — Gold</button>
-        <button onclick="spawnGem('energie', 'dark')">🔵 Énergie — Normal</button>
-        <button onclick="spawnGem('energie', 'gold')">🔵 Énergie — Gold</button>
-        <button onclick="spawnGem('cristal', 'dark')">🟣 Cristal — Normal</button>
-        <button onclick="spawnGem('cristal', 'gold')">🟣 Cristal — Gold</button>
-        <button onclick="spawnGem('artefact', 'dark')">🟡 Artefact — Normal</button>
-        <button onclick="spawnGem('artefact', 'gold')">🟡 Artefact — Gold</button>
+        <button onclick="spawnRandom('dark')">🔘 Plaque Normale</button>
+        <button onclick="spawnRandom('gold')" style="border-color:#ffd700;background:rgba(255,215,0,0.12)">✨ Plaque
+            Gold</button>
         <button onclick="spawnGem('mystere', 'gold')" style="border-color:#a855f7;background:rgba(168,85,247,0.15)">🌈
             Mystère</button>
     </div>
@@ -515,6 +507,13 @@
             artefact: { color: '#FFCC1A', label: 'ARTEFACT', emoji: '🟡' },
             mystere: { color: '#ff6b6b', label: 'MYSTÈRE', emoji: '🌈' }
         };
+
+        // Pick a random non-mystère color
+        const NORMAL_COLORS = ['pierre', 'metal', 'energie', 'cristal', 'artefact'];
+        function spawnRandom(tier) {
+            const color = NORMAL_COLORS[Math.floor(Math.random() * NORMAL_COLORS.length)];
+            spawnGem(color, tier);
+        }
 
         // ═══ RARITY ODDS BY BASE TIER ═══
         const ODDS = {
