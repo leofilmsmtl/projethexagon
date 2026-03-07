@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>DriveHunt — Casino Roll Prototype</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=JetBrains+Mono:wght@700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --pierre: #8B5E3C;
+            --metal: #C0C5D0;
+            --energie: #1AC0F2;
+            --cristal: #A633E6;
+            --artefact: #FFCC1A;
+            --mystere: linear-gradient(135deg, #ff6b6b, #ffd93d, #6bcb77, #4d96ff, #a855f7);
+            --common-bg: #2a2a3e;
+            --rare-bg: #1a2a4a;
+            --epic-bg: #2a1a3e;
+            --glass: rgba(15, 15, 30, 0.92);
+            --glass-border: rgba(100, 200, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a1a;
+            color: #fff;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ═══ CONTROLS (testing) ═══ */
+        .controls {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 100;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .controls button {
+            padding: 8px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            background: rgba(20, 20, 40, 0.9);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .controls button:hover {
+            border-color: #4d96ff;
+            background: rgba(40, 40, 80, 0.9);
+        }
+
+        .controls button.active {
+            border-color: #00ff88;
+            background: rgba(0, 255, 136, 0.15);
+        }
+
+        /* ═══ MAP SIMULATION ═══ */
+        .map-bg {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 50% 50%, #1a2a3a 0%, #0a0a1a 70%);
+            z-index: 0;
+        }
+
+        .hex-grid {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            opacity: 0.15;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpath d='M28 66L0 50L0 16L28 0L56 16L56 50L28 66Z' fill='none' stroke='%2300c8ff' stroke-width='1'/%3E%3Cpath d='M28 100L0 84L0 50L28 34L56 50L56 84L28 100Z' fill='none' stroke='%2300c8ff' stroke-width='1'/%3E%3C/svg%3E");
+        }
+
+        /* ═══ GEM ON MAP ═══ */
+        .gem-on-map {
+            position: relative;
+            z-index: 10;
+            width: 80px;
+            height: 80px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .gem-on-map:hover {
+            transform: scale(1.15);
+        }
+
+        .gem-on-map canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .gem-label {
+            text-align: center;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-top: 4px;
+            opacity: 0.7;
+        }
+
+        /* ═══ OVERLAY ═══ */
+        .roll-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s;
+        }
+
+        .roll-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .roll-scrim {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0);
+            transition: background 0.6s;
+        }
+
+        .roll-overlay.active .roll-scrim {
+            background: rgba(0, 0, 0, 0.85);
+        }
+
+        /* ═══ ROLL CONTENT ═══ */
+        .roll-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+
+        /* Base plate */
+        .base-plate {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            opacity: 0;
+            transform: scale(0.3);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .base-plate.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .base-plate.dark {
+            background: radial-gradient(circle, #3a3a4e, #1a1a2e);
+            box-shadow: 0 0 40px rgba(100, 100, 140, 0.3), inset 0 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .base-plate.silver {
+            background: radial-gradient(circle, #c0c8d8, #6a7080);
+            box-shadow: 0 0 50px rgba(180, 200, 220, 0.4), inset 0 0 30px rgba(255, 255, 255, 0.2);
+        }
+
+        .base-plate.gold {
+            background: radial-gradient(circle, #ffd700, #b8860b);
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.5), inset 0 0 30px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Gem in center */
+        .roll-gem {
+            width: 80px;
+            height: 80px;
+            position: relative;
+        }
+
+        .roll-gem canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Rarity spinner */
+        .rarity-spinner {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease-out;
+        }
+
+        .rarity-spinner.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .rarity-slot {
+            width: 80px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            opacity: 0.3;
+        }
+
+        .rarity-slot.common {
+            background: rgba(180, 180, 200, 0.1);
+            color: #aab;
+        }
+
+        .rarity-slot.rare {
+            background: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
+        }
+
+        .rarity-slot.epic {
+            background: rgba(255, 80, 80, 0.1);
+            color: #ff6b6b;
+        }
+
+        .rarity-slot.scanning {
+            opacity: 1;
+            transform: scale(1.1);
+            border-color: currentColor;
+            box-shadow: 0 0 20px currentColor;
+        }
+
+        .rarity-slot.winner {
+            opacity: 1;
+            transform: scale(1.2);
+            border-color: currentColor;
+            animation: winnerPulse 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes winnerPulse {
+            from {
+                box-shadow: 0 0 20px currentColor;
+            }
+
+            to {
+                box-shadow: 0 0 40px currentColor, 0 0 80px currentColor;
+            }
+        }
+
+        /* Result text */
+        .result-text {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .result-text.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .result-sub {
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.4s 0.2s;
+        }
+
+        .result-sub.visible {
+            opacity: 0.6;
+        }
+
+        /* Particles */
+        .particle {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 60;
+        }
+
+        /* Edge glow effect */
+        .edge-glow {
+            position: fixed;
+            inset: 0;
+            z-index: 49;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .edge-glow.active {
+            opacity: 1;
+        }
+
+        .edge-glow-inner {
+            width: 100%;
+            height: 100%;
+            box-shadow: inset 0 0 80px 20px var(--glow-color, rgba(255, 215, 0, 0.3));
+        }
+
+        /* Tap to close */
+        .tap-close {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            opacity: 0;
+            transition: opacity 0.4s;
+            cursor: pointer;
+            padding: 12px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tap-close.visible {
+            opacity: 0.5;
+        }
+
+        .tap-close:hover {
+            opacity: 0.8;
+        }
+
+        /* Resource dock preview */
+        .dock-preview {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 100;
+            display: flex;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 20px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+        }
+
+        .dock-chip {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .dock-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+        }
+
+        .dock-count {
+            font-size: 15px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.3s;
+        }
+
+        .dock-count.bumped {
+            transform: scale(1.4);
+            color: #00ff88;
+        }
+
+        /* Shake animation */
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-4px);
+            }
+
+            75% {
+                transform: translateX(4px);
+            }
+        }
+
+        /* Screen flash */
+        .screen-flash {
+            position: fixed;
+            inset: 0;
+            z-index: 55;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.1s;
+        }
+
+        .screen-flash.active {
+            opacity: 1;
+            animation: flashFade 0.4s ease-out forwards;
+        }
+
+        @keyframes flashFade {
+            from {
+                opacity: 0.8;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Map background -->
+    <div class="map-bg"></div>
+    <div class="hex-grid"></div>
+
+    <!-- Resource Dock -->
+    <div class="dock-preview" id="dock">
+        <div class="dock-chip">
+            <div class="dock-dot" style="background:#8B5E3C"></div><span class="dock-count" id="dock-pierre">5</span>
+        </div>
+        <div class="dock-chip">
+            <div class="dock-dot" style="background:#C0C5D0"></div><span class="dock-count" id="dock-metal">3</span>
+        </div>
+        <div class="dock-chip">
+            <div class="dock-dot" style="background:#1AC0F2"></div><span class="dock-count" id="dock-energie">2</span>
+        </div>
+        <div class="dock-chip">
+            <div class="dock-dot" style="background:#A633E6"></div><span class="dock-count" id="dock-cristal">1</span>
+        </div>
+        <div class="dock-chip">
+            <div class="dock-dot" style="background:#FFCC1A"></div><span class="dock-count" id="dock-artefact">0</span>
+        </div>
+    </div>
+
+    <!-- Controls for testing -->
+    <div class="controls">
+        <button onclick="spawnGem('pierre', 'dark')">🟤 Pierre — Normal</button>
+        <button onclick="spawnGem('pierre', 'gold')">🟤 Pierre — Gold</button>
+        <button onclick="spawnGem('metal', 'dark')">⚪ Métal — Normal</button>
+        <button onclick="spawnGem('metal', 'gold')">⚪ Métal — Gold</button>
+        <button onclick="spawnGem('energie', 'dark')">🔵 Énergie — Normal</button>
+        <button onclick="spawnGem('energie', 'gold')">🔵 Énergie — Gold</button>
+        <button onclick="spawnGem('cristal', 'dark')">🟣 Cristal — Normal</button>
+        <button onclick="spawnGem('cristal', 'gold')">🟣 Cristal — Gold</button>
+        <button onclick="spawnGem('artefact', 'dark')">🟡 Artefact — Normal</button>
+        <button onclick="spawnGem('artefact', 'gold')">🟡 Artefact — Gold</button>
+        <button onclick="spawnGem('mystere', 'gold')" style="border-color:#a855f7;background:rgba(168,85,247,0.15)">🌈
+            Mystère</button>
+    </div>
+
+    <!-- Gem on map (spawned dynamically) -->
+    <div id="gem-container"></div>
+
+    <!-- Casino Roll Overlay -->
+    <div class="roll-overlay" id="rollOverlay">
+        <div class="roll-scrim" id="rollScrim"></div>
+        <div class="roll-content">
+            <div class="base-plate" id="basePlate">
+                <div class="roll-gem" id="rollGem"></div>
+            </div>
+            <div class="rarity-spinner" id="raritySpinner">
+                <div class="rarity-slot common" id="slotCommon">COMMUN</div>
+                <div class="rarity-slot rare" id="slotRare">RARE</div>
+                <div class="rarity-slot epic" id="slotEpic">ÉPIQUE</div>
+            </div>
+            <div class="result-text" id="resultText"></div>
+            <div class="result-sub" id="resultSub"></div>
+            <div class="tap-close" id="tapClose" onclick="closeRoll()">FERMER</div>
+        </div>
+    </div>
+
+    <!-- Edge glow -->
+    <div class="edge-glow" id="edgeGlow">
+        <div class="edge-glow-inner" id="edgeGlowInner"></div>
+    </div>
+
+    <!-- Screen flash -->
+    <div class="screen-flash" id="screenFlash"></div>
+
+    <script>
+        // ═══ GEM COLORS ═══
+        const GEM_COLORS = {
+            pierre: { color: '#8B5E3C', label: 'PIERRE', emoji: '🟤' },
+            metal: { color: '#C0C5D0', label: 'MÉTAL', emoji: '⚪' },
+            energie: { color: '#1AC0F2', label: 'ÉNERGIE', emoji: '🔵' },
+            cristal: { color: '#A633E6', label: 'CRISTAL', emoji: '🟣' },
+            artefact: { color: '#FFCC1A', label: 'ARTEFACT', emoji: '🟡' },
+            mystere: { color: '#ff6b6b', label: 'MYSTÈRE', emoji: '🌈' }
+        };
+
+        // ═══ RARITY ODDS BY BASE TIER ═══
+        const ODDS = {
+            dark: { common: 0.90, rare: 0.08, epic: 0.02 },   // Plaque Normale
+            gold: { common: 0.50, rare: 0.30, epic: 0.20 }     // Plaque Gold
+        };
+        const MYSTERE_ODDS = { common: 0, rare: 0.60, epic: 0.40 };  // 3% spawn rate
+
+        const RARITY_COLORS = {
+            common: '#aabbcc',
+            rare: '#ffd700',
+            epic: '#ff4444'
+        };
+        const RARITY_LABELS = {
+            common: 'COMMUN',
+            rare: 'RARE ⭐',
+            epic: 'ÉPIQUE 💎'
+        };
+
+        // ═══ INVENTORY STATE ═══
+        let inventory = { pierre: 5, metal: 3, energie: 2, cristal: 1, artefact: 0 };
+
+        // ═══ SOUND ENGINE (Web Audio API) ═══
+        let audioCtx = null;
+        function getAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            return audioCtx;
+        }
+
+        function playTone(freq, duration, type = 'sine', volume = 0.15, delay = 0) {
+            const ctx = getAudio();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, ctx.currentTime + delay);
+            gain.gain.setValueAtTime(volume, ctx.currentTime + delay);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + duration);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(ctx.currentTime + delay);
+            osc.stop(ctx.currentTime + delay + duration);
+        }
+
+        function playNoise(duration, volume = 0.1, delay = 0) {
+            const ctx = getAudio();
+            const bufferSize = ctx.sampleRate * duration;
+            const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * 0.5;
+            const noise = ctx.createBufferSource();
+            noise.buffer = buffer;
+            const gain = ctx.createGain();
+            gain.gain.setValueAtTime(volume, ctx.currentTime + delay);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + duration);
+            const filter = ctx.createBiquadFilter();
+            filter.type = 'highpass';
+            filter.frequency.value = 3000;
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(ctx.destination);
+            noise.start(ctx.currentTime + delay);
+            noise.stop(ctx.currentTime + delay + duration);
+        }
+
+        const SFX = {
+            // Swoosh on overlay open
+            whoosh() {
+                playNoise(0.3, 0.08);
+                playTone(200, 0.3, 'sine', 0.06);
+                playTone(100, 0.4, 'sine', 0.04, 0.1);
+            },
+            // Tick during scanning (pitch rises with step)
+            tick(step = 0) {
+                const freq = 400 + step * 100;
+                playTone(freq, 0.08, 'square', 0.1);
+            },
+            // Suspense rising before reveal
+            suspense() {
+                for (let i = 0; i < 6; i++) {
+                    playTone(300 + i * 80, 0.15, 'triangle', 0.06, i * 0.08);
+                }
+            },
+            // Reveal fanfare — different per rarity
+            revealCommon() {
+                playTone(523, 0.3, 'triangle', 0.12);      // C5
+                playTone(659, 0.3, 'triangle', 0.08, 0.1);  // E5
+            },
+            revealRare() {
+                playTone(523, 0.2, 'triangle', 0.15);       // C5
+                playTone(659, 0.2, 'triangle', 0.12, 0.08);  // E5
+                playTone(784, 0.3, 'triangle', 0.15, 0.16);  // G5
+                playTone(1047, 0.5, 'sine', 0.12, 0.24);     // C6
+                playTone(1318, 0.4, 'sine', 0.08, 0.32);     // E6
+                playNoise(0.2, 0.08, 0.16);
+                // Shimmering tail
+                playTone(1047, 0.6, 'sine', 0.05, 0.5);
+                playTone(1318, 0.6, 'sine', 0.04, 0.6);
+                playTone(784, 0.8, 'triangle', 0.03, 0.7);
+            },
+            revealEpic() {
+                // MASSIVE chord explosion
+                playTone(261, 0.3, 'sawtooth', 0.12);          // C4 power
+                playTone(523, 0.2, 'sawtooth', 0.10, 0.03);    // C5
+                playTone(659, 0.2, 'sawtooth', 0.08, 0.06);    // E5
+                playTone(784, 0.2, 'sawtooth', 0.08, 0.09);    // G5
+                // Ascending fanfare
+                playTone(1047, 0.5, 'sine', 0.15, 0.15);       // C6
+                playTone(1318, 0.5, 'sine', 0.12, 0.22);       // E6
+                playTone(1568, 0.6, 'sine', 0.10, 0.29);       // G6
+                playTone(2093, 0.8, 'sine', 0.08, 0.36);       // C7 peak!
+                // Noise burst
+                playNoise(0.4, 0.15, 0.12);
+                // Deep boom
+                playTone(60, 0.6, 'sine', 0.20, 0.12);
+                playTone(80, 0.5, 'sine', 0.12, 0.2);
+                // Sparkling tail
+                playTone(2093, 0.8, 'sine', 0.04, 0.5);
+                playTone(1568, 1.0, 'sine', 0.03, 0.6);
+                playTone(1047, 1.2, 'triangle', 0.02, 0.8);
+            },
+            // Inventory ding
+            ding() {
+                playTone(880, 0.15, 'sine', 0.1);
+                playTone(1320, 0.2, 'sine', 0.08, 0.08);
+            },
+            // Base plate land
+            plateLand(tier) {
+                const freq = tier === 'gold' ? 300 : tier === 'silver' ? 200 : 150;
+                playTone(freq, 0.3, 'sine', 0.1);
+                playNoise(0.1, 0.05);
+            }
+        };
+
+        // ═══ VIBRATION ═══
+        function vib(pattern) {
+            if (navigator.vibrate) navigator.vibrate(pattern);
+        }
+
+        // ═══ DRAW GEM (Canvas) ═══
+        function drawGem(canvas, colorHex, size = 80) {
+            canvas.width = size * 2;
+            canvas.height = size * 2;
+            canvas.style.width = size + 'px';
+            canvas.style.height = size + 'px';
+            const ctx = canvas.getContext('2d');
+            const cx = size, cy = size, r = size * 0.9;
+
+            // Background glow
+            const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+            glow.addColorStop(0, colorHex + '40');
+            glow.addColorStop(1, 'transparent');
+            ctx.fillStyle = glow;
+            ctx.fillRect(0, 0, size * 2, size * 2);
+
+            // Diamond shape
+            ctx.beginPath();
+            ctx.moveTo(cx, cy - r * 0.65);
+            ctx.lineTo(cx + r * 0.65, cy);
+            ctx.lineTo(cx, cy + r * 0.65);
+            ctx.lineTo(cx - r * 0.65, cy);
+            ctx.closePath();
+            ctx.fillStyle = colorHex;
+            ctx.fill();
+
+            // Inner facet
+            ctx.beginPath();
+            ctx.moveTo(cx, cy - r * 0.38);
+            ctx.lineTo(cx + r * 0.38, cy);
+            ctx.lineTo(cx, cy + r * 0.38);
+            ctx.lineTo(cx - r * 0.38, cy);
+            ctx.closePath();
+            ctx.fillStyle = colorHex + 'aa';
+            ctx.fill();
+
+            // Highlight
+            ctx.beginPath();
+            ctx.moveTo(cx, cy - r * 0.65);
+            ctx.lineTo(cx - r * 0.65, cy);
+            ctx.lineTo(cx - r * 0.38, cy);
+            ctx.lineTo(cx, cy - r * 0.38);
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(255,255,255,0.35)';
+            ctx.fill();
+
+            // Sparkle
+            ctx.beginPath();
+            ctx.arc(cx - r * 0.08, cy - r * 0.12, r * 0.08, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255,255,255,0.9)';
+            ctx.fill();
+        }
+
+        // ═══ SPAWN GEM ON MAP ═══
+        function spawnGem(type, baseTier) {
+            const container = document.getElementById('gem-container');
+            container.innerHTML = '';
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'gem-on-map';
+            wrapper.style.animation = 'none';
+
+            const canvas = document.createElement('canvas');
+            const gemColor = type === 'mystere' ? '#ff6b6b' : GEM_COLORS[type].color;
+            drawGem(canvas, gemColor);
+            wrapper.appendChild(canvas);
+
+            // Bobbing animation
+            wrapper.style.animation = 'bob 2s ease-in-out infinite';
+            const style = document.createElement('style');
+            style.textContent = `@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }`;
+            document.head.appendChild(style);
+
+            const label = document.createElement('div');
+            label.className = 'gem-label';
+            label.textContent = GEM_COLORS[type].emoji + ' ' + GEM_COLORS[type].label;
+            label.style.color = gemColor;
+            wrapper.appendChild(label);
+
+            wrapper.onclick = () => startRoll(type, baseTier);
+            container.appendChild(wrapper);
+        }
+
+        // ═══ CASINO ROLL ═══
+        let isRolling = false;
+
+        async function startRoll(type, baseTier) {
+            if (isRolling) return;
+            isRolling = true;
+
+            const overlay = document.getElementById('rollOverlay');
+            const basePlate = document.getElementById('basePlate');
+            const spinner = document.getElementById('raritySpinner');
+            const resultText = document.getElementById('resultText');
+            const resultSub = document.getElementById('resultSub');
+            const tapClose = document.getElementById('tapClose');
+            const edgeGlow = document.getElementById('edgeGlow');
+            const edgeGlowInner = document.getElementById('edgeGlowInner');
+
+            // Reset
+            basePlate.className = 'base-plate';
+            spinner.className = 'rarity-spinner';
+            resultText.className = 'result-text';
+            resultSub.className = 'result-sub';
+            tapClose.className = 'tap-close';
+            edgeGlow.className = 'edge-glow';
+            document.querySelectorAll('.rarity-slot').forEach(s => s.className = s.className.replace(/scanning|winner/g, '').trim());
+
+            // Remove gem from map
+            document.getElementById('gem-container').innerHTML = '';
+
+            // Determine result (server would do this)
+            const odds = type === 'mystere' ? MYSTERE_ODDS : ODDS[baseTier];
+            const roll = Math.random();
+            let rarity;
+            if (roll < odds.common) rarity = 'common';
+            else if (roll < odds.common + odds.rare) rarity = 'rare';
+            else rarity = 'epic';
+
+            // For mystère, no common
+            if (type === 'mystere' && rarity === 'common') rarity = 'rare';
+
+            const gemColor = type === 'mystere' ? '#ff6b6b' : GEM_COLORS[type].color;
+            const rarityColor = RARITY_COLORS[rarity];
+
+            // ── STEP 1: Show overlay + base plate ──
+            overlay.classList.add('active');
+            SFX.whoosh();
+            vib(50);
+            await sleep(400);
+
+            // Draw gem in roll view
+            const rollGemDiv = document.getElementById('rollGem');
+            rollGemDiv.innerHTML = '';
+            const canvas = document.createElement('canvas');
+            drawGem(canvas, gemColor, 60);
+            rollGemDiv.appendChild(canvas);
+
+            basePlate.className = `base-plate ${baseTier}`;
+            await sleep(100);
+            basePlate.classList.add('visible');
+            SFX.plateLand(baseTier);
+            vib(80);
+            await sleep(600);
+
+            // ── STEP 2: Show rarity spinner ──
+            spinner.classList.add('visible');
+            await sleep(300);
+
+            // ── STEP 3: Scanning animation ──
+            const slots = ['Common', 'Rare', 'Epic'];
+            const slotIds = ['slotCommon', 'slotRare', 'slotEpic'];
+
+            // Fast scan — builds suspense
+            for (let cycle = 0; cycle < 3; cycle++) {
+                for (let i = 0; i < slotIds.length; i++) {
+                    slotIds.forEach(id => document.getElementById(id).classList.remove('scanning'));
+                    document.getElementById(slotIds[i]).classList.add('scanning');
+                    SFX.tick(cycle * 3 + i);
+                    vib(20);
+                    await sleep(120 + cycle * 50);
+                }
+            }
+
+            // Slow down to result
+            const targetIndex = rarity === 'common' ? 0 : rarity === 'rare' ? 1 : 2;
+            for (let i = 0; i <= targetIndex; i++) {
+                slotIds.forEach(id => document.getElementById(id).classList.remove('scanning'));
+                document.getElementById(slotIds[i]).classList.add('scanning');
+                SFX.tick(9 + i);
+                vib(30 + i * 10);
+                await sleep(250 + i * 100);
+            }
+
+            // ── STEP 4: REVEAL! ──
+            slotIds.forEach(id => document.getElementById(id).classList.remove('scanning'));
+            const winnerSlot = document.getElementById(slotIds[targetIndex]);
+            winnerSlot.classList.add('winner');
+
+            // Sound + Vibration per rarity
+            if (rarity === 'epic') {
+                SFX.revealEpic();
+                vib([100, 30, 80, 30, 60, 30, 100, 50, 300]);
+            } else if (rarity === 'rare') {
+                SFX.revealRare();
+                vib([60, 20, 60, 20, 60, 30, 180]);
+            } else {
+                SFX.revealCommon();
+                vib(60);
+            }
+
+            // Screen flash
+            const flash = document.getElementById('screenFlash');
+            flash.style.background = rarityColor;
+            flash.classList.add('active');
+            setTimeout(() => flash.classList.remove('active'), 400);
+
+            // Edge glow
+            edgeGlowInner.style.setProperty('--glow-color', rarityColor + '60');
+            edgeGlow.classList.add('active');
+
+            // Shake for epic (stronger) or rare (subtle)
+            if (rarity === 'epic') {
+                document.body.style.animation = 'shake 0.08s ease-in-out 5';
+                setTimeout(() => document.body.style.animation = '', 500);
+            } else if (rarity === 'rare') {
+                document.body.style.animation = 'shake 0.12s ease-in-out 2';
+                setTimeout(() => document.body.style.animation = '', 300);
+            }
+
+            // Particles!
+            spawnParticles(rarityColor, rarity === 'epic' ? 60 : rarity === 'rare' ? 30 : 8);
+
+            await sleep(300);
+
+            // ── STEP 5: Result text ──
+            const colorLabel = GEM_COLORS[type].label;
+            resultText.textContent = `${colorLabel} ${RARITY_LABELS[rarity]}`;
+            resultText.style.color = rarityColor;
+            resultText.classList.add('visible');
+
+            const tierLabel = baseTier === 'gold' ? 'Base Dorée' : baseTier === 'silver' ? 'Base Argentée' : 'Base Sombre';
+            resultSub.textContent = `${tierLabel} • Ajouté à l'inventaire`;
+            resultSub.classList.add('visible');
+
+            await sleep(400);
+
+            // ── STEP 6: Update dock counter ──
+            if (type !== 'mystere') {
+                const dockEl = document.getElementById(`dock-${type}`);
+                inventory[type]++;
+                dockEl.textContent = inventory[type];
+                dockEl.classList.add('bumped');
+                SFX.ding();
+                vib(40);
+                setTimeout(() => dockEl.classList.remove('bumped'), 400);
+            }
+
+            await sleep(300);
+            tapClose.classList.add('visible');
+        }
+
+        function closeRoll() {
+            const overlay = document.getElementById('rollOverlay');
+            const edgeGlow = document.getElementById('edgeGlow');
+            overlay.classList.remove('active');
+            edgeGlow.classList.remove('active');
+            isRolling = false;
+        }
+
+        // ═══ PARTICLES ═══
+        function spawnParticles(color, count) {
+            const cx = window.innerWidth / 2;
+            const cy = window.innerHeight / 2;
+
+            for (let i = 0; i < count; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.background = color;
+                p.style.left = cx + 'px';
+                p.style.top = cy + 'px';
+                p.style.width = (4 + Math.random() * 6) + 'px';
+                p.style.height = p.style.width;
+                document.body.appendChild(p);
+
+                const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.5;
+                const dist = 100 + Math.random() * 200;
+                const dx = Math.cos(angle) * dist;
+                const dy = Math.sin(angle) * dist;
+                const duration = 600 + Math.random() * 400;
+
+                p.animate([
+                    { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                    { transform: `translate(${dx}px, ${dy}px) scale(0)`, opacity: 0 }
+                ], { duration, easing: 'cubic-bezier(0, 0.5, 0.5, 1)', fill: 'forwards' });
+
+                setTimeout(() => p.remove(), duration);
+            }
+        }
+
+        // ═══ UTILITY ═══
+        function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+        // Auto-spawn a gem on load
+        spawnGem('pierre', 'dark');
+    </script>
+</body>
+
+</html>

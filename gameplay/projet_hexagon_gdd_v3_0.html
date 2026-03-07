@@ -1306,7 +1306,8 @@
                 <div class="card-icon purple">🔮</div>
                 <h3>Défense Mana (gratuit)</h3>
                 <p>Se projeter sur un hex à <strong>≤3 hexes</strong> de distance. Consomme 1 charge de mana mais
-                    <strong>ne coûte pas de ressource</strong>.</p>
+                    <strong>ne coûte pas de ressource</strong>.
+                </p>
             </div>
             <div class="card">
                 <div class="card-icon orange">📱</div>
@@ -1417,40 +1418,40 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>🔵 Bleu</td>
+                        <td>🟤 Brun</td>
                         <td>Pierre</td>
                         <td>Rond</td>
-                        <td>30%</td>
+                        <td>19%</td>
                     </tr>
                     <tr>
-                        <td>🟠 Orange</td>
+                        <td>⚪ Argent</td>
                         <td>Métal</td>
                         <td>Carré</td>
-                        <td>25%</td>
+                        <td>19%</td>
                     </tr>
                     <tr>
-                        <td>🟡 Jaune</td>
+                        <td>🔵 Cyan</td>
                         <td>Énergie</td>
                         <td>Triangle</td>
-                        <td>20%</td>
+                        <td>19%</td>
                     </tr>
                     <tr>
                         <td>🟣 Violet</td>
                         <td>Cristal</td>
                         <td>Losange</td>
-                        <td>15%</td>
+                        <td>19%</td>
                     </tr>
                     <tr>
-                        <td>⚪ Argent</td>
+                        <td>🟡 Or</td>
                         <td>Artefact</td>
                         <td>Étoile</td>
-                        <td>10%</td>
+                        <td>19%</td>
                     </tr>
                     <tr>
                         <td>🌈 Mystère</td>
-                        <td>Random (rareté boostée)</td>
+                        <td>Choix du joueur (rareté boostée)</td>
                         <td>Pulse</td>
-                        <td>~1%</td>
+                        <td>3%</td>
                     </tr>
                 </tbody>
             </table>
@@ -1467,7 +1468,8 @@
                 <div class="card-icon red">📤</div>
                 <h3>Dépenses (Resource Sinks)</h3>
                 <p>Capturer un hex : <strong>1 commune</strong><br>Bouclier : <strong>Rares</strong><br>Forteresse :
-                    <strong>Épiques</strong><br>Bélier : <strong>All-in épiques</strong></p>
+                    <strong>Épiques</strong><br>Bélier : <strong>All-in épiques</strong>
+                </p>
             </div>
         </div>
 
@@ -1524,7 +1526,8 @@
                 <div class="card-icon purple">📈</div>
                 <h3>Plus d'hexes = plus vulnérable</h3>
                 <p>Chaque hex supplémentaire est un hex de plus à défendre avec des ressources
-                    <strong>limitées</strong>.</p>
+                    <strong>limitées</strong>.
+                </p>
             </div>
             <div class="card">
                 <div class="card-icon blue">🛡️</div>
@@ -1721,7 +1724,8 @@
                 <div class="card-icon cyan">⏱️</div>
                 <h3>Cooldown Escalant</h3>
                 <p>Après pickup : <strong>4h</strong> pour tous. <strong>6h</strong> pour le même joueur (2e prise). Max
-                    <strong>3/jour/spot</strong>.</p>
+                    <strong>3/jour/spot</strong>.
+                </p>
             </div>
             <div class="card">
                 <div class="card-icon red">🌅</div>
@@ -1743,6 +1747,71 @@
                     Ça crée la cohabitation. Le reroll quotidien + crate reveal = daily hook addictif.</p>
             </div>
         </details>
+
+        <!-- Casino Roll — Rarity System (v4.1) -->
+        <div class="section-header" style="margin-top: 3rem;">
+            <div class="section-tag purple">🎰 Casino Roll</div>
+            <h2>Casino Roll — Rareté au Ramassage</h2>
+            <p class="subtitle">La rareté est déterminée côté serveur au moment du ramassage. Plaque Gold = odds
+                boostées. Mystère = le joueur choisit sa couleur.</p>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type de Plaque</th>
+                        <th>⚪ Commun</th>
+                        <th>⭐ Rare</th>
+                        <th>💎 Épique</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>🔘 Plaque Normale</td>
+                        <td><strong>90%</strong></td>
+                        <td><strong>8%</strong></td>
+                        <td><strong>2%</strong></td>
+                    </tr>
+                    <tr>
+                        <td>✨ Plaque Gold</td>
+                        <td><strong>50%</strong></td>
+                        <td><strong>30%</strong></td>
+                        <td><strong>20%</strong></td>
+                    </tr>
+                    <tr>
+                        <td>🌈 Mystère</td>
+                        <td><strong>0%</strong></td>
+                        <td><strong>60%</strong></td>
+                        <td><strong>40%</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-grid" style="margin-top: 1rem;">
+            <div class="card">
+                <div class="card-icon purple">🌈</div>
+                <h3>Mystère — Choix du Joueur</h3>
+                <p>Quand un gem mystère est tappé, le joueur choisit sa couleur via un sélecteur (5 boutons).
+                    Le roll Casino démarre ensuite avec des odds <strong>garantis rare ou épique</strong>.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon orange">✨</div>
+                <h3>Hints visuels</h3>
+                <p>Le Casino Roll affiche un bandeau bonus :<br>
+                    Plaque Gold → "✨ BONUS! 30% Rare, 20% Épique!"<br>
+                    Mystère → "🌈 MYSTÈRE! 60% Rare, 40% Épique!"<br>
+                    Le joueur comprend <strong>pourquoi</strong> certains gems sont meilleurs.</p>
+            </div>
+        </div>
+
+        <div class="alert golden" style="margin-top: 1.5rem;">
+            <strong>🎰 Prototype Casino Roll :</strong>
+            <a href="../casino-roll/index.html" style="color: #ffd700; text-decoration: underline;">Tester l'animation
+                du Casino Roll →</a>
+            Inclut les sons, vibrations, et les 3 paliers de rareté avec effets visuels.
+        </div>
 
     </section>
 
@@ -2140,7 +2209,8 @@
             <div class="card-icon purple">📢</div>
             <h3>Événements de lancement</h3>
             <p>La Bataille de Montréal, événements physiques de quartier, Wrap territorial (style Spotify Wrapped).
-                <strong>Pas d'AR</strong> — identité propre, pas une copie Pokémon GO.</p>
+                <strong>Pas d'AR</strong> — identité propre, pas une copie Pokémon GO.
+            </p>
         </div>
 
     </section>
