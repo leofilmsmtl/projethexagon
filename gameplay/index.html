@@ -659,6 +659,13 @@
             font-weight: 500;
         }
 
+        .timeline-tags span.v41-removed {
+            text-decoration: line-through;
+            opacity: 0.5;
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--accent-red);
+        }
+
         /* === ALERT BOXES === */
         .alert {
             padding: 1.25rem 1.5rem;
@@ -1173,8 +1180,8 @@
     <!-- ============ NAV ============ -->
     <nav class="nav">
         <a href="#loop">🔄 Boucle</a>
-        <a href="#actions">⚔️ Actions</a>
         <a href="#dragon">🐉 Dragon</a>
+        <a href="#actions">⚔️ Actions</a>
         <a href="#heatscore">🌡️ Heat Score</a>
         <a href="#economy">🪙 Économie</a>
         <a href="#balance">⚖️ Anti-Snowball</a>
@@ -1286,7 +1293,8 @@
                 <div class="card-icon green">🥚</div>
                 <h3>T0 — L'Œuf</h3>
                 <p>État dormant ou initial. Zéro coût, zéro bonus. Le Dragon « dort » mais son Tier réel est mémorisé.
-                    <strong>L'Œuf est éternel</strong> — pas de mort permanente.</p>
+                    <strong>L'Œuf est éternel</strong> — pas de mort permanente.
+                </p>
             </div>
             <div class="card">
                 <div class="card-icon cyan">🐛</div>
@@ -1371,7 +1379,7 @@
                     T1 = 2%/h (~50h pour vider)<br>
                     T2 = 3%/h (~33h)<br>
                     T3 = 4%/h (~25h)<br>
-                    T4 = 5%/h (~20h)<br>
+                    T4 = 3%/h (~33h)<br>
                     Plus le Dragon est puissant, plus il a faim.</p>
             </div>
             <div class="card">
@@ -1480,7 +1488,7 @@
                         <td>💎 Looter un gem</td>
                         <td>Instantané (gratuit)</td>
                         <td>—</td>
-                        <td>4h par spot (6h 2e prise)</td>
+                        <td>4h par spot (Mystère = one-shot)</td>
                     </tr>
                     <tr>
                         <td>🟢 Capturer (neutre)</td>
@@ -1555,15 +1563,15 @@
 
         <div class="section-header">
             <div class="section-tag red">🌡️ Zones</div>
-            <h2>Heat Zones — Bonus-Only</h2>
-            <p class="subtitle">Le jeu fonctionne à 100% partout. Les zones actives donnent un bonus, les zones calmes
-                ne sont PAS pénalisées.</p>
+            <h2>Heat Zones — Indicateur d'Activité</h2>
+            <p class="subtitle">Le jeu fonctionne à 100% partout. Les zones sont un indicateur visuel d'activité — zéro
+                bonus, zéro pénalité.</p>
         </div>
 
         <div class="heat-bar">
-            <div class="heat-zone cold">🟢 Baseline<span>×1.0 (normal)</span></div>
-            <div class="heat-zone warm">🟡 Active<span>×1.5 bonus</span></div>
-            <div class="heat-zone hot">🔴 Hot<span>×2.0 bonus</span></div>
+            <div class="heat-zone cold">🟢 Calme<span>peu d'activité</span></div>
+            <div class="heat-zone warm">🟡 Active<span>activité modérée</span></div>
+            <div class="heat-zone hot">🔴 Hot<span>forte activité</span></div>
         </div>
 
         <div class="table-wrap">
@@ -1572,27 +1580,27 @@
                     <tr>
                         <th>Zone</th>
                         <th>Joueurs actifs (7j)</th>
-                        <th>Multiplicateur</th>
+                        <th>Signification</th>
                         <th>Exemple</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>🟢 Baseline</td>
+                        <td>🟢 Calme</td>
                         <td>0–4</td>
-                        <td><strong>×1.0</strong></td>
-                        <td>Campagne — <strong>jeu complet</strong></td>
+                        <td>Peu de concurrence — <strong>jeu complet</strong></td>
+                        <td>Campagne</td>
                     </tr>
                     <tr>
                         <td>🟡 Active</td>
                         <td>5–15</td>
-                        <td><strong>×1.5</strong></td>
+                        <td>Compétition émergente — rivalités locales</td>
                         <td>Banlieue active</td>
                     </tr>
                     <tr>
                         <td>🔴 Hot</td>
                         <td>15+</td>
-                        <td><strong>×2.0</strong></td>
+                        <td>Haute densité — rencontres fréquentes</td>
                         <td>Centre-ville Montréal</td>
                     </tr>
                 </tbody>
@@ -1843,9 +1851,12 @@
                     la limite est <strong>organique</strong> : tu ne peux maintenir que ce que tu visites régulièrement.
                 </p>
                 <div class="v50-modified">
-                    <p>🌫️ <strong>Le fog ne revient jamais :</strong> Chaque hex exploré est un progrès permanent.
-                        La map du joueur grandit avec le temps, ne rétrécit jamais. Le decay affecte la
-                        <strong>propriété</strong>, pas la découverte.</p>
+                    <p>🌫️ <strong>Ta carte ne rétrécit jamais :</strong> Chaque hex exploré reste révélé
+                        définitivement.
+                        Le decay affecte la <strong>propriété</strong>, pas la découverte.
+                        En reset saisonnier, une <strong>brume légère</strong> recouvre tes hexes — le loot est caché
+                        jusqu'à revisite,
+                        mais ta carte reste intacte.</p>
                 </div>
             </div>
             <div class="card">
@@ -1991,7 +2002,8 @@
                 <p>Les joueurs <strong>physiquement sur l'hex</strong> peuvent entrer dans ta Forteresse et la voir en
                     <strong>3D orbitale</strong>.
                     Swipe pour tourner, zoom pour détailler. Le propriétaire y accède <strong>à distance</strong>
-                    (session canapé).</p>
+                    (session canapé).
+                </p>
             </div>
         </div>
 
@@ -2127,14 +2139,15 @@
                 <div class="card-icon purple">🌈</div>
                 <h3>Gem Mystère</h3>
                 <p>Visible sur la map (cycle rainbow). Casino roll D'ABORD (95% rare / 5% épique), puis le joueur
-                    <strong>choisit la couleur</strong>. 1% de spawn rate. Le choix se fait au ramassage.</p>
+                    <strong>choisit la couleur</strong>. 1% de spawn rate. Le choix se fait au ramassage.
+                </p>
             </div>
             <div class="card">
                 <div class="card-icon orange">🎨</div>
                 <h3>Base = Odds <span class="version-badge new">✓ v4.1</span></h3>
                 <p>Le <strong>socle du gem</strong> indique les chances de meilleur roll :<br>
-                    🟢🔵🔴🟣 Odds standard = 80/8/2<br>
-                    ✨ Mystère = 0/95/5 + color picker</p>
+                    🟢🔵🔴🟣 Odds standard = 90/8/2<br>
+                    ✨ Mystère = 0/95/5 + color picker (one-shot)</p>
             </div>
         </div>
 
@@ -2367,15 +2380,16 @@
             </div>
             <div class="card">
                 <div class="card-icon cyan">🌫️</div>
-                <h3>Fog Reset</h3>
-                <p>Le fog of war est <strong>réinitialisé</strong>. Re-explore ton quartier! Tes hexes restent
-                    <strong>visibles</strong>, mais le loot dessus est caché jusqu'à revisite.
+                <h3>Brume Saisonnière</h3>
+                <p>Le fog de guerre ne revient pas, mais une <strong>brume légère</strong> recouvre tes hexes.
+                    Le loot est caché jusqu'à revisite. Ta carte reste intacte — le fog essaie de
+                    <strong>r'avaler tes hexes</strong> visuellement, sans y parvenir.
                 </p>
             </div>
             <div class="card">
                 <div class="card-icon green">⬡</div>
                 <h3>Hexes Gardés</h3>
-                <p>Ton territoire reste à toi. Seule la forteresse et le fog sont reset. Pas de rage-quit.</p>
+                <p>Ton territoire reste à toi. Seule la forteresse est reset. Pas de rage-quit.</p>
             </div>
         </div>
 
@@ -2749,7 +2763,7 @@
                     <li>🔮 Projection Mana (loot + défense à distance)</li>
                     <li>Gérer et upgrader structures</li>
                     <li>Planifier routes et stratégie</li>
-                    <li>Craft défenses (ressources → items)</li>
+                    <li>Activer boucliers (ressources → défense)</li>
                     <li>Collecter taxe loot, shop skins</li>
                     <li>Leaderboards, statistiques</li>
                     <li>Bouclier d'urgence (5 rares)</li>
@@ -2758,7 +2772,8 @@
         </div>
 
         <div class="alert golden">
-            <strong>� Essentiel pour l'acquisition :</strong> Le Mode Salon + Mana rendent le jeu <strong>jouable depuis
+            <strong>🎯 Essentiel pour l'acquisition :</strong> Le Mode Salon + Mana rendent le jeu <strong>jouable
+                depuis
                 chez soi</strong>. Un joueur qui ne peut jouer QUE dehors décroche vite. La Mana crée des
             <strong>micro-sessions de canapé</strong> (récolter, défendre, planifier) qui maintiennent l'engagement
             entre les sorties. Le terrain reste roi pour la capture — mais le salon garde le joueur connecté.
@@ -2860,9 +2875,10 @@
         </div>
 
         <div class="solo-banner">
-            <h3>❌ Aucun système de clan/guilde/party</h3>
-            <p>Le jeu ne propose AUCUNE mécanique de groupe : pas de clan, pas de party, pas de bonus de duo, pas de
-                chat d'alliance, pas de partage de ressources. Le PvP est 100% émergent.</p>
+            <h3>❌ Pas de clans, pas de guildes, pas d'alliances</h3>
+            <p>Le seul lien social est le <strong>Duo Link</strong> (loot partagé à 2, session uniquement).
+                Pas de clan, pas de party 3+, pas de chat d'alliance, pas de partage de ressources. Le PvP est 100%
+                émergent.</p>
         </div>
 
         <div class="card-grid">
@@ -3072,7 +3088,7 @@
                 <tbody>
                     <tr>
                         <td>Multi-comptes</td>
-                        <td>Device ID unique + compte &lt;30j = non-raidable</td>
+                        <td>Device ID unique + taxe passive désactivée entre comptes du même device</td>
                     </tr>
                     <tr>
                         <td>GPS spoofing</td>
@@ -3084,7 +3100,11 @@
                     </tr>
                     <tr>
                         <td>Collusion</td>
-                        <td>Pas de taxe passive = pas d'incentive à collaborer</td>
+                        <td>Taxe passive limitée au device — pas d'incentive multi-compte</td>
+                    </tr>
+                    <tr>
+                        <td>Newbie griefing</td>
+                        <td>Compte &lt;30j : défense raid à 1 Épique au lieu de 2</td>
                     </tr>
                     <tr>
                         <td>Camping</td>
@@ -3124,7 +3144,7 @@
                     <span>✅ Fog of war</span>
                     <span>✅ Hex capture + cooldown</span>
                     <span>Achievements solo</span>
-                    <span>Hexes PvE (IA)</span>
+                    <span class="v50-new">Quêtes daily/weekly</span>
                     <span>Leaderboard</span>
                     <span>Daily login</span>
                 </div>
@@ -3136,7 +3156,7 @@
                 <div class="timeline-tags">
                     <span>Vol de territoire</span>
                     <span>Système de ressources</span>
-                    <span>Quêtes quotidiennes</span>
+                    <span class="v50-new">Dragon Compagnon</span>
                     <span>Events hebdo</span>
                     <span>Skins T1 + T2</span>
                     <span>Push notifications</span>
@@ -3149,11 +3169,11 @@
                     compétitifs.</div>
                 <div class="timeline-tags">
                     <span>Forteresses</span>
-                    <span class="v50-removed">Alliances/clans</span>
+                    <span class="v41-removed">Alliances/clans</span>
                     <span>Battle Pass + Saisons</span>
                     <span>Skins T3 + T4</span>
                     <span>Tower defense</span>
-                    <span class="v50-removed">Trading skins</span>
+                    <span class="v41-removed">Trading skins</span>
                     <span class="v50-new">Leaderboard quartier</span>
                     <span class="v50-new">Ping proximité</span>
                 </div>
@@ -4912,7 +4932,8 @@
         // VERSION HISTORY
         // ========================================
         const VERSIONS = {
-            "v4.1": { date: "Mars 2026", label: "v4.1 — Cold Start + Viral Loop + Défense simplifiée (actuel)" },
+            "v5.0": { date: "Mars 2026", label: "v5.0 — Dragon + Quêtes + Brume Saisonnière (actuel)" },
+            "v4.1": { date: "Mars 2026", label: "v4.1 — Cold Start + Viral Loop + Défense simplifiée" },
             "v4.0": { date: "Mars 2026", label: "v4.0 — Économie complète + Saisons + Duo Link" },
             "v3.0": { date: "Mars 2026", label: "v3.0 — Gems + Raid Soft + Cohabitation" },
             "v2.0": { date: "Mars 2026", label: "v2.0 — Ressources + Mana + Casino" },
@@ -4926,7 +4947,7 @@
             <label>📋 Version:</label>
             <select id="version-select" style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:6px;padding:0.3rem 0.5rem;color:var(--text-primary);font-size:0.75rem;">
                 ${Object.entries(VERSIONS).map(([k, v]) =>
-                `<option value="${k}" ${k === 'v4.1' ? 'selected' : ''}>${v.label}</option>`
+                `<option value="${k}" ${k === 'v5.0' ? 'selected' : ''}>${v.label}</option>`
             ).join('')}
             </select>
         `;
@@ -4938,7 +4959,7 @@
             banner.id = 'version-banner';
             banner.innerHTML = `
             ⚠️ Vous consultez une version archivée
-            <button onclick="document.getElementById('version-select').value='v4.1'; switchVersion('v4.1')">Retour à la version actuelle</button>
+            <button onclick="document.getElementById('version-select').value='v5.0'; switchVersion('v5.0')">Retour à la version actuelle</button>
         `;
             document.body.prepend(banner);
 
@@ -4949,7 +4970,7 @@
 
         function switchVersion(version) {
             const banner = document.getElementById('version-banner');
-            if (version === 'v4.1') {
+            if (version === 'v5.0') {
                 banner.style.display = 'none';
                 // Current version — just reload
                 window.location.href = window.location.pathname;
@@ -5014,7 +5035,7 @@
             const types = [
                 { cls: 'v50-new', label: '✨ NOUVEAU v5.0', color: '#10b981' },
                 { cls: 'v50-modified', label: '🔄 MODIFIÉ v5.0', color: '#06b6d4' },
-                { cls: 'v50-removed', label: '🗑️ RETIRÉ v5.0', color: '#ef4444' }
+                { cls: 'v41-removed', label: '🗑️ RETIRÉ v4.1', color: '#ef4444' }
             ];
 
             types.forEach(t => {
