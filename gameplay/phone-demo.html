@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        @keyframes puckPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(59, 130, 246, 0.8);
+            }
+
+            50% {
+                box-shadow: 0 0 35px rgba(59, 130, 246, 1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="gamePhone"
+        style="width: 320px; height: 680px; background: #111827; border-radius: 36px; position: relative; overflow: hidden; box-shadow: 0 0 60px rgba(255,215,0,0.08), 0 20px 50px rgba(0,0,0,0.6); border: 2px solid rgba(255,255,255,0.08);">
+        <div
+            style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:110px;height:26px;background:#111827;border-radius:0 0 14px 14px;z-index:50;">
+        </div>
+        <img src="../map-bg.png" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;"
+            alt="">
+        <svg viewBox="0 0 320 680" style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2;"
+            id="hexGrid"></svg>
+        <svg viewBox="0 0 320 680" style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3;"
+            id="targetHexSvg">
+            <polygon id="hexStroke" points="" fill="none" stroke="#f87171" stroke-width="2.5" />
+        </svg>
+        <div id="playerPuck"
+            style="position: absolute; width: 18px; height: 18px; background: radial-gradient(circle at 30% 30%, #93c5fd, #3b82f6); border-radius: 50%; border: 3px solid white; box-shadow: 0 0 20px rgba(59,130,246,0.8); z-index: 15; animation: puckPulse 2s ease-in-out infinite; transform: translate(-50%, -50%); opacity: 0;">
+        </div>
+        <div id="enemyPuck"
+            style="position: absolute; width: 18px; height: 18px; background: radial-gradient(circle at 30% 30%, #fcd34d, #f59e0b); border-radius: 50%; border: 3px solid white; box-shadow: 0 0 20px rgba(245,158,11,0.8); z-index: 15; animation: puckPulse 2s ease-in-out infinite; transform: translate(-50%, -50%); opacity: 0;">
+        </div>
+        <div id="fogOverlay" style="position: absolute; inset: 0; z-index: 4; pointer-events: none;"></div>
+        <div
+            style="position: absolute; top: 45px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; background: rgba(15,23,42,0.85); backdrop-filter: blur(20px); border-radius: 50px; padding: 5px 7px; border: 1px solid rgba(255,255,255,0.1); z-index: 20; gap: 2px;">
+            <div style="padding: 7px 12px; font-size: 11px; font-weight: 700; white-space: nowrap;">
+                <span style="color: rgba(255,255,255,0.5);">⬡</span>
+                <span style="color: #fbbf24;" id="hexCount"> 0</span>
+            </div>
+            <div style="width: 1px; height: 16px; background: rgba(255,255,255,0.15);"></div>
+            <div style="padding: 7px 12px; font-size: 11px; font-weight: 700; white-space: nowrap;">
+                <span style="color: rgba(255,255,255,0.5);">🏆</span>
+                <span style="color: #a78bfa;" id="scoreDisplay"> 0</span>
+            </div>
+        </div>
+        <div
+            style="position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; background: rgba(15,23,42,0.85); backdrop-filter: blur(20px); border-radius: 50px; padding: 5px 7px; border: 1px solid rgba(255,255,255,0.1); z-index: 20; gap: 2px;">
+            <div style="padding: 8px 14px; font-size: 12px; font-weight: 700; white-space: nowrap;">📍 Montréal</div>
+            <div style="width: 1px; height: 20px; background: rgba(255,255,255,0.12);"></div>
+            <div style="padding: 8px 12px; font-size: 14px; color: #f87171;">⚔️</div>
+        </div>
+        <div id="captureFlash"
+            style="position: absolute; inset: 0; background: white; z-index: 30; opacity: 0; pointer-events: none; border-radius: 36px;">
+        </div>
+        <div id="scorePopup"
+            style="position: absolute; top: 45%; left: 50%; transform: translate(-50%,-50%) scale(0); font-size: 28px; font-weight: 900; color: #fbbf24; text-shadow: 0 0 30px rgba(251,191,36,0.8); z-index: 30; pointer-events: none; opacity: 0;">
+        </div>
+    </div>
+    <script>
+        (function () {
+            const HEX_R = 25, PW = 320, PH = 680;
+            const HEX_W = Math.sqrt(3) * HEX_R;
+            const COLS = 8, ROWS = 16;
+            const hSp = HEX_W, vSp = 1.5 * HEX_R;
+            const PLAYER_HEX = '#60a5fa', ENEMY_HEX = '#f59e0b';
+            const HEX_FILL_A = '55', HEX_STROKE_A = 'BB';
+
+            function hexCenter(r, c) { return { x: c * hSp + (r % 2 === 1 ? hSp / 2 : 0) + HEX_W / 2, y: r * vSp + HEX_R }; }
+            function hexPts(cx, cy, r) { const p = []; for (let i = 0; i < 6; i++) { const a = -Math.PI / 2 + i * Math.PI / 3; p.push([cx + r * Math.cos(a), cy + r * Math.sin(a)]); } return p; }
+            function ptsStr(p) { return p.map(v => v.join(',')).join(' '); }
+
+            // Build grid
+            const svg = document.getElementById('hexGrid');
+            for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
+                const { x: cx, y: cy } = hexCenter(r, c);
+                const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                poly.setAttribute('points', ptsStr(hexPts(cx, cy, HEX_R)));
+                poly.setAttribute('fill', 'none'); poly.setAttribute('stroke', 'none'); poly.setAttribute('stroke-width', '0');
+                poly.setAttribute('data-row', r); poly.setAttribute('data-col', c);
+                svg.appendChild(poly);
+            }
+
+            // Fog canvas
+            const fogC = document.createElement('canvas');
+            fogC.width = PW; fogC.height = PH; fogC.style.cssText = 'width:100%;height:100%;';
+            const ctx = fogC.getContext('2d');
+            document.getElementById('fogOverlay').appendChild(fogC);
+
+            const hexStroke = document.getElementById('hexStroke');
+            const puck = document.getElementById('playerPuck');
+            const captureFlash = document.getElementById('captureFlash');
+            const scorePopup = document.getElementById('scorePopup');
+            let fogPattern = null, revealedHexes = new Set(), playerHexes = new Set();
+            let hexCount = 0, score = 0;
+
+            const stealTarget = { row: 6, col: 3 };
+            const enemyHexes = [[7, 3], [8, 4], [8, 3], [6, 3]];
+            const walkPath = [[8, 4], [8, 5], [7, 5], [7, 4], [7, 3], [6, 3], [6, 4], [5, 4], [5, 3], [6, 3]];
+
+            function drawFullFog() { ctx.clearRect(0, 0, PW, PH); ctx.globalCompositeOperation = 'source-over'; ctx.fillStyle = fogPattern; ctx.fillRect(0, 0, PW, PH); }
+            function revealHex(r, c) {
+                const k = r + ',' + c; if (revealedHexes.has(k)) return; revealedHexes.add(k);
+                const { x: cx, y: cy } = hexCenter(r, c); const pts = hexPts(cx, cy, HEX_R + 2);
+                ctx.globalCompositeOperation = 'destination-out'; ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]);
+                pts.forEach(p => ctx.lineTo(p[0], p[1])); ctx.closePath(); ctx.fill(); ctx.globalCompositeOperation = 'source-over';
+            }
+            function claimHex(r, c) {
+                playerHexes.add(r + ',' + c);
+                document.querySelectorAll('#hexGrid polygon').forEach(p => {
+                    if (+p.getAttribute('data-row') === r && +p.getAttribute('data-col') === c) {
+                        p.setAttribute('fill', PLAYER_HEX + HEX_FILL_A); p.setAttribute('stroke', PLAYER_HEX + HEX_STROKE_A); p.setAttribute('stroke-width', '1.5');
+                    }
+                });
+            }
+            function markEnemy(r, c) {
+                document.querySelectorAll('#hexGrid polygon').forEach(p => {
+                    if (+p.getAttribute('data-row') === r && +p.getAttribute('data-col') === c) {
+                        p.setAttribute('fill', ENEMY_HEX + HEX_FILL_A); p.setAttribute('stroke', ENEMY_HEX + HEX_STROKE_A); p.setAttribute('stroke-width', '1.5');
+                    }
+                });
+            }
+            function movePuck(r, c) { const { x, y } = hexCenter(r, c); puck.style.transition = 'left 0.6s ease, top 0.6s ease'; puck.style.left = x + 'px'; puck.style.top = y + 'px'; }
+            function flash() { captureFlash.style.transition = 'none'; captureFlash.style.opacity = '0.6'; setTimeout(() => { captureFlash.style.transition = 'opacity 0.4s'; captureFlash.style.opacity = '0'; }, 60); }
+            function showPopup(txt, col) {
+                scorePopup.textContent = txt; scorePopup.style.color = col || '#fbbf24'; scorePopup.style.textShadow = `0 0 30px ${col || '#fbbf24'}80`;
+                scorePopup.style.transition = 'none'; scorePopup.style.opacity = '1'; scorePopup.style.transform = 'translate(-50%,-50%) scale(1.2)';
+                setTimeout(() => { scorePopup.style.transition = 'all 1s ease-out'; scorePopup.style.opacity = '0'; scorePopup.style.transform = 'translate(-50%,-80%) scale(0.8)'; }, 800);
+            }
+            function updateStats() { document.getElementById('hexCount').textContent = ' ' + hexCount; document.getElementById('scoreDisplay').textContent = ' ' + score.toLocaleString(); }
+
+            function startAnimation() {
+                revealedHexes.clear(); playerHexes.clear(); hexCount = 0; score = 0; updateStats(); drawFullFog();
+                puck.style.transition = 'none'; puck.style.opacity = '0';
+                document.getElementById('enemyPuck').style.opacity = '0';
+                hexStroke.setAttribute('points', '');
+                document.querySelectorAll('#hexGrid polygon').forEach(p => { p.setAttribute('fill', 'none'); p.setAttribute('stroke', 'none'); p.setAttribute('stroke-width', '0'); });
+                enemyHexes.forEach(([r, c]) => markEnemy(r, c));
+
+                const steps = []; let t = 500;
+                t += 1500;
+                steps.push([t, () => { const s = walkPath[0]; movePuck(s[0], s[1]); puck.style.transition = 'opacity 0.5s'; puck.style.opacity = '1'; }]);
+                t += 800;
+                walkPath.forEach(([r, c]) => { steps.push([t, () => { movePuck(r, c); revealHex(r, c); }]); t += enemyHexes.some(([er, ec]) => er === r && ec === c) ? 800 : 500; });
+                t += 400;
+                // Auto capture
+                steps.push([t, () => {
+                    movePuck(stealTarget.row, stealTarget.col);
+                    const sc = hexCenter(stealTarget.row, stealTarget.col);
+                    hexStroke.setAttribute('points', ptsStr(hexPts(sc.x, sc.y, HEX_R)));
+                    hexStroke.setAttribute('fill', ENEMY_HEX + '15'); hexStroke.setAttribute('stroke', ENEMY_HEX);
+                }]);
+                t += 1500;
+                steps.push([t, () => {
+                    flash(); showPopup('VOLÉ !', '#fbbf24');
+                    claimHex(stealTarget.row, stealTarget.col);
+                    hexStroke.setAttribute('fill', PLAYER_HEX + HEX_FILL_A); hexStroke.setAttribute('stroke', PLAYER_HEX + HEX_STROKE_A);
+                    hexCount++; score += 250; updateStats();
+                }]);
+                t += 2000;
+                // Enemy counter
+                const enemyPuck = document.getElementById('enemyPuck');
+                const ePath = [[6, 7], [6, 6], [6, 5], [6, 4], [6, 3]];
+                steps.push([t, () => {
+                    const start = hexCenter(6, 7); enemyPuck.style.transition = 'none'; enemyPuck.style.left = start.x + 'px'; enemyPuck.style.top = start.y + 'px'; enemyPuck.style.opacity = '1';
+                }]);
+                ePath.forEach(([r, c], i) => { steps.push([t + 400 + i * 500, () => { const pos = hexCenter(r, c); enemyPuck.style.transition = 'left 0.5s ease, top 0.5s ease'; enemyPuck.style.left = pos.x + 'px'; enemyPuck.style.top = pos.y + 'px'; }]); });
+                t += 400 + ePath.length * 500 + 400;
+                steps.push([t, () => { flash(); markEnemy(stealTarget.row, stealTarget.col); hexStroke.setAttribute('points', ''); }]);
+                t += 1500;
+                // Enemy exits
+                steps.push([t, () => { enemyPuck.style.transition = 'left 0.8s ease, top 0.8s ease'; enemyPuck.style.left = '350px'; setTimeout(() => enemyPuck.style.opacity = '0', 800); }]);
+                t += 1200;
+                // We return and recapture
+                const ret = [[5, 3], [6, 3]];
+                ret.forEach(([r, c], i) => { steps.push([t + i * 500, () => movePuck(r, c)]); });
+                t += ret.length * 500 + 400;
+                steps.push([t, () => { flash(); claimHex(stealTarget.row, stealTarget.col); hexCount++; score += 250; updateStats(); showPopup('🛡️', '#93c5fd'); }]);
+                t += 3000;
+                steps.push([t, () => startAnimation()]);
+                steps.forEach(([d, fn]) => setTimeout(fn, d));
+            }
+
+            // Load fog
+            const fogImg = new Image();
+            fogImg.src = '../fog-texture.png';
+            fogImg.onload = function () {
+                const tmp = document.createElement('canvas'); tmp.width = fogImg.width / 2; tmp.height = fogImg.height / 2;
+                tmp.getContext('2d').drawImage(fogImg, 0, 0, tmp.width, tmp.height);
+                fogPattern = ctx.createPattern(tmp, 'repeat'); drawFullFog(); startAnimation();
+            };
+            fogImg.onerror = function () { fogPattern = '#0A0A0F'; drawFullFog(); startAnimation(); };
+        })();
+    </script>
+</body>
+
+</html>
