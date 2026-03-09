@@ -1132,17 +1132,11 @@
     <section class="hero">
         <div class="hex-grid-bg"></div>
         <div class="hero-content">
-            <div class="hero-badge">⬡ Game Design Document v5.0</div>
+            <div class="hero-badge">⬡ Game Design Document v4.1</div>
             <h1>Projet Hexagon</h1>
-            <p style="max-width: 700px; margin: 0 auto; font-size: 1.1rem; line-height: 1.7;">
-                <strong>Projet Hexagon</strong> est un jeu mobile GPS en temps réel où les joueurs explorent
-                physiquement
-                leur quartier à pied pour découvrir des ressources, capturer du territoire hexagonal et construire leur
-                forteresse. Chaque pas dans le monde réel fait progresser le joueur dans le jeu. Un compagnon Dragon
-                évolue avec toi et protège ton empire, mais il doit être nourri quotidiennement — un Tamagotchi
-                stratégique qui transforme la marche en aventure.
-            </p>
-            <div class="hero-stats" style="margin-top: 1.5rem;">
+            <p>Conquiers ton quartier à pied. Ramasse des gems, capture du territoire, construis ta forteresse — dans la
+                vraie vie.</p>
+            <div class="hero-stats">
                 <div class="hero-stat">
                     <div class="number">👤</div>
                     <div class="label">Solo-First</div>
@@ -1152,12 +1146,12 @@
                     <div class="label">Piéton est Roi</div>
                 </div>
                 <div class="hero-stat">
-                    <div class="number">🐉</div>
-                    <div class="label">Dragon Compagnon</div>
+                    <div class="number">15</div>
+                    <div class="label">Ressources</div>
                 </div>
                 <div class="hero-stat">
-                    <div class="number">🏰</div>
-                    <div class="label">Forteresse Visitable</div>
+                    <div class="number">4</div>
+                    <div class="label">Tiers de Skins</div>
                 </div>
             </div>
             <a href="https://discord.gg/2RGzMDyMrW" target="_blank" class="discord-btn">
@@ -1174,13 +1168,11 @@
     <nav class="nav">
         <a href="#loop">🔄 Boucle</a>
         <a href="#actions">⚔️ Actions</a>
-        <a href="#dragon">🐉 Dragon</a>
         <a href="#heatscore">🌡️ Heat Score</a>
         <a href="#economy">🪙 Économie</a>
         <a href="#balance">⚖️ Anti-Snowball</a>
         <a href="#fortification">🏰 Forteresses</a>
         <a href="#loot">🎰 Loot Casino</a>
-        <a href="#quests">🎯 Quêtes</a>
         <a href="#mana">🔮 Hex Jump</a>
         <a href="#cohabitation">🤝 Cohabitation</a>
         <a href="#saisons">📅 Saisons</a>
@@ -1204,7 +1196,7 @@
 
         <div class="section-header">
             <div class="section-tag cyan">🔄 Boucle <span class="version-badge unchanged">✓ Non changé depuis
-                    v4.1</span></div>
+                    v3.0</span></div>
             <h2>Core Loop — 4 étapes</h2>
             <p class="subtitle">Découvrir → Looter → Capturer → Défendre — chaque étape mène à la suivante</p>
         </div>
@@ -1256,192 +1248,6 @@
                     Un conducteur couvre la distance plus vite mais attend le même cooldown — frustrant = voulu. Pas de
                     restriction de vitesse = pas d'accidents causés par des joueurs qui regardent leur téléphone au
                     volant.</p>
-            </div>
-        </details>
-
-    </section>
-    <div class="divider"></div>
-
-    <!-- ============ DRAGON COMPAGNON ============ -->
-    <section class="section" id="dragon">
-
-        <div class="section-header">
-            <div class="section-tag purple">🐉 Dragon Compagnon <span class="version-badge new-section v50-new">✨
-                    Nouveau v5.0</span></div>
-            <h2>Le Dragon — Tamagotchi de Prestige</h2>
-            <p class="subtitle">Un compagnon vivant qui protège ton territoire. Puissant mais coûteux à entretenir — le
-                frein naturel au snowball.</p>
-        </div>
-
-        <div class="solo-banner" style="margin-bottom: 2rem;">
-            <h3>🥚 → 🐛 → 🐲 → 🐉 → 👑</h3>
-            <p>Ton Dragon évolue à travers 5 stades. Chaque évolution demande des ressources, du temps et ta présence
-                physique.
-                Ses pouvoirs sont <strong>purement défensifs</strong> — il protège mieux ton territoire mais ne t'aide
-                jamais à looter plus.</p>
-        </div>
-
-        <div class="card-grid card-grid-3 v50-new">
-            <div class="card">
-                <div class="card-icon green">🥚</div>
-                <h3>T0 — L'Œuf</h3>
-                <p>État dormant ou initial. Zéro coût, zéro bonus. Le Dragon « dort » mais son Tier réel est mémorisé.
-                    <strong>L'Œuf est éternel</strong> — pas de mort permanente.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon cyan">🐛</div>
-                <h3>T1 — La Larve</h3>
-                <p>Premier éveil. <strong>+15 min</strong> au timer de contestation de tes hexs. Petit Dragon visible
-                    sur ta Forteresse.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon blue">🐲</div>
-                <h3>T2 — Le Dragonnet</h3>
-                <p><strong>+30 min</strong> contestation. Skins visuels pour tes hexs. Le Dragon grandit et devient
-                    visible de loin sur la map.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon orange">🐉</div>
-                <h3>T3 — Le Dragon Adulte</h3>
-                <p><strong>+1h</strong> contestation. Dragon imposant, aura visible. Un adversaire doit attendre 3h au
-                    lieu de 2h pour contester.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon purple">👑</div>
-                <h3>T4 — Le Légendaire</h3>
-                <p><strong>+2h</strong> contestation. Effets visuels légendaires. Le Dragon massif sur ta Forteresse est
-                    le flex ultime — tout le quartier le voit.</p>
-            </div>
-        </div>
-
-        <div class="section-header" style="margin-top: 3rem;">
-            <div class="section-tag orange">🔨 Upgrade</div>
-            <h2>Comment Upgrader — Le Chantier</h2>
-            <p class="subtitle">L'évolution n'est pas un bouton « Level Up ». C'est un projet logistique physique.</p>
-        </div>
-
-        <div class="siege-flow v50-new">
-            <div class="siege-phase">
-                <div class="siege-number step1">1</div>
-                <div class="siege-info">
-                    <h4>🏛️ Prérequis — Sanctuaire</h4>
-                    <p>Le Tier du Pet est plafonné par le niveau du bâtiment <strong>Sanctuaire</strong> dans ta
-                        Forteresse. Pour passer au Dragon T3, il faut un Sanctuaire Niveau 3 minimum.</p>
-                </div>
-            </div>
-            <div class="siege-phase">
-                <div class="siege-number step2">2</div>
-                <div class="siege-info">
-                    <h4>💎 Injection de Ressources</h4>
-                    <p>Paie le coût total <strong>en une seule shot</strong> — tout doit fitter dans ton inventaire (cap
-                        5 Épiques). Coûts bas = rareté générique. Coûts hauts = <strong>couleurs spécifiques</strong>
-                        (ex: 2 Rubis + 1 Arcane).</p>
-                </div>
-            </div>
-            <div class="siege-phase">
-                <div class="siege-number step1">3</div>
-                <div class="siege-info">
-                    <h4>⏱️ Temps de Séchage — 24h à 72h</h4>
-                    <p>Un chrono démarre. Le chantier est en cours. Tu peux continuer à jouer normalement pendant ce
-                        temps.</p>
-                </div>
-            </div>
-            <div class="siege-phase">
-                <div class="siege-number step3">4</div>
-                <div class="siege-info">
-                    <h4>📍 Sceau Physique</h4>
-                    <p>Une fois le chrono terminé, tu dois te <strong>déplacer physiquement sur l'hex de ta
-                            Forteresse</strong> pour valider l'évolution. Le moment rituel.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="section-header" style="margin-top: 3rem;">
-            <div class="section-tag red">❤️ Métabolisme</div>
-            <h2>Maintenance Quotidienne — Le Tamagotchi</h2>
-            <p class="subtitle">Ton Dragon a faim. Nourris-le ou il retourne à l'Œuf. La boucle de rétention
-                quotidienne.</p>
-        </div>
-
-        <div class="card-grid v50-new">
-            <div class="card">
-                <div class="card-icon red">📉</div>
-                <h3>Jauge de Vitalité</h3>
-                <p>Descend automatiquement. <strong>Variable par Tier</strong> :<br>
-                    T1 = 2%/h (~50h pour vider)<br>
-                    T2 = 3%/h (~33h)<br>
-                    T3 = 4%/h (~25h)<br>
-                    T4 = 5%/h (~20h)<br>
-                    Plus le Dragon est puissant, plus il a faim.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon green">🍖</div>
-                <h3>Nourriture par Unité</h3>
-                <p>Chaque ressource remplit un % de la jauge :<br>
-                    1 Commune = <strong>+5%</strong><br>
-                    1 Rare = <strong>+15%</strong><br>
-                    1 Épique = <strong>+40%</strong><br>
-                    Le joueur choisit combien il donne.</p>
-            </div>
-        </div>
-
-        <div class="card-grid card-grid-3 v50-new" style="margin-top: 1rem;">
-            <div class="card">
-                <div class="card-icon orange">🎨</div>
-                <h3>Craving (Envie du Jour)</h3>
-                <p>Chaque matin, le Dragon veut une couleur. Pondéré selon la rareté :<br>
-                    🟢 Jade = 40% · 🔵 Saphir = 30%<br>
-                    🔴 Rubis = 20% · 🟣 Arcane = 10%<br>
-                    <strong>Bonne couleur</strong> = 1.0×<br>
-                    <strong>Mauvaise</strong> = 0.25× (4× moins efficace)
-                </p>
-            </div>
-            <div class="card">
-                <div class="card-icon purple">👑</div>
-                <h3>Taxe de Luxe</h3>
-                <p>Le goût du Dragon évolue :<br>
-                    T1-T2 : accepte les <strong>Communes</strong><br>
-                    T3 : ignore les Communes, exige <strong>Rares+</strong><br>
-                    T4 : ignore les Rares, exige <strong>Épiques</strong><br>
-                    Plus tu es fort, plus c'est coûteux.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon cyan">🥚</div>
-                <h3>L'Œuf — Mode Veille</h3>
-                <p>Jauge à zéro → Dragon retourne à l'Œuf. Tous les bonus désactivés. <strong>Réveil coûteux</strong>
-                    (proportionnel au Tier).<br>
-                    Le joueur <em>croit</em> que le Dragon peut mourir, mais <strong>l'Œuf est éternel</strong>. Le Tier
-                    réel est toujours mémorisé.</p>
-            </div>
-        </div>
-
-        <div class="formula-box glow-pulse">
-            <div class="formula">Nourrir chaque jour = pas cher · Laisser dormir = réveil coûteux · Marcher = survivre
-            </div>
-            <div class="formula-desc">Le Dragon rend le joueur puissant défensivement mais économiquement fragile. C'est
-                le frein naturel au snowball.</div>
-        </div>
-
-        <div class="alert danger">
-            <strong>🚫 Pas de Silo :</strong> Le Pet se nourrit UNIQUEMENT à la main. Pas de nourriture automatique, pas
-            de stockage tampon.
-            C'est le Tamagotchi — si tu l'oublies, il dort. La boucle de rétention quotidienne est intacte.
-        </div>
-
-        <div class="alert golden" style="margin-top: 1rem;">
-            <strong>🛡️ Pouvoirs 100% Défensifs :</strong> Le Dragon ne donne AUCUN avantage de loot ou d'exploration.
-            Un joueur T0 et un joueur T4 trouvent exactement les mêmes gems. L'égalité sur le terrain est absolue.
-        </div>
-
-        <details>
-            <summary>💡 Pourquoi ce design?</summary>
-            <div class="alert info" style="margin-top: 0.5rem;">
-                <p>Le Pet résout trois problèmes : 1) <strong>Soupape d'inventaire</strong> — le joueur doit dépenser
-                    ses ressources pour un but (nourrir),
-                    ce qui empêche l'accumulation infinie. 2) <strong>Rétention quotidienne</strong> — le Tamagotchi
-                    pousse le joueur à ouvrir l'app chaque jour.
-                    3) <strong>Anti-snowball</strong> — plus le Dragon est fort, plus il coûte cher à maintenir. Le
-                    joueur dominant doit continuer à marcher pour rester au sommet.</p>
             </div>
         </details>
 
@@ -1500,10 +1306,10 @@
                         <td>12-24h</td>
                         <td>Dynamique (cap 15 min)</td>
                     </tr>
-                    <tr class="v50-modified">
+                    <tr>
                         <td>🔴 Raid forteresse</td>
-                        <td>4 Épiques + physique</td>
-                        <td>72h (+ bonus Dragon)</td>
+                        <td>Bélier + 30 sec</td>
+                        <td>24h</td>
                         <td>—</td>
                     </tr>
                 </tbody>
@@ -1616,88 +1422,84 @@
     <section class="section" id="economy">
 
         <div class="section-header">
-            <div class="section-tag orange">💎 Économie <span class="version-badge new-section v50-modified">🔄 Modifié
-                    v5.0</span></div>
+            <div class="section-tag orange">💎 Économie <span class="version-badge changed">🔄 Modifié v4.1</span></div>
             <h2>Économie de Survie — Gems &amp; Ressources</h2>
-            <p class="subtitle">4 couleurs à rareté variable × 3 raretés = 12 types + Mystère wildcard.
-                Spawn rate 50%. Casino roll 80/8/2. Un seul modèle 3D, couleur = texture. Zéro crafting, zéro trade.</p>
+            <p class="subtitle">5 couleurs × 3 raretés = 15 ressources. Distribution égale par couleur + Mystère
+                ultra-rare.
+                Un seul modèle 3D de gem, couleur = texture. Zéro crafting, zéro trade.</p>
         </div>
 
-        <div class="table-wrap v50-modified">
+        <div class="table-wrap">
             <table>
                 <thead>
                     <tr>
                         <th>Couleur</th>
-                        <th>Nom</th>
+                        <th>Type</th>
                         <th>Spawn %</th>
                         <th>Commun</th>
                         <th>Rare</th>
                         <th>Épique</th>
-                        <th>Rôle</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>🟢</td>
-                        <td><strong>Jade</strong></td>
-                        <td><strong>40%</strong></td>
-                        <td>80%</td>
+                        <td>🟤 Brun</td>
+                        <td>Pierre</td>
+                        <td><strong>19%</strong></td>
+                        <td>90%</td>
                         <td>8%</td>
                         <td>2%</td>
-                        <td>Abondante, base de l'économie</td>
                     </tr>
                     <tr>
-                        <td>🔵</td>
-                        <td><strong>Saphir</strong></td>
-                        <td><strong>30%</strong></td>
-                        <td>80%</td>
+                        <td>⚪ Argent</td>
+                        <td>Métal</td>
+                        <td><strong>19%</strong></td>
+                        <td>90%</td>
                         <td>8%</td>
                         <td>2%</td>
-                        <td>Standard</td>
                     </tr>
                     <tr>
-                        <td>🔴</td>
-                        <td><strong>Rubis</strong></td>
-                        <td><strong>20%</strong></td>
-                        <td>80%</td>
+                        <td>🔵 Cyan</td>
+                        <td>Énergie</td>
+                        <td><strong>19%</strong></td>
+                        <td>90%</td>
                         <td>8%</td>
                         <td>2%</td>
-                        <td>Peu commune, recherchée</td>
                     </tr>
                     <tr>
-                        <td>🟣</td>
-                        <td><strong>Arcane</strong></td>
-                        <td><strong>10%</strong></td>
-                        <td>80%</td>
+                        <td>🟣 Violet</td>
+                        <td>Cristal</td>
+                        <td><strong>19%</strong></td>
+                        <td>90%</td>
                         <td>8%</td>
                         <td>2%</td>
-                        <td>Ultra rare, monnaie endgame</td>
                     </tr>
-                    <tr style="background: rgba(168, 85, 247, 0.05);">
-                        <td>✨</td>
-                        <td><strong>Mystère</strong></td>
-                        <td><strong>1%</strong></td>
+                    <tr>
+                        <td>🟡 Or</td>
+                        <td>Artefact</td>
+                        <td><strong>19%</strong></td>
+                        <td>90%</td>
+                        <td>8%</td>
+                        <td>2%</td>
+                    </tr>
+                    <tr>
+                        <td>🌈 Mystère</td>
+                        <td>Choix couleur + probas boostées</td>
+                        <td><strong>3%</strong></td>
                         <td>0%</td>
-                        <td>95%</td>
-                        <td>5%</td>
-                        <td>Wildcard — color picker</td>
+                        <td>60%</td>
+                        <td>40%</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="alert golden v50-new" style="margin-top: 1.5rem;">
-            <strong>✨ Le Mystère :</strong> Casino roll D'ABORD → le joueur voit la rareté (95% Rare, 5% Épique) →
-            ENSUITE il choisit la couleur. Le choix se fait <strong>au ramassage</strong>, pas de stockage wildcard.
-            C'est un Rare garanti avec color pick — une soupape anti-frustration, pas un cheat code.
-        </div>
-
         <div class="card-grid" style="margin-top: 1.5rem;">
             <div class="card">
                 <div class="card-icon green">🎲</div>
-                <h3>Mécanique de Spawn <span class="version-badge new">✓ Depuis v4.1</span></h3>
-                <div class="v50-modified">
-                    <p><strong>50% de chance</strong> par hex découvert (Math.random uniforme, pas de clustering).<br>
+                <h3>Mécanique de Spawn <span class="version-badge new">✨ Nouveau v4.1</span></h3>
+                <div class="v41-modified">
+                    <p><strong>60% de chance</strong> par hex découvert (Math.random uniforme, pas de clustering).<br>
                         Marqueurs <code>value=0</code> pour les hex vides : les reboots serveur ne re-rollent
                         jamais.<br>
                         Gems globales : visibles par tous, disparaissent à la capture.<br>
@@ -1708,15 +1510,15 @@
             </div>
             <div class="card">
                 <div class="card-icon purple">👁️</div>
-                <h3>Visuels de Rareté <span class="version-badge new">✓ Depuis v4.1</span></h3>
-                <div class="v50-modified">
-                    <p>Pas besoin de texte — la <strong>rareté se communique visuellement</strong> :<br>
-                        🟢 <strong>Jade</strong> : mat, lueur douce — « normal » <br>
-                        🔵 <strong>Saphir</strong> : léger reflet, particule subtile<br>
-                        🔴 <strong>Rubis</strong> : glow pulsant, particules<br>
-                        🟣 <strong>Arcane</strong> : aura intense + son spécial<br>
-                        ✨ <strong>Mystère</strong> : iridescent arc-en-ciel, impossible à manquer<br>
-                        Le joueur apprend la rareté par <strong>l'expérience</strong>, pas par un tuto.</p>
+                <h3>Visuels de Rareté <span class="version-badge new">✨ Nouveau v4.1</span></h3>
+                <div class="v41-modified">
+                    <p>La <strong>base (socle)</strong> du gem indique les <strong>chances de meilleur roll</strong> à
+                        la capture :<br>
+                        🟤 <strong>Base sombre</strong> : odds normales (90% commun, 8% rare, 2% épique)<br>
+                        ⚪ <strong>Base argentée</strong> : meilleures odds (70/20/10)<br>
+                        🟡 <strong>Base dorée</strong> : excellentes odds (50/30/20)<br>
+                        🌈 <strong>Mystère</strong> : cycle rainbow + pas de commun (60% rare, 40% épique) + choix de
+                        couleur</p>
                 </div>
             </div>
         </div>
@@ -1725,24 +1527,20 @@
             <div class="card">
                 <div class="card-icon blue">📦</div>
                 <h3>Caps d'inventaire par rareté</h3>
-                <div class="v50-modified">
-                    <p>⚪ Commun : <strong>max 30 total</strong><br>⭐ Rare : <strong>max 15 total</strong><br>💎
-                        Épique : <strong>max 5 total</strong><br><br>
-                        <strong>Inventaire plein?</strong> Échange forcé — tu choisis quoi sacrifier pour le nouveau
-                        loot. La ressource abandonnée disparaît.
-                    </p>
+                <div class="v41-modified">
+                    <p>⚪ Commun : <strong>max 15/couleur</strong><br>⭐ Rare : <strong>max 8/couleur</strong><br>💎
+                        Épique : <strong>max 3/couleur</strong></p>
                 </div>
             </div>
             <div class="card">
                 <div class="card-icon red">📤</div>
                 <h3>Dépenses (Resource Sinks)</h3>
-                <div class="v50-modified">
+                <div class="v41-modified">
                     <p>Capturer un hex : <strong>3 communes</strong><br>
                         Bouclier préventif : <strong>3 rares</strong><br>
-                        Forteresse T1→T2 : <strong>coût mixte</strong> (rares + épiques)<br>
-                        Forteresse T2→T3 Mega : <strong>Rubis + Arcane Épiques</strong><br>
-                        Raid : <strong>4 Épiques</strong><br>
-                        Nourrir le Dragon : <strong>quotidien</strong> (le vrai resource sink)</p>
+                        Forteresse Lv0 : <strong>5 rares (1/couleur)</strong><br>
+                        Forteresse Lv1 : <strong>1 épique × 5 couleurs</strong><br>
+                        Bélier : <strong>1 épique × 5 couleurs</strong></p>
                 </div>
             </div>
         </div>
@@ -1757,7 +1555,7 @@
             <div class="card">
                 <div class="card-icon cyan">📱</div>
                 <h3>Défense Remote</h3>
-                <div class="v50-modified">
+                <div class="v41-modified">
                     <p>🛡️ Défendre : <strong>5 communes</strong><br>
                         ⚡ Répulsion : <strong>1 rare</strong> (+ cooldown 30 min)<br>
                         🏰 Bouclier urgence : <strong>5 rares</strong> (12h invulnérable)<br>
@@ -1809,8 +1607,7 @@
     <section class="section" id="balance">
 
         <div class="section-header">
-            <div class="section-tag red">⚖️ Balance <span class="version-badge changed">✓ Non changé depuis v4.0</span>
-            </div>
+            <div class="section-tag red">⚖️ Balance <span class="version-badge changed">🔄 Modifié v4.0</span></div>
             <h2>Anti-Snowball — L'Économie EST le Mécanisme</h2>
             <p class="subtitle">Pas de caps artificiels. L'économie de survie empêche naturellement la domination.</p>
         </div>
@@ -1819,7 +1616,7 @@
             <div class="card">
                 <div class="card-icon red">⏱️</div>
                 <h3>Cooldown Dynamique</h3>
-                <div class="v50-modified">
+                <div class="v41-modified">
                     <p>Basé sur la <strong>distance en hexes</strong> (×6 min, cap 15 min). Le piéton n'attend jamais.
                         <br><strong>⚡ Cumulatif :</strong> Hex 1 = 0 min, Hex 2 = 5 min, Hex 3 = 10 min, Hex 4+ = 15 min
                         max. Le joueur rapide (auto/vélo) accumule du cooldown. Le piéton marche le cooldown
@@ -1834,18 +1631,12 @@
             </div>
             <div class="card">
                 <div class="card-icon cyan">⏳</div>
-                <h3>Decay territorial <span class="v50-modified" style="display:inline;font-size:0.65rem;">🔄
-                        v5.0</span></h3>
-                <p><strong>Decay en périphérie seulement</strong> — les hexs les plus éloignés de ta Forteresse decay en
-                    premier si non-visités.
-                    Le cœur du territoire (près de la Forteresse) reste solide. Pas de limite artificielle de nombre
-                    d'hexs —
-                    la limite est <strong>organique</strong> : tu ne peux maintenir que ce que tu visites régulièrement.
-                </p>
-                <div class="v50-modified">
-                    <p>🌫️ <strong>Le fog ne revient jamais :</strong> Chaque hex exploré est un progrès permanent.
-                        La map du joueur grandit avec le temps, ne rétrécit jamais. Le decay affecte la
-                        <strong>propriété</strong>, pas la découverte.</p>
+                <h3>Decay territorial</h3>
+                <p><strong>14 jours</strong> sans visite → dégradation. <strong>30 jours</strong> → hex neutre.
+                    Maintenance gratuite à pied, <strong>5 communes</strong> en remote.</p>
+                <div class="v41-new">
+                    <p>💎 <strong>Extension payante :</strong> Dépense des gems pour allonger le timer de decay avant de
+                        partir. Resource sink stratégique pour les joueurs en vacances.</p>
                 </div>
             </div>
             <div class="card">
@@ -1922,135 +1713,70 @@
     <section class="section" id="fortification">
 
         <div class="section-header">
-            <div class="section-tag purple">🏰 Forteresses <span class="version-badge new-section v50-modified">🔄
-                    Modifié v5.0</span>
+            <div class="section-tag purple">🏰 Forteresses <span class="version-badge changed">🔄 Modifié v4.0</span>
             </div>
-            <h2>Forteresse — Ta Base, Ton Salon, Ton Château</h2>
-            <p class="subtitle">3 tailles (1→3→7 hexs), bâtiments fonctionnels + déco style Sims,
-                intérieur 3D visitable par les autres joueurs. 1 seule forteresse par joueur.</p>
+            <h2>Forteresse &amp; Raid Soft</h2>
+            <p class="subtitle">Lv0 en rares (semaine 1), Lv1+ en épiques. Niveaux illimités, prestige pur. Rebuilt au
+                même niveau après destruction.</p>
         </div>
 
-        <div class="table-wrap v50-modified">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Tier</th>
-                        <th>Nom</th>
-                        <th>Hexs</th>
-                        <th>Tour</th>
-                        <th>Coût d'expansion</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>T1</td>
-                        <td><strong>🏠 Maison</strong></td>
-                        <td>1 hex</td>
-                        <td>Sur l'hex</td>
-                        <td>Rares (accessible semaine 1)</td>
-                    </tr>
-                    <tr>
-                        <td>T2</td>
-                        <td><strong>🏰 Forteresse</strong></td>
-                        <td>3 hexs</td>
-                        <td>Jonction des 3</td>
-                        <td>Rares + Épiques</td>
-                    </tr>
-                    <tr>
-                        <td>T3</td>
-                        <td><strong>👑 Mega Forteresse</strong></td>
-                        <td>7 hexs</td>
-                        <td>Hex central</td>
-                        <td>Rubis + Arcane Épiques</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="card-grid card-grid-3 v50-new" style="margin-top: 1.5rem;">
+        <div class="card-grid">
             <div class="card">
-                <div class="card-icon purple">🏗️</div>
-                <h3>Bâtiments Fonctionnels</h3>
-                <p><strong>Donjon</strong> — Hub central, prérequis pour tout<br>
-                    <strong>Sanctuaire</strong> — Maison du Dragon, plafonne son Tier<br>
-                    <strong>Remparts</strong> — Défense, bonus contestation raids
-                </p>
+                <div class="card-icon purple">🏰</div>
+                <h3>Construction (3 hexes adjacents)</h3>
+                <div class="v41-modified">
+                    <p><strong>Coût Lv0 :</strong> 5 rares (1/couleur) — 1 hex, accessible semaine 1<br>
+                        <strong>Coût Lv1 :</strong> 1 épique × 5 couleurs (5 total)<br>
+                        <strong>Coût LvN :</strong> N épiques × 5 couleurs (illimité!)<br>
+                        <strong>Durée :</strong> 3 jours avec visite physique 1×/jour<br>
+                        <strong>Limite :</strong> Max 1 forteresse par joueur<br>
+                        <strong>Distance :</strong> Min 5 hexes (~1.5km) entre forteresses<br>
+                        <strong>Avantage :</strong> ZÉRO — prestige pur, visuels par milestones tous les 5 niveaux
+                    </p>
+                </div>
             </div>
             <div class="card">
-                <div class="card-icon orange">🛋️</div>
-                <h3>Bâtiments Cosmétiques (Sims)</h3>
-                <p><strong>Salon</strong> — Pièce principale décorable<br>
-                    <strong>Salle des Trophées</strong> — Achievements affichés<br>
-                    <strong>Chambre du Dragon</strong> — Ton Pet ici<br>
-                    <strong>Jardin / Bannière</strong> — Visible sur la map
-                </p>
-            </div>
-            <div class="card">
-                <div class="card-icon cyan">👁️</div>
-                <h3>Visites 3D</h3>
-                <p>Les joueurs <strong>physiquement sur l'hex</strong> peuvent entrer dans ta Forteresse et la voir en
-                    <strong>3D orbitale</strong>.
-                    Swipe pour tourner, zoom pour détailler. Le propriétaire y accède <strong>à distance</strong>
-                    (session canapé).</p>
+                <div class="card-icon cyan">🛡️</div>
+                <h3>Protection pendant construction</h3>
+                <p>Bouclier "chantier" auto (transformation 12h).<br>
+                    Si hex perdu → construction <strong>PAUSÉE</strong> (pas annulée).<br>
+                    48h pour recapturer. Échec = 75% refund.</p>
             </div>
         </div>
 
-        <div class="card-grid v50-new" style="margin-top: 1rem;">
-            <div class="card">
-                <div class="card-icon green">📦</div>
-                <h3>Déplacement de Forteresse</h3>
-                <p>Tu déménages? Coût en ressources (proportionnel au Tier), pas de cooldown.
-                    Le Tier et les bâtiments sont <strong>préservés</strong>. Les anciens hexs sont libérés.
-                    Placement sur un hex possédé dans la nouvelle zone.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon purple">📱</div>
-                <h3>Accès à distance (Owner)</h3>
-                <p>Le propriétaire peut <strong>nourrir le Dragon</strong> et <strong>gérer les bâtiments</strong>
-                    depuis n'importe où.
-                    Le <strong>Sceau Physique</strong> (validation d'upgrade) reste la seule action qui exige la
-                    présence sur place.</p>
-            </div>
-        </div>
-
-        <div class="card-grid card-grid-3 v50-new" style="margin-top: 1rem;">
+        <div class="card-grid card-grid-3" style="margin-top: 1rem;">
             <div class="card">
                 <div class="card-icon cyan">👁️</div>
                 <h3>Visible à travers le Fog</h3>
-                <p>Le <strong>prestige ultime</strong> — visible par tous, même sans exploration. Les Mega Forteresses
-                    dominent le skyline.</p>
+                <p>Le <strong>prestige ultime</strong> — visible par tous, même sans exploration.</p>
             </div>
             <div class="card">
-                <div class="card-icon pink">🎨</div>
-                <h3>Décorations (Skinner Box)</h3>
-                <p>Quêtes = trophées exclusifs. Milestones = meubles. Événements saisonniers = déco limitée (FOMO).
-                    <strong>Cosmétiques futurs = monétisation non pay-to-win</strong>.
-                </p>
+                <div class="card-icon pink">✏️</div>
+                <h3>Nom personnalisé</h3>
+                <p>« La Citadelle du Plateau ». Skin T4 exclusif.</p>
             </div>
             <div class="card">
-                <div class="card-icon green">🔮</div>
-                <h3>AR (Futur Phase 3+)</h3>
-                <p>Vois ta Forteresse en <strong>réalité augmentée</strong> quand tu es physiquement dessus.
-                    Les murs, les pièces, ton Dragon — dans le vrai monde via la caméra.</p>
+                <div class="card-icon green">🏆</div>
+                <h3>Monument permanent</h3>
+                <p>Les forteresses ne sont <strong>jamais prises</strong>. Détruites ou debout.</p>
             </div>
         </div>
 
         <div class="section-header" style="margin-top: 3rem;">
             <div class="section-tag red">⚔️ Raid Soft</div>
-            <h2>Le Raid — Événement Quasi-Mythologique</h2>
-            <p class="subtitle">~1×/mois. Le raider expulse la forteresse pour libérer l'emplacement. Coûteux pour les
-                deux camps.</p>
+            <h2>Le Bélier — Événement Rare</h2>
+            <p class="subtitle">~1×/mois. Le raider détruit la forteresse. Il ne la prend PAS.</p>
         </div>
 
         <div class="siege-flow">
             <div class="siege-phase">
                 <div class="siege-number step1">1</div>
                 <div class="siege-info">
-                    <h4>💎 Coût du Raid <span class="v50-modified" style="display:inline;">— 4 Épiques</span></h4>
-                    <p>Le raideur dépense <strong>4 Épiques</strong> (toutes couleurs) — 80% de son cap. C'est un
-                        sacrifice massif pour un gain purement territorial.</p>
-                    <span class="siege-detail v50-modified">💎 4 Épiques (toutes couleurs)</span>
-                    <span class="siege-detail">🚶 Physiquement adjacent à la cible</span>
+                    <h4>🪓 Craft du Bélier — 72h</h4>
+                    <p>Consommable, max 1 en inventaire. Coûte <strong>1 épique × 5 couleurs (5 total)</strong>. All-in.
+                    </p>
+                    <span class="siege-detail v41-modified">💎 5 épiques (1 par couleur)</span>
+                    <span class="siege-detail">⏱️ 72h de craft</span>
                 </div>
             </div>
             <div class="siege-phase">
@@ -2065,23 +1791,18 @@
             <div class="siege-phase">
                 <div class="siege-number step3">3</div>
                 <div class="siege-info">
-                    <h4>⏳ 72h pour défendre <span class="v50-modified" style="display:inline;">(+ bonus Dragon)</span>
-                    </h4>
-                    <p>Le défenseur peut <strong>annuler le raid à distance pour 2 Épiques</strong>. S'il ne défend pas
-                        en 72h →
-                        Forteresse déplacée, hexs libérés. <strong>Tier préservé</strong>, rebuild ailleurs au même
-                        niveau.</p>
-                    <span class="siege-detail v50-modified">🛡️ Défense remote : 2 Épiques (de n'importe où)</span>
-                    <span class="siege-detail v50-modified">⏱️ 72h + bonus Dragon défensif</span>
-                    <span class="siege-detail">🏰 Rebuild au même Tier ailleurs</span>
+                    <h4>⏳ 24h pour défendre</h4>
+                    <p>Si défense réussie → Bélier perdu, forteresse debout. Échec → <strong>DÉTRUITE</strong>, hexes
+                        neutres. <strong>Niveau gardé</strong>, rebuild = 5 épiques (coût Lv1).</p>
+                    <span class="siege-detail">🏰 Rebuild au même niveau pour 5 épiques</span>
+                    <span class="siege-detail">⚔️ Quête vengeance + Bélier gratuit</span>
                 </div>
             </div>
         </div>
 
         <div class="formula-box glow-pulse">
-            <div class="formula">Attaquer = 4 Épiques · Défendre = 2 Épiques à distance · Tier = toujours préservé</div>
-            <div class="formula-desc">Le raid est une expulsion territoriale, pas du vol. Le raideur veut la PLACE, pas
-                les ressources.</div>
+            <div class="formula">Construire = semaines · Détruire = rare et coûteux · Niveau = permanent</div>
+            <div class="formula-desc">Rebuild au même niveau pour 5 épiques → le défenseur se relève vite</div>
         </div>
 
         <details>
@@ -2101,11 +1822,9 @@
     <section class="section" id="loot">
 
         <div class="section-header">
-            <div class="section-tag green">💎 Loot <span class="version-badge changed">✓ Non changé depuis v4.1</span>
-            </div>
+            <div class="section-tag green">💎 Loot <span class="version-badge changed">🔄 Modifié v4.1</span></div>
             <h2>Gem Crate System — Spawn Dynamiques</h2>
-            <p class="subtitle">~50% des hexes. Positions ET couleurs redistribuées chaque nuit (minuit). 4 couleurs à
-                rareté variable.
+            <p class="subtitle">~60% des hexes. Positions ET couleurs redistribuées chaque nuit (minuit).
                 Rareté révélée au ramassage. 1 gem 3D unique par hex, couleur = texture.</p>
         </div>
 
@@ -2113,8 +1832,7 @@
             <div class="card">
                 <div class="card-icon green">📍</div>
                 <h3>Spawns Dynamiques</h3>
-                <p>~50% des hexes ont un gem. Couleurs pondérées : 40% Jade, 30% Saphir, 20% Rubis, 10% Arcane.
-                    Positions ET couleurs <strong>redistribuées chaque nuit à minuit</strong>.
+                <p>~60% des hexes ont un gem. Positions ET couleurs <strong>redistribuées chaque nuit à minuit</strong>.
                     L'exploration est toujours pertinente.</p>
             </div>
             <div class="card">
@@ -2126,15 +1844,16 @@
             <div class="card">
                 <div class="card-icon purple">🌈</div>
                 <h3>Gem Mystère</h3>
-                <p>Visible sur la map (cycle rainbow). Casino roll D'ABORD (95% rare / 5% épique), puis le joueur
-                    <strong>choisit la couleur</strong>. 1% de spawn rate. Le choix se fait au ramassage.</p>
+                <p>Visible sur la map (cycle rainbow). Le joueur <strong>choisit la couleur</strong> puis déclenche un
+                    casino roll
+                    boosté (0% commun / 60% rare / 40% épique). 3% de spawn rate.</p>
             </div>
             <div class="card">
                 <div class="card-icon orange">🎨</div>
-                <h3>Base = Odds <span class="version-badge new">✓ v4.1</span></h3>
+                <h3>Base = Odds <span class="version-badge new">✨ v4.1</span></h3>
                 <p>Le <strong>socle du gem</strong> indique les chances de meilleur roll :<br>
-                    🟢🔵🔴🟣 Odds standard = 80/8/2<br>
-                    ✨ Mystère = 0/95/5 + color picker</p>
+                    🟤 Plaque Normale = standard (90/8/2)<br>
+                    🟡 Plaque Gold = boostée (50/30/20)</p>
             </div>
         </div>
 
@@ -2184,61 +1903,6 @@
         </div>
 
     </section>
-    <div class="divider"></div>
-
-    <!-- ============ QUESTS ============ -->
-    <section class="section" id="quests">
-
-        <div class="section-header">
-            <div class="section-tag green">🎯 Quêtes <span class="version-badge new-section v50-new">✨ Nouveau
-                    v5.0</span></div>
-            <h2>Quêtes — Daily, Weekly &amp; Milestones</h2>
-            <p class="subtitle">Trois types de quêtes pour trois horizons temporels. Jamais de gems en récompense —
-                uniquement XP, cosmétiques et trophées.</p>
-        </div>
-
-        <div class="card-grid card-grid-3 v50-new">
-            <div class="card">
-                <div class="card-icon green">📋</div>
-                <h3>Quotidiennes</h3>
-                <p>Reset chaque matin. Petits objectifs rapides :<br>
-                    « Explore 10 hexs » · « Nourris ton Dragon » · « Ramasse 5 Jade »<br>
-                    Récompense : <strong>XP + cosmétique mineur</strong></p>
-            </div>
-            <div class="card">
-                <div class="card-icon blue">📅</div>
-                <h3>Hebdomadaires</h3>
-                <p>Reset chaque lundi. Objectifs ambitieux :<br>
-                    « Trouve 3 Rubis Rares » · « Visite une Forteresse » · « Maintiens ton Dragon 7 jours »<br>
-                    Récompense : <strong>Déco + trophée</strong></p>
-            </div>
-            <div class="card">
-                <div class="card-icon purple">🏆</div>
-                <h3>Milestones (One-shot)</h3>
-                <p>Permanentes, jamais reset :<br>
-                    « Explore 500 hexs » · « Atteins Dragon T3 » · « Construis une Mega Forteresse »<br>
-                    Récompense : <strong>Trophées exclusifs pour la Salle des Trophées</strong></p>
-            </div>
-        </div>
-
-        <div class="alert danger" style="margin-top: 1.5rem;">
-            <strong>🚫 JAMAIS de gems en récompense de quête</strong> (sauf onboarding/tutorial). Les gems viennent
-            UNIQUEMENT de l'exploration.
-            Les quêtes récompensent le joueur avec des <strong>pouvoirs sociaux</strong> (trophées, déco), pas des
-            ressources économiques.
-        </div>
-
-        <details>
-            <summary>💡 Pourquoi ce design?</summary>
-            <div class="alert info" style="margin-top: 0.5rem;">
-                <p>Si les quêtes donnent des gems, elles créent un <strong>deuxième pipeline d'acquisition</strong> qui
-                    bypass le gameplay core (marcher).
-                    Le joueur optimise les quêtes au lieu de marcher. La marche doit rester la <strong>seule source de
-                        richesse</strong>.</p>
-            </div>
-        </details>
-
-    </section>
 
     <div class="divider"></div>
 
@@ -2246,8 +1910,7 @@
     <section class="section" id="mana">
 
         <div class="section-header">
-            <div class="section-tag purple">🔮 Hex Jump <span class="version-badge changed">✓ Non changé depuis
-                    v4.1</span></div>
+            <div class="section-tag purple">🔮 Hex Jump <span class="version-badge changed">🔄 Modifié v4.1</span></div>
             <h2>Système Hex Jump — Loot &amp; Défense à Distance</h2>
             <p class="subtitle">3 charges, portée 3 hexes. Peut looter et défendre, mais PAS capturer ni contester.</p>
         </div>
@@ -2303,7 +1966,7 @@
 
         <div class="section-header">
             <div class="section-tag green">🤝 Territoire <span class="version-badge unchanged">✓ Non changé depuis
-                    v4.1</span></div>
+                    v3.0</span></div>
             <h2>Cohabitation Non-Toxique</h2>
             <p class="subtitle">Se battre pour le contrôle sans détruire — compétition économique, pas militaire</p>
         </div>
@@ -2351,7 +2014,7 @@
     <section class="section" id="saisons">
 
         <div class="section-header">
-            <div class="section-tag cyan">📅 Saisons <span class="version-badge new-section">✓ Depuis v4.0</span></div>
+            <div class="section-tag cyan">📅 Saisons <span class="version-badge new-section">✨ Nouveau v4.0</span></div>
             <h2>Cycle Saisonnier — Wipe &amp; Renouveau</h2>
             <p class="subtitle">Tous les 3 mois : forteresses reset, fog reset, hexes gardés. Titres permanents comme
                 Rocket League.</p>
@@ -2425,7 +2088,7 @@
     <section class="section" id="empreinte">
 
         <div class="section-header">
-            <div class="section-tag purple">👣 Empreinte <span class="version-badge new-section">✓ Depuis v4.0</span>
+            <div class="section-tag purple">👣 Empreinte <span class="version-badge new-section">✨ Nouveau v4.0</span>
             </div>
             <h2>Score Permanent — Prestige à Vie</h2>
             <p class="subtitle">Un nombre qui monte et ne descend JAMAIS. Zéro avantage mécanique — pur prestige.</p>
@@ -2466,7 +2129,7 @@
     <section class="section" id="duolink">
 
         <div class="section-header">
-            <div class="section-tag pink">👫 Duo Link <span class="version-badge new-section">✓ Depuis v4.0</span>
+            <div class="section-tag pink">👫 Duo Link <span class="version-badge new-section">✨ Nouveau v4.0</span>
             </div>
             <h2>Social — Loot Partagé en Duo</h2>
             <p class="subtitle">Max 2 joueurs liés. Le gem est dupliqué pour les deux dans les 60 sec. Pas de party 3+.
@@ -2603,7 +2266,7 @@
                 <div class="card-icon orange">📅</div>
                 <h3>Daily Login</h3>
                 <p>J1: 50 → J2: 100 → ... → J7: 🎁 Skin rare.</p>
-                <div class="v50-modified">
+                <div class="v41-modified">
                     <p>🛡️ <strong>Bouclier de streak :</strong> 1 gratuit par semaine (ou achetable en gems). Absorbe 1
                         jour manqué sans reset. Protège les casuals sans supprimer la pression pour les hardcore.</p>
                 </div>
@@ -2700,7 +2363,7 @@
                         <td>Puck</td>
                         <td>Curseur GPS perso</td>
                         <td>Quêtes / Achat $</td>
-                        <td class="v50-modified" style="padding:0.4rem 0.6rem;">Soi-même + joueurs à proximité</td>
+                        <td class="v41-modified" style="padding:0.4rem 0.6rem;">Soi-même + joueurs à proximité</td>
                     </tr>
                 </tbody>
             </table>
@@ -2792,7 +2455,7 @@
             </div>
         </div>
 
-        <div class="v50-new" style="margin-top: 1rem;">
+        <div class="v41-new" style="margin-top: 1rem;">
             <h3>👻 Fog Fantôme — Voir les autres à travers le brouillard</h3>
             <p>Les hexes possédés par d'autres joueurs sont <strong>visibles à travers le fog</strong> sous forme de
                 silhouettes colorées atténuées. Pas de loot visible, pas de détails de tile — juste la couleur du
@@ -2803,7 +2466,7 @@
             </p>
         </div>
 
-        <div class="v50-new" style="margin-top: 1rem;">
+        <div class="v41-new" style="margin-top: 1rem;">
             <h3>🏆 Milestones Solo — Progression Première Semaine</h3>
             <p>Des objectifs visuels qui donnent une destination concrète au joueur solo :</p>
             <ul style="margin-top: 0.5rem; padding-left: 1.2rem;">
@@ -2818,7 +2481,7 @@
             </p>
         </div>
 
-        <div class="v50-new" style="margin-top: 1rem;">
+        <div class="v41-new" style="margin-top: 1rem;">
             <h3>📡 Ping de Proximité — Présence des Joueurs</h3>
             <p>"Un joueur est actif à ~200m de toi." Pas de position exacte (privacy), juste un signal.
                 <br>Les <strong>skins de puck sont visibles</strong> pour les joueurs à proximité — pas juste local.
@@ -2827,7 +2490,7 @@
             </p>
         </div>
 
-        <div class="v50-new" style="margin-top: 1rem;">
+        <div class="v41-new" style="margin-top: 1rem;">
             <h3>📸 Viral Loop — Croissance Organique</h3>
             <p>Mécanismes pour transformer 1 joueur en 2 :</p>
             <ul style="margin-top: 0.5rem; padding-left: 1.2rem;">
@@ -3005,17 +2668,17 @@
                 <tbody>
                     <tr>
                         <td>🛡️ Défendre</td>
-                        <td class="v50-modified">5 communes</td>
+                        <td class="v41-modified">5 communes</td>
                         <td>Attaque annulée, attaquant doit revenir physiquement</td>
                     </tr>
                     <tr>
-                        <td class="v50-modified">⚡ Répulsion</td>
-                        <td class="v50-modified">1 rare</td>
+                        <td class="v41-modified">⚡ Répulsion</td>
+                        <td class="v41-modified">1 rare</td>
                         <td>Raid annulé + attaquant a un cooldown 30 min dans la zone</td>
                     </tr>
                     <tr>
                         <td>🏰 Bouclier d'urgence</td>
-                        <td class="v50-modified">5 rares</td>
+                        <td class="v41-modified">5 rares</td>
                         <td>Hex invulnérable pendant 12h</td>
                     </tr>
                 </tbody>
@@ -3028,7 +2691,7 @@
             défense. Max 2 défenses à distance par hex par 24h — après, tu dois bouger tes pieds.
         </div>
 
-        <div class="v50-new" style="margin-top: 1rem;">
+        <div class="v41-new" style="margin-top: 1rem;">
             <h3>💎 Conversion d'urgence</h3>
             <p>Plus de communes? Le jeu propose : <strong>"Convertir 1 rare → 10 communes?"</strong> Choix
                 explicite, jamais automatique. Conversion one-way seulement (rare → communes, jamais l'inverse).
@@ -3036,7 +2699,7 @@
             </p>
         </div>
 
-        <div class="v50-new" style="margin-top: 1rem;">
+        <div class="v41-new" style="margin-top: 1rem;">
             <h3>📡 Flow d'attaque — Fire-and-Forget</h3>
             <p>L'attaquant lance l'attaque et <strong>part immédiatement</strong>. Pas besoin de rester sur place.</p>
             <ul style="margin-top: 0.5rem; padding-left: 1.2rem;">
@@ -3145,17 +2808,17 @@
             <div class="timeline-item">
                 <div class="timeline-dot"></div>
                 <div class="timeline-title">Phase 3 — Compétitif (1,000+ joueurs)</div>
-                <div class="timeline-desc v50-modified">Full PvP avec forteresses, économie complète, et événements
+                <div class="timeline-desc v41-modified">Full PvP avec forteresses, économie complète, et événements
                     compétitifs.</div>
                 <div class="timeline-tags">
                     <span>Forteresses</span>
-                    <span class="v50-removed">Alliances/clans</span>
+                    <span class="v41-removed">Alliances/clans</span>
                     <span>Battle Pass + Saisons</span>
                     <span>Skins T3 + T4</span>
                     <span>Tower defense</span>
-                    <span class="v50-removed">Trading skins</span>
-                    <span class="v50-new">Leaderboard quartier</span>
-                    <span class="v50-new">Ping proximité</span>
+                    <span class="v41-removed">Trading skins</span>
+                    <span class="v41-new">Leaderboard quartier</span>
+                    <span class="v41-new">Ping proximité</span>
                 </div>
             </div>
         </div>
@@ -3165,7 +2828,7 @@
     <footer style="text-align: center; padding: 4rem 2rem; border-top: 1px solid var(--border);">
         <div style="font-size: 2rem; margin-bottom: 1rem;">⬡</div>
         <div style="font-weight: 700; font-size: 1.2rem; margin-bottom: 0.5rem;">Projet Hexagon</div>
-        <div style="color: var(--text-muted); font-size: 0.85rem;">Game Design Document v5.0 — Mars 2026</div>
+        <div style="color: var(--text-muted); font-size: 0.85rem;">Game Design Document v4.1 — Mars 2026</div>
         <div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.5rem;">Conquiers ta ville. Construis ton
             empire. Défends-le en personne.</div>
     </footer>
@@ -3539,18 +3202,18 @@
         }
 
         /* === v4.1 CHANGE HIGHLIGHTING === */
-        .v50-new,
-        .v50-modified,
-        .v50-removed {
+        .v41-new,
+        .v41-modified,
+        .v41-removed {
             position: relative;
             border-radius: 8px;
             padding: 1.6rem 1.2rem 1rem 1.5rem;
             margin: 0.8rem 0;
         }
 
-        .v50-new::before,
-        .v50-modified::before,
-        .v50-removed::before {
+        .v41-new::before,
+        .v41-modified::before,
+        .v41-removed::before {
             position: absolute;
             left: 0;
             top: 0;
@@ -3560,9 +3223,9 @@
             content: '';
         }
 
-        .v50-new::after,
-        .v50-modified::after,
-        .v50-removed::after {
+        .v41-new::after,
+        .v41-modified::after,
+        .v41-removed::after {
             position: absolute;
             top: 0.35rem;
             left: 1.5rem;
@@ -3575,18 +3238,18 @@
         }
 
         /* NEW — Green glow */
-        .v50-new {
+        .v41-new {
             background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(16, 185, 129, 0.02));
             border: 1px solid rgba(16, 185, 129, 0.15);
             animation: v41-pulse-new 3s ease-in-out infinite;
         }
 
-        .v50-new::before {
+        .v41-new::before {
             background: linear-gradient(180deg, #10b981, #059669);
             box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
         }
 
-        .v50-new::after {
+        .v41-new::after {
             content: '✨ NOUVEAU v4.1';
             background: rgba(16, 185, 129, 0.15);
             color: #10b981;
@@ -3594,18 +3257,18 @@
         }
 
         /* MODIFIED — Cyan glow */
-        .v50-modified {
+        .v41-modified {
             background: linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(6, 182, 212, 0.02));
             border: 1px solid rgba(6, 182, 212, 0.15);
             animation: v41-pulse-mod 3s ease-in-out infinite;
         }
 
-        .v50-modified::before {
+        .v41-modified::before {
             background: linear-gradient(180deg, #06b6d4, #0891b2);
             box-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
         }
 
-        .v50-modified::after {
+        .v41-modified::after {
             content: '🔄 MODIFIÉ v4.1';
             background: rgba(6, 182, 212, 0.15);
             color: #06b6d4;
@@ -3613,47 +3276,47 @@
         }
 
         /* REMOVED — Red strikethrough */
-        .v50-removed {
+        .v41-removed {
             background: linear-gradient(135deg, rgba(239, 68, 68, 0.06), rgba(239, 68, 68, 0.02));
             border: 1px solid rgba(239, 68, 68, 0.15);
             opacity: 0.7;
         }
 
-        .v50-removed::before {
+        .v41-removed::before {
             background: linear-gradient(180deg, #ef4444, #dc2626);
             box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
         }
 
-        .v50-removed::after {
+        .v41-removed::after {
             content: '🗑️ RETIRÉ v4.1';
             background: rgba(239, 68, 68, 0.15);
             color: #ef4444;
             border: 1px solid rgba(239, 68, 68, 0.3);
         }
 
-        .v50-removed>* {
+        .v41-removed>* {
             text-decoration: line-through;
             text-decoration-color: rgba(239, 68, 68, 0.4);
         }
 
         /* Inline variant — for small elements like timeline tags, table cells */
-        span.v50-new,
-        span.v50-modified,
-        span.v50-removed,
-        td.v50-new,
-        td.v50-modified,
-        td.v50-removed {
+        span.v41-new,
+        span.v41-modified,
+        span.v41-removed,
+        td.v41-new,
+        td.v41-modified,
+        td.v41-removed {
             padding: 0.3rem 0.5rem;
             margin: 0;
             display: inline-block;
         }
 
-        span.v50-new::after,
-        span.v50-modified::after,
-        span.v50-removed::after,
-        td.v50-new::after,
-        td.v50-modified::after,
-        td.v50-removed::after {
+        span.v41-new::after,
+        span.v41-modified::after,
+        span.v41-removed::after,
+        td.v41-new::after,
+        td.v41-modified::after,
+        td.v41-removed::after {
             content: none;
         }
 
@@ -3683,15 +3346,15 @@
 
         @media (max-width: 768px) {
 
-            .v50-new,
-            .v50-modified,
-            .v50-removed {
+            .v41-new,
+            .v41-modified,
+            .v41-removed {
                 padding: 1.4rem 0.8rem 0.8rem 1rem;
             }
 
-            .v50-new::after,
-            .v50-modified::after,
-            .v50-removed::after {
+            .v41-new::after,
+            .v41-modified::after,
+            .v41-removed::after {
                 font-size: 0.5rem;
                 left: 1rem;
             }
@@ -4464,7 +4127,7 @@
                 sectionId: data.sectionId,
                 author, comment, color,
                 timestamp: Date.now(),
-                gddVersion: 'v5.0'
+                gddVersion: 'v4.1'
             };
 
             if (firebaseReady && db) {
@@ -5012,9 +4675,9 @@
 
             const items = [];
             const types = [
-                { cls: 'v50-new', label: '✨ NOUVEAU v5.0', color: '#10b981' },
-                { cls: 'v50-modified', label: '🔄 MODIFIÉ v5.0', color: '#06b6d4' },
-                { cls: 'v50-removed', label: '🗑️ RETIRÉ v5.0', color: '#ef4444' }
+                { cls: 'v41-new', label: '✨ NOUVEAU', color: '#10b981' },
+                { cls: 'v41-modified', label: '🔄 MODIFIÉ', color: '#06b6d4' },
+                { cls: 'v41-removed', label: '🗑️ RETIRÉ', color: '#ef4444' }
             ];
 
             types.forEach(t => {
@@ -5041,7 +4704,7 @@
 
             // Update toggle count
             if (toggle) {
-                toggle.innerHTML = `✨ Nouveautés v5.0 <span style="background:rgba(16,185,129,0.2);padding:1px 6px;border-radius:8px;font-size:0.7rem;">${items.length}</span>`;
+                toggle.innerHTML = `✨ Nouveautés v4.1 <span style="background:rgba(16,185,129,0.2);padding:1px 6px;border-radius:8px;font-size:0.7rem;">${items.length}</span>`;
             }
 
             if (items.length === 0) {
