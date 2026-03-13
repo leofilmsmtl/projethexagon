@@ -560,6 +560,93 @@
             70% { opacity: 0.2; }
             100% { opacity: 0; }
         }
+
+        /* ═══ MOBILE RESPONSIVE ═══ */
+        @media (max-width: 480px) {
+            .controls {
+                top: 8px;
+                left: 8px;
+                gap: 4px;
+            }
+            .controls button {
+                padding: 5px 10px;
+                font-size: 11px;
+                border-radius: 8px;
+            }
+            .dock-preview {
+                top: 8px;
+                right: 8px;
+                gap: 6px;
+                padding: 6px 10px;
+                border-radius: 14px;
+            }
+            .dock-dot {
+                width: 10px;
+                height: 10px;
+            }
+            .dock-count {
+                font-size: 12px;
+            }
+            .base-plate {
+                width: 180px;
+                height: 180px;
+            }
+            .base-plate::before {
+                top: -200px;
+                height: 250px;
+                width: 260px;
+            }
+            .roll-gem {
+                width: 100px;
+                height: 100px;
+            }
+            .rarity-spinner {
+                gap: 6px;
+            }
+            .rarity-slot {
+                width: 52px;
+                height: 32px;
+                font-size: 10px;
+                border-radius: 8px;
+                letter-spacing: 0;
+            }
+            .result-text {
+                font-size: 20px;
+            }
+            .result-sub {
+                font-size: 12px;
+            }
+            .tap-close {
+                font-size: 12px;
+            }
+            .gem-on-map {
+                width: 60px;
+                height: 60px;
+            }
+            .gem-label {
+                font-size: 9px;
+            }
+        }
+
+        /* Extra small phones */
+        @media (max-width: 360px) {
+            .rarity-slot {
+                width: 46px;
+                height: 28px;
+                font-size: 9px;
+            }
+            .rarity-spinner {
+                gap: 4px;
+            }
+            .base-plate {
+                width: 150px;
+                height: 150px;
+            }
+            .roll-gem {
+                width: 80px;
+                height: 80px;
+            }
+        }
     </style>
 </head>
 
@@ -958,11 +1045,15 @@
             basePlate.style.removeProperty('--spot-color');
             basePlate.style.removeProperty('--spot-intensity');
             document.getElementById('rollGem').className = 'roll-gem';
+            document.getElementById('rollGem').innerHTML = ''; // Clear previous gem canvas immediately
             spinner.className = 'rarity-spinner';
             resultText.className = 'result-text';
+            resultText.textContent = ''; // Clear ghost text
             resultSub.className = 'result-sub';
+            resultSub.textContent = ''; // Clear ghost sub text
             tapClose.className = 'tap-close';
             edgeGlow.className = 'edge-glow';
+            edgeGlowInner.style.animation = ''; // Clear any lingering Arcane rainbow glow
             document.querySelectorAll('.rarity-slot').forEach(s => s.className = s.className.replace(/scanning|winner/g, '').trim());
 
             // Remove gem from map
