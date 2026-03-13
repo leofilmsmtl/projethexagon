@@ -1168,7 +1168,7 @@
     <section class="hero">
         <div class="hex-grid-bg"></div>
         <div class="hero-content">
-            <div class="hero-badge">⬡ Game Design Document v5.0</div>
+            <div class="hero-badge">⬡ Game Design Document v5.1</div>
             <h1>Projet Hexagon</h1>
             <p style="max-width: 700px; margin: 0 auto; font-size: 1.1rem; line-height: 1.7;">
                 <strong>Projet Hexagon</strong> est un jeu mobile GPS en temps réel où les joueurs explorent
@@ -1626,7 +1626,7 @@
                         <td>💎 Looter un gem</td>
                         <td>Instantané (gratuit)</td>
                         <td>—</td>
-                        <td>4h par spot (Mystère = one-shot)</td>
+                        <td>4h par spot (global)</td>
                     </tr>
                     <tr>
                         <td>🟢 Capturer (neutre)</td>
@@ -1762,158 +1762,216 @@
     <section class="section" id="economy">
 
         <div class="section-header">
-            <div class="section-tag orange">💎 Économie <span class="version-badge new-section v50-modified">🔄 Modifié
-                    v5.0</span></div>
-            <h2>Économie de Survie — Gems &amp; Ressources</h2>
-            <p class="subtitle">4 couleurs à rareté variable × 3 raretés = 12 types + Mystère wildcard.
-                Spawn rate 50%. Casino roll 80/8/2. Un seul modèle 3D, couleur = texture. Zéro crafting, zéro trade.</p>
+            <div class="section-tag orange">💎 Économie <span class="version-badge changed">🔄 Refonte v5.1</span></div>
+            <h2>Économie 5 Gemmes — Linéaire &amp; Lisible</h2>
+            <p class="subtitle">5 gemmes linéaires : Quartz → Jade → Saphir → Ruby → Arcane.
+                La rareté EST la gemme. Zéro crafting, zéro trade. Un seul modèle 3D, couleur = tier.</p>
         </div>
 
-        <div class="table-wrap v50-modified">
+        <div class="table-wrap">
             <table>
                 <thead>
                     <tr>
+                        <th>Gemme</th>
                         <th>Couleur</th>
-                        <th>Nom</th>
-                        <th>Spawn %</th>
-                        <th>Commun</th>
-                        <th>Rare</th>
-                        <th>Épique</th>
-                        <th>Rôle</th>
+                        <th>Tier</th>
+                        <th>Cap inventaire</th>
+                        <th>Feeling</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>🟢</td>
-                        <td><strong>Jade</strong></td>
-                        <td><strong>40%</strong></td>
-                        <td>80%</td>
-                        <td>8%</td>
-                        <td>2%</td>
-                        <td>Abondante, base de l'économie</td>
+                        <td>⚪ <strong>Quartz</strong></td>
+                        <td>Gris clair</td>
+                        <td>Commun</td>
+                        <td><strong>30</strong></td>
+                        <td>Monnaie courante</td>
                     </tr>
                     <tr>
-                        <td>🔵</td>
-                        <td><strong>Saphir</strong></td>
-                        <td><strong>30%</strong></td>
-                        <td>80%</td>
-                        <td>8%</td>
-                        <td>2%</td>
-                        <td>Standard</td>
+                        <td>🟢 <strong>Jade</strong></td>
+                        <td>Vert</td>
+                        <td>Peu commun</td>
+                        <td><strong>12</strong></td>
+                        <td>"Pas mal !"</td>
                     </tr>
                     <tr>
-                        <td>🔴</td>
-                        <td><strong>Rubis</strong></td>
-                        <td><strong>20%</strong></td>
-                        <td>80%</td>
-                        <td>8%</td>
-                        <td>2%</td>
-                        <td>Peu commune, recherchée</td>
+                        <td>🔵 <strong>Saphir</strong></td>
+                        <td>Bleu</td>
+                        <td>Rare</td>
+                        <td><strong>5</strong></td>
+                        <td>"Oooh nice !"</td>
                     </tr>
-                    <tr>
-                        <td>🟣</td>
-                        <td><strong>Arcane</strong></td>
-                        <td><strong>10%</strong></td>
-                        <td>80%</td>
-                        <td>8%</td>
-                        <td>2%</td>
-                        <td>Ultra rare, monnaie endgame</td>
+                    <tr style="background: rgba(239,68,68,0.05);">
+                        <td>🔴 <strong>Ruby</strong></td>
+                        <td>Rouge</td>
+                        <td>Épique</td>
+                        <td><strong>3</strong></td>
+                        <td>"WOAH !"</td>
                     </tr>
-                    <tr style="background: rgba(168, 85, 247, 0.05);">
-                        <td>✨</td>
-                        <td><strong>Mystère</strong></td>
-                        <td><strong>1%</strong></td>
-                        <td>0%</td>
-                        <td>95%</td>
-                        <td>5%</td>
-                        <td>Wildcard — color picker</td>
+                    <tr style="background: rgba(168,85,247,0.08);">
+                        <td>🟣 <strong>Arcane</strong></td>
+                        <td>Violet</td>
+                        <td>Légendaire</td>
+                        <td><strong>∞</strong></td>
+                        <td>Trophée ultime — flex total</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="alert golden v50-new" style="margin-top: 1.5rem;">
-            <strong>✨ Le Mystère :</strong> Casino roll D'ABORD → le joueur voit la rareté (95% Rare, 5% Épique) →
-            ENSUITE il choisit la couleur. Le choix se fait <strong>au ramassage</strong>, pas de stockage wildcard.
-            C'est un Rare garanti avec color pick — une soupape anti-frustration, pas un cheat code.
+        <!-- 2-Plaque Odds Tables -->
+        <div class="section-header" style="margin-top: 2.5rem;">
+            <div class="section-tag green">🎰 Système 2 Plaques <span class="version-badge new">✨ v5.1</span></div>
+            <h2>Chaque gem sur la map est un casino roll</h2>
+            <p class="subtitle">Le joueur ne sait pas ce qu'il y a dedans. La <strong>plaque (socle)</strong> indique la qualité du coffre.
+                2 tiers seulement — simple, lisible, pas exploitable.</p>
         </div>
 
+        <div class="card-grid" style="margin-top: 1rem;">
+            <div class="card">
+                <div class="card-icon orange">🟤</div>
+                <h3>Plaque Normale — ~85% des gems</h3>
+                <p>Petit gem, socle sombre, pas de glow. Le joueur le ramasse en passant.</p>
+                <div class="table-wrap" style="margin-top: 0.5rem;">
+                    <table>
+                        <tr><td>⚪ Quartz</td><td><strong>80%</strong></td></tr>
+                        <tr><td>🟢 Jade</td><td><strong>15%</strong></td></tr>
+                        <tr><td>🔵 Saphir</td><td><strong>4%</strong></td></tr>
+                        <tr><td>🔴 Ruby</td><td><strong>0.9%</strong></td></tr>
+                        <tr><td>🟣 Arcane</td><td><strong>0.1%</strong></td></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon orange">🟡</div>
+                <h3>Plaque Gold — ~15% des gems <span style="font-size:0.75rem;color:#ffd700;">×20 Arcane</span></h3>
+                <p>Gem plus gros, base dorée, <strong>glow visible de loin</strong>. Le joueur dévie sa route pour y aller.
+                    Badge "×20 Arcane" affiché au roll.</p>
+                <div class="table-wrap" style="margin-top: 0.5rem;">
+                    <table>
+                        <tr><td>⚪ Quartz</td><td><strong>40%</strong></td></tr>
+                        <tr><td>🟢 Jade</td><td><strong>35%</strong></td></tr>
+                        <tr><td>🔵 Saphir</td><td><strong>15%</strong></td></tr>
+                        <tr><td>🔴 Ruby</td><td><strong>8%</strong></td></tr>
+                        <tr><td>🟣 Arcane</td><td><strong>2%</strong></td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Spawn Mechanics -->
         <div class="card-grid" style="margin-top: 1.5rem;">
             <div class="card">
                 <div class="card-icon green">🎲</div>
-                <h3>Mécanique de Spawn <span class="version-badge new">✓ Depuis v4.1</span></h3>
-                <div class="v50-modified">
-                    <p><strong>50% de chance</strong> par hex découvert (Math.random uniforme, pas de clustering).<br>
-                        Marqueurs <code>value=0</code> pour les hex vides : les reboots serveur ne re-rollent
-                        jamais.<br>
-                        Gems globales : visibles par tous, disparaissent à la capture.<br>
-                        Seed instantané à l'exploration : le monde est peuplé dès que le fog se lève.<br>
-                        <strong>Sécurité :</strong> loot filtré côté serveur via JOIN discovered_hexes (anti-fog-cheat).
-                    </p>
-                </div>
+                <h3>Mécanique de Spawn</h3>
+                <p><strong>50% des hexes</strong> ont un gem (casino roll). Les autres 50% sont vides ou hébergent
+                    un <strong>interactable</strong> rare.<br>
+                    Rareté de la plaque choisie au <strong>spawn serveur</strong> (pas au ramassage).<br>
+                    Gems globales : visibles par tous, disparaissent à la capture.<br>
+                    <strong>Sécurité :</strong> loot filtré côté serveur via JOIN discovered_hexes (anti-fog-cheat).
+                </p>
             </div>
             <div class="card">
-                <div class="card-icon purple">👁️</div>
-                <h3>Visuels de Rareté <span class="version-badge new">✓ Depuis v4.1</span></h3>
-                <div class="v50-modified">
-                    <p>Pas besoin de texte — la <strong>rareté se communique visuellement</strong> :<br>
-                        🟢 <strong>Jade</strong> : mat, lueur douce — « normal » <br>
-                        🔵 <strong>Saphir</strong> : léger reflet, particule subtile<br>
-                        🔴 <strong>Rubis</strong> : glow pulsant, particules<br>
-                        🟣 <strong>Arcane</strong> : aura intense + son spécial<br>
-                        ✨ <strong>Mystère</strong> : iridescent arc-en-ciel, impossible à manquer<br>
-                        Le joueur apprend la rareté par <strong>l'expérience</strong>, pas par un tuto.</p>
-                </div>
+                <div class="card-icon purple">🎬</div>
+                <h3>Casino Roll — Le Moment de Vérité</h3>
+                <p>Au ramassage, le <strong>casino roll animé</strong> se déclenche.<br>
+                    Nombre de tours <strong>aléatoire</strong> (2-4, plus lent pour Ruby/Arcane).<br>
+                    <strong>Near-miss tease</strong> : 25% du temps pour Quartz/Jade, le scanner monte jusqu'à Arcane puis wraps au résultat.<br>
+                    <strong>5 niveaux sonores + visuels</strong> escaladant de plat (Quartz) à insane (Arcane).<br>
+                    🟣 Arcane = <strong>écran noir → explosion violet→pink→blanc → tremblement de terre</strong>.</p>
             </div>
         </div>
 
+        <!-- Action Costs -->
         <div class="card-grid" style="margin-top: 1.5rem;">
             <div class="card">
                 <div class="card-icon blue">📦</div>
-                <h3>Caps d'inventaire par rareté</h3>
-                <div class="v50-modified">
-                    <p>⚪ Commun : <strong>max 30 total</strong><br>⭐ Rare : <strong>max 15 total</strong><br>💎
-                        Épique : <strong>max 5 total</strong><br><br>
-                        <strong>Inventaire plein?</strong> Échange forcé — tu choisis quoi sacrifier pour le nouveau
-                        loot. La ressource abandonnée disparaît.
-                    </p>
-                </div>
+                <h3>Dépenses en Gemmes (Resource Sinks) <span class="version-badge changed">🔄 v5.1</span></h3>
+                <p>Capturer un hex : <strong>3 Quartz</strong><br>
+                    🛡️ Défendre (remote) : <strong>5 Quartz</strong><br>
+                    ⚡ Répulsion : <strong>1 Jade</strong> (+ cooldown 30 min)<br>
+                    Bouclier préventif : <strong>3 Jade</strong><br>
+                    🏰 Bouclier urgence : <strong>1 Saphir</strong> (12h invulnérable)<br>
+                    Forteresse Lv0 : <strong>5 Jade</strong><br>
+                    Forteresse Lv1 : <strong>3 Saphir</strong><br>
+                    Forteresse LvN : <strong>N Ruby</strong><br>
+                    🪓 Bélier : <strong>2 Ruby</strong><br>
+                    Nourrir le Dragon : <strong>quotidien</strong> (le vrai resource sink)<br>
+                    Marcher physiquement = <strong>GRATUIT</strong>. Le piéton reste roi.
+                </p>
             </div>
-            <div class="card">
-                <div class="card-icon red">📤</div>
-                <h3>Dépenses (Resource Sinks)</h3>
-                <div class="v50-modified">
-                    <p>Capturer un hex : <strong>3 communes</strong><br>
-                        Bouclier préventif : <strong>3 rares</strong><br>
-                        Forteresse T1→T2 : <strong>coût mixte</strong> (rares + épiques)<br>
-                        Forteresse T2→T3 Mega : <strong>Rubis + Arcane Épiques</strong><br>
-                        Raid : <strong>4 Épiques</strong><br>
-                        Nourrir le Dragon : <strong>quotidien</strong> (le vrai resource sink)</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="card-grid" style="margin-top: 1rem;">
             <div class="card">
                 <div class="card-icon green">💰</div>
                 <h3>Taxe Loot Passive</h3>
-                <p>Quand un joueur ramasse un gem sur <strong>ton hex</strong>, tu reçois <strong>1 commune de la même
-                        couleur</strong>. Le proprio ne perd rien → zéro raison d'être hostile. Win-win.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon cyan">📱</div>
-                <h3>Défense Remote</h3>
-                <div class="v50-modified">
-                    <p>🛡️ Défendre : <strong>5 communes</strong><br>
-                        ⚡ Répulsion : <strong>1 rare</strong> (+ cooldown 30 min)<br>
-                        🏰 Bouclier urgence : <strong>5 rares</strong> (12h invulnérable)<br>
-                        Marcher physiquement = <strong>GRATUIT</strong>. Le piéton reste roi.
-                    </p>
-                </div>
+                <p>Quand un joueur ramasse un gem sur <strong>ton hex</strong>, tu reçois <strong>1 Quartz</strong>.
+                    Le proprio ne perd rien → zéro raison d'être hostile. Win-win.</p>
             </div>
         </div>
 
-        <div class="card-grid" style="margin-top: 1rem;">
+        <!-- Map Interactables -->
+        <div class="section-header" style="margin-top: 2.5rem;">
+            <div class="section-tag cyan">🗺️ Interactables de Map <span class="version-badge new">✨ v5.1</span></div>
+            <h2>Objets de Map — Style Heroes of Might &amp; Magic</h2>
+            <p class="subtitle">Sur les <strong>50% d'hexes sans loot</strong>. Donnent une raison de visiter les hexes "vides".
+                Rares (~2-5% des hexes), visuellement distincts.</p>
+        </div>
+
+        <div class="card-grid card-grid-3" style="margin-top: 1rem;">
+            <div class="card">
+                <div class="card-icon purple">⚱️</div>
+                <h3>Obélisque</h3>
+                <p>Marche dessus → révèle la <strong>direction + distance</strong> du Gold plaque le plus proche (même sous le fog).<br>
+                    Le Gold pointé est <strong>aléatoire</strong> parmi ceux dans ~2km.<br>
+                    <strong>Reset à minuit</strong> → nouveau Gold chaque jour.<br>
+                    Crée un <strong>daily ritual</strong> : "check l'obélisque puis go chasser le Gold".</p>
+            </div>
+            <div class="card">
+                <div class="card-icon blue">🔮</div>
+                <h3>Fontaine de Mana</h3>
+                <p>Recharge <strong>toutes les charges Hex Jump</strong> instantanément.<br>
+                    <strong>Cooldown 12h</strong> par joueur.<br>
+                    Rare (~1 par grande zone). Le joueur qui en connaît une planifie sa route autour.</p>
+                <span class="tag phase2">Phase 2</span>
+            </div>
+            <div class="card">
+                <div class="card-icon orange">🎪</div>
+                <h3>Marchand</h3>
+                <p>Conversion de gems. <strong>Taux volontairement défavorables</strong> — c'est un dernier recours, pas un raccourci.<br>
+                    <strong>Max 3 conversions/jour</strong> par joueur.<br>
+                    Donne de la valeur au Quartz (sinon c'est du "junk").</p>
+            </div>
+        </div>
+
+        <div class="table-wrap" style="margin-top: 1rem;">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="4" style="text-align:center; background: rgba(245,158,11,0.1); color: var(--accent-orange);">🎪 Taux de Conversion du Marchand</th>
+                    </tr>
+                    <tr>
+                        <th>Conversion</th>
+                        <th>Ratio</th>
+                        <th>Coût total pour 1 Arcane</th>
+                        <th>Verdict</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Quartz → Jade</td><td><strong>25 : 1</strong></td><td>3,750 Quartz</td><td>😅</td></tr>
+                    <tr><td>Jade → Saphir</td><td><strong>10 : 1</strong></td><td>150 Jade</td><td>😰</td></tr>
+                    <tr><td>Saphir → Ruby</td><td><strong>5 : 1</strong></td><td>15 Saphir</td><td>😤</td></tr>
+                    <tr style="background: rgba(168,85,247,0.08);">
+                        <td>Ruby → Arcane</td><td><strong>3 : 1</strong></td><td>3 Ruby</td><td>💀</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="alert danger" style="margin-top: 1rem;">
+            <strong>🎪 Le Marchand est un path POSSIBLE mais horrible.</strong> Jouer le casino est 3-4× plus efficace.
+            Mais savoir qu'on PEUT construire un Arcane suffit à éliminer le sentiment d'impuissance.
+        </div>
+
+        <!-- Monetization -->
+        <div class="card-grid" style="margin-top: 1.5rem;">
             <div class="card">
                 <div class="card-icon orange">🪙</div>
                 <h3>Hex Coins (Monnaie Premium)</h3>
@@ -1937,17 +1995,22 @@
         </div>
 
         <details>
-            <summary>💡 Pourquoi ce design?</summary>
+            <summary>💡 Pourquoi v5.1 au lieu de v5.0 ?</summary>
             <div class="alert info" style="margin-top: 0.5rem;">
-                <p>Le v3.0 avait des coûts vagues. Le v4.1 chiffre chaque action. La taxe loot crée la cohabitation :
-                    quelqu'un
-                    qui loote sur ton hex <strong>te profite</strong>. Zéro crafting = pas de spreadsheet simulator.
-                    Zéro trade
-                    = pas de bots/RMT. L'économie est simple, brutale, et lisible.</p>
+                <p>Le v5.0 avait 4 couleurs (Jade/Saphir/Rubis/Arcane) × 3 raretés + Mystère. Le v5.1 simplifie à
+                    <strong>5 gemmes linéaires</strong> : la rareté EST la gemme (pas de Commun/Rare/Épique par couleur).
+                    Le Mystère a été supprimé car il créait du cherry-picking exploitable (visible de loin = snipe en voiture).
+                    Le système à 2 plaques (Normale + Gold) donne la motivation de se déplacer sans être exploitable.
+                    Les interactables de map (style HOMM3) donnent de la vie aux hexes vides.</p>
             </div>
         </details>
 
     </section>
+
+
+    <div class="divider"></div>
+
+
 
     <div class="divider"></div>
 
@@ -2251,41 +2314,58 @@
     <section class="section" id="loot">
 
         <div class="section-header">
-            <div class="section-tag green">💎 Loot <span class="version-badge changed">✓ Non changé depuis v4.1</span>
+            <div class="section-tag green">💎 Loot <span class="version-badge changed">🔄 Refonte v5.1</span>
             </div>
-            <h2>Gem Crate System — Spawn Dynamiques</h2>
-            <p class="subtitle">~50% des hexes. Positions ET couleurs redistribuées chaque nuit (minuit). 4 couleurs à
-                rareté variable.
-                Rareté révélée au ramassage. 1 gem 3D unique par hex, couleur = texture.</p>
+            <h2>Casino Roll System — 5 Gemmes × 2 Plaques</h2>
+            <p class="subtitle">~50% des hexes ont un gem. Tier décidé au spawn serveur.
+                Chaque ramassage déclenche un casino roll animé. 2 tiers de plaques (Normale + Gold).</p>
         </div>
 
         <div class="card-grid card-grid-3">
             <div class="card">
                 <div class="card-icon green">📍</div>
                 <h3>Spawns Dynamiques</h3>
-                <p>~50% des hexes ont un gem. Couleurs pondérées : 40% Jade, 30% Saphir, 20% Rubis, 10% Arcane.
-                    Positions ET couleurs <strong>redistribuées chaque nuit à minuit</strong>.
+                <p>~50% des hexes ont un gem. Positions redistribuées <strong>chaque nuit à minuit</strong>.
                     L'exploration est toujours pertinente.</p>
             </div>
             <div class="card">
                 <div class="card-icon orange">🎰</div>
-                <h3>Casino Roll au Pickup</h3>
-                <p>Commun → toast rapide "+1 🔵".<br>Rare/Épique → <strong>casino roll animé</strong> (suspense réel,
-                    même animation pour rare et épique).</p>
-            </div>
-            <div class="card">
-                <div class="card-icon purple">🌈</div>
-                <h3>Gem Mystère</h3>
-                <p>Visible sur la map (cycle rainbow). Casino roll D'ABORD (95% rare / 5% épique), puis le joueur
-                    <strong>choisit la couleur</strong>. 1% de spawn rate. Le choix se fait au ramassage.
-                </p>
+                <h3>Casino Roll — Toujours <span class="version-badge changed">🔄 v5.1</span></h3>
+                <p>Chaque gem déclenche le <strong>casino roll</strong>. 5 niveaux sonores et visuels escaladant.<br>
+                    🟣 Arcane = <strong>écran noir → explosion de couleur → tremblement de terre</strong>. 1/1000.</p>
             </div>
             <div class="card">
                 <div class="card-icon orange">🎨</div>
-                <h3>Base = Odds <span class="version-badge new">✓ v4.1</span></h3>
-                <p>Le <strong>socle du gem</strong> indique les chances de meilleur roll :<br>
-                    🟢🔵🔴🟣 Odds standard = 90/8/2<br>
-                    ✨ Mystère = 0/95/5 + color picker (one-shot)</p>
+                <h3>2 Plaques = 2 Tiers <span class="version-badge changed">🔄 v5.1</span></h3>
+                <p>Le <strong>socle du gem</strong> indique la qualité :<br>
+                    🟤 <strong>Plaque Normale</strong> (85%) : Q:80% J:15% S:4% R:0.9% A:0.1%<br>
+                    🟡 <strong>Plaque Gold</strong> (15%) : Q:40% J:35% S:15% R:8% A:2% (×20 Arcane!)</p>
+            </div>
+        </div>
+
+        <div class="card-grid" style="margin-top: 1rem;">
+            <div class="card">
+                <div class="card-icon pink">📸</div>
+                <h3>Share Card — Viralité Organique <span class="version-badge new">✨ v5.1</span></h3>
+                <p>Sur un win Ruby ou Arcane, un bouton <strong>"Partager"</strong> apparaît. 
+                    Génère une <strong>carte brandée</strong> pour Instagram/TikTok :<br><br>
+                    🟣 <em>ARCANE TROUVÉ!</em><br>
+                    📍 <em>Parc La Fontaine, Montréal</em><br>
+                    🎰 <em>Roll #847</em><br>
+                    🏆 <em>@username — DriveHunt</em><br><br>
+                    Le <strong>"Roll #847"</strong> crée le flex et la curiosité.
+                    Disponible manuellement pour tous les tiers via l'inventaire.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon orange">🔥</div>
+                <h3>Boucle de Croissance <span class="version-badge new">✨ v5.1</span></h3>
+                <p><strong>1.</strong> Joueur trouve un Arcane → émotion maximale<br>
+                    <strong>2.</strong> Partage sur Instagram (carte auto-générée)<br>
+                    <strong>3.</strong> Ses amis voient le lieu réel + nombre de rolls<br>
+                    <strong>4.</strong> "C'est quoi ce jeu?" → download<br>
+                    <strong>5.</strong> Nouveau joueur cherche SON Arcane<br><br>
+                    Le lieu réel ancre le partage dans le monde physique.
+                    C'est <strong>leur quartier</strong>, pas un screenshot random.</p>
             </div>
         </div>
 
@@ -2299,26 +2379,22 @@
             </div>
             <div class="card">
                 <div class="card-icon red">🎯</div>
-                <h3>Pity System (Caché)</h3>
-                <p>Côté serveur, invisible au joueur. Après <strong>50 gems</strong> (commun) ou <strong>15
-                        gems</strong> (rare) sans épique d'une couleur → prochain garanti épique.</p>
+                <h3>Pity System Flou (Caché) <span class="version-badge changed">🔄 v5.1</span></h3>
+                <p>Côté serveur, <strong>invisible au joueur</strong>. Les odds montent progressivement après une série de malchance. 
+                    Impossible à reverse-engineer car la rampe couvre une <strong>plage floue</strong> (pas un seuil fixe).
+                    Voir tableaux détaillés ci-dessous.</p>
             </div>
-        </div>
-
-        <div class="alert golden" style="margin-top: 1.5rem;">
-            <strong>🌫️ Fog = Mystère :</strong> Les gems sont <strong>invisibles sous le fog</strong>. Notification
-            <em>"🟣 Loot rare près de toi!"</em> sans dire exactement où.
         </div>
 
         <details>
             <summary>💡 Pourquoi ce design?</summary>
             <div class="alert info" style="margin-top: 0.5rem;">
-                <p>Le v3.0 avait des spots fixes. Le v4.0 redistribue tout chaque nuit — l'exploration est toujours
-                    fraîche.
-                    Le cooldown global crée la compétition ("j'y cours avant l'autre!"). Le pity caché empêche le RNG
-                    frustrant sans que le joueur le sache.</p>
+                <p>Le v5.0 avait le Mystère visible de loin = cherry-picking exploitable en voiture.
+                    Le v5.1 supprime le Mystère et utilise 2 plaques (Normale + Gold) pour motiver le déplacement
+                    sans être exploitable. Le share card transforme chaque drop rare en publicité gratuite.</p>
             </div>
         </details>
+
 
         <div style="margin-top: 2rem;">
             <div
@@ -5176,6 +5252,18 @@
                 { cls: 'v41-removed', label: '🗑️ RETIRÉ v4.1', color: '#ef4444' }
             ];
 
+            // Also find v5.1 badges (they use version-badge spans with text containing v5.1)
+            document.querySelectorAll('.version-badge').forEach(badge => {
+                if (badge.textContent.includes('v5.1')) {
+                    const section = badge.closest('section.section');
+                    const sectionTitle = section ? (section.querySelector('h2')?.textContent || section.id) : '—';
+                    const h3 = badge.closest('.card')?.querySelector('h3') || badge.closest('.section-header')?.querySelector('h2');
+                    let preview = h3 ? h3.textContent.trim() : badge.textContent.trim();
+                    const isNew = badge.textContent.includes('✨');
+                    items.push({ el: badge.closest('.card') || badge.closest('.section-header') || badge.parentElement, label: isNew ? '✨ NOUVEAU v5.1' : '🔄 MODIFIÉ v5.1', color: isNew ? '#f59e0b' : '#8b5cf6', sectionTitle, preview });
+                }
+            });
+
             types.forEach(t => {
                 document.querySelectorAll('.' + t.cls).forEach(el => {
                     // Find nearest section heading
@@ -5200,7 +5288,7 @@
 
             // Update toggle count
             if (toggle) {
-                toggle.innerHTML = `✨ Nouveautés v5.0 <span style="background:rgba(16,185,129,0.2);padding:1px 6px;border-radius:8px;font-size:0.7rem;">${items.length}</span>`;
+                toggle.innerHTML = `✨ Nouveautés <span style="background:rgba(16,185,129,0.2);padding:1px 6px;border-radius:8px;font-size:0.7rem;">${items.length}</span>`;
             }
 
             if (items.length === 0) {

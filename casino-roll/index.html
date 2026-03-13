@@ -10,11 +10,11 @@
         rel="stylesheet">
     <style>
         :root {
-            --pierre: #8B5E3C;
-            --metal: #C0C5D0;
-            --energie: #1AC0F2;
-            --cristal: #A633E6;
-            --artefact: #FFCC1A;
+            --quartz: #C0C5D0;
+            --jade: #4ade80;
+            --saphir: #3b82f6;
+            --ruby: #ef4444;
+            --arcane: #a855f7;
             --mystere: linear-gradient(135deg, #ff6b6b, #ffd93d, #6bcb77, #4d96ff, #a855f7);
             --common-bg: #2a2a3e;
             --rare-bg: #1a2a4a;
@@ -158,10 +158,10 @@
             gap: 24px;
         }
 
-        /* Base plate */
+        /* Base plate — Cinematic Spotlight */
         .base-plate {
-            width: 180px;
-            height: 180px;
+            width: 280px;
+            height: 280px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -170,6 +170,9 @@
             opacity: 0;
             transform: scale(0.3);
             transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background: transparent;
+            --spot-color: 255, 255, 255;
+            --spot-intensity: 0.08;
         }
 
         .base-plate.visible {
@@ -177,26 +180,99 @@
             transform: scale(1);
         }
 
-        .base-plate.dark {
-            background: radial-gradient(circle, #3a3a4e, #1a1a2e);
-            box-shadow: 0 0 40px rgba(100, 100, 140, 0.3), inset 0 0 30px rgba(0, 0, 0, 0.5);
+        /* Spotlight cone from above */
+        .base-plate::before {
+            content: '';
+            position: absolute;
+            top: -350px;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 400px;
+            width: 420px;
+            background: linear-gradient(
+                180deg,
+                rgba(var(--spot-color), 0.0) 0%,
+                rgba(var(--spot-color), 0.01) 15%,
+                rgba(var(--spot-color), calc(var(--spot-intensity) * 0.4)) 40%,
+                rgba(var(--spot-color), var(--spot-intensity)) 75%,
+                rgba(var(--spot-color), calc(var(--spot-intensity) * 0.3)) 95%,
+                rgba(var(--spot-color), 0.0) 100%
+            );
+            clip-path: polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%);
+            pointer-events: none;
+            z-index: -1;
+            transition: all 0.5s ease;
         }
 
-        .base-plate.silver {
-            background: radial-gradient(circle, #c0c8d8, #6a7080);
-            box-shadow: 0 0 50px rgba(180, 200, 220, 0.4), inset 0 0 30px rgba(255, 255, 255, 0.2);
+        /* Reflective floor glow beneath gem */
+        .base-plate::after {
+            content: '';
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 220px;
+            height: 60px;
+            background: radial-gradient(
+                ellipse at center,
+                rgba(var(--spot-color), calc(var(--spot-intensity) * 1.5)) 0%,
+                rgba(var(--spot-color), calc(var(--spot-intensity) * 0.5)) 35%,
+                transparent 70%
+            );
+            border-radius: 50%;
+            filter: blur(10px);
+            pointer-events: none;
+            transition: all 0.5s ease;
         }
 
+        /* Gem ambient glow — halos around the gem on reveal */
+        .base-plate.revealed {
+            filter: drop-shadow(0 0 20px rgba(var(--spot-color), calc(var(--spot-intensity) * 2)))
+                    drop-shadow(0 0 60px rgba(var(--spot-color), var(--spot-intensity)));
+        }
+
+        /* Legendary pulse — breathing glow for Arcane */
+        .base-plate.legendary-pulse {
+            animation: legendaryBreath 1.2s ease-in-out infinite alternate;
+        }
+
+        @keyframes legendaryBreath {
+            from {
+                filter: drop-shadow(0 0 20px rgba(var(--spot-color), 0.3))
+                        drop-shadow(0 0 60px rgba(var(--spot-color), 0.15))
+                        drop-shadow(0 0 100px rgba(var(--spot-color), 0.08));
+            }
+            to {
+                filter: drop-shadow(0 0 40px rgba(var(--spot-color), 0.5))
+                        drop-shadow(0 0 80px rgba(var(--spot-color), 0.3))
+                        drop-shadow(0 0 140px rgba(var(--spot-color), 0.15));
+            }
+        }
+
+        /* All tiers use the same cinematic style now */
+        .base-plate.dark,
+        .base-plate.silver,
         .base-plate.gold {
-            background: radial-gradient(circle, #ffd700, #b8860b);
-            box-shadow: 0 0 60px rgba(255, 215, 0, 0.5), inset 0 0 30px rgba(255, 255, 255, 0.3);
+            background: transparent;
+            box-shadow: none;
         }
 
         /* Gem in center */
         .roll-gem {
-            width: 80px;
-            height: 80px;
+            width: 140px;
+            height: 140px;
             position: relative;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .roll-gem.revealed {
+            transform: scale(1.15);
+            animation: gemFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes gemFloat {
+            0%, 100% { transform: scale(1.15) translateY(0); }
+            50% { transform: scale(1.15) translateY(-8px); }
         }
 
         .roll-gem canvas {
@@ -234,19 +310,30 @@
             opacity: 0.3;
         }
 
-        .rarity-slot.common {
+        .rarity-slot.quartz {
             background: rgba(180, 180, 200, 0.1);
-            color: #aab;
+            color: #C0C5D0;
         }
 
-        .rarity-slot.rare {
-            background: rgba(255, 215, 0, 0.1);
-            color: #ffd700;
+        .rarity-slot.jade {
+            background: rgba(74, 222, 128, 0.1);
+            color: #4ade80;
         }
 
-        .rarity-slot.epic {
-            background: rgba(255, 80, 80, 0.1);
-            color: #ff6b6b;
+        .rarity-slot.saphir {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+
+        .rarity-slot.ruby {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .rarity-slot.arcane {
+            background: rgba(168, 85, 247, 0.1);
+            color: #a855f7;
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
         }
 
         .rarity-slot.scanning {
@@ -432,6 +519,47 @@
                 opacity: 0;
             }
         }
+
+        /* ARCANE INSANITY */
+        @keyframes arcaneShake {
+            0%, 100% { transform: translate(0); }
+            10% { transform: translate(-8px, 4px) rotate(-1deg); }
+            20% { transform: translate(6px, -6px) rotate(1deg); }
+            30% { transform: translate(-4px, 8px) rotate(-0.5deg); }
+            40% { transform: translate(8px, 2px) rotate(1.5deg); }
+            50% { transform: translate(-6px, -4px) rotate(-1deg); }
+            60% { transform: translate(4px, 6px) rotate(0.5deg); }
+            70% { transform: translate(-8px, -2px) rotate(-1.5deg); }
+            80% { transform: translate(6px, 4px) rotate(1deg); }
+            90% { transform: translate(-4px, -8px) rotate(-0.5deg); }
+        }
+        @keyframes arcaneRainbow {
+            0%   { box-shadow: inset 0 0 120px rgba(168,85,247,0.6), 0 0 80px rgba(168,85,247,0.3); }
+            16%  { box-shadow: inset 0 0 120px rgba(236,72,153,0.6), 0 0 80px rgba(236,72,153,0.3); }
+            33%  { box-shadow: inset 0 0 120px rgba(239,68,68,0.6), 0 0 80px rgba(239,68,68,0.3); }
+            50%  { box-shadow: inset 0 0 120px rgba(245,158,11,0.6), 0 0 80px rgba(245,158,11,0.3); }
+            66%  { box-shadow: inset 0 0 120px rgba(59,130,246,0.6), 0 0 80px rgba(59,130,246,0.3); }
+            83%  { box-shadow: inset 0 0 120px rgba(74,222,128,0.6), 0 0 80px rgba(74,222,128,0.3); }
+            100% { box-shadow: inset 0 0 120px rgba(168,85,247,0.6), 0 0 80px rgba(168,85,247,0.3); }
+        }
+        @keyframes arcaneGemPulse {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.15); filter: brightness(1.8); }
+        }
+        .arcane-blackout {
+            position: fixed; top:0; left:0; right:0; bottom:0;
+            background: #000; z-index: 99999;
+            animation: arcaneBlackout 1.8s ease-out forwards;
+        }
+        @keyframes arcaneBlackout {
+            0% { opacity: 1; }
+            15% { opacity: 1; }
+            30% { opacity: 0; background: #a855f7; }
+            45% { opacity: 0.6; background: #ec4899; }
+            55% { opacity: 0.4; background: #fff; }
+            70% { opacity: 0.2; }
+            100% { opacity: 0; }
+        }
     </style>
 </head>
 
@@ -444,28 +572,30 @@
     <!-- Resource Dock -->
     <div class="dock-preview" id="dock">
         <div class="dock-chip">
-            <div class="dock-dot" style="background:#8B5E3C"></div><span class="dock-count" id="dock-pierre">5</span>
+            <div class="dock-dot" style="background:#C0C5D0"></div><span class="dock-count" id="dock-quartz">5</span>
         </div>
         <div class="dock-chip">
-            <div class="dock-dot" style="background:#C0C5D0"></div><span class="dock-count" id="dock-metal">3</span>
+            <div class="dock-dot" style="background:#4ade80"></div><span class="dock-count" id="dock-jade">3</span>
         </div>
         <div class="dock-chip">
-            <div class="dock-dot" style="background:#1AC0F2"></div><span class="dock-count" id="dock-energie">2</span>
+            <div class="dock-dot" style="background:#3b82f6"></div><span class="dock-count" id="dock-saphir">2</span>
         </div>
         <div class="dock-chip">
-            <div class="dock-dot" style="background:#A633E6"></div><span class="dock-count" id="dock-cristal">1</span>
+            <div class="dock-dot" style="background:#ef4444"></div><span class="dock-count" id="dock-ruby">1</span>
         </div>
         <div class="dock-chip">
-            <div class="dock-dot" style="background:#FFCC1A"></div><span class="dock-count" id="dock-artefact">0</span>
+            <div class="dock-dot" style="background:#a855f7"></div><span class="dock-count" id="dock-arcane">0</span>
         </div>
     </div>
 
     <div class="controls">
-        <button onclick="spawnRandom('dark')">🔘 Plaque Normale</button>
-        <button onclick="spawnRandom('gold')" style="border-color:#ffd700;background:rgba(255,215,0,0.12)">✨ Plaque
-            Gold</button>
-        <button onclick="spawnGem('mystere', 'gold')" style="border-color:#a855f7;background:rgba(168,85,247,0.15)">🌈
-            Mystère</button>
+        <button onclick="forceRoll(null)" style="border-color:#ffd700;color:#ffd700;background:rgba(255,215,0,0.1)">🎲 Random</button>
+        <button onclick="forceTease()" style="border-color:#ff6b6b;color:#ff6b6b;background:rgba(255,107,107,0.1)">😈 Tease</button>
+        <button onclick="forceRoll('quartz')" style="border-color:#C0C5D0;color:#C0C5D0">⚪ Quartz</button>
+        <button onclick="forceRoll('jade')" style="border-color:#4ade80;color:#4ade80">🟢 Jade</button>
+        <button onclick="forceRoll('saphir')" style="border-color:#3b82f6;color:#3b82f6">🔵 Saphir</button>
+        <button onclick="forceRoll('ruby')" style="border-color:#ef4444;color:#ef4444">🔴 Ruby</button>
+        <button onclick="forceRoll('arcane')" style="border-color:#a855f7;color:#a855f7;background:rgba(168,85,247,0.15)">🟣 Arcane</button>
     </div>
 
     <!-- Gem on map (spawned dynamically) -->
@@ -479,9 +609,11 @@
                 <div class="roll-gem" id="rollGem"></div>
             </div>
             <div class="rarity-spinner" id="raritySpinner">
-                <div class="rarity-slot common" id="slotCommon">COMMUN</div>
-                <div class="rarity-slot rare" id="slotRare">RARE</div>
-                <div class="rarity-slot epic" id="slotEpic">ÉPIQUE</div>
+                <div class="rarity-slot quartz" id="slotQuartz">QUARTZ</div>
+                <div class="rarity-slot jade" id="slotJade">JADE</div>
+                <div class="rarity-slot saphir" id="slotSaphir">SAPHIR</div>
+                <div class="rarity-slot ruby" id="slotRuby">RUBY</div>
+                <div class="rarity-slot arcane" id="slotArcane">ARCANE</div>
             </div>
             <div class="result-text" id="resultText"></div>
             <div class="result-sub" id="resultSub"></div>
@@ -500,41 +632,38 @@
     <script>
         // ═══ GEM COLORS ═══
         const GEM_COLORS = {
-            pierre: { color: '#8B5E3C', label: 'PIERRE', emoji: '🟤' },
-            metal: { color: '#C0C5D0', label: 'MÉTAL', emoji: '⚪' },
-            energie: { color: '#1AC0F2', label: 'ÉNERGIE', emoji: '🔵' },
-            cristal: { color: '#A633E6', label: 'CRISTAL', emoji: '🟣' },
-            artefact: { color: '#FFCC1A', label: 'ARTEFACT', emoji: '🟡' },
+            quartz: { color: '#C0C5D0', label: 'QUARTZ', emoji: '⚪' },
+            jade: { color: '#4ade80', label: 'JADE', emoji: '🟢' },
+            saphir: { color: '#3b82f6', label: 'SAPHIR', emoji: '🔵' },
+            ruby: { color: '#ef4444', label: 'RUBY', emoji: '🔴' },
+            arcane: { color: '#a855f7', label: 'ARCANE', emoji: '🟣' },
             mystere: { color: '#ff6b6b', label: 'MYSTÈRE', emoji: '🌈' }
         };
 
-        // Pick a random non-mystère color
-        const NORMAL_COLORS = ['pierre', 'metal', 'energie', 'cristal', 'artefact'];
-        function spawnRandom(tier) {
-            const color = NORMAL_COLORS[Math.floor(Math.random() * NORMAL_COLORS.length)];
-            spawnGem(color, tier);
+        // We don't use spawnRandom anymore; we just spin for a tier
+        let forcedResult = null;
+        let teaseMode = false;
+        function forceRoll(gemType) {
+            forcedResult = gemType;
+            teaseMode = false;
+            spawnGem('mystere', 'gold');
+        }
+        function forceTease() {
+            forcedResult = 'quartz';
+            teaseMode = true;
+            spawnGem('mystere', 'gold');
         }
 
-        // ═══ RARITY ODDS BY BASE TIER ═══
+        // ═══ GEM ODDS BY BASE TIER (The New 5-Tier Economy) ═══
+        // Base Dorée = better odds for high tiers
         const ODDS = {
-            dark: { common: 0.90, rare: 0.08, epic: 0.02 },   // Plaque Normale
-            gold: { common: 0.50, rare: 0.30, epic: 0.20 }     // Plaque Gold
+            dark: { quartz: 0.80, jade: 0.15, saphir: 0.040, ruby: 0.009, arcane: 0.001 },
+            gold: { quartz: 0.40, jade: 0.35, saphir: 0.150, ruby: 0.080, arcane: 0.020 }
         };
-        const MYSTERE_ODDS = { common: 0, rare: 0.60, epic: 0.40 };  // 3% spawn rate
-
-        const RARITY_COLORS = {
-            common: '#aabbcc',
-            rare: '#ffd700',
-            epic: '#ff4444'
-        };
-        const RARITY_LABELS = {
-            common: 'COMMUN',
-            rare: 'RARE ⭐',
-            epic: 'ÉPIQUE 💎'
-        };
+        const MYSTERE_ODDS = { quartz: 0, jade: 0.0, saphir: 0.60, ruby: 0.35, arcane: 0.05 };
 
         // ═══ INVENTORY STATE ═══
-        let inventory = { pierre: 5, metal: 3, energie: 2, cristal: 1, artefact: 0 };
+        let inventory = { quartz: 5, jade: 3, saphir: 2, ruby: 1, arcane: 0 };
 
         // ═══ SOUND ENGINE (Web Audio API) ═══
         let audioCtx = null;
@@ -596,43 +725,116 @@
                     playTone(300 + i * 80, 0.15, 'triangle', 0.06, i * 0.08);
                 }
             },
-            // Reveal fanfare — different per rarity
+            // ═══ REVEAL FANFARES — shifted up 1 tier, Arcane = INSANE ═══
+
+            // ⚪ QUARTZ — flat, dull. "Meh"
             revealCommon() {
-                playTone(523, 0.3, 'triangle', 0.12);      // C5
-                playTone(659, 0.3, 'triangle', 0.08, 0.1);  // E5
+                playTone(330, 0.25, 'triangle', 0.08);
+                playTone(294, 0.3, 'triangle', 0.05, 0.1);
             },
+
+            // 🟢 JADE — also flat. Barely better than Quartz. "Okay..."
+            revealUncommon() {
+                playTone(350, 0.25, 'triangle', 0.08);
+                playTone(330, 0.3, 'triangle', 0.06, 0.1);
+            },
+
+            // 🔵 SAPHIR — pleasant ascending chime. "Hey, nice!"
             revealRare() {
-                playTone(523, 0.2, 'triangle', 0.15);       // C5
-                playTone(659, 0.2, 'triangle', 0.12, 0.08);  // E5
-                playTone(784, 0.3, 'triangle', 0.15, 0.16);  // G5
-                playTone(1047, 0.5, 'sine', 0.12, 0.24);     // C6
-                playTone(1318, 0.4, 'sine', 0.08, 0.32);     // E6
-                playNoise(0.2, 0.08, 0.16);
-                // Shimmering tail
-                playTone(1047, 0.6, 'sine', 0.05, 0.5);
-                playTone(1318, 0.6, 'sine', 0.04, 0.6);
-                playTone(784, 0.8, 'triangle', 0.03, 0.7);
+                playTone(523, 0.25, 'triangle', 0.12);
+                playTone(659, 0.3, 'triangle', 0.10, 0.12);
+                playTone(784, 0.35, 'sine', 0.06, 0.25);
             },
+
+            // 🔴 RUBY — FULL EPIC. Sub-bass + orchestral + fanfare + crash
             revealEpic() {
-                // MASSIVE chord explosion
-                playTone(261, 0.3, 'sawtooth', 0.12);          // C4 power
-                playTone(523, 0.2, 'sawtooth', 0.10, 0.03);    // C5
-                playTone(659, 0.2, 'sawtooth', 0.08, 0.06);    // E5
-                playTone(784, 0.2, 'sawtooth', 0.08, 0.09);    // G5
+                // Sub-bass boom
+                playTone(40, 0.8, 'sine', 0.25);
+                playTone(60, 0.6, 'sine', 0.18, 0.05);
+                playTone(80, 0.5, 'sine', 0.12, 0.1);
+                // Power chord
+                playTone(261, 0.3, 'sawtooth', 0.14, 0.08);
+                playTone(392, 0.3, 'sawtooth', 0.10, 0.10);
+                playTone(523, 0.25, 'sawtooth', 0.12, 0.12);
+                playTone(784, 0.25, 'sawtooth', 0.08, 0.16);
                 // Ascending fanfare
-                playTone(1047, 0.5, 'sine', 0.15, 0.15);       // C6
-                playTone(1318, 0.5, 'sine', 0.12, 0.22);       // E6
-                playTone(1568, 0.6, 'sine', 0.10, 0.29);       // G6
-                playTone(2093, 0.8, 'sine', 0.08, 0.36);       // C7 peak!
-                // Noise burst
-                playNoise(0.4, 0.15, 0.12);
-                // Deep boom
-                playTone(60, 0.6, 'sine', 0.20, 0.12);
-                playTone(80, 0.5, 'sine', 0.12, 0.2);
-                // Sparkling tail
-                playTone(2093, 0.8, 'sine', 0.04, 0.5);
-                playTone(1568, 1.0, 'sine', 0.03, 0.6);
-                playTone(1047, 1.2, 'triangle', 0.02, 0.8);
+                playTone(1047, 0.4, 'sine', 0.16, 0.20);
+                playTone(1318, 0.4, 'sine', 0.14, 0.26);
+                playTone(1568, 0.5, 'sine', 0.12, 0.32);
+                playTone(2093, 0.6, 'sine', 0.10, 0.38);
+                // Cymbal crash
+                playNoise(0.5, 0.18, 0.15);
+                // Ethereal choir
+                playTone(1047, 1.0, 'sine', 0.05, 0.55);
+                playTone(1318, 1.0, 'sine', 0.04, 0.60);
+                playTone(1568, 1.2, 'sine', 0.04, 0.65);
+                // Sparkle tail
+                playTone(2093, 1.5, 'sine', 0.03, 0.70);
+                playTone(1568, 2.0, 'triangle', 0.015, 0.90);
+            },
+
+            // 🟣 ARCANE — ABSOLUTELY INSANE. 1/1000. Destabilize the player.
+            revealLegendary() {
+                // === PHASE 1: EARTHQUAKE (0.0s - 0.3s) ===
+                // Triple sub-bass hit that vibrates your whole body
+                playTone(30, 1.2, 'sine', 0.30);              // Deepest possible rumble
+                playTone(40, 1.0, 'sine', 0.25, 0.03);
+                playTone(55, 0.8, 'sine', 0.22, 0.06);
+                playTone(80, 0.6, 'sine', 0.18, 0.10);
+                // Bass SLAM (like a door slamming shut)
+                playTone(100, 0.15, 'square', 0.20, 0.12);
+                playNoise(0.08, 0.25, 0.12);                   // Impact transient
+
+                // === PHASE 2: ORCHESTRAL HIT (0.15s - 0.5s) ===
+                // Wall of stacked fifths — like an entire orchestra hitting one note
+                playTone(131, 0.4, 'sawtooth', 0.16, 0.15);   // C3
+                playTone(196, 0.4, 'sawtooth', 0.14, 0.16);   // G3
+                playTone(261, 0.35, 'sawtooth', 0.16, 0.17);  // C4
+                playTone(392, 0.35, 'sawtooth', 0.14, 0.18);  // G4
+                playTone(523, 0.3, 'sawtooth', 0.14, 0.19);   // C5
+                playTone(659, 0.3, 'sawtooth', 0.12, 0.20);   // E5
+                playTone(784, 0.3, 'sawtooth', 0.10, 0.21);   // G5
+
+                // === PHASE 3: ASCENDING FANFARE (0.3s - 0.8s) ===
+                // Goes ALL THE WAY to G7 — higher than any other tier
+                playTone(1047, 0.35, 'sine', 0.18, 0.30);     // C6 — launch
+                playTone(1318, 0.30, 'sine', 0.16, 0.36);     // E6
+                playTone(1568, 0.30, 'sine', 0.16, 0.42);     // G6
+                playTone(2093, 0.35, 'sine', 0.14, 0.48);     // C7 — peak
+                playTone(2637, 0.40, 'sine', 0.10, 0.54);     // E7
+                playTone(3136, 0.50, 'sine', 0.08, 0.60);     // G7 — BEYOND THE SKY
+
+                // === PHASE 4: TRIPLE CRASH (0.2s - 0.8s) ===
+                playNoise(0.6, 0.22, 0.18);                    // Crash 1
+                playNoise(0.5, 0.15, 0.35);                    // Crash 2
+                playNoise(0.4, 0.10, 0.55);                    // Crash 3
+
+                // === PHASE 5: DETUNED HEAVENLY CHOIR (0.7s - 3.5s) ===
+                // Slightly detuned pairs = shimmering, otherworldly, angelic
+                playTone(523, 2.0, 'sine', 0.06, 0.75);       // C5
+                playTone(527, 2.0, 'sine', 0.06, 0.75);       // C5 detuned (beating)
+                playTone(784, 2.0, 'sine', 0.05, 0.80);       // G5
+                playTone(788, 2.0, 'sine', 0.05, 0.80);       // G5 detuned
+                playTone(1047, 2.5, 'sine', 0.05, 0.85);      // C6
+                playTone(1051, 2.5, 'sine', 0.05, 0.85);      // C6 detuned
+                playTone(1568, 2.5, 'sine', 0.04, 0.90);      // G6
+                playTone(1572, 2.5, 'sine', 0.04, 0.90);      // G6 detuned
+
+                // === PHASE 6: DESCENDING BELL CASCADE (1.0s - 3.0s) ===
+                // Like church bells ringing in celebration, descending slowly
+                playTone(3136, 0.8, 'sine', 0.04, 1.0);       // G7
+                playTone(2637, 0.8, 'sine', 0.04, 1.2);       // E7
+                playTone(2093, 0.8, 'sine', 0.04, 1.4);       // C7
+                playTone(1568, 0.8, 'sine', 0.04, 1.6);       // G6
+                playTone(1318, 0.8, 'sine', 0.03, 1.8);       // E6
+                playTone(1047, 1.0, 'sine', 0.03, 2.0);       // C6
+
+                // === PHASE 7: 3-SECOND SHIMMER AFTERGLOW ===
+                // The "aaahh" that hangs in the air after something miraculous
+                playTone(2093, 3.0, 'sine', 0.02, 1.2);
+                playTone(1568, 3.5, 'sine', 0.015, 1.4);
+                playTone(1047, 4.0, 'triangle', 0.012, 1.6);
+                playTone(784, 4.0, 'triangle', 0.010, 1.8);
             },
             // Inventory ding
             ding() {
@@ -753,6 +955,9 @@
 
             // Reset
             basePlate.className = 'base-plate';
+            basePlate.style.removeProperty('--spot-color');
+            basePlate.style.removeProperty('--spot-intensity');
+            document.getElementById('rollGem').className = 'roll-gem';
             spinner.className = 'rarity-spinner';
             resultText.className = 'result-text';
             resultSub.className = 'result-sub';
@@ -763,19 +968,26 @@
             // Remove gem from map
             document.getElementById('gem-container').innerHTML = '';
 
-            // Determine result (server would do this)
-            const odds = type === 'mystere' ? MYSTERE_ODDS : ODDS[baseTier];
-            const roll = Math.random();
-            let rarity;
-            if (roll < odds.common) rarity = 'common';
-            else if (roll < odds.common + odds.rare) rarity = 'rare';
-            else rarity = 'epic';
+            // Determine result — forced or random
+            let gemResult;
+            if (forcedResult) {
+                gemResult = forcedResult;
+                forcedResult = null;
+            } else {
+                const odds = type === 'mystere' ? MYSTERE_ODDS : ODDS[baseTier];
+                const roll = Math.random();
+                if (roll < odds.quartz) gemResult = 'quartz';
+                else if (roll < odds.quartz + odds.jade) gemResult = 'jade';
+                else if (roll < odds.quartz + odds.jade + odds.saphir) gemResult = 'saphir';
+                else if (roll < odds.quartz + odds.jade + odds.saphir + odds.ruby) gemResult = 'ruby';
+                else gemResult = 'arcane';
+            }
 
-            // For mystère, no common
-            if (type === 'mystere' && rarity === 'common') rarity = 'rare';
-
-            const gemColor = type === 'mystere' ? '#ff6b6b' : GEM_COLORS[type].color;
-            const rarityColor = RARITY_COLORS[rarity];
+            const gemColor = GEM_COLORS[gemResult].color;
+            const rarityLevel = gemResult === 'arcane' ? 'legendary' : 
+                                gemResult === 'ruby' ? 'epic' : 
+                                gemResult === 'saphir' ? 'rare' : 
+                                gemResult === 'jade' ? 'uncommon' : 'common';
 
             // ── STEP 1: Show overlay + base plate ──
             overlay.classList.add('active');
@@ -783,11 +995,11 @@
             vib(50);
             await sleep(400);
 
-            // Draw gem in roll view
+            // Draw generic mystere gem first
             const rollGemDiv = document.getElementById('rollGem');
             rollGemDiv.innerHTML = '';
             const canvas = document.createElement('canvas');
-            drawGem(canvas, gemColor, 60);
+            drawGem(canvas, '#ff6b6b', 100); // Starts as Mystere
             rollGemDiv.appendChild(canvas);
 
             basePlate.className = `base-plate ${baseTier}`;
@@ -802,28 +1014,59 @@
             await sleep(300);
 
             // ── STEP 3: Scanning animation ──
-            const slots = ['Common', 'Rare', 'Epic'];
-            const slotIds = ['slotCommon', 'slotRare', 'slotEpic'];
+            const slots = ['Quartz', 'Jade', 'Saphir', 'Ruby', 'Arcane'];
+            const slotIds = ['slotQuartz', 'slotJade', 'slotSaphir', 'slotRuby', 'slotArcane'];
+            const targetIndex = slots.map(s => s.toLowerCase()).indexOf(gemResult);
 
-            // Fast scan — builds suspense
-            for (let cycle = 0; cycle < 3; cycle++) {
+            // Decide if we do a NEAR-MISS tease
+            // 25% chance on low results (Quartz/Jade), or forced via teaseMode
+            const doTease = teaseMode || (targetIndex <= 1 && Math.random() < 0.25);
+            teaseMode = false;
+
+            // Helper to highlight a slot + change gem color
+            let tickStep = 0;
+            async function highlightSlot(i, ms) {
+                slotIds.forEach(id => document.getElementById(id).classList.remove('scanning'));
+                document.getElementById(slotIds[i]).classList.add('scanning');
+                drawGem(canvas, GEM_COLORS[slots[i].toLowerCase()].color, 100);
+                SFX.tick(tickStep++);
+                vib(20);
+                await sleep(ms);
+            }
+
+            // Fast scan — randomized cycles so it's never predictable
+            // Ruby/Arcane: always 4 cycles (slower, more dramatic)
+            // Others: random 2-4 cycles
+            const isHighTier = gemResult === 'ruby' || gemResult === 'arcane';
+            const numCycles = isHighTier ? 4 : (2 + Math.floor(Math.random() * 3)); // 2-4
+            const baseSpeed = isHighTier ? 90 : 80; // High tier starts slower
+            const speedRamp = isHighTier ? 35 : 30 + Math.floor(Math.random() * 20);
+
+            for (let cycle = 0; cycle < numCycles; cycle++) {
                 for (let i = 0; i < slotIds.length; i++) {
-                    slotIds.forEach(id => document.getElementById(id).classList.remove('scanning'));
-                    document.getElementById(slotIds[i]).classList.add('scanning');
-                    SFX.tick(cycle * 3 + i);
-                    vib(20);
-                    await sleep(120 + cycle * 50);
+                    await highlightSlot(i, baseSpeed + cycle * speedRamp);
                 }
             }
 
-            // Slow down to result
-            const targetIndex = rarity === 'common' ? 0 : rarity === 'rare' ? 1 : 2;
-            for (let i = 0; i <= targetIndex; i++) {
-                slotIds.forEach(id => document.getElementById(id).classList.remove('scanning'));
-                document.getElementById(slotIds[i]).classList.add('scanning');
-                SFX.tick(9 + i);
-                vib(30 + i * 10);
-                await sleep(250 + i * 100);
+            if (doTease) {
+                // === NEAR-MISS TEASE ===
+                // Slowly climb all the way up to Arcane with dramatic pauses
+                await highlightSlot(0, 150);  // Quartz
+                await highlightSlot(1, 180);  // Jade
+                await highlightSlot(2, 220);  // Saphir... getting exciting
+                await highlightSlot(3, 350);  // Ruby... SLOW... tension building
+                await highlightSlot(4, 600);  // Arcane... HOLD... the dream...
+
+                // Keep spinning forward — wraps around past Arcane
+                // Lands on the real target as if the wheel just kept going
+                for (let i = 0; i <= targetIndex; i++) {
+                    await highlightSlot(i, 150 + i * 50);
+                }
+            } else {
+                // Normal slow down to result
+                for (let i = 0; i <= targetIndex; i++) {
+                    await highlightSlot(i, 200 + i * 80);
+                }
             }
 
             // ── STEP 4: REVEAL! ──
@@ -831,13 +1074,45 @@
             const winnerSlot = document.getElementById(slotIds[targetIndex]);
             winnerSlot.classList.add('winner');
 
+            // Draw final glorious gem
+            drawGem(canvas, gemColor, 140);
+
+            // Make gem float
+            document.getElementById('rollGem').classList.add('revealed');
+
+            // ── SPOTLIGHT REACTS TO WIN ──
+            const spotColors = {
+                quartz:  '192, 197, 208',
+                jade:    '74, 222, 128',
+                saphir:  '59, 130, 246',
+                ruby:    '239, 68, 68',
+                arcane:  '168, 85, 247'
+            };
+            const spotIntensities = {
+                quartz: '0.06',   // dim, underwhelming
+                jade:   '0.10',   // gentle
+                saphir: '0.16',   // bright
+                ruby:   '0.25',   // intense
+                arcane: '0.40'    // EXPLOSIVE
+            };
+            basePlate.style.setProperty('--spot-color', spotColors[gemResult]);
+            basePlate.style.setProperty('--spot-intensity', spotIntensities[gemResult]);
+            basePlate.classList.add('revealed');
+            if (rarityLevel === 'legendary') basePlate.classList.add('legendary-pulse');
+
             // Sound + Vibration per rarity
-            if (rarity === 'epic') {
+            if (rarityLevel === 'legendary') {
+                SFX.revealLegendary();
+                vib([200, 30, 100, 20, 80, 20, 60, 20, 100, 30, 200, 50, 400, 80, 300]);
+            } else if (rarityLevel === 'epic') {
                 SFX.revealEpic();
-                vib([100, 30, 80, 30, 60, 30, 100, 50, 300]);
-            } else if (rarity === 'rare') {
+                vib([80, 20, 80, 20, 150]);
+            } else if (rarityLevel === 'rare') {
                 SFX.revealRare();
                 vib([60, 20, 60, 20, 60, 30, 180]);
+            } else if (rarityLevel === 'uncommon') {
+                SFX.revealUncommon();
+                vib([60, 20, 100]);
             } else {
                 SFX.revealCommon();
                 vib(60);
@@ -845,32 +1120,58 @@
 
             // Screen flash
             const flash = document.getElementById('screenFlash');
-            flash.style.background = rarityColor;
+            flash.style.background = gemColor;
             flash.classList.add('active');
             setTimeout(() => flash.classList.remove('active'), 400);
 
             // Edge glow
-            edgeGlowInner.style.setProperty('--glow-color', rarityColor + '60');
+            edgeGlowInner.style.setProperty('--glow-color', gemColor + '60');
             edgeGlow.classList.add('active');
 
-            // Shake for epic (stronger) or rare (subtle)
-            if (rarity === 'epic') {
+            if (rarityLevel === 'legendary') {
+                // === ARCANE VISUAL INSANITY ===
+                // 1. Screen blackout → purple → pink → white explosion
+                const blackout = document.createElement('div');
+                blackout.className = 'arcane-blackout';
+                document.body.appendChild(blackout);
+                setTimeout(() => blackout.remove(), 2000);
+
+                // 2. Violent earthquake shake (1.5 seconds)
+                document.body.style.animation = 'arcaneShake 0.1s ease-in-out 15';
+                setTimeout(() => document.body.style.animation = '', 1500);
+
+                // 3. Rainbow cycling edge glow
+                edgeGlowInner.style.animation = 'arcaneRainbow 1s linear infinite';
+                setTimeout(() => edgeGlowInner.style.animation = '', 4000);
+
+                // 4. Gem pulses with brightness
+                const gemEl = document.getElementById('rollGem');
+                gemEl.style.animation = 'arcaneGemPulse 0.5s ease-in-out 6';
+                setTimeout(() => gemEl.style.animation = '', 3000);
+
+                // 5. Three waves of particles
+                spawnParticles(gemColor, 60);
+                setTimeout(() => spawnParticles('#ec4899', 40), 300);
+                setTimeout(() => spawnParticles('#fff', 30), 600);
+                setTimeout(() => spawnParticles(gemColor, 50), 1000);
+            } else if (rarityLevel === 'epic') {
                 document.body.style.animation = 'shake 0.08s ease-in-out 5';
                 setTimeout(() => document.body.style.animation = '', 500);
-            } else if (rarity === 'rare') {
+                spawnParticles(gemColor, 50);
+            } else if (rarityLevel === 'rare') {
                 document.body.style.animation = 'shake 0.12s ease-in-out 2';
                 setTimeout(() => document.body.style.animation = '', 300);
+                spawnParticles(gemColor, 25);
+            } else {
+                // Quartz/Jade: minimal particles
+                spawnParticles(gemColor, 8);
             }
-
-            // Particles!
-            spawnParticles(rarityColor, rarity === 'epic' ? 60 : rarity === 'rare' ? 30 : 8);
 
             await sleep(300);
 
             // ── STEP 5: Result text ──
-            const colorLabel = GEM_COLORS[type].label;
-            resultText.textContent = `${colorLabel} ${RARITY_LABELS[rarity]}`;
-            resultText.style.color = rarityColor;
+            resultText.textContent = GEM_COLORS[gemResult].label;
+            resultText.style.color = gemColor;
             resultText.classList.add('visible');
 
             const tierLabel = baseTier === 'gold' ? 'Base Dorée' : baseTier === 'silver' ? 'Base Argentée' : 'Base Sombre';
@@ -880,15 +1181,13 @@
             await sleep(400);
 
             // ── STEP 6: Update dock counter ──
-            if (type !== 'mystere') {
-                const dockEl = document.getElementById(`dock-${type}`);
-                inventory[type]++;
-                dockEl.textContent = inventory[type];
-                dockEl.classList.add('bumped');
-                SFX.ding();
-                vib(40);
-                setTimeout(() => dockEl.classList.remove('bumped'), 400);
-            }
+            const dockEl = document.getElementById(`dock-${gemResult}`);
+            inventory[gemResult]++;
+            dockEl.textContent = inventory[gemResult];
+            dockEl.classList.add('bumped');
+            SFX.ding();
+            vib(40);
+            setTimeout(() => dockEl.classList.remove('bumped'), 400);
 
             await sleep(300);
             tapClose.classList.add('visible');
@@ -936,7 +1235,7 @@
         function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
         // Auto-spawn a gem on load
-        spawnGem('pierre', 'dark');
+        spawnGem('quartz', 'dark');
     </script>
 </body>
 
