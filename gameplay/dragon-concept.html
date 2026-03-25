@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dragon Compagnon — 3D Concept</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0e17;
+            --bg-card: #1a2234;
+            --border: #1e293b;
+            --purple-deep: #6B3FA0;
+            --purple-light: #B794F6;
+            --cyan: #22D3EE;
+            --gold: #F6AD55;
+            --text: #f1f5f9;
+            --text-dim: #94a3b8;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+        .hero { text-align: center; padding: 2rem 2rem 0; }
+        .hero h1 {
+            font-size: 2.5rem; font-weight: 900;
+            background: linear-gradient(135deg, #B794F6, #22D3EE);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero p { color: var(--text-dim); margin-top: 0.5rem; font-size: 1rem; }
+
+        #canvas3d {
+            width: 100%; height: 65vh; display: block; cursor: grab;
+            background: radial-gradient(ellipse at center, rgba(107,63,160,0.12), transparent 70%);
+        }
+        #canvas3d:active { cursor: grabbing; }
+
+        .controls {
+            display: flex; gap: 0.5rem; justify-content: center;
+            padding: 1rem; flex-wrap: wrap;
+        }
+        .ctrl-btn {
+            padding: 0.5rem 1.2rem; border: 2px solid var(--border); border-radius: 10px;
+            background: var(--bg-card); color: var(--text-dim); font-size: 0.8rem;
+            font-weight: 600; cursor: pointer; transition: all 0.3s; font-family: 'Inter', sans-serif;
+        }
+        .ctrl-btn:hover { border-color: var(--purple-light); color: var(--text); }
+        .ctrl-btn.active { border-color: var(--cyan); color: var(--cyan); background: rgba(34,211,238,0.08); }
+
+        .hint {
+            text-align: center; padding: 0.5rem; font-size: 0.75rem; color: var(--text-dim);
+        }
+
+        .info-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem; max-width: 900px; margin: 2rem auto; padding: 0 2rem;
+        }
+        .info-card {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px;
+            padding: 1.5rem; transition: all 0.3s;
+        }
+        .info-card:hover { border-color: rgba(107,63,160,0.3); transform: translateY(-2px); }
+        .info-card h3 { font-size: 1rem; margin-bottom: 0.5rem; }
+        .info-card p { font-size: 0.85rem; color: var(--text-dim); line-height: 1.5; }
+
+        .footer { text-align: center; padding: 2rem; color: var(--text-dim); font-size: 0.75rem; }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <h1>🐉 Dragon T1 — La Larve</h1>
+    <p>Concept 3D · Glisser pour tourner · Scroll pour zoomer</p>
+</div>
+
+<canvas id="canvas3d"></canvas>
+
+<div class="controls">
+    <button class="ctrl-btn active" onclick="setAnim('idle')">🫁 Respirer</button>
+    <button class="ctrl-btn" onclick="setAnim('eat')">🍖 Manger</button>
+    <button class="ctrl-btn" onclick="setAnim('sleep')">😴 Dormir</button>
+    <button class="ctrl-btn" onclick="setAnim('happy')">🎉 Content</button>
+    <button class="ctrl-btn" onclick="toggleAutoRotate()">🔄 Auto-Rotation</button>
+</div>
+
+<div class="hint">Cliquer-glisser pour tourner · Scroll pour zoomer · Boutons pour les animations</div>
+
+<div class="info-grid">
+    <div class="info-card">
+        <h3>🎨 Palette</h3>
+        <p><span style="color:#6B3FA0;">⬤</span> Améthyste body ·
+           <span style="color:#B794F6;">⬤</span> Lavande belly ·
+           <span style="color:#22D3EE;">⬤</span> Cyan eyes ·
+           <span style="color:#F6AD55;">⬤</span> Gold horns</p>
+    </div>
+    <div class="info-card">
+        <h3>📐 Specs</h3>
+        <p>~1500 triangles · 18 bones · 4 animations · Vertex colors sRGB · Single mesh FBX</p>
+    </div>
+    <div class="info-card">
+        <h3>💡 Design</h3>
+        <p>Proportions chibi (tête 40%). Gros yeux expressifs. Petites ailes inutiles. Queue qui bouge. Sourire doux.</p>
+    </div>
+</div>
+
+<div class="footer">Projet Hexagon — Dragon Compagnon Concept v5.0 — Three.js</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ── Scene setup ──
+const canvas = document.getElementById('canvas3d');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.2;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(40, canvas.clientWidth / canvas.clientHeight, 0.1, 100);
+camera.position.set(0, 2.5, 6);
+camera.lookAt(0, 1, 0);
+
+// ── Lighting ──
+const ambientLight = new THREE.AmbientLight(0x6B3FA0, 0.4);
+scene.add(ambientLight);
+
+const mainLight = new THREE.DirectionalLight(0xffffff, 1.2);
+mainLight.position.set(3, 5, 4);
+mainLight.castShadow = true;
+scene.add(mainLight);
+
+const fillLight = new THREE.DirectionalLight(0x22D3EE, 0.4);
+fillLight.position.set(-3, 2, -2);
+scene.add(fillLight);
+
+const rimLight = new THREE.PointLight(0xB794F6, 0.6, 10);
+rimLight.position.set(0, 3, -3);
+scene.add(rimLight);
+
+// Floor glow
+const floorGeo = new THREE.CircleGeometry(3, 32);
+const floorMat = new THREE.MeshStandardMaterial({
+    color: 0x6B3FA0, transparent: true, opacity: 0.08, side: THREE.DoubleSide
+});
+const floor = new THREE.Mesh(floorGeo, floorMat);
+floor.rotation.x = -Math.PI / 2;
+floor.position.y = -0.01;
+scene.add(floor);
+
+// ── Materials ──
+const bodyMat  = new THREE.MeshStandardMaterial({ color: 0x6B3FA0, roughness: 0.6, metalness: 0.1 });
+const bellyMat = new THREE.MeshStandardMaterial({ color: 0xB794F6, roughness: 0.7, metalness: 0.05 });
+const wingMat  = new THREE.MeshStandardMaterial({ color: 0x9F7AEA, roughness: 0.5, metalness: 0.1, transparent: true, opacity: 0.85 });
+const eyeWhite = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.3, metalness: 0, emissive: 0x333333 });
+const eyeIris  = new THREE.MeshStandardMaterial({ color: 0x22D3EE, roughness: 0.2, metalness: 0.3, emissive: 0x115566 });
+const eyePupil = new THREE.MeshStandardMaterial({ color: 0x0E7490, roughness: 0.3, metalness: 0.2 });
+const eyeSpec  = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 0.5 });
+const hornMat  = new THREE.MeshStandardMaterial({ color: 0xF6AD55, roughness: 0.4, metalness: 0.3, emissive: 0x332200 });
+const clawMat  = new THREE.MeshStandardMaterial({ color: 0x2D3748, roughness: 0.8 });
+const noseMat  = new THREE.MeshStandardMaterial({ color: 0x5A2D8A, roughness: 0.7 });
+const blushMat = new THREE.MeshStandardMaterial({ color: 0xF687B3, roughness: 0.8, transparent: true, opacity: 0.3 });
+const mouthMat = new THREE.MeshStandardMaterial({ color: 0xF687B3, roughness: 0.5 });
+
+// ── Dragon Group ──
+const dragon = new THREE.Group();
+const bodyGroup = new THREE.Group();
+const headGroup = new THREE.Group();
+const tailGroup = new THREE.Group();
+const wingLGroup = new THREE.Group();
+const wingRGroup = new THREE.Group();
+
+// Body
+const bodyGeo = new THREE.SphereGeometry(0.8, 16, 14);
+bodyGeo.scale(1, 0.9, 0.85);
+const body = new THREE.Mesh(bodyGeo, bodyMat);
+body.position.y = 0.75;
+bodyGroup.add(body);
+
+// Belly
+const bellyGeo = new THREE.SphereGeometry(0.62, 14, 12);
+bellyGeo.scale(0.85, 0.8, 0.9);
+const belly = new THREE.Mesh(bellyGeo, bellyMat);
+belly.position.set(0, 0.65, 0.15);
+bodyGroup.add(belly);
+
+// Legs
+for (let x of [-0.4, 0.4]) {
+    const legGeo = new THREE.SphereGeometry(0.2, 10, 8);
+    legGeo.scale(1.3, 0.6, 1);
+    const leg = new THREE.Mesh(legGeo, bodyMat);
+    leg.position.set(x, 0.12, 0.1);
+    bodyGroup.add(leg);
+
+    // Claws
+    for (let c = -1; c <= 1; c++) {
+        const clawGeo = new THREE.SphereGeometry(0.05, 6, 4);
+        const claw = new THREE.Mesh(clawGeo, clawMat);
+        claw.position.set(x + c * 0.08, 0.05, 0.25);
+        bodyGroup.add(claw);
+    }
+}
+
+// Neck
+const neckGeo = new THREE.SphereGeometry(0.4, 10, 8);
+neckGeo.scale(0.8, 1, 0.7);
+const neck = new THREE.Mesh(neckGeo, bodyMat);
+neck.position.set(0, 1.3, 0);
+bodyGroup.add(neck);
+
+// ── Head ──
+const headGeo = new THREE.SphereGeometry(0.55, 16, 14);
+headGeo.scale(1.05, 1, 0.95);
+const head = new THREE.Mesh(headGeo, bodyMat);
+headGroup.add(head);
+
+// Snout
+const snoutGeo = new THREE.SphereGeometry(0.3, 10, 8);
+snoutGeo.scale(0.8, 0.6, 0.9);
+const snout = new THREE.Mesh(snoutGeo, bodyMat);
+snout.position.set(0, -0.12, 0.35);
+headGroup.add(snout);
+
+// Eyes
+function makeEye(xSide) {
+    const eg = new THREE.Group();
+    const white = new THREE.Mesh(new THREE.SphereGeometry(0.16, 12, 10), eyeWhite);
+    const iris = new THREE.Mesh(new THREE.SphereGeometry(0.12, 10, 8), eyeIris);
+    iris.position.z = 0.07;
+    const pupil = new THREE.Mesh(new THREE.SphereGeometry(0.07, 8, 6), eyePupil);
+    pupil.position.z = 0.12;
+    const spec = new THREE.Mesh(new THREE.SphereGeometry(0.035, 6, 4), eyeSpec);
+    spec.position.set(-0.04, 0.04, 0.14);
+
+    eg.add(white, iris, pupil, spec);
+    eg.position.set(xSide * 0.28, 0.08, 0.28);
+    eg.rotation.y = xSide * 0.25;
+    return eg;
+}
+const eyeL = makeEye(-1);
+const eyeR = makeEye(1);
+headGroup.add(eyeL, eyeR);
+
+// Eyelids for blinking
+function makeEyelid(xSide) {
+    const lidGeo = new THREE.SphereGeometry(0.175, 10, 8, 0, Math.PI * 2, 0, Math.PI / 2);
+    const lid = new THREE.Mesh(lidGeo, bodyMat);
+    lid.position.set(xSide * 0.28, 0.08, 0.28);
+    lid.rotation.x = Math.PI;
+    lid.rotation.y = xSide * 0.25;
+    lid.scale.y = 0; // hidden by default
+    return lid;
+}
+const lidL = makeEyelid(-1);
+const lidR = makeEyelid(1);
+headGroup.add(lidL, lidR);
+
+// Nostrils
+for (let x of [-0.08, 0.08]) {
+    const nostril = new THREE.Mesh(new THREE.SphereGeometry(0.04, 6, 4), noseMat);
+    nostril.position.set(x, -0.18, 0.55);
+    headGroup.add(nostril);
+}
+
+// Smile
+const smileCurve = new THREE.QuadraticBezierCurve3(
+    new THREE.Vector3(-0.15, -0.25, 0.45),
+    new THREE.Vector3(0, -0.3, 0.5),
+    new THREE.Vector3(0.15, -0.25, 0.45)
+);
+const smileGeo = new THREE.TubeGeometry(smileCurve, 12, 0.015, 6, false);
+const smile = new THREE.Mesh(smileGeo, noseMat);
+headGroup.add(smile);
+
+// Cheek blush
+for (let x of [-1, 1]) {
+    const blush = new THREE.Mesh(new THREE.SphereGeometry(0.1, 8, 6), blushMat);
+    blush.position.set(x * 0.4, -0.08, 0.3);
+    blush.scale.set(1, 0.6, 0.6);
+    headGroup.add(blush);
+}
+
+// Horns/bumps
+const hornPositions = [[-0.2, 0.4, -0.05], [0.2, 0.4, -0.05], [0, 0.48, 0.05]];
+hornPositions.forEach(([x, y, z], i) => {
+    const size = i === 2 ? 0.07 : 0.09;
+    const horn = new THREE.Mesh(new THREE.SphereGeometry(size, 8, 6), hornMat);
+    horn.position.set(x, y, z);
+    headGroup.add(horn);
+});
+
+headGroup.position.set(0, 1.75, 0.05);
+
+// ── Tail ──
+const tailSegs = 6;
+let prevTail = null;
+for (let i = 0; i < tailSegs; i++) {
+    const r = 0.15 - i * 0.018;
+    const seg = new THREE.Mesh(new THREE.SphereGeometry(Math.max(r, 0.04), 8, 6), bodyMat);
+    seg.position.set(0, 0.5 - i * 0.08, -0.65 - i * 0.18);
+    tailGroup.add(seg);
+}
+// Tail tip gold
+const tailTip = new THREE.Mesh(new THREE.SphereGeometry(0.06, 6, 4), hornMat);
+tailTip.position.set(0, 0.12, -1.65);
+tailGroup.add(tailTip);
+
+// ── Wings ──
+function makeWing(side) {
+    const g = new THREE.Group();
+    // Arm
+    const armGeo = new THREE.CylinderGeometry(0.04, 0.06, 0.6, 6);
+    const arm = new THREE.Mesh(armGeo, bodyMat);
+    arm.position.set(side * 0.15, 0.15, 0);
+    arm.rotation.z = side * -0.8;
+    g.add(arm);
+
+    // Membrane
+    const shape = new THREE.Shape();
+    shape.moveTo(0, 0);
+    shape.quadraticCurveTo(side * 0.6, 0.4, side * 0.45, 0.7);
+    shape.quadraticCurveTo(side * 0.2, 0.5, 0, 0.15);
+    const memGeo = new THREE.ShapeGeometry(shape, 8);
+    const membrane = new THREE.Mesh(memGeo, wingMat);
+    membrane.position.set(0, -0.1, 0.02);
+    membrane.rotation.y = side * 0.2;
+    g.add(membrane);
+
+    g.position.set(side * 0.6, 1.35, -0.15);
+    return g;
+}
+wingLGroup.add(makeWing(-1));
+wingRGroup.add(makeWing(1));
+
+// ── Assemble ──
+dragon.add(bodyGroup, headGroup, tailGroup, wingLGroup, wingRGroup);
+dragon.position.y = 0;
+scene.add(dragon);
+
+// ── Particles (floating dust) ──
+const particleCount = 40;
+const particleGeo = new THREE.BufferGeometry();
+const particlePos = new Float32Array(particleCount * 3);
+for (let i = 0; i < particleCount; i++) {
+    particlePos[i * 3]     = (Math.random() - 0.5) * 6;
+    particlePos[i * 3 + 1] = Math.random() * 4;
+    particlePos[i * 3 + 2] = (Math.random() - 0.5) * 6;
+}
+particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePos, 3));
+const particleMat = new THREE.PointsMaterial({
+    color: 0xB794F6, size: 0.03, transparent: true, opacity: 0.5
+});
+const particles = new THREE.Points(particleGeo, particleMat);
+scene.add(particles);
+
+// ── Orbital mouse controls ──
+let isDragging = false, prevMX = 0, prevMY = 0;
+let orbitAngle = 0, orbitPitch = 0.3, orbitDist = 6;
+let autoRotate = true;
+
+canvas.addEventListener('mousedown', e => { isDragging = true; prevMX = e.clientX; prevMY = e.clientY; });
+canvas.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    const dx = e.clientX - prevMX, dy = e.clientY - prevMY;
+    orbitAngle -= dx * 0.008;
+    orbitPitch = Math.max(-0.5, Math.min(1.2, orbitPitch + dy * 0.005));
+    prevMX = e.clientX; prevMY = e.clientY;
+});
+canvas.addEventListener('mouseup', () => isDragging = false);
+canvas.addEventListener('mouseleave', () => isDragging = false);
+canvas.addEventListener('wheel', e => {
+    orbitDist = Math.max(3, Math.min(12, orbitDist + e.deltaY * 0.005));
+});
+// Touch support
+canvas.addEventListener('touchstart', e => {
+    isDragging = true;
+    prevMX = e.touches[0].clientX; prevMY = e.touches[0].clientY;
+});
+canvas.addEventListener('touchmove', e => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const dx = e.touches[0].clientX - prevMX, dy = e.touches[0].clientY - prevMY;
+    orbitAngle -= dx * 0.008;
+    orbitPitch = Math.max(-0.5, Math.min(1.2, orbitPitch + dy * 0.005));
+    prevMX = e.touches[0].clientX; prevMY = e.touches[0].clientY;
+}, { passive: false });
+canvas.addEventListener('touchend', () => isDragging = false);
+
+function updateCamera() {
+    camera.position.x = Math.sin(orbitAngle) * Math.cos(orbitPitch) * orbitDist;
+    camera.position.y = Math.sin(orbitPitch) * orbitDist * 0.5 + 1.5;
+    camera.position.z = Math.cos(orbitAngle) * Math.cos(orbitPitch) * orbitDist;
+    camera.lookAt(0, 1.2, 0);
+}
+
+// ── Animations ──
+let currentAnim = 'idle';
+let time = 0;
+let blinkTimer = 0;
+
+function setAnim(name) {
+    currentAnim = name;
+    document.querySelectorAll('.ctrl-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+function toggleAutoRotate() {
+    autoRotate = !autoRotate;
+    event.target.classList.toggle('active', autoRotate);
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+    time += 0.016;
+
+    // Auto rotate
+    if (autoRotate && !isDragging) {
+        orbitAngle += 0.003;
+    }
+    updateCamera();
+
+    // Blink
+    blinkTimer += 0.016;
+    const blinkPhase = blinkTimer % 4;
+    const blinkAmount = (blinkPhase > 3.7 && blinkPhase < 3.85) ? 1 : 0;
+    lidL.scale.y = blinkAmount;
+    lidR.scale.y = blinkAmount;
+
+    // Animations
+    const t = time;
+
+    if (currentAnim === 'idle') {
+        // Breathing
+        bodyGroup.scale.y = 1 + Math.sin(t * 2) * 0.02;
+        bodyGroup.scale.x = 1 + Math.sin(t * 2 + 0.5) * 0.01;
+
+        // Head micro-movements
+        headGroup.rotation.z = Math.sin(t * 0.8) * 0.05;
+        headGroup.rotation.x = Math.sin(t * 0.6) * 0.03;
+        headGroup.position.y = 1.75 + Math.sin(t * 2) * 0.02;
+
+        // Tail wag
+        tailGroup.rotation.y = Math.sin(t * 1.5) * 0.15;
+        tailGroup.rotation.x = Math.sin(t * 1.2) * 0.05;
+
+        // Wing flutter
+        wingLGroup.rotation.z = Math.sin(t * 1.8) * 0.08;
+        wingRGroup.rotation.z = -Math.sin(t * 1.8) * 0.08;
+        wingLGroup.rotation.x = Math.sin(t * 2.2) * 0.03;
+        wingRGroup.rotation.x = Math.sin(t * 2.2) * 0.03;
+
+        // Reset position
+        dragon.position.y = 0;
+        dragon.rotation.x = 0;
+        headGroup.rotation.y = 0;
+
+    } else if (currentAnim === 'eat') {
+        // Head dips down to eat
+        const eatCycle = t * 3;
+        const dip = Math.abs(Math.sin(eatCycle)) * 0.3;
+        headGroup.rotation.x = dip;
+        headGroup.position.y = 1.75 - dip * 0.4;
+
+        // Chewing jaw wiggle
+        headGroup.rotation.z = Math.sin(eatCycle * 4) * 0.04;
+
+        // Tail wags fast when eating
+        tailGroup.rotation.y = Math.sin(t * 4) * 0.3;
+
+        // Wings flutter excitedly
+        wingLGroup.rotation.z = Math.sin(t * 6) * 0.15;
+        wingRGroup.rotation.z = -Math.sin(t * 6) * 0.15;
+
+        // Happy body bounce
+        bodyGroup.scale.y = 1 + Math.sin(t * 4) * 0.03;
+        dragon.position.y = Math.abs(Math.sin(t * 3)) * 0.05;
+
+    } else if (currentAnim === 'sleep') {
+        // Curl up
+        headGroup.rotation.x = 0.4;
+        headGroup.position.y = 1.5;
+        headGroup.rotation.z = 0.1;
+
+        // Slow breathing
+        bodyGroup.scale.y = 1 + Math.sin(t * 1) * 0.03;
+
+        // Wings tucked
+        wingLGroup.rotation.z = 0.3;
+        wingRGroup.rotation.z = -0.3;
+
+        // Tail curled
+        tailGroup.rotation.y = 0.5 + Math.sin(t * 0.5) * 0.05;
+
+        // Gentle sway
+        dragon.rotation.z = Math.sin(t * 0.5) * 0.02;
+        dragon.position.y = -0.1;
+
+        // Force eyes shut
+        lidL.scale.y = 1;
+        lidR.scale.y = 1;
+
+    } else if (currentAnim === 'happy') {
+        // Bouncing
+        dragon.position.y = Math.abs(Math.sin(t * 4)) * 0.25;
+
+        // Head bobbing side to side
+        headGroup.rotation.z = Math.sin(t * 3) * 0.2;
+        headGroup.rotation.y = Math.sin(t * 2) * 0.15;
+        headGroup.position.y = 1.75 + Math.sin(t * 4) * 0.05;
+
+        // Wings spread and flutter
+        wingLGroup.rotation.z = Math.sin(t * 5) * 0.25 + 0.1;
+        wingRGroup.rotation.z = -Math.sin(t * 5) * 0.25 - 0.1;
+
+        // Tail crazy wag
+        tailGroup.rotation.y = Math.sin(t * 5) * 0.4;
+        tailGroup.rotation.z = Math.sin(t * 3) * 0.1;
+
+        // Body bounce
+        bodyGroup.scale.y = 1 + Math.sin(t * 4) * 0.04;
+        bodyGroup.scale.x = 1 + Math.cos(t * 4) * 0.03;
+        dragon.rotation.x = 0;
+    }
+
+    // Float particles
+    const positions = particles.geometry.attributes.position.array;
+    for (let i = 0; i < particleCount; i++) {
+        positions[i * 3 + 1] += 0.003;
+        if (positions[i * 3 + 1] > 4) positions[i * 3 + 1] = 0;
+    }
+    particles.geometry.attributes.position.needsUpdate = true;
+    particles.rotation.y = t * 0.05;
+
+    // Rim light follows camera somewhat
+    rimLight.position.x = Math.sin(t * 0.3) * 2;
+
+    // Resize
+    if (canvas.clientWidth !== canvas.width / renderer.getPixelRatio() ||
+        canvas.clientHeight !== canvas.height / renderer.getPixelRatio()) {
+        renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+        camera.aspect = canvas.clientWidth / canvas.clientHeight;
+        camera.updateProjectionMatrix();
+    }
+
+    renderer.render(scene, camera);
+}
+
+animate();
+</script>
+</body>
+</html>
