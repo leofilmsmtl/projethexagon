@@ -1227,10 +1227,10 @@ function showBadgeDetail(id, tierLabel) {
     
     effectsEl.innerHTML = `
       <div class="quest-title" style="color:rgb(250,204,21);margin-top:10px;display:flex;align-items:center;">
-        ✨ EFFETS PASSIFS (BUFFS)
+        ${badge.effects.length > 1 ? '✨ EFFETS' : '✨ EFFET'}
         ${buffStatusTag}
       </div>
-      <div style="font-size:10px;color:rgba(250,204,21,0.7);margin-bottom:6px;line-height:1.3;">Ces effets s'appliquent uniquement au badge équipé de cette collection.</div>
+      <div style="font-size:10px;color:rgba(250,204,21,0.7);margin-bottom:6px;line-height:1.3;">${badge.effects.length > 1 ? "Ces effets s'appliquent" : "Cet effet s'applique"} uniquement au badge équipé de cette collection.</div>
       ${effectsList}
     `;
   } else if (effectsEl) {
