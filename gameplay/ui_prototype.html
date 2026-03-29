@@ -1174,16 +1174,16 @@ function showBadgeDetail(id, tierLabel) {
          </div>`
       : '';
     questEl.innerHTML = `
-      <div class="quest-title" style="color:rgb(0,200,255);letter-spacing:1px;font-size:11px;">${condTitle}</div>
-      <div style="margin-top:6px;padding:8px 10px;border-radius:8px;background:rgba(0,200,255,0.06);border:1px solid rgba(0,200,255,0.25);font-size:12px;color:rgba(0,200,255,0.9);display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+      <div class="quest-title" style="color:rgba(255,255,255,0.5);letter-spacing:1px;font-size:11px;font-weight:600;">${condTitle}</div>
+      <div style="margin-top:6px;padding:10px 12px;border-radius:12px;background:radial-gradient(circle at bottom right, rgba(255,255,255,0.06), transparent 80%);border:1px solid rgba(255,255,255,0.05);font-size:12px;color:rgba(255,255,255,0.85);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;box-shadow:0 4px 12px rgba(0,0,0,0.2);backdrop-filter:blur(4px);">
         <div style="display:flex;align-items:flex-start;gap:8px;margin-top:2px">
-          <span style="font-size:14px;opacity:0.9">📍</span>
-          <strong style="line-height:1.4">${badge.quest}</strong>
+          <span style="font-size:14px;opacity:0.6;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5))">📌</span>
+          <strong style="line-height:1.4;font-weight:500">${badge.quest}</strong>
         </div>
-        ${showProgress ? `<span style="background:rgba(0,0,0,0.4);padding:4px 10px;border-radius:12px;font-weight:700;letter-spacing:0.5px;font-size:11px;white-space:nowrap;border:1px solid rgba(0,200,255,0.2);box-shadow:inset 0 1px 4px rgba(0,0,0,0.5);display:flex;align-items:center;gap:4px;color:#00FF88">${badge.questProgress} <span style="opacity:0.4;font-weight:normal;color:#00C8FF">/</span> ${badge.questTotal}</span>` : ''}
+        ${showProgress ? `<span style="background:rgba(255,255,255,0.03);padding:4px 10px;border-radius:16px;font-weight:600;letter-spacing:0.5px;font-size:11px;white-space:nowrap;border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:4px;color:rgba(255,255,255,0.9)">${badge.questProgress} <span style="opacity:0.3;font-weight:normal;">/</span> ${badge.questTotal}</span>` : ''}
       </div>
       ${showProgress ? `
-        <div class="quest-progress" style="margin-top:8px"><div class="quest-progress-fill" style="width:${pct}%"></div></div>
+        <div class="quest-progress" style="margin-top:8px;background:rgba(255,255,255,0.03);height:4px;border-radius:2px;"><div class="quest-progress-fill" style="width:${pct}%;background:linear-gradient(90deg, rgba(167,139,250,0.8), rgba(96,165,250,0.8));height:100%;border-radius:2px;box-shadow:0 0 8px rgba(96,165,250,0.3)"></div></div>
       ` : ''}
       ${arcaneInfo}
     `;
@@ -1215,18 +1215,18 @@ function showBadgeDetail(id, tierLabel) {
       if (eff.type === 'defense_boost') { icon = '🛡️'; title = 'Boost de Défense'; desc = `+${eff.params.value || 0}% de défense contre les outils de siège.`; }
       else if (eff.type === 'animated_skin') { icon = '🎭'; title = 'Skin Animé Actif'; desc = `Applique l'animation '${eff.params.style || ''}'.`; }
       return `
-        <div style="margin-top:6px;padding:10px 12px;border-radius:8px;background:linear-gradient(135deg, rgba(234,179,8,0.15), rgba(250,204,21,0.03));border:1px solid rgba(250,204,21,0.25);box-shadow:inset 0 1px 0 rgba(255,255,255,0.05);font-size:12px;color:rgba(250,204,21,0.95);display:flex;align-items:center;gap:12px">
-          <div style="font-size:20px;line-height:1;background:rgba(250,204,21,0.1);padding:6px;border-radius:8px;border:1px solid rgba(250,204,21,0.2);box-shadow:0 2px 8px rgba(234,179,8,0.2)">${icon}</div>
+        <div style="margin-top:8px;padding:12px 14px;border-radius:12px;background:radial-gradient(circle at top right, rgba(212,175,55,0.12), transparent 70%);border:1px solid rgba(212,175,55,0.1);font-size:12px;color:rgba(255,255,255,0.85);display:flex;align-items:center;gap:14px;box-shadow:0 6px 16px rgba(0,0,0,0.2);backdrop-filter:blur(4px);">
+          <div style="font-size:24px;line-height:1;filter:drop-shadow(0 0 10px rgba(212,175,55,0.5));opacity:0.95;">${icon}</div>
           <div style="flex:1">
-            <div style="font-weight:800;letter-spacing:0.5px;color:#fef08a">${title}</div>
-            <div style="opacity:0.8;margin-top:2px;font-size:11px;line-height:1.3">${desc}</div>
+            <div style="font-weight:600;letter-spacing:0.5px;color:rgba(234,179,8,0.9)">${title}</div>
+            <div style="opacity:0.75;margin-top:2px;font-size:11px;line-height:1.4">${desc}</div>
           </div>
         </div>
       `;
     }).join('');
     
     effectsEl.innerHTML = `
-      <div class="quest-title" style="color:rgb(250,204,21);margin-top:10px;display:flex;align-items:center;">
+      <div class="quest-title" style="color:rgba(234,179,8,0.7);margin-top:10px;display:flex;align-items:center;">
         ${badge.effects.length > 1 ? '✨ EFFETS' : '✨ EFFET'}
         ${buffStatusTag}
       </div>
