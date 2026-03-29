@@ -70,6 +70,19 @@
     padding: 10px 14px; background: linear-gradient(90deg, rgba(30,35,50,0.85), rgba(20,25,40,0.7));
     border: 1px solid rgba(0,200,255,0.3); border-radius: 20px; z-index: 50; backdrop-filter: blur(12px);
   }
+  .hud-buffs {
+    position: absolute; top: 114px; right: 12px; display: flex; flex-direction: column; gap: 6px; z-index: 50; align-items: flex-end;
+  }
+  .hud-buff-pill {
+    background: linear-gradient(90deg, rgba(234,179,8,0.25), rgba(250,204,21,0.1));
+    border: 1px solid rgba(250,204,21,0.4);
+    padding: 6px 10px;
+    border-radius: 12px;
+    font-size: 11px; font-weight: 700; color: #fef08a;
+    box-shadow: 0 4px 12px rgba(234,179,8,0.15);
+    display: flex; align-items: center; gap: 6px; backdrop-filter: blur(8px);
+    animation: fadeIn 0.3s ease-out;
+  }
   .gem-chip { display: flex; align-items: center; gap: 3px; }
   .gem-dot { width: 14px; height: 14px; border-radius: 50%; }
   .gem-dot.quartz  { background: #D9D2C0; }
@@ -872,6 +885,8 @@
     <div class="gem-chip"><div class="gem-dot ruby"></div><span class="gem-count">1</span></div>
     <div class="gem-chip"><div class="gem-dot arcane"></div><span class="gem-count">0</span></div>
   </div>
+  
+  <div class="hud-buffs" id="hud-buffs"></div>
 
   <!-- CAPTURE COST PILL -->
   <div class="cost-above" id="cost-pill">
@@ -1411,7 +1426,25 @@ function renderAllBadges() {
   // Hero card
   const equipped = all.find(b => b.equipped);
   const hero = document.getElementById('hero-badge');
+  const hudBuffs = document.getElementById('hud-buffs');
+
   if (equipped) {
+    let effectsHtml = '';
+    
+    // Si le badge actif a des effets, on les affiche dans la Collection et sur le HUD
+    if (equipped.effects && equipped.effects.length > 0) {
+      effectsHtml = `<div style="margin-top:6px;padding:4px 8px;border-radius:6px;background:rgba(234,179,8,0.15);border:1px solid rgba(234,179,8,0.3);font-size:11px;color:rgba(250,204,21,0.9);display:inline-flex;align-items:center;gap:4px">✨ <strong>${equipped.effects.length} Buff${equipped.effects.length > 1 ? 's' : ''} Actif${equipped.effects.length > 1 ? 's' : ''}</strong></div>`;
+      
+      hudBuffs.innerHTML = equipped.effects.map(eff => {
+        let icon = '✨'; let title = eff.type;
+        if (eff.type === 'defense_boost') { icon = '🛡️'; title = 'Défense +'+eff.params.amount+'%'; }
+        else if (eff.type === 'animated_skin') { icon = '🎭'; title = 'Skin Actif'; }
+        return `<div class="hud-buff-pill"><span>${icon}</span> <span>${title}</span></div>`;
+      }).join('');
+    } else {
+      hudBuffs.innerHTML = '';
+    }
+
     hero.style.display = 'flex';
     hero.innerHTML = `
       <img class="hero-badge-img" src="${equipped.img}" alt="${equipped.name}">
@@ -1419,12 +1452,14 @@ function renderAllBadges() {
         <div class="hero-badge-label">BADGE ACTIF</div>
         <div class="hero-badge-name">${equipped.name}</div>
         <div class="hero-badge-desc">${equipped.desc || ''}</div>
+        ${effectsHtml}
       </div>
       <div class="hero-badge-arrow">›</div>
     `;
     hero.onclick = () => showBadgeDetail(equipped.id, 'ACTIF');
   } else {
     hero.style.display = 'none';
+    if (hudBuffs) hudBuffs.innerHTML = '';
   }
 }
 
