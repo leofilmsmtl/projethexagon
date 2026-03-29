@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DriveHunt — UI Prototype v3 (Badge Collection)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: -apple-system, 'SF Pro Display', 'Inter', 'Segoe UI', sans-serif;
+  }
+
+  /* === PHONE FRAME === */
+  .phone {
+    position: relative;
+    width: 390px;
+    height: 844px;
+    border-radius: 50px;
+    border: 4px solid #333;
+    overflow: hidden;
+    box-shadow: 0 0 0 2px #1a1a1a, 0 20px 60px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.05);
+    background: #0A0A0A;
+  }
+  .phone::before {
+    content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 160px; height: 34px; background: #000; border-radius: 0 0 20px 20px; z-index: 100;
+  }
+  .phone::after {
+    content: ''; position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+    width: 134px; height: 5px; background: rgba(255,255,255,0.3); border-radius: 3px; z-index: 100;
+  }
+
+  /* === MAP === */
+  .map-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 30% 40%, rgba(0,200,255,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(0,255,136,0.05) 0%, transparent 40%),
+                linear-gradient(180deg, #0d1117 0%, #161b22 100%);
+  }
+  .hex-grid {
+    position: absolute; inset: 0; opacity: 0.15;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpath d='M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100' fill='none' stroke='rgba(0,200,255,0.3)' stroke-width='1'/%3E%3C/svg%3E");
+    background-size: 56px 100px;
+  }
+  .owned-hex {
+    position: absolute; width: 60px; height: 70px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  }
+  .owned-hex.teal { background: rgba(0,255,136,0.25); }
+  .owned-hex.enemy { background: rgba(255,60,60,0.2); }
+
+  .status-bar {
+    position: absolute; top: 0; left: 0; right: 0; height: 54px;
+    padding: 14px 24px 0; display: flex; justify-content: space-between; align-items: center;
+    z-index: 50; color: rgba(255,255,255,0.6); font-size: 13px; font-weight: 600;
+  }
+  .compass {
+    position: absolute; top: 60px; left: 16px; width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(26,26,26,0.85); border: 1px solid rgba(0,200,255,0.2);
+    display: flex; align-items: center; justify-content: center; z-index: 50;
+    font-size: 18px; backdrop-filter: blur(10px);
+  }
+  .resource-dock {
+    position: absolute; top: 60px; right: 12px; display: flex; gap: 10px;
+    padding: 10px 14px; background: linear-gradient(90deg, rgba(30,35,50,0.85), rgba(20,25,40,0.7));
+    border: 1px solid rgba(0,200,255,0.3); border-radius: 20px; z-index: 50; backdrop-filter: blur(12px);
+  }
+  .gem-chip { display: flex; align-items: center; gap: 3px; }
+  .gem-dot { width: 14px; height: 14px; border-radius: 50%; }
+  .gem-dot.quartz  { background: #D9D2C0; }
+  .gem-dot.jade    { background: #2DBF73; }
+  .gem-dot.saphir  { background: #2659F2; }
+  .gem-dot.ruby    { background: #E61A26; }
+  .gem-dot.arcane  { background: #B333F2; }
+  .gem-count { color: #fff; font-size: 15px; font-weight: 700; }
+  .player-marker {
+    position: absolute; top: 52%; left: 48%; width: 20px; height: 20px; border-radius: 50%;
+    background: #00FF88; border: 3px solid rgba(0,255,136,0.5);
+    box-shadow: 0 0 20px rgba(0,255,136,0.4); z-index: 30; animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(0,255,136,0.4); }
+    50% { box-shadow: 0 0 30px rgba(0,255,136,0.6); }
+  }
+
+  /* === SHARED GEM ORB STYLE === */
+  .orb { width: 20px; height: 20px; border-radius: 50%; position: relative; flex-shrink: 0; }
+  .orb::after {
+    content: ''; position: absolute; inset: 2px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.4), transparent 60%);
+  }
+  .orb-quartz  { background: #D9D2C0; box-shadow: 0 0 6px rgba(217,210,192,0.4); }
+  .orb-jade    { background: #2DBF73; box-shadow: 0 0 6px rgba(45,191,115,0.4); }
+  .orb-saphir  { background: #2659F2; box-shadow: 0 0 6px rgba(38,89,242,0.4); }
+  .orb-ruby    { background: #E61A26; box-shadow: 0 0 6px rgba(230,26,38,0.5); }
+  .orb-amount {
+    font-size: 16px; font-weight: 800; color: #fff; line-height: 20px; letter-spacing: -0.5px;
+  }
+  .orb-plus { color: rgba(255,255,255,0.2); font-size: 12px; padding: 0 1px; }
+
+  /* === COST PILL ABOVE === */
+  .cost-above {
+    position: absolute; bottom: 110px; left: 50%; transform: translateX(-50%); z-index: 50;
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 16px; background: rgba(12,15,25,0.92);
+    border: 1px solid rgba(0,200,255,0.15); border-radius: 24px;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04);
+    animation: slideUp 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    cursor: pointer;
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateX(-50%) translateY(12px) scale(0.95); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+  }
+  .cost-above .progress-fill {
+    position: absolute; inset: 0; background: rgba(0,255,136,0.15);
+    width: 0%; border-radius: 24px; pointer-events: none;
+    transition: width 0.1s linear;
+  }
+  .hex-badge {
+    display: flex; align-items: center; gap: 3px;
+    padding: 3px 8px; background: rgba(255,255,255,0.06); border-radius: 12px; margin-left: 4px;
+  }
+  .hex-badge-icon { font-size: 11px; opacity: 0.5; }
+  .hex-badge-text { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.5); font-variant-numeric: tabular-nums; }
+
+  /* === BOTTOM PILL === */
+  .hud-pill {
+    position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center;
+    padding: 10px 36px;
+    background: linear-gradient(rgba(20,25,40,0.92), rgba(20,25,40,0.92)) padding-box,
+                linear-gradient(90deg, rgba(0,200,255,0.5), rgba(0,255,136,0.5)) border-box;
+    border: 1px solid transparent; border-radius: 28px; z-index: 50;
+    backdrop-filter: blur(16px); box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    cursor: pointer; transition: transform 0.2s;
+  }
+  .hud-pill:hover { transform: translateX(-50%) scale(1.02); }
+  .hud-menu-text {
+    color: rgba(255,255,255,0.95); font-size: 20px; font-weight: 800; letter-spacing: 3px;
+    padding: 4px 8px;
+  }
+
+  /* === MENU OVERLAY === */
+  .menu-overlay {
+    position: absolute; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.9);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+  .menu-overlay.open { opacity: 1; pointer-events: all; }
+
+  .menu-sheet {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(180deg, #1A1A2E 0%, #16162A 100%);
+    border-radius: 28px 28px 0 0;
+    border-top: 1px solid rgba(0,200,255,0.2);
+    padding: 20px 20px 40px;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    max-height: 85%;
+    overflow-y: auto;
+  }
+  .menu-overlay.open .menu-sheet { transform: translateY(0); }
+
+  .menu-handle {
+    width: 40px; height: 4px; background: rgba(255,255,255,0.2);
+    border-radius: 2px; margin: 0 auto 16px;
+  }
+  .menu-header {
+    text-align: center; margin-bottom: 20px;
+  }
+  .menu-header h2 {
+    color: #fff; font-size: 22px; font-weight: 800; letter-spacing: 2px;
+  }
+  .menu-stats {
+    display: flex; justify-content: center; gap: 30px; margin-top: 8px;
+  }
+  .menu-stat { text-align: center; }
+  .menu-stat-value {
+    color: #00C8FF; font-size: 24px; font-weight: 800;
+  }
+  .menu-stat-label {
+    color: rgba(255,255,255,0.4); font-size: 10px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+
+  .menu-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px; margin-top: 16px;
+  }
+  .menu-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(0,200,255,0.15);
+    border-radius: 16px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 8px;
+  }
+  .menu-card:hover {
+    border-color: rgba(0,200,255,0.4);
+    background: rgba(255,255,255,0.08);
+    transform: translateY(-2px);
+  }
+  .menu-card-icon { font-size: 28px; }
+  .menu-card-label {
+    color: rgba(255,255,255,0.8); font-size: 12px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .menu-card.featured {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    justify-content: center;
+    gap: 12px;
+    background: linear-gradient(135deg, rgba(0,200,255,0.08), rgba(0,255,136,0.08));
+    border-color: rgba(0,255,136,0.3);
+  }
+  .menu-card.featured .menu-card-label {
+    color: #00FF88;
+    font-size: 14px;
+  }
+
+  .menu-close {
+    position: absolute; top: 16px; right: 20px;
+    background: rgba(255,255,255,0.1); border: none; border-radius: 50%;
+    width: 36px; height: 36px; cursor: pointer;
+    color: rgba(255,255,255,0.6); font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .menu-close:hover { background: rgba(255,255,255,0.2); }
+
+  /* === COLLECTION OVERLAY === */
+  .collection-overlay {
+    position: absolute; inset: 0; z-index: 300;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .collection-overlay.open { opacity: 1; pointer-events: all; }
+
+  .collection-sheet {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, #0F0F1E 0%, #1A1A2E 100%);
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), background 0.6s ease;
+    overflow-y: auto;
+    padding: 50px 16px 40px;
+    scrollbar-width: none; -ms-overflow-style: none;
+  }
+  .collection-sheet::-webkit-scrollbar { display: none; }
+
+  /* Watercolor BG 1 - Encre de Nuit */
+  .collection-sheet.bg-encre {
+    background:
+      radial-gradient(ellipse at 20% 15%, rgba(15,30,80,0.7) 0%, transparent 50%),
+      radial-gradient(ellipse at 75% 25%, rgba(20,15,60,0.6) 0%, transparent 45%),
+      radial-gradient(ellipse at 40% 70%, rgba(10,25,70,0.5) 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 80%, rgba(25,20,55,0.4) 0%, transparent 40%),
+      radial-gradient(ellipse at 10% 90%, rgba(8,20,50,0.6) 0%, transparent 50%),
+      linear-gradient(180deg, #080C1A 0%, #0D1225 30%, #0A0F20 70%, #060A15 100%);
+  }
+  /* Watercolor BG 2 - Parchemin Sombre */
+  .collection-sheet.bg-parchemin {
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(60,40,20,0.4) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 35%, rgba(45,30,15,0.35) 0%, transparent 45%),
+      radial-gradient(ellipse at 50% 75%, rgba(50,35,18,0.3) 0%, transparent 55%),
+      radial-gradient(ellipse at 15% 60%, rgba(40,25,12,0.4) 0%, transparent 40%),
+      radial-gradient(ellipse at 85% 85%, rgba(35,22,10,0.5) 0%, transparent 50%),
+      linear-gradient(180deg, #1A150E 0%, #1F1810 30%, #1C1510 70%, #120E08 100%);
+  }
+  /* Watercolor BG 3 - Brume Violet */
+  .collection-sheet.bg-brume {
+    background:
+      radial-gradient(ellipse at 25% 20%, rgba(60,20,80,0.5) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 30%, rgba(40,15,70,0.4) 0%, transparent 45%),
+      radial-gradient(ellipse at 45% 65%, rgba(50,10,75,0.35) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 80%, rgba(30,12,55,0.5) 0%, transparent 40%),
+      radial-gradient(ellipse at 10% 85%, rgba(45,18,65,0.4) 0%, transparent 50%),
+      linear-gradient(180deg, #10081A 0%, #150C22 30%, #120A1E 70%, #0A0512 100%);
+  }
+
+  /* Theme toggle button */
+  .bg-toggle {
+    position: absolute; top: 54px; right: 16px; z-index: 310;
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px; padding: 6px 10px;
+    color: rgba(255,255,255,0.5); font-size: 11px; font-weight: 700;
+    cursor: pointer; transition: all 0.2s;
+    backdrop-filter: blur(10px);
+  }
+  .bg-toggle:hover { background: rgba(255,255,255,0.12); color: #fff; }
+  .collection-overlay.open .collection-sheet { transform: translateY(0); }
+
+  .collection-back {
+    position: absolute; top: 54px; left: 16px; z-index: 310;
+    background: rgba(30,35,50,0.85);
+    border: 1px solid rgba(0,200,255,0.2);
+    border-radius: 20px; padding: 8px 16px; cursor: pointer;
+    color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 600;
+    transition: all 0.25s; display: none;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  .collection-overlay.open .collection-back { display: flex; }
+  .collection-back:hover {
+    color: #fff;
+    border-color: rgba(0,200,255,0.5);
+    box-shadow: 0 4px 16px rgba(0,200,255,0.15);
+  }
+
+  .collection-header {
+    text-align: center; margin: 50px 0 20px;
+  }
+  .collection-header h2 {
+    color: #fff; font-size: 20px; font-weight: 800; letter-spacing: 2px;
+  }
+  .collection-header p {
+    color: rgba(255,255,255,0.35); font-size: 11px; font-weight: 600;
+    letter-spacing: 1px; margin-top: 4px;
+  }
+
+  .collection-section-title {
+    color: rgba(0,200,255,0.6); font-size: 11px; font-weight: 800;
+    letter-spacing: 2px; text-transform: uppercase;
+    padding: 12px 0 8px; border-bottom: 1px solid rgba(0,200,255,0.1);
+    margin-bottom: 12px; cursor: pointer; transition: color 0.2s;
+    display: flex; align-items: center; justify-content: space-between;
+    user-select: none;
+  }
+  .collection-section-title:hover { color: rgba(0,200,255,0.9); }
+  .section-left { display: flex; align-items: center; gap: 6px; }
+  .section-chevron {
+    font-size: 10px; transition: transform 0.3s; display: inline-block;
+  }
+  .section-chevron.open { transform: rotate(90deg); }
+  .section-count {
+    color: rgba(255,255,255,0.35); font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  }
+  .badge-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 12px; margin-bottom: 24px;
+  }
+  .badge-grid.collapsed .badge-card:nth-child(n+4) { display: none; }
+  .badge-see-all {
+    grid-column: 1 / -1; text-align: center;
+    padding: 10px; cursor: pointer;
+    color: rgba(0,200,255,0.6); font-size: 11px; font-weight: 700;
+    letter-spacing: 1px; border-radius: 12px;
+    background: rgba(0,200,255,0.05); border: 1px solid rgba(0,200,255,0.1);
+    transition: all 0.2s;
+  }
+  .badge-see-all:hover {
+    background: rgba(0,200,255,0.1); color: rgba(0,200,255,0.9);
+  }
+  .badge-grid:not(.collapsed) .badge-see-all { display: none; }
+
+  /* === BADGE DETAIL MODAL === */
+  .badge-detail-overlay {
+    position: absolute; inset: 0; z-index: 400;
+    background: rgba(0,0,0,0.95);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 40px 24px;
+  }
+  .badge-detail-overlay.open { opacity: 1; pointer-events: all; }
+  .badge-detail-close {
+    position: absolute; top: 54px; right: 16px;
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 50%; width: 36px; height: 36px; cursor: pointer;
+    color: rgba(255,255,255,0.7); font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; z-index: 410;
+  }
+  .badge-detail-close:hover { background: rgba(255,255,255,0.2); color: #fff; }
+  .badge-detail-img {
+    width: 220px; height: 220px; object-fit: contain;
+    filter: drop-shadow(0 0 30px rgba(0,200,255,0.2));
+    animation: badgeReveal 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .badge-detail-img.locked { filter: grayscale(0.8) brightness(0.5); }
+  @keyframes badgeReveal {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .badge-detail-name {
+    color: #fff; font-size: 24px; font-weight: 800;
+    letter-spacing: 1px; margin-top: 20px;
+  }
+  .badge-detail-tier {
+    color: rgba(0,200,255,0.6); font-size: 11px; font-weight: 800;
+    letter-spacing: 2px; margin-top: 4px;
+  }
+  .badge-detail-desc {
+    color: rgba(255,255,255,0.5); font-size: 13px; font-weight: 400;
+    text-align: center; line-height: 1.5; margin-top: 12px;
+    max-width: 280px;
+  }
+  .badge-detail-quest {
+    margin-top: 20px; width: 100%; max-width: 300px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(0,200,255,0.15);
+    border-radius: 16px; padding: 14px 16px;
+  }
+  .quest-title {
+    color: rgba(0,200,255,0.7); font-size: 10px; font-weight: 800;
+    letter-spacing: 2px; margin-bottom: 8px;
+  }
+  .quest-text {
+    color: rgba(255,255,255,0.7); font-size: 12px; font-weight: 600;
+  }
+  .quest-progress {
+    margin-top: 10px; height: 6px; background: rgba(255,255,255,0.08);
+    border-radius: 3px; overflow: hidden;
+  }
+  .quest-progress-fill {
+    height: 100%; border-radius: 3px;
+    background: linear-gradient(90deg, #00C8FF, #00FF88);
+    transition: width 0.5s ease;
+  }
+  .quest-progress-label {
+    color: rgba(255,255,255,0.35); font-size: 10px; font-weight: 700;
+    margin-top: 4px; text-align: right;
+  }
+  .badge-detail-btn {
+    margin-top: 24px; padding: 14px 48px;
+    border: none; border-radius: 24px; cursor: pointer;
+    font-size: 14px; font-weight: 800; letter-spacing: 2px;
+    transition: all 0.2s;
+  }
+  .badge-detail-btn.equip {
+    background: linear-gradient(135deg, #00C8FF, #00FF88);
+    color: #000;
+  }
+  .badge-detail-btn.equip:hover { transform: scale(1.05); box-shadow: 0 4px 20px rgba(0,255,136,0.3); }
+  .badge-detail-btn.equipped {
+    background: rgba(0,255,136,0.15); border: 1px solid #00FF88;
+    color: #00FF88;
+  }
+  .badge-detail-btn.locked {
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.3); cursor: not-allowed;
+  }
+  .badge-detail-btn.activate {
+    background: linear-gradient(135deg, #8B5CF6, #C084FC);
+    color: #fff;
+  }
+  .badge-detail-btn.activate:hover { transform: scale(1.05); box-shadow: 0 4px 20px rgba(139,92,246,0.4); }
+  .badge-detail-btn.hexlost {
+    background: rgba(255,80,80,0.15); border: 1px solid rgba(255,80,80,0.4);
+    color: rgba(255,80,80,0.8); cursor: not-allowed;
+  }
+
+  /* === ARCANE FUEL SYSTEM === */
+  .arcane-fuel {
+    margin-top: 16px; width: 100%; max-width: 300px;
+    background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(192,132,252,0.04));
+    border: 1px solid rgba(139,92,246,0.25);
+    border-radius: 16px; padding: 14px 16px;
+  }
+  .arcane-fuel.deactivated { border-color: rgba(255,255,255,0.1); background: rgba(255,255,255,0.02); }
+  .arcane-fuel.hexlost { border-color: rgba(255,80,80,0.25); background: rgba(255,80,80,0.04); }
+  .arcane-header {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;
+  }
+  .arcane-title {
+    color: rgba(139,92,246,0.8); font-size: 10px; font-weight: 800;
+    letter-spacing: 2px; display: flex; align-items: center; gap: 6px;
+  }
+  .arcane-cost {
+    color: rgba(192,132,252,0.6); font-size: 10px; font-weight: 700;
+  }
+  .arcane-gauge {
+    height: 8px; background: rgba(255,255,255,0.06);
+    border-radius: 4px; overflow: hidden;
+  }
+  .arcane-gauge-fill {
+    height: 100%; border-radius: 4px;
+    background: linear-gradient(90deg, #8B5CF6, #C084FC);
+    transition: width 0.8s ease;
+  }
+  .arcane-gauge-fill.low { background: linear-gradient(90deg, #F59E0B, #EF4444); }
+  .arcane-gauge-fill.hexlost { background: linear-gradient(90deg, #EF4444, #DC2626); }
+  .arcane-timer {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 6px;
+  }
+  .arcane-timer-text {
+    color: rgba(192,132,252,0.7); font-size: 11px; font-weight: 700;
+  }
+  .arcane-timer-text.warning { color: rgba(245,158,11,0.9); }
+  .arcane-timer-text.hexlost { color: rgba(255,80,80,0.7); }
+  .arcane-status-pill {
+    font-size: 9px; font-weight: 800; letter-spacing: 1px;
+    padding: 3px 8px; border-radius: 6px;
+  }
+  .arcane-status-pill.active {
+    background: rgba(139,92,246,0.2); color: #C084FC;
+  }
+  .arcane-status-pill.inactive {
+    background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.3);
+  }
+  .arcane-status-pill.lost {
+    background: rgba(255,80,80,0.15); color: rgba(255,80,80,0.8);
+  }
+
+  /* Badge card arcane indicator */
+  .badge-arcane-indicator {
+    position: absolute; top: 6px; right: 6px;
+    font-size: 9px; font-weight: 800; padding: 2px 6px;
+    border-radius: 6px; letter-spacing: 0.5px;
+  }
+  .badge-arcane-indicator.active {
+    background: rgba(139,92,246,0.25); color: #C084FC;
+    animation: arcanePulse 2s ease-in-out infinite;
+  }
+  .badge-arcane-indicator.inactive {
+    background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.25);
+  }
+  .badge-arcane-indicator.lost {
+    background: rgba(255,80,80,0.15); color: rgba(255,80,80,0.7);
+  }
+  @keyframes arcanePulse {
+    0%, 100% { box-shadow: 0 0 6px rgba(139,92,246,0.3); }
+    50% { box-shadow: 0 0 12px rgba(139,92,246,0.6); }
+  }
+
+  /* === MASTERY SYSTEM === */
+  .badge-mastery-indicator {
+    position: absolute; bottom: 38px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 2px; z-index: 5;
+  }
+  .mastery-pip {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.08);
+  }
+  .mastery-pip.filled { background: #00C8FF; border-color: #00C8FF; box-shadow: 0 0 4px rgba(0,200,255,0.3); }
+  .mastery-pip.filled.bronze { background: #CD7F32; border-color: #CD7F32; box-shadow: 0 0 4px rgba(205,127,50,0.4); }
+  .mastery-pip.filled.silver { background: #C0C0C0; border-color: #C0C0C0; box-shadow: 0 0 4px rgba(192,192,192,0.4); }
+  .mastery-pip.filled.gold { background: #FFD700; border-color: #FFD700; box-shadow: 0 0 4px rgba(255,215,0,0.4); }
+  .mastery-pip.filled.prestige { background: #C084FC; border-color: #C084FC; box-shadow: 0 0 6px rgba(192,132,252,0.6); }
+
+  .badge-levelup-ready {
+    position: absolute; top: 6px; left: 6px;
+    font-size: 9px; font-weight: 800; padding: 2px 6px;
+    border-radius: 6px; letter-spacing: 0.5px;
+    background: rgba(0,255,136,0.2); color: #00FF88;
+    animation: readyPulse 1.5s ease-in-out infinite;
+  }
+  @keyframes readyPulse {
+    0%, 100% { box-shadow: 0 0 6px rgba(0,255,136,0.2); transform: scale(1); }
+    50% { box-shadow: 0 0 14px rgba(0,255,136,0.5); transform: scale(1.05); }
+  }
+
+  .badge-card.level-ready { animation: cardReadyGlow 2s ease-in-out infinite; }
+  @keyframes cardReadyGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0,255,136,0); }
+    50% { box-shadow: 0 0 16px rgba(0,255,136,0.15); }
+  }
+
+  /* Mastery in detail modal */
+  .mastery-section {
+    margin-top: 16px; width: 100%; max-width: 300px;
+    background: linear-gradient(135deg, rgba(0,200,255,0.06), rgba(0,255,136,0.04));
+    border: 1px solid rgba(0,200,255,0.2);
+    border-radius: 16px; padding: 14px 16px;
+  }
+  .mastery-header {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;
+  }
+  .mastery-title {
+    color: rgba(0,200,255,0.8); font-size: 10px; font-weight: 800;
+    letter-spacing: 2px;
+  }
+  .mastery-level-pill {
+    font-size: 10px; font-weight: 800; padding: 3px 10px;
+    border-radius: 8px; background: rgba(0,200,255,0.15); color: #00C8FF;
+  }
+  .mastery-level-pill.bronze { background: rgba(205,127,50,0.15); color: #CD7F32; }
+  .mastery-level-pill.silver { background: rgba(192,192,192,0.15); color: #C0C0C0; }
+  .mastery-level-pill.gold { background: rgba(255,215,0,0.15); color: #FFD700; }
+  .mastery-level-pill.prestige { background: rgba(192,132,252,0.15); color: #C084FC; animation: arcanePulse 2s infinite; }
+  .mastery-quest-text {
+    color: rgba(255,255,255,0.5); font-size: 11px; margin-bottom: 8px;
+  }
+  .mastery-bar {
+    height: 8px; background: rgba(255,255,255,0.06);
+    border-radius: 4px; overflow: hidden;
+  }
+  .mastery-bar-fill {
+    height: 100%; border-radius: 4px;
+    background: linear-gradient(90deg, #00C8FF, #00FF88);
+    transition: width 0.8s ease;
+  }
+  .mastery-bar-fill.complete { background: linear-gradient(90deg, #00FF88, #10B981); }
+  .mastery-bar-label {
+    display: flex; justify-content: space-between; margin-top: 6px;
+    color: rgba(255,255,255,0.35); font-size: 10px; font-weight: 700;
+  }
+  .mastery-reward {
+    margin-top: 10px; text-align: center;
+    color: rgba(0,255,136,0.6); font-size: 10px; font-weight: 600;
+  }
+
+  /* Level up button */
+  .badge-detail-btn.levelup {
+    background: linear-gradient(135deg, #00FF88, #00C8FF);
+    color: #000; animation: readyPulse 1.5s ease-in-out infinite;
+  }
+  .badge-detail-btn.levelup:hover { transform: scale(1.08); }
+
+  /* === LEVEL UP CELEBRATION OVERLAY === */
+  .levelup-overlay {
+    position: absolute; inset: 0; z-index: 300;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.85); backdrop-filter: blur(20px);
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  .levelup-overlay.active { opacity: 1; pointer-events: auto; }
+  .levelup-title {
+    font-size: 14px; font-weight: 800; letter-spacing: 4px;
+    color: rgba(255,255,255,0.4); margin-bottom: 8px;
+  }
+  .levelup-level {
+    font-size: 64px; font-weight: 900;
+    background: linear-gradient(135deg, #00C8FF, #00FF88);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    animation: levelPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+  .levelup-level.gold {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .levelup-level.prestige {
+    background: linear-gradient(135deg, #C084FC, #EC4899, #FFD700);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    font-size: 72px;
+  }
+  @keyframes levelPop {
+    0% { transform: scale(0.3); opacity: 0; }
+    60% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); }
+  }
+  .levelup-badge-name {
+    font-size: 20px; font-weight: 700; color: #fff; margin-top: 8px;
+  }
+  .levelup-reward-box {
+    margin-top: 20px; padding: 12px 24px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(0,255,136,0.2);
+    border-radius: 12px; text-align: center;
+  }
+  .levelup-reward-label {
+    font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.3);
+    letter-spacing: 2px; margin-bottom: 6px;
+  }
+  .levelup-reward-text {
+    font-size: 18px; font-weight: 800; color: #00FF88;
+  }
+  .levelup-dismiss {
+    margin-top: 28px; padding: 10px 40px;
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px; color: rgba(255,255,255,0.5);
+    font-size: 12px; font-weight: 700; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .levelup-dismiss:hover { background: rgba(255,255,255,0.12); color: #fff; }
+  .levelup-particles {
+    position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+  }
+  .particle {
+    position: absolute; width: 6px; height: 6px; border-radius: 50%;
+    animation: particleFly 1.5s ease-out forwards;
+  }
+  @keyframes particleFly {
+    0% { transform: translate(0, 0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
+  }
+  @keyframes screenShake {
+    0%, 100% { transform: translateX(0); }
+    10% { transform: translateX(-4px) translateY(2px); }
+    30% { transform: translateX(4px) translateY(-2px); }
+    50% { transform: translateX(-3px) translateY(1px); }
+    70% { transform: translateX(3px) translateY(-1px); }
+    90% { transform: translateX(-1px); }
+  }
+  .shake { animation: screenShake 0.4s ease-out; }
+  /* Border glow on cards by mastery */
+  .badge-card.border-bronze { border-color: rgba(205,127,50,0.4); }
+  .badge-card.border-silver { border-color: rgba(192,192,192,0.4); }
+  .badge-card.border-gold { border-color: rgba(255,215,0,0.4); box-shadow: 0 0 8px rgba(255,215,0,0.1); }
+  .badge-card.border-prestige { border-color: rgba(192,132,252,0.5); box-shadow: 0 0 12px rgba(192,132,252,0.15); animation: arcanePulse 3s infinite; }
+
+  /* === EQUIPPED HERO CARD === */
+  .hero-badge {
+    display: flex; align-items: center; gap: 16px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, rgba(0,200,255,0.06), rgba(0,255,136,0.06));
+    border: 1px solid rgba(0,255,136,0.25);
+    border-radius: 20px; margin-bottom: 24px;
+    cursor: pointer; transition: all 0.25s;
+  }
+  .hero-badge:hover {
+    border-color: rgba(0,255,136,0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,255,136,0.1);
+  }
+  .hero-badge-img {
+    width: 64px; height: 64px; object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(0,200,255,0.15));
+    flex-shrink: 0;
+  }
+  .hero-badge-info { flex: 1; }
+  .hero-badge-label {
+    color: rgba(0,255,136,0.6); font-size: 9px; font-weight: 800;
+    letter-spacing: 2px;
+  }
+  .hero-badge-name {
+    color: #fff; font-size: 18px; font-weight: 800; margin-top: 2px;
+  }
+  .hero-badge-desc {
+    color: rgba(255,255,255,0.4); font-size: 11px; margin-top: 4px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden; text-overflow: ellipsis; line-height: 1.4;
+  }
+  .hero-badge-arrow {
+    color: rgba(255,255,255,0.2); font-size: 18px; flex-shrink: 0;
+  }
+  .badge-card {
+    position: relative;
+    background: rgba(255,255,255,0.04);
+    border: 2px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 10px 8px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .badge-card:hover {
+    border-color: rgba(0,200,255,0.4);
+    background: rgba(255,255,255,0.08);
+    transform: translateY(-3px);
+  }
+  .badge-card.equipped {
+    border-color: #00FF88;
+    background: rgba(0,255,136,0.08);
+    box-shadow: 0 0 20px rgba(0,255,136,0.15);
+  }
+  .badge-card.locked {
+    opacity: 0.35;
+    cursor: not-allowed;
+    filter: grayscale(0.8);
+  }
+  .badge-card.locked:hover {
+    transform: none;
+    border-color: rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+  }
+  .badge-img {
+    width: 80px; height: 80px;
+    object-fit: contain;
+    margin: 0 auto;
+    display: block;
+  }
+  .badge-name {
+    color: rgba(255,255,255,0.8); font-size: 11px; font-weight: 700;
+    margin-top: 6px;
+  }
+  .badge-tier {
+    color: rgba(0,200,255,0.5); font-size: 9px; font-weight: 800;
+    letter-spacing: 1px; margin-top: 2px;
+  }
+  .badge-equipped-tag {
+    position: absolute; top: 6px; right: 6px;
+    background: #00FF88; color: #000;
+    font-size: 8px; font-weight: 900;
+    padding: 2px 6px; border-radius: 6px;
+    letter-spacing: 0.5px;
+  }
+  .badge-locked-icon {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-size: 24px; opacity: 0.5;
+  }
+
+  /* === CONTROL PANEL === */
+  .control-panel {
+    position: fixed; right: 20px; top: 50%; transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 8px; z-index: 999; width: 220px;
+  }
+  .section-label {
+    color: rgba(255,255,255,0.4); font-size: 10px; font-weight: 700;
+    letter-spacing: 1.5px; padding: 4px 0;
+  }
+  .ctrl-btn {
+    padding: 10px 14px; background: rgba(30,35,50,0.9);
+    border: 1px solid rgba(0,200,255,0.3); border-radius: 10px;
+    color: #fff; font-size: 12px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s; text-align: left;
+  }
+  .ctrl-btn:hover { border-color: rgba(0,200,255,0.6); }
+  .ctrl-btn.active { border-color: #00FF88; background: rgba(0,255,136,0.15); }
+  .ctrl-btn .sub { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 3px; }
+
+  .prototype-label {
+    position: absolute; top: 6px; right: 8px; font-size: 9px;
+    color: rgba(255,255,255,0.15); z-index: 200; pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- CONTROL PANEL -->
+<div class="control-panel">
+  <div class="section-label">ÉCRANS</div>
+  <div class="ctrl-btn" onclick="openMenu()">
+    <b>📋 Ouvrir Menu</b>
+    <div class="sub">Menu principal du jeu</div>
+  </div>
+  <div class="ctrl-btn" onclick="openCollection()">
+    <b>🎖️ Collection de Badges</b>
+    <div class="sub">Catalogue & équipement</div>
+  </div>
+  <div class="ctrl-btn" onclick="closeAll()">
+    <b>🗺️ Retour Carte</b>
+    <div class="sub">Fermer les overlays</div>
+  </div>
+
+  <div class="section-label" style="margin-top: 12px">PALIER ACTIF</div>
+  <div class="ctrl-btn active" onclick="setTier(0)">Tier 1 · <span style="opacity:0.6">×1 Quartz</span></div>
+  <div class="ctrl-btn" onclick="setTier(1)">Tier 2 · <span style="opacity:0.6">×3 Quartz</span></div>
+  <div class="ctrl-btn" onclick="setTier(2)">Tier 3 · <span style="opacity:0.6">×3Q + ×1J</span></div>
+  <div class="ctrl-btn" onclick="setTier(3)">Tier 4 · <span style="opacity:0.6">×3Q + ×1S</span></div>
+  <div class="ctrl-btn" onclick="setTier(4)">Tier 5 · <span style="opacity:0.6">×5Q + ×1R</span></div>
+
+  <div class="section-label" style="margin-top: 12px">THÈME COLLECTION</div>
+  <div class="ctrl-btn active" onclick="setBgTheme(0)">🎨 Original</div>
+  <div class="ctrl-btn" onclick="setBgTheme(1)">🌊 Encre de Nuit</div>
+  <div class="ctrl-btn" onclick="setBgTheme(2)">📜 Parchemin Sombre</div>
+  <div class="ctrl-btn" onclick="setBgTheme(3)">🔮 Brume Violet</div>
+</div>
+
+<!-- PHONE -->
+<div class="phone" id="phone">
+  <span class="prototype-label">DriveHunt v3</span>
+  <div class="status-bar"><span>9:41</span><span>5G ▂▅▇</span></div>
+  <div class="map-bg"></div>
+  <div class="hex-grid"></div>
+  <div class="owned-hex teal" style="top:180px;left:80px;opacity:.4"></div>
+  <div class="owned-hex teal" style="top:220px;left:130px;opacity:.5"></div>
+  <div class="owned-hex teal" style="top:260px;left:80px;opacity:.35"></div>
+  <div class="owned-hex teal" style="top:300px;left:130px;opacity:.45"></div>
+  <div class="owned-hex teal" style="top:340px;left:180px;opacity:.3"></div>
+  <div class="owned-hex teal" style="top:380px;left:130px;opacity:.5"></div>
+  <div class="owned-hex teal" style="top:380px;left:220px;opacity:.4"></div>
+  <div class="owned-hex enemy" style="top:220px;left:260px;opacity:.3"></div>
+  <div class="owned-hex enemy" style="top:260px;left:290px;opacity:.25"></div>
+  <div class="player-marker"></div>
+  <div class="compass">🧭</div>
+
+  <div class="resource-dock">
+    <div class="gem-chip"><div class="gem-dot quartz"></div><span class="gem-count">12</span></div>
+    <div class="gem-chip"><div class="gem-dot jade"></div><span class="gem-count">4</span></div>
+    <div class="gem-chip"><div class="gem-dot saphir"></div><span class="gem-count">2</span></div>
+    <div class="gem-chip"><div class="gem-dot ruby"></div><span class="gem-count">1</span></div>
+    <div class="gem-chip"><div class="gem-dot arcane"></div><span class="gem-count">0</span></div>
+  </div>
+
+  <!-- CAPTURE COST PILL -->
+  <div class="cost-above" id="cost-pill">
+    <div class="progress-fill" id="hold-progress"></div>
+    <div id="cost-orbs"></div>
+    <div class="hex-badge">
+      <span class="hex-badge-icon">⬡</span>
+      <span class="hex-badge-text" id="hex-count">7/10</span>
+    </div>
+  </div>
+
+  <!-- BOTTOM MENU PILL -->
+  <div class="hud-pill" id="hud-pill" onclick="openMenu()">
+    <div class="hud-menu-text">MENU</div>
+  </div>
+
+  <!-- MENU OVERLAY -->
+  <div class="menu-overlay" id="menu-overlay" onclick="closeMenu(event)">
+    <div class="menu-sheet" onclick="event.stopPropagation()">
+      <div class="menu-handle"></div>
+      <button class="menu-close" onclick="closeMenu()">&times;</button>
+
+      <div class="menu-header">
+        <h2>DRIVEHUNT</h2>
+        <div class="menu-stats">
+          <div class="menu-stat">
+            <div class="menu-stat-value">7</div>
+            <div class="menu-stat-label">Découverts</div>
+          </div>
+          <div class="menu-stat">
+            <div class="menu-stat-value">5</div>
+            <div class="menu-stat-label">Possédés</div>
+          </div>
+          <div class="menu-stat">
+            <div class="menu-stat-value">1</div>
+            <div class="menu-stat-label">Badges</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-grid">
+        <div class="menu-card featured" onclick="openCollection()">
+          <div class="menu-card-icon">🎖️</div>
+          <div class="menu-card-label">Collection</div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-icon">🏰</div>
+          <div class="menu-card-label">Forteresse</div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-icon">🐉</div>
+          <div class="menu-card-label">Compagnon</div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-icon">📊</div>
+          <div class="menu-card-label">Statistiques</div>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-icon">⚙️</div>
+          <div class="menu-card-label">Paramètres</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BADGE COLLECTION OVERLAY -->
+  <div class="collection-overlay" id="collection-overlay">
+    <div class="collection-sheet" onclick="event.stopPropagation()">
+      <button class="collection-back" onclick="closeCollection()">← Retour</button>
+      <div class="collection-header">
+        <h2>🎖️ COLLECTION</h2>
+        <p id="global-badge-count"></p>
+      </div>
+
+      <!-- EQUIPPED HERO -->
+      <div class="hero-badge" id="hero-badge"></div>
+
+      <!-- T1 URBAN -->
+      <div class="collection-section-title" id="section-title-t1">T1 — URBAIN</div>
+      <div class="badge-grid" id="badge-grid-t1">
+        <!-- Filled by JS -->
+      </div>
+
+      <!-- LOCAL -->
+      <div class="collection-section-title" id="section-title-nature">LOCAL</div>
+      <div class="badge-grid" id="badge-grid-nature"></div>
+
+      <!-- EXPLOITS / SUCCÈS -->
+      <div class="collection-section-title" id="section-title-exploits">🏆 EXPLOITS / SUCCÈS</div>
+      <div class="badge-grid" id="badge-grid-exploits"></div>
+
+      <!-- GARDIENS -->
+      <div class="collection-section-title" id="section-title-t3">GARDIENS</div>
+      <div class="badge-grid" id="badge-grid-t3"></div>
+    </div>
+  </div>
+
+  <!-- BADGE DETAIL MODAL -->
+  <div class="badge-detail-overlay" id="badge-detail">
+    <button class="badge-detail-close" onclick="closeBadgeDetail()">&times;</button>
+    <img class="badge-detail-img" id="detail-img" src="" alt="">
+    <div class="badge-detail-name" id="detail-name"></div>
+    <div class="badge-detail-tier" id="detail-tier"></div>
+    <div class="badge-detail-desc" id="detail-desc"></div>
+    <div class="arcane-fuel" id="detail-arcane"></div>
+    <div class="badge-detail-quest" id="detail-quest"></div>
+    <div class="badge-effects-section" id="detail-effects" style="display:none"></div>
+    <div class="mastery-section" id="detail-mastery" style="display:none"></div>
+    <button class="badge-detail-btn" id="detail-btn"></button>
+  </div>
+
+  <!-- LEVEL UP CELEBRATION OVERLAY -->
+  <div class="levelup-overlay" id="levelup-overlay">
+    <div class="levelup-particles" id="levelup-particles"></div>
+    <div class="levelup-title">LEVEL UP</div>
+    <div class="levelup-level" id="levelup-level"></div>
+    <div class="levelup-badge-name" id="levelup-badge-name"></div>
+    <div class="levelup-reward-box">
+      <div class="levelup-reward-label">RÉCOMPENSE</div>
+      <div class="levelup-reward-text" id="levelup-reward"></div>
+    </div>
+    <button class="levelup-dismiss" id="levelup-dismiss">CONTINUER</button>
+  </div>
+</div>
+
+<script>
+// === BADGE DATA (populated from backend, empty fallback) ===
+const BADGES = {
+  t1: [],
+  t1_nature: [],
+  exploits: [],
+  t2: [],
+  t3: []
+};
+
+const MASTERY_REWARDS = [
+  null,
+  { text: '✅ Badge débloqué' },
+  { text: '5 Quartz', emoji: '⬜' },
+  { text: 'Border Bronze 🥉', border: 'bronze' },
+  { text: '3 Jade', emoji: '💚' },
+  { text: '🌑 Fond Dark + Titre', special: true },
+  { text: 'Border Silver 🥈', border: 'silver' },
+  { text: '1 Saphir', emoji: '💙' },
+  { text: '5 Jade', emoji: '💚' },
+  { text: 'Border Gold 🥇', border: 'gold' },
+  { text: '✨ BORDER PRESTIGE ✨', border: 'prestige', special: true },
+];
+
+function getMasteryBorderClass(level) {
+  if (level >= 10) return 'border-prestige';
+  if (level >= 9) return 'border-gold';
+  if (level >= 6) return 'border-silver';
+  if (level >= 3) return 'border-bronze';
+  return '';
+}
+
+function renderBadgeGrid(containerId, badges, tierLabel) {
+  const container = document.getElementById(containerId);
+  const cards = badges.map(b => {
+    let cls = b.equipped ? 'badge-card equipped' : b.unlocked ? 'badge-card' : 'badge-card locked';
+    // Add mastery border class
+    if (b.mastery && b.unlocked) cls += ' ' + getMasteryBorderClass(b.mastery.level);
+    if (b.mastery && b.mastery.ready && b.unlocked) cls += ' level-ready';
+    const tag = b.equipped ? '<div class="badge-equipped-tag">ÉQUIPÉ</div>' : '';
+    const lock = !b.unlocked ? '<div class="badge-locked-icon">🔒</div>' : '';
+    // Level up ready indicator
+    const levelReady = (b.mastery && b.mastery.ready && b.unlocked) ? '<div class="badge-levelup-ready">⬆ UP</div>' : '';
+    // Arcane indicator on card
+    let arcaneTag = '';
+    if (b.arcane && b.unlocked) {
+      if (b.arcane.hexLost) {
+        const lbl = b.arcane.lostReason === 'fortress' ? '🏰' : '⚠️ HEX';
+        arcaneTag = `<div class="badge-arcane-indicator lost">${lbl}</div>`;
+      } else if (b.arcane.active) {
+        const h = Math.floor(b.arcane.hoursLeft);
+        arcaneTag = `<div class="badge-arcane-indicator active">⚡ ${h}h</div>`;
+      } else if (b.questProgress >= b.questTotal) {
+        arcaneTag = '<div class="badge-arcane-indicator inactive">⚡ OFF</div>';
+      }
+    }
+    // Mastery pips
+    let masteryPips = '';
+    if (b.mastery && b.unlocked) {
+      const pips = Array.from({length: 10}, (_, i) => {
+        let pipCls = 'mastery-pip';
+        if (i < b.mastery.level) {
+          pipCls += ' filled';
+          if (i >= 9) pipCls += ' prestige';
+          else if (i >= 8) pipCls += ' gold';
+          else if (i >= 5) pipCls += ' silver';
+          else if (i >= 2) pipCls += ' bronze';
+        }
+        return `<div class="${pipCls}"></div>`;
+      }).join('');
+      masteryPips = `<div class="badge-mastery-indicator">${pips}</div>`;
+    }
+    return `
+      <div class="${cls}" onclick="showBadgeDetail('${b.id}', '${tierLabel}')">
+        ${tag}${lock}${levelReady}${arcaneTag}
+        <img class="badge-img" src="${b.img}" alt="${b.name}">
+        <div class="badge-name">${b.name}</div>
+        <div class="badge-tier">${b.mastery ? (b.mastery.level >= 10 ? '✨ MAX' : 'Lv ' + b.mastery.level) : (b.unlocked ? '✅ Obtenu' : '🔒')}</div>
+      </div>
+    `;
+  }).join('');
+  const seeAll = badges.length > 3 
+    ? `<div class="badge-see-all" onclick="toggleSection('${containerId}')">Voir tout (${badges.length})</div>` 
+    : '';
+  container.innerHTML = cards + seeAll;
+  if (badges.length > 3 && !container.dataset.initialized) {
+    container.classList.add('collapsed');
+    container.dataset.initialized = 'true';
+  }
+}
+
+// === BADGE DETAIL ===
+function showBadgeDetail(id, tierLabel) {
+  const badge = Object.values(BADGES).flat().find(b => b.id === id);
+  if (!badge) return;
+
+  document.getElementById('detail-img').src = badge.img;
+  document.getElementById('detail-img').className = 'badge-detail-img' + (badge.unlocked ? '' : ' locked');
+  document.getElementById('detail-name').textContent = badge.name;
+  document.getElementById('detail-tier').textContent = tierLabel;
+  document.getElementById('detail-desc').textContent = badge.desc || '';
+
+  // Arcane fuel section
+  const arcaneEl = document.getElementById('detail-arcane');
+  if (badge.arcane && badge.unlocked && badge.questProgress >= badge.questTotal) {
+    const a = badge.arcane;
+    const pct = a.active ? Math.round((a.hoursLeft / a.periodHours) * 100) : 0;
+    const isLow = a.active && pct < 25;
+    const fuelClass = a.hexLost ? 'arcane-fuel hexlost' : !a.active ? 'arcane-fuel deactivated' : 'arcane-fuel';
+    const fillClass = a.hexLost ? 'arcane-gauge-fill hexlost' : isLow ? 'arcane-gauge-fill low' : 'arcane-gauge-fill';
+    const statusClass = a.hexLost ? 'arcane-status-pill lost' : a.active ? 'arcane-status-pill active' : 'arcane-status-pill inactive';
+    const statusText = a.hexLost ? (a.lostReason === 'fortress' ? 'FORTERESSE PERDUE' : 'HEX PERDU') : a.active ? 'ACTIF' : 'INACTIF';
+
+    let timerText, timerClass;
+    if (a.hexLost) {
+      const h = Math.floor(a.hoursLeft);
+      timerText = `Arcane préservé • ${h}h restantes`;
+      timerClass = 'arcane-timer-text hexlost';
+    } else if (a.active) {
+      const h = Math.floor(a.hoursLeft);
+      timerText = `⏱ ${h}h restantes`;
+      timerClass = isLow ? 'arcane-timer-text warning' : 'arcane-timer-text';
+    } else {
+      timerText = `Coût : ${a.cost} <div class="gem-dot arcane" style="display:inline-block;margin:0 2px;vertical-align:middle;transform:scale(0.8)"></div> Arcane / ${a.period}`;
+      timerClass = 'arcane-timer-text';
+    }
+
+    arcaneEl.className = fuelClass;
+    arcaneEl.style.display = 'block';
+    arcaneEl.innerHTML = `
+      <div class="arcane-header">
+        <div class="arcane-title">⚡ ${(badge.category === 'local' || badge.category === 'gardiens' || badge.category === 'exploits') ? "ÉQUIPEMENT (ARCANE)" : "ARCANE"}</div>
+        <div class="${statusClass}">${statusText}</div>
+      </div>
+      <div class="arcane-gauge"><div class="${fillClass}" style="width:${pct}%"></div></div>
+      <div class="arcane-timer">
+        <span class="${timerClass}">${timerText}</span>
+        <span class="arcane-cost">${a.cost} <div class="gem-dot arcane" style="display:inline-block;margin:0 2px;vertical-align:middle;transform:scale(0.8)"></div> Arcane / ${a.period}</span>
+      </div>
+      ${a.hexLost ? `<div style="color:rgba(255,80,80,0.6);font-size:10px;margin-top:8px;text-align:center">${a.lostReason === 'fortress' ? 'Reconstruisez votre forteresse pour réactiver' : 'Recapturez le hex pour réactiver'}</div>` : ''}
+    `;
+  } else {
+    arcaneEl.style.display = 'none';
+  }
+
+  // Condition section — affiché pour tous les badges sans mastery qui ont une condition
+  const questEl = document.getElementById('detail-quest');
+  const showCondition = !badge.mastery && badge.quest;
+  if (showCondition) {
+    const isVolatile = badge.equip_rule === 'conditional';
+    const condTitle = isVolatile ? '👑 CONDITION À MAINTENIR' : '🎯 CONDITION';
+    const pct = Math.min(100, Math.round((badge.questProgress / badge.questTotal) * 100));
+    const showProgress = badge.unlock_method === 'condition' && typeof badge.questTotal === 'number' && badge.questTotal > 1;
+    questEl.style.display = 'block';
+    const arcanePrefix = (badge.category === 'local' || badge.category === 'gardiens' || badge.category === 'exploits') ? "Coût d'Équipement" : "Coût Arcane";
+    const arcaneInfo = badge.arcane 
+      ? `<div style="margin-top:6px;padding:6px 10px;border-radius:8px;background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3);font-size:12px;color:rgba(192,132,252,0.9);display:flex;align-items:center;gap:8px">
+          <div class="gem-dot arcane" style="position:static;box-shadow:0 0 8px #B333F2;flex-shrink:0;"></div>
+          <span>${arcanePrefix} : <strong>${badge.arcane.cost} / ${badge.arcane.period}</strong></span>
+         </div>`
+      : '';
+    questEl.innerHTML = `
+      <div class="quest-title">${condTitle}</div>
+      <div style="margin-top:6px;padding:6px 6px 6px 10px;border-radius:8px;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.3);font-size:12px;color:rgba(251,191,36,0.95);display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+        <div style="display:flex;align-items:flex-start;gap:6px;margin-top:2px">
+          <span>🏰</span>
+          <strong style="line-height:1.4">${badge.quest}</strong>
+        </div>
+        ${showProgress ? `<span style="background:rgba(0,0,0,0.5);padding:4px 10px;border-radius:12px;font-weight:700;letter-spacing:0.5px;font-size:11px;white-space:nowrap;border:1px solid rgba(245,158,11,0.25);box-shadow:inset 0 1px 4px rgba(0,0,0,0.6);display:flex;align-items:center;gap:4px">${badge.questProgress} <span style="opacity:0.4;font-weight:normal">/</span> ${badge.questTotal}</span>` : ''}
+      </div>
+      ${showProgress ? `
+        <div class="quest-progress"><div class="quest-progress-fill" style="width:${pct}%"></div></div>
+      ` : ''}
+      ${arcaneInfo}
+    `;
+  } else {
+    questEl.style.display = 'none';
+  }
+
+  // Effects section (Buffs)
+  const effectsEl = document.getElementById('detail-effects');
+  if (badge.effects && badge.effects.length > 0) {
+    effectsEl.style.display = 'block';
+    const effectsList = badge.effects.map(eff => {
+      let icon = '✨';
+      let title = eff.type;
+      let desc = '';
+      if (eff.type === 'defense_boost') { icon = '🛡️'; title = 'Boost de Défense'; desc = `+${eff.params.amount}% de défense contre les outils de siège.`; }
+      else if (eff.type === 'animated_skin') { icon = '🎭'; title = 'Skin Animé Actif'; desc = `Applique l'animation '${eff.params.animation_style}'.`; }
+      return `
+        <div style="margin-top:6px;padding:8px 10px;border-radius:8px;background:rgba(234,179,8,0.12);border:1px solid rgba(234,179,8,0.3);font-size:12px;color:rgba(250,204,21,0.95);display:flex;align-items:flex-start;gap:8px">
+          <span style="font-size:16px;line-height:1.2">${icon}</span>
+          <div style="flex:1">
+            <div style="font-weight:bold;letter-spacing:0.5px">${title}</div>
+            <div style="opacity:0.8;margin-top:2px;font-size:11px">${desc}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+    
+    effectsEl.innerHTML = `
+      <div class="quest-title" style="color:rgb(250,204,21);margin-top:10px;">✨ EFFETS PASSIFS (BUFFS)</div>
+      ${effectsList}
+    `;
+  } else if (effectsEl) {
+    effectsEl.style.display = 'none';
+  }
+
+  // Mastery section
+  const masteryEl = document.getElementById('detail-mastery');
+  if (badge.mastery && badge.unlocked) {
+    const m = badge.mastery;
+    const pctM = m.level >= 10 ? 100 : Math.min(100, Math.round((m.progress / m.target) * 100));
+    const pillClass = m.level >= 10 ? 'prestige' : m.level >= 9 ? 'gold' : m.level >= 6 ? 'silver' : m.level >= 3 ? 'bronze' : '';
+    
+    // Lire les récompenses du prochain niveau depuis les données backend
+    let rewardHTML = '';
+    if (m.level >= 10) {
+      rewardHTML = '<div style="margin-top:6px;padding:6px 10px;border-radius:8px;background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3);font-size:12px;color:rgba(192,132,252,0.9);display:flex;align-items:center;gap:6px">✨ <strong>PRESTIGE — NIVEAU MAX</strong></div>';
+    } else if (m._db_mastery_levels) {
+      const nextLvl = m._db_mastery_levels[String(m.level + 1)];
+      if (nextLvl && nextLvl.rewards && nextLvl.rewards.length > 0) {
+        const rewardTexts = nextLvl.rewards.map(r => r.text || `${r.amount || ''} ${r.gem || r.style || r.type}`).join(', ');
+        rewardHTML = `<div style="margin-top:6px;padding:6px 10px;border-radius:8px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.3);font-size:12px;color:rgba(52,211,153,0.95);display:flex;align-items:center;gap:6px">🎁 <strong>Récompense : ${rewardTexts}</strong></div>`;
+      }
+    }
+
+    masteryEl.style.display = 'block';
+    masteryEl.innerHTML = `
+      <div class="mastery-header">
+        <div class="mastery-title">⭐ MASTERY</div>
+        <div class="mastery-level-pill ${pillClass}">Lv ${m.level}${m.level >= 10 ? ' MAX' : ''}</div>
+      </div>
+      ${m.level < 10 ? `
+        <div style="margin-top:6px;padding:6px 6px 6px 10px;border-radius:8px;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.3);font-size:12px;color:rgba(251,191,36,0.95);display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+          <div style="display:flex;align-items:flex-start;gap:6px;margin-top:2px">
+            <span>🎯</span>
+            <strong style="line-height:1.4">${m.questName}</strong>
+          </div>
+          <span style="background:rgba(0,0,0,0.5);padding:4px 10px;border-radius:12px;font-weight:700;letter-spacing:0.5px;font-size:11px;white-space:nowrap;border:1px solid rgba(245,158,11,0.25);box-shadow:inset 0 1px 4px rgba(0,0,0,0.6);display:flex;align-items:center;gap:4px">${m.progress} <span style="opacity:0.4;font-weight:normal">/</span> ${m.target}${m.ready ? '<span style="color:#10b981;margin-left:4px">✔</span>' : ''}</span>
+        </div>
+        <div class="mastery-bar"><div class="mastery-bar-fill${m.ready ? ' complete' : ''}" style="width:${pctM}%"></div></div>
+      ` : ''}
+      ${rewardHTML}
+    `;
+  } else if (masteryEl) {
+    masteryEl.style.display = 'none';
+  }
+
+  // Button — mastery-aware + arcane-aware
+  const btn = document.getElementById('detail-btn');
+  if (badge.mastery && badge.mastery.ready && badge.unlocked) {
+    // LEVEL UP READY takes priority
+    btn.className = 'badge-detail-btn levelup';
+    btn.textContent = `⬆ LEVEL UP → Lv${badge.mastery.level + 1}`;
+    btn.onclick = () => { levelUpBadge(badge, tierLabel); };
+  } else if (badge.equipped) {
+    btn.className = 'badge-detail-btn equipped';
+    btn.textContent = '✔ ÉQUIPÉ';
+    btn.onclick = null;
+  } else if (!badge.unlocked) {
+    btn.className = 'badge-detail-btn locked';
+    btn.textContent = '🔒 VERROUILLÉ';
+    btn.onclick = null;
+  } else if (badge.arcane && badge.questProgress >= badge.questTotal) {
+    if (badge.arcane.hexLost) {
+      const lostLabel = badge.arcane.lostReason === 'fortress' ? '🏰 FORTERESSE PERDUE' : '⚠️ HEX PERDU';
+      btn.className = 'badge-detail-btn hexlost';
+      btn.textContent = lostLabel;
+      btn.onclick = null;
+    } else if (!badge.arcane.active) {
+      btn.className = 'badge-detail-btn activate';
+      btn.innerHTML = `⚡ ACTIVER — ${badge.arcane.cost} <div class="gem-dot arcane" style="display:inline-block;margin-left:2px;vertical-align:middle;box-shadow:0 0 8px #B333F2;border-color:white;"></div> Arcane`;
+      btn.onclick = () => { badge.arcane.active = true; badge.arcane.hoursLeft = badge.arcane.periodHours; renderAllBadges(); showBadgeDetail(id, tierLabel); };
+    } else {
+      btn.className = 'badge-detail-btn equip';
+      btn.textContent = 'ÉQUIPER';
+      btn.onclick = () => { equipBadge(id); showBadgeDetail(id, tierLabel); };
+    }
+  } else if (badge.unlocked) {
+    btn.className = 'badge-detail-btn equip';
+    btn.textContent = 'ÉQUIPER';
+    btn.onclick = () => { equipBadge(id); showBadgeDetail(id, tierLabel); };
+  }
+
+  document.getElementById('badge-detail').classList.add('open');
+}
+
+function closeBadgeDetail() {
+  document.getElementById('badge-detail').classList.remove('open');
+}
+
+function equipBadge(id) {
+  // Reset all
+  Object.values(BADGES).flat().forEach(b => b.equipped = false);
+  // Set new
+  const badge = Object.values(BADGES).flat().find(b => b.id === id);
+  if (badge && badge.unlocked) {
+    badge.equipped = true;
+    renderAllBadges();
+  }
+}
+
+// === LEVEL UP CELEBRATION ===
+function levelUpBadge(badge, tierLabel) {
+  if (!badge.mastery || !badge.mastery.ready) return;
+  const newLevel = badge.mastery.level + 1;
+  
+  // Lecture dynamique des récompenses du backend ou fallback
+  let rewardText = '';
+  if (badge.mastery._db_mastery_levels && badge.mastery._db_mastery_levels[String(newLevel)]) {
+      const rewArr = badge.mastery._db_mastery_levels[String(newLevel)].rewards || [];
+      rewardText = rewArr.map(r => r.text || `${r.amount} ${r.gem}`).join(' & ');
+  } else {
+      const oldReward = MASTERY_REWARDS[newLevel];
+      rewardText = oldReward ? oldReward.text : '';
+  }
+  
+  // Update badge data
+  badge.mastery.level = newLevel;
+  badge.mastery.ready = false;
+  badge.mastery.progress = 0;
+  
+  // Set next quest if not max
+  if (newLevel < 10) {
+    badge.mastery.target = Math.round(badge.mastery.target * 1.5);
+  }
+  
+  // Close detail modal
+  closeBadgeDetail();
+  
+  // Show celebration overlay
+  const overlay = document.getElementById('levelup-overlay');
+  const levelEl = document.getElementById('levelup-level');
+  const nameEl = document.getElementById('levelup-badge-name');
+  const rewardEl = document.getElementById('levelup-reward');
+  const particlesEl = document.getElementById('levelup-particles');
+  
+  // Set level class based on tier
+  let levelClass = 'levelup-level';
+  if (newLevel >= 10) levelClass += ' prestige';
+  else if (newLevel >= 9) levelClass += ' gold';
+  levelEl.className = levelClass;
+  levelEl.textContent = `Lv ${newLevel}`;
+  nameEl.textContent = badge.name;
+  rewardEl.textContent = rewardText;
+  
+  // Particles — more at higher levels
+  particlesEl.innerHTML = '';
+  const particleCount = Math.min(40, 6 + (newLevel * 4));
+  const colors = newLevel >= 10 ? ['#C084FC','#EC4899','#FFD700','#fff'] 
+    : newLevel >= 9 ? ['#FFD700','#FFA500','#fff'] 
+    : newLevel >= 6 ? ['#C0C0C0','#E8E8E8','#fff'] 
+    : ['#00C8FF','#00FF88','#fff'];
+  for (let i = 0; i < particleCount; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const angle = (Math.PI * 2 * i) / particleCount;
+    const dist = 100 + Math.random() * 200;
+    p.style.cssText = `left:50%;top:50%;background:${colors[i % colors.length]};--dx:${Math.cos(angle)*dist}px;--dy:${Math.sin(angle)*dist}px;animation-delay:${Math.random()*0.3}s;width:${4+Math.random()*4}px;height:${4+Math.random()*4}px;`;
+    particlesEl.appendChild(p);
+  }
+  
+  // Screen shake for high levels
+  if (newLevel >= 7) {
+    const phone = document.querySelector('.phone');
+    phone.classList.add('shake');
+    setTimeout(() => phone.classList.remove('shake'), 500);
+  }
+  
+  // Show overlay
+  overlay.classList.add('active');
+  
+  // Dismiss button
+  document.getElementById('levelup-dismiss').onclick = () => {
+    overlay.classList.remove('active');
+    renderAllBadges();
+  };
+}
+
+function updateSectionCount(titleId, label, badges, gridId) {
+  const unlocked = badges.filter(b => b.unlocked).length;
+  const grid = document.getElementById(gridId);
+  const isOpen = grid && !grid.classList.contains('collapsed');
+  const chevron = badges.length > 3 ? `<span class="section-chevron ${isOpen ? 'open' : ''}">▶</span>` : '';
+  document.getElementById(titleId).innerHTML = 
+    `<span class="section-left">${chevron} ${label}</span><span class="section-count">${unlocked} / ${badges.length}</span>`;
+  document.getElementById(titleId).onclick = () => toggleSection(gridId);
+}
+
+function toggleSection(gridId) {
+  const grid = document.getElementById(gridId);
+  grid.classList.toggle('collapsed');
+  renderAllBadges();
+}
+
+function renderAllBadges() {
+  renderBadgeGrid('badge-grid-t1', BADGES.t1, 'COLLECTION');
+  renderBadgeGrid('badge-grid-nature', BADGES.t1_nature, 'LOCAL');
+  renderBadgeGrid('badge-grid-exploits', BADGES.exploits, 'EXPLOIT');
+  renderBadgeGrid('badge-grid-t3', BADGES.t3, 'GARDIEN');
+
+  updateSectionCount('section-title-t1', 'COLLECTION', BADGES.t1, 'badge-grid-t1');
+  updateSectionCount('section-title-nature', 'LOCAL', BADGES.t1_nature, 'badge-grid-nature');
+  updateSectionCount('section-title-exploits', '🏆 EXPLOITS', BADGES.exploits, 'badge-grid-exploits');
+  updateSectionCount('section-title-t3', 'GARDIENS', BADGES.t3, 'badge-grid-t3');
+
+  const all = Object.values(BADGES).flat();
+  const totalUnlocked = all.filter(b => b.unlocked).length;
+  document.getElementById('global-badge-count').textContent = `${totalUnlocked} / ${all.length} DÉVERROUILLÉS`;
+
+  // Hero card
+  const equipped = all.find(b => b.equipped);
+  const hero = document.getElementById('hero-badge');
+  if (equipped) {
+    hero.style.display = 'flex';
+    hero.innerHTML = `
+      <img class="hero-badge-img" src="${equipped.img}" alt="${equipped.name}">
+      <div class="hero-badge-info">
+        <div class="hero-badge-label">BADGE ACTIF</div>
+        <div class="hero-badge-name">${equipped.name}</div>
+        <div class="hero-badge-desc">${equipped.desc || ''}</div>
+      </div>
+      <div class="hero-badge-arrow">›</div>
+    `;
+    hero.onclick = () => showBadgeDetail(equipped.id, 'ACTIF');
+  } else {
+    hero.style.display = 'none';
+  }
+}
+
+// === BACKGROUND THEME ===
+const BG_THEMES = [
+  { cls: '', label: '🎨 Original' },
+  { cls: 'bg-encre', label: '🌊 Encre de Nuit' },
+  { cls: 'bg-parchemin', label: '📜 Parchemin Sombre' },
+  { cls: 'bg-brume', label: '🔮 Brume Violet' },
+];
+let currentBgTheme = 1;
+function setBgTheme(idx) {
+  currentBgTheme = idx;
+  const sheet = document.querySelector('.collection-sheet');
+  sheet.classList.remove('bg-encre', 'bg-parchemin', 'bg-brume');
+  if (BG_THEMES[idx].cls) sheet.classList.add(BG_THEMES[idx].cls);
+  // Update active state on control panel theme buttons
+  const allBtns = document.querySelectorAll('.control-panel .ctrl-btn');
+  const themeStart = allBtns.length - 4;
+  for (let i = themeStart; i < allBtns.length; i++) {
+    allBtns[i].classList.toggle('active', (i - themeStart) === idx);
+  }
+}
+function cycleBgTheme() {
+  setBgTheme((currentBgTheme + 1) % BG_THEMES.length);
+}
+
+// === MENU LOGIC ===
+function openMenu() {
+  document.getElementById('menu-overlay').classList.add('open');
+}
+function closeMenu(e) {
+  if (e && e.target !== document.getElementById('menu-overlay')) return;
+  document.getElementById('menu-overlay').classList.remove('open');
+}
+function openCollection() {
+  document.getElementById('menu-overlay').classList.remove('open');
+  document.getElementById('collection-overlay').classList.add('open');
+}
+function closeCollection() {
+  document.getElementById('collection-overlay').classList.remove('open');
+}
+function closeAll() {
+  document.getElementById('menu-overlay').classList.remove('open');
+  document.getElementById('collection-overlay').classList.remove('open');
+}
+
+// === TIER LOGIC ===
+const TIERS = [
+  { costs: [{gem:'quartz', amount:1}],                              label:'7/10' },
+  { costs: [{gem:'quartz', amount:3}],                              label:'18/25' },
+  { costs: [{gem:'quartz', amount:3},{gem:'jade', amount:1}],       label:'35/50' },
+  { costs: [{gem:'quartz', amount:3},{gem:'saphir', amount:1}],     label:'72/100' },
+  { costs: [{gem:'quartz', amount:5},{gem:'ruby', amount:1}],       label:'120' },
+];
+let currentTier = 0;
+
+function gemOrbs(costs) {
+  return costs.map((c, i) => {
+    const plus = i > 0 ? '<span class="orb-plus">+</span>' : '';
+    return `${plus}<div class="orb orb-${c.gem}"></div><span class="orb-amount">×${c.amount}</span>`;
+  }).join('');
+}
+
+function renderCostPill() {
+  const tier = TIERS[currentTier];
+  document.getElementById('cost-orbs').innerHTML =
+    `<div style="display:flex;align-items:center;gap:5px">${gemOrbs(tier.costs)}</div>`;
+  document.getElementById('hex-count').textContent = tier.label;
+}
+
+function setTier(idx) {
+  currentTier = idx;
+  document.querySelectorAll('.control-panel .ctrl-btn').forEach((b, i) => {
+    if (i >= 3 && i < 8) b.classList.toggle('active', (i - 3) === idx);
+  });
+  renderCostPill();
+}
+
+// === INIT ===
+async function initApp() {
+  try {
+    // Fetch badges + condition labels en parallèle
+    const [badgeRes, condRes] = await Promise.all([
+      fetch('http://localhost:3070/v1/badges/admin'),
+      fetch('http://localhost:3070/v1/badges/admin/condition-types'),
+    ]);
+    const json = await badgeRes.json();
+    
+    // Construire un map condition_key → label lisible
+    let condLabels = {};
+    let modifierLabels = {}; // modifier_key → { value → label }
+    try {
+      const condJson = await condRes.json();
+      const condList = condJson.conditions || condJson;
+      if (Array.isArray(condList)) {
+        condList.forEach(c => { condLabels[c.key] = c.label; });
+      }
+      // Construire le map des modifiers: time_of_day → { night: "Nuit (22h-05h) 🌙", day: "Jour ☀️" }
+      const modList = condJson.modifiers || [];
+      if (Array.isArray(modList)) {
+        modList.forEach(m => {
+          if (m.options && Array.isArray(m.options)) {
+            modifierLabels[m.key] = {};
+            m.options.forEach(opt => { modifierLabels[m.key][opt.value] = opt.label; });
+          }
+        });
+      }
+    } catch(e) { /* condition labels optionnels */ }
+
+    if (json.badges && json.badges.length > 0) {
+      const CATEGORY_MAP = {
+        'collection': 't1',
+        'local':      't1_nature',
+        'exploits':   'exploits',
+        'gardiens':   't3',
+      };
+      const buckets = { t1: [], t1_nature: [], exploits: [], t3: [] };
+
+      // ── Phrases naturelles pour les quêtes ──
+      const QUEST_TEMPLATES = {
+        capture_hexes:        (t) => `Capturer ${t} hex`,
+        capture_hexes_park:   (t) => `Capturer ${t} hex de parc`,
+        capture_hexes_riverain: (t) => `Capturer ${t} hex riverains`,
+        capture_hexes_urban:  (t) => `Capturer ${t} hex urbains`,
+        capture_hexes_water:  (t) => `Capturer ${t} hex d'eau`,
+        capture_hexes_rural:  (t) => `Capturer ${t} hex ruraux`,
+        capture_specific_hex: () => `Capturer un hex précis`,
+        collect_loots:        (t) => `Ramasser ${t} loots`,
+        own_hexes:            (t) => `Posséder ${t} hex`,
+        own_hexes_simultaneously: (t) => `Posséder ${t} hex en même temps`,
+        own_hexes_park:       (t) => `Posséder ${t} parcs`,
+        own_hexes_riverain:   (t) => `Posséder ${t} hex riverains`,
+        own_hexes_urban:      (t) => `Posséder ${t} hex urbains`,
+        own_hexes_water:      (t) => `Posséder ${t} hex d'eau`,
+        own_hexes_rural:      (t) => `Posséder ${t} hex ruraux`,
+        own_specific_hex:     () => `Posséder un hex précis`,
+        has_fortress_t2:      () => `Avoir une forteresse T2 active`,
+        has_fortress_t3:      () => `Avoir une forteresse T3 active`,
+        explore_hexes:        (t) => `Découvrir ${t} hex vierges`,
+        zone_presence:        () => `Être présent dans la zone`,
+        consecutive_login_streak: (t) => `Streak de ${t} jours`,
+      };
+      const MODIFIER_PHRASES = {
+        time_of_day: { day: 'de jour (05h–22h) ☀️', night: 'la nuit (22h–05h) 🌙' },
+        weather: { clear: 'par temps clair ☀️', rain: 'sous la pluie 🌧️', snow: 'sous la neige ❄️' },
+        season: { winter: 'en hiver ⛄', summer: 'en été 🏖️', spring: 'au printemps 🌸', autumn: 'en automne 🍂' },
+      };
+
+      function buildQuestLabel(cond) {
+        const template = QUEST_TEMPLATES[cond.type];
+        let phrase = template ? template(cond.target) : `${cond.type} (${cond.target})`;
+        // Ajouter les filtres en langage naturel
+        if (cond.modifiers && cond.modifiers.length > 0) {
+          const modParts = cond.modifiers.map(mod => {
+            let txt = '';
+            const phrases = MODIFIER_PHRASES[mod.type];
+            if (phrases && phrases[mod.value]) txt = phrases[mod.value];
+            else if (typeof mod.value === 'object' && mod.value.start) txt = `entre ${mod.value.start} et ${mod.value.end}`;
+            else txt = String(mod.value);
+            return `<span style="white-space:nowrap">${txt}</span>`;
+          });
+          phrase += ' ' + modParts.join(' ');
+        }
+        return phrase;
+      }
+
+      json.badges.forEach(db => {
+        const bucket = CATEGORY_MAP[db.category] || 't1';
+        const iconUrl = db.icon_url 
+          ? `http://localhost:3070${db.icon_url}` 
+          : 'badges/badge_lamp.png';
+
+        // Seuls les badges Collection ont la mastery 10 niveaux
+        const isLevelless = db.unlock_method === 'condition' || db.category === 'gardiens' || db.category === 'local';
+
+        const badge = {
+          id: db.id,
+          name: db.name,
+          img: iconUrl,
+          unlocked: false,
+          equipped: false,
+          desc: db.description || '',
+          category: db.category,
+          unlock_method: db.unlock_method,
+          quest: db.quest_description || '',
+          questProgress: 0,
+          questTotal: db.quest_condition_target || 1,
+          is_starter: db.is_starter || false,
+          effects: db.effects || [],
+        };
+
+        // Mastery — lire les vraies données mastery_levels du backend
+        if (!isLevelless && db.mastery_levels) {
+          const currentLevel = 1;
+          const nextLevelKey = String(currentLevel + 1);
+          const nextLevel = db.mastery_levels[nextLevelKey];
+          
+          let questName = 'Progression';
+          let target = 10;
+          
+          if (nextLevel && nextLevel.conditions && nextLevel.conditions.length > 0) {
+            const cond = nextLevel.conditions[0];
+            questName = buildQuestLabel(cond);
+            target = typeof cond.target === 'number' ? cond.target : parseInt(cond.target) || 10;
+          }
+          
+          badge.mastery = { 
+            level: currentLevel, 
+            questName: questName, 
+            progress: 0, 
+            target: target, 
+            ready: false, 
+            _db_mastery_levels: db.mastery_levels 
+          };
+
+          // La quête du badge = la quête mastery (évite le doublon)
+          badge.quest = questName;
+          badge.questProgress = 0;
+          badge.questTotal = target;
+        }
+
+        // Pour les badges sans mastery, construire le texte de condition depuis unlock_conditions
+        if (!badge.mastery && db.unlock_conditions && db.unlock_conditions.length > 0) {
+          badge.quest = buildQuestLabel(db.unlock_conditions[0]);
+          badge.questTotal = db.unlock_conditions[0].target || 1;
+        }
+        badge.equip_rule = db.equip_rule || 'permanent';
+
+        // Arcane fuel pour gardiens et local
+        if (db.arcane_required) {
+          badge.arcane = { 
+            cost: db.arcane_cost || 1, 
+            period: db.arcane_period_hours ? `${db.arcane_period_hours}h` : '48h', 
+            periodHours: db.arcane_period_hours || 48, 
+            hoursLeft: 0, active: false, hexLost: false 
+          };
+        }
+
+        // Les badges de départ sont débloqués par défaut
+        if (db.is_starter) {
+          badge.unlocked = true;
+        }
+
+        buckets[bucket].push(badge);
+      });
+
+      BADGES.t1 = buckets.t1;
+      BADGES.t1_nature = buckets.t1_nature;
+      BADGES.exploits = buckets.exploits;
+      BADGES.t3 = buckets.t3;
+      BADGES.t2 = [];
+    }
+  } catch(e) { 
+    console.warn("Serveur Backend Offline — le prototype est vide. Créez des badges dans le CMS !", e);
+  }
+
+  renderCostPill();
+  renderAllBadges();
+  setBgTheme(1);
+}
+
+initApp();
+</script>
+</body>
+</html>

@@ -29,6 +29,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'Inter', -apple-system, sans-serif;
@@ -49,6 +50,11 @@
                         radial-gradient(ellipse at 70% 80%, rgba(168,85,247,0.08) 0%, transparent 50%),
                         radial-gradient(ellipse at 50% 50%, rgba(59,130,246,0.05) 0%, transparent 60%);
             z-index: 0;
+            animation: hero-breathe 6s ease-in-out infinite;
+        }
+        @keyframes hero-breathe {
+            0%, 100% { opacity: 1; filter: hue-rotate(0deg); }
+            50% { opacity: 0.7; filter: hue-rotate(15deg); }
         }
         .hex-grid-bg {
             position: absolute; inset: 0; opacity: 0.04;
@@ -108,9 +114,19 @@
         .card-grid-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
         .card {
             background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
-            padding: 1.75rem; transition: all 0.3s; position: relative; overflow: hidden;
+            padding: 1.75rem; transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden;
         }
-        .card:hover { background: var(--bg-card-hover); border-color: rgba(34,211,238,0.2); transform: translateY(-2px); box-shadow: var(--glow-cyan); }
+        .card:hover {
+            background: var(--bg-card-hover); border-color: rgba(34,211,238,0.25);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(34,211,238,0.12), 0 0 0 1px rgba(34,211,238,0.08);
+        }
+        .card::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+            opacity: 0; transition: opacity 0.35s;
+        }
+        .card:hover::after { opacity: 1; }
         .card-icon {
             width: 48px; height: 48px; border-radius: 12px; display: flex;
             align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1rem;
@@ -148,12 +164,15 @@
         .formula-desc { font-size: 0.85rem; color: var(--text-muted); }
 
         /* === ALERT === */
-        .alert { padding: 1.25rem 1.5rem; border-radius: 12px; margin: 1.5rem 0; border-left: 4px solid; font-size: 0.9rem; }
-        .alert.golden { background: rgba(245,158,11,0.06); border-color: var(--accent-orange); }
+        .alert {
+            padding: 1.25rem 1.5rem; border-radius: 12px; margin: 1.5rem 0; border-left: 4px solid;
+            font-size: 0.9rem; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+        }
+        .alert.golden { background: rgba(245,158,11,0.08); border-color: var(--accent-orange); }
         .alert.golden strong { color: var(--accent-orange); }
-        .alert.info { background: rgba(34,211,238,0.06); border-color: var(--accent-cyan); }
+        .alert.info { background: rgba(34,211,238,0.08); border-color: var(--accent-cyan); }
         .alert.info strong { color: var(--accent-cyan); }
-        .alert.danger { background: rgba(239,68,68,0.06); border-color: var(--accent-red); }
+        .alert.danger { background: rgba(239,68,68,0.08); border-color: var(--accent-red); }
         .alert.danger strong { color: var(--accent-red); }
 
         /* === SOLO BANNER === */
@@ -236,7 +255,7 @@
                 </div>
                 <div class="hero-stat">
                     <div class="number">🎖️</div>
-                    <div class="label">Badges T1→T5</div>
+                    <div class="label">Badges T1→T3</div>
                 </div>
                 <div class="hero-stat">
                     <div class="number">🏰</div>
@@ -359,7 +378,7 @@
                         <td>🟪 <strong>Arcane</strong></td>
                         <td>Mauve</td>
                         <td>Épique</td>
-                        <td>Maintenance Badges T4/T5 (effets actifs)</td>
+                        <td>Refill Badges T3 Gardien (1/48h) + Lieux (1/sem)</td>
                     </tr>
                 </tbody>
             </table>
@@ -461,7 +480,7 @@
                     <tr><td>Quartz → Jade</td><td><strong>25 : 1</strong></td><td>😅 Cher mais ok</td></tr>
                     <tr><td>Jade → Saphir</td><td><strong>25 : 1</strong></td><td>😰 Très cher</td></tr>
                     <tr><td>Saphir → Ruby</td><td><strong>25 : 1</strong></td><td>😤 Prix de gros</td></tr>
-                    <tr style="background: rgba(168,85,247,0.08);"><td>Ruby → Arcane</td><td><strong>—</strong></td><td>🚫 <strong>INCRAFTABLE</strong> (Drop Casino uniquement)</td></tr>
+                    <tr style="background: rgba(168,85,247,0.08);"><td>Ruby → Arcane</td><td><strong>—</strong></td><td>🚫 <strong>INCRAFTABLE</strong> (Drop Loot uniquement ~2.5%)</td></tr>
                 </tbody>
             </table>
         </div>
@@ -475,14 +494,14 @@
             <div class="card">
                 <div class="card-icon orange">🪙</div>
                 <h3>Hex Coins (Monnaie Premium)</h3>
-                <p>Achetable en $. <strong>UNIQUEMENT</strong> pour acheter des "Jetons de Badge" (Casino Rolls supplémentaires).
+                <p>Achetable en $. <strong>UNIQUEMENT</strong> pour acheter des avantages cosmétiques (Season Pass Premium, skins exclusifs).
                     <strong>Jamais</strong> de skins directs sans effort ni avantage mécanique.</p>
             </div>
             <div class="card">
                 <div class="card-icon purple">🎫</div>
-                <h3>Battle Pass (Gratuit + Premium)</h3>
-                <p>Track gratuite pour tous + track premium (~10$/saison). Skins exclusifs saisonniers, XP d'Empreinte
-                    bonus. <strong>4 saisons/an</strong>.</p>
+                <h3>Season Pass (Gratuit + Premium)</h3>
+                <p>Track gratuite pour tous + track premium (~10$/saison). Gardien T3 saisonnier + skins exclusifs.
+                    <strong>4 saisons/an</strong>. Détails complets dans la section Badges.</p>
             </div>
         </div>
 
@@ -490,32 +509,10 @@
             <strong>🚫 JAMAIS de pay-to-win :</strong> Les ressources viennent UNIQUEMENT du gameplay. L'argent réel =
             cosmétiques seulement. Les boucliers, forteresses et béliers ne sont <strong>JAMAIS en vente</strong>.
         </div>
-    </section>
-    <div class="divider"></div>
 
-
-    <!-- ============ WORLD CYCLE ============ -->
-    <section class="section" id="worldcycle">
-        <div class="section-header">
-            <div class="section-tag orange">🔄 Cycle</div>
-            <h2>Cycle Quotidien — Loot Respawn</h2>
-            <p class="subtitle">Chaque jour, les spots de loot changent de couleur. Chaque jour est une nouvelle chasse.</p>
-        </div>
-
-        <div class="card-grid">
-            <div class="card">
-                <div class="card-icon orange">🌅</div>
-                <h3>Minuit = Reroll Global</h3>
-                <p>À minuit, chaque spot de loot reçoit une <strong>nouvelle couleur</strong> (random). Les gems
-                    non-ramassés de la veille changent de couleur.
-                    <br><strong>Interactables :</strong> Même chose pour les objets de map (Marchands, Fontaines). Leur emplacement est mis à jour chaque jour.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon purple">🟣</div>
-                <h3>L'excitation du reroll</h3>
-                <p>Ouvrir l'app le matin → scanner ses spots → voir un 🟣 = <strong>dopamine
-                        instantanée</strong>. C'est le daily hook.</p>
-            </div>
+        <div class="alert info" style="margin-top: 1rem;">
+            <strong>🌅 Cycle Quotidien :</strong> À minuit, chaque spot de loot reçoit une <strong>nouvelle couleur</strong> (random).
+            Interactables (Marchands, Fontaines) changent aussi d'emplacement. Ouvrir l'app le matin → scanner → 🟣 = dopamine. C'est le daily hook.
         </div>
     </section>
     <div class="divider"></div>
@@ -525,41 +522,45 @@
     <section class="section" id="balance">
         <div class="section-header">
             <div class="section-tag red">⚖️ Balance</div>
-            <h2>Anti-Snowball — L'Économie EST le Mécanisme</h2>
-            <p class="subtitle">Pas de caps artificiels. L'économie de survie empêche naturellement la domination.</p>
+            <h2>Anti-Snowball & Solo-First <span class="version-badge changed">🔄 Modifié v6.0</span></h2>
+            <p class="subtitle">Pas de caps artificiels. L'économie de survie empêche naturellement la domination.
+                Pas de clans. Solo = optimal.</p>
         </div>
 
-        <div class="card-grid">
+        <div class="card-grid card-grid-3">
             <div class="card">
                 <div class="card-icon red">⏱️</div>
                 <h3>Cooldown Anti-Voiture</h3>
-                <p>Vitesse excessive entre deux captures = cooldown <strong>dynamique</strong> (~3 min par hex sauté). Cible uniquement les véhicules. Le piéton n'attend jamais.</p>
+                <p>Vitesse excessive = cooldown <strong>dynamique</strong> (~3 min par hex sauté). Le piéton n'attend jamais.</p>
             </div>
             <div class="card">
                 <div class="card-icon orange">💸</div>
                 <h3>Économie = le cap</h3>
-                <p>Caps d'inventaire stricts + coût de chaque action = tu ne peux PAS tout faire en même temps.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon cyan">⏳</div>
-                <h3>Pas de Decay Artificiel (Voyage Friendly)</h3>
-                <p><strong>Pas de pourrissement magique</strong> : Si tu captures un hex lors d'un voyage à Banff, il reste à toi tant qu'un joueur local ne vient pas te le contester. Tu gardes ton empreinte globale.
-                    <br>La vraie limite est <strong>organique</strong> : défendre à distance un énorme territoire coûte de plus en plus cher en Hex Jumps/Ressources. Tu finis naturellement par perdre la périphérie sous la pression des joueurs locaux.</p>
+                <p>Cap inventaire (30 max) + coût de chaque action = tu ne peux PAS tout faire en même temps.</p>
             </div>
             <div class="card">
                 <div class="card-icon green">🔓</div>
                 <h3>Rien n'est invincible</h3>
-                <p>Les boucliers rallongent la transformation, ils ne l'empêchent PAS.</p>
+                <p>Les boucliers rallongent la transformation, ils ne l'empêchent PAS. Plus d'hexes = plus vulnérable.</p>
+            </div>
+        </div>
+
+        <div class="solo-banner">
+            <h3>❌ Pas de clans, pas de guildes, pas d'alliances</h3>
+            <p>Le PvP est 100% émergent. Le siège multi-joueurs est possible mais <strong>non coordonné</strong> par le jeu.
+                Pas de chat de groupe, pas de partage de ressources.</p>
+        </div>
+
+        <div class="card-grid" style="margin-top: 1rem;">
+            <div class="card">
+                <div class="card-icon red">⚡</div>
+                <h3>Famine Économique</h3>
+                <p>Loot = First-Come-First-Serve. Un groupe de 5 assèche la rue : 1-2 auront du Quartz, les autres <strong>doivent se séparer</strong>.</p>
             </div>
             <div class="card">
-                <div class="card-icon purple">📈</div>
-                <h3>Plus d'hexes = plus vulnérable</h3>
-                <p>Chaque hex supplémentaire est un hex de plus à défendre avec des ressources <strong>limitées</strong>.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon blue">🛡️</div>
-                <h3>Pas de caps artificiels</h3>
-                <p>Pas de "max 20 captures/jour". Le <strong>coût en ressources rares</strong> est le seul cap naturel.</p>
+                <div class="card-icon orange">📉</div>
+                <h3>DPS Cap (Siège)</h3>
+                <p>Diminishing returns sur les armes. 30 catapultes ≠ kill instant. Le défenseur a <strong>toujours</strong> le temps de réagir.</p>
             </div>
         </div>
 
@@ -833,10 +834,10 @@
             </div>
             <div class="card">
                 <div class="card-icon pink">🎖️</div>
-                <h3>Pouvoir de Badge (Ex: Reskin T3)</h3>
-                <p><strong>Certains</strong> badges T4 ont un pouvoir unique. Exemple : un badge volcanique
-                    pourrait reskin les murs de ta T3 en <strong>murs armored</strong> (lave, glace, foudre).
-                    Même HP, pur cosmétique — mais chaque badge a son propre pouvoir spécifique.</p>
+                <h3>Pouvoir de Badge (Ex: Reskin Forteresse)</h3>
+                <p><strong>Certains</strong> badges T3 Gardiens ont un pouvoir unique visuel. Exemple : un Dragon
+                    pourrait reskin les murs de ta forteresse en <strong>murs armored</strong> (lave, glace, foudre).
+                    Même HP, pur cosmétique — chaque Gardien a sa propre aura visuelle.</p>
             </div>
         </div>
 
@@ -956,65 +957,46 @@
             <p class="subtitle">3 jumps par jour + recall gratuit vers ta Forteresse et ta Maison.</p>
         </div>
 
-        <div class="card-grid card-grid-3">
-            <div class="card">
-                <div class="card-icon blue">🚀</div>
-                <h3>3 Jumps / Jour</h3>
-                <p>Flat, pas de bonus GPS (anti-triche). Chaque jump consomme du <strong>Jade</strong> et te téléporte
-                    sur un hex <strong>découvert</strong> que tu possèdes.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon green">🏠</div>
-                <h3>Recall Gratuit</h3>
-                <p>Jump vers ta <strong>Forteresse</strong> ou ta <strong>Maison T1</strong> = toujours gratuit,
-                    illimité. C'est ton "Home Button". Tes 3 jumps restent intacts.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon purple">🌫️</div>
-                <h3>Remote Play</h3>
-                <p>Free-roam sur hex <strong>découverts</strong> uniquement. Jamais de Fog discovery en remote.
-                    Loot remote = gratuit. Capture remote = coûte <strong>Jade</strong>.</p>
-            </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Coût</th>
+                        <th>Limite</th>
+                        <th>Cible</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>🚀 <strong>Hex Jump</strong></td>
+                        <td>1 Jade</td>
+                        <td>3/jour</td>
+                        <td>Hex découvert que tu possèdes</td>
+                    </tr>
+                    <tr>
+                        <td>🏠 <strong>Recall</strong></td>
+                        <td>Gratuit</td>
+                        <td>Illimité</td>
+                        <td>Ta Maison ou ta Forteresse</td>
+                    </tr>
+                    <tr>
+                        <td>🌫️ <strong>Remote Play</strong></td>
+                        <td>Loot gratuit · Capture = Jade</td>
+                        <td>Hex découverts</td>
+                        <td>Jamais de Fog discovery en remote</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
         <div class="alert golden">
-            <strong>🚶 GPS > Remote :</strong> La marche physique est toujours le moyen le plus efficace. Le remote
-            est un confort limité, pas un remplacement. Le Jade rare throttle naturellement l'usage remote.
+            <strong>🚶 GPS > Remote :</strong> La marche physique est toujours le plus efficace. Le remote = confort limité, pas un remplacement.
         </div>
     </section>
     <div class="divider"></div>
 
 
-    <!-- ============ ANTI-ZERG ============ -->
-    <section class="section" id="antizerg">
-        <div class="section-header">
-            <div class="section-tag red">👥 Anti-Zerg</div>
-            <h2>Solo-First — Protections Anti-Groupe</h2>
-            <p class="subtitle">Pas de clans. 7 amis ensemble = MOINS efficaces qu'un solo.</p>
-        </div>
-
-        <div class="solo-banner">
-            <h3>❌ Pas de clans, pas de guildes, pas d'alliances</h3>
-            <p>Le PvP est 100% émergent. Les joueurs se croisent naturellement. Le siège multi-joueurs est possible
-                (plusieurs joueurs posent des armes indépendamment) mais <strong>non coordonné</strong> par le jeu.
-                Pas de chat de groupe, pas de partage de ressources.</p>
-        </div>
-
-        <div class="card-grid">
-            <div class="card">
-                <div class="card-icon red">⚡</div>
-                <h3>Famine Économique (Organique)</h3>
-                <p>Le loot est "First-Come-First-Serve" et ne repop qu'à minuit. Un groupe de 5 joueurs marchant ensemble va assécher la rue : seul 1 ou 2 auront du Quartz pour capturer. Les autres seront ruinés. Pour progresser, ils <strong>doivent</strong> se séparer.</p>
-            </div>
-            <div class="card">
-                <div class="card-icon orange">📉</div>
-                <h3>DPS Cap (Siège)</h3>
-                <p>Diminishing returns sur les armes de siège. 30 catapultes ne tuent pas une T3 en 2 minutes.
-                    Le défenseur a <strong>toujours</strong> le temps de réagir, même face à un zerg.</p>
-            </div>
-        </div>
-    </section>
-    <div class="divider"></div>
     </div>
 
     <div class="pillar" id="pillar3" style="margin: 5rem 0; padding: 2rem; background: rgba(255,255,255,0.02); border-left: 4px solid var(--primary-accent); border-radius: 12px;">
@@ -1025,87 +1007,567 @@
     <section class="section" id="badges">
         <div class="section-header">
             <div class="section-tag pink">🎖️ Badges</div>
-            <h2>Système de Badges — Collection Urbaine <span class="version-badge new-section">✨ Nouveau v6.0</span></h2>
-            <p class="subtitle">5 tiers de badges collectionnables. 1 badge équipé à la fois, visible sur tous tes hex.
-                Distribution par rareté : les communs sont faciles, les légendaires sont wow.</p>
+            <h2>Système de Badges — Collection Urbaine <span class="version-badge changed">🔄 Modifié v6.0</span></h2>
+            <p class="subtitle">2 tiers permanents (T1 Commun + T3 Gardien) + Collections Locales + Éphémères saisonniers. 1 badge équipé à la fois, changement 1x/24h.
+                Badge = résultat rare du loot de la map (~2.5% par clic).</p>
         </div>
 
+        <!-- === VISUAL IDENTITY === -->
+        <div class="section-header" style="margin-top: 2rem;">
+            <div class="section-tag pink">🎨 Visuels</div>
+            <h2>Identité Visuelle — Style Watercolor</h2>
+        </div>
+        <p class="subtitle">Même style loose watercolor artisanal à tous les tiers. Le SUJET fait le tier, pas le traitement.</p>
+
+        <style>
+            .badge-showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 1rem; }
+            .badge-showcase-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: all 0.35s cubic-bezier(0.4,0,0.2,1); }
+            .badge-showcase-item:hover { transform: translateY(-4px) scale(1.01); box-shadow: 0 12px 40px rgba(34,211,238,0.1); border-color: rgba(34,211,238,0.2); }
+            .badge-showcase-item img { width: 100%; display: block; transition: transform 0.5s; }
+            .badge-showcase-item:hover img { transform: scale(1.03); }
+            .badge-showcase-item .badge-cap { padding: 12px 16px; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; }
+            .badge-showcase-item .badge-cap strong { color: var(--text-primary); }
+            /* Codex */
+            .codex-btn { background:none;border:none;color:var(--text-muted);padding:12px 16px;font-size:.85rem;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .2s;font-family:inherit; }
+            .codex-btn:hover { color:var(--text-primary);background:rgba(255,255,255,.03); }
+            .codex-btn.active { color:var(--accent-cyan);border-bottom:2px solid var(--accent-cyan);background:rgba(34,211,238,.05); }
+            .hex-grid-demo { display:grid;grid-template-columns:repeat(5,1fr);gap:8px;max-width:500px; }
+            .hx { width:100%;aspect-ratio:1;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:transform .15s; }
+            .hx:hover { transform:scale(1.1); }
+            .hx.o1 { background:rgba(245,230,200,.15);border:1px solid rgba(245,230,200,.3); }
+            .hx.o2 { background:rgba(244,63,94,.12);border:1px solid rgba(244,63,94,.3); }
+            .hx.o3 { background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.4);box-shadow:0 0 12px rgba(168,85,247,.2); }
+            .hx.ot { background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.3); }
+            .hx.lk { background:rgba(255,255,255,.03);border:1px solid var(--border);color:var(--text-muted);font-size:1rem; }
+            .hx.sk { background:rgba(34,211,238,.12);border:1px solid rgba(34,211,238,.4);box-shadow:0 0 8px rgba(34,211,238,.15); }
+            @media (max-width: 768px) { .badge-showcase { grid-template-columns: 1fr; } }
+        </style>
+
+        <div class="badge-showcase">
+            <div class="badge-showcase-item">
+                <img src="badges/t1_urban.png" alt="T1 Urban Set">
+                <div class="badge-cap"><strong>✅ T1 — Objets quotidiens sur fond crème</strong><br>Lampadaire, pont, clé, horloge, boussole… Style carnet de voyage artisanal.</div>
+            </div>
+            <div class="badge-showcase-item">
+                <img src="badges/t2_urban_dark.png" alt="T1 Dark Mastery Variant">
+                <div class="badge-cap"><strong>⭐ T1 — Fond Dark (Mastery Lv5)</strong><br>Même badge, fond sombre. Débloqué en atteignant le <strong>Niveau 5 de mastery</strong> du badge. Signal visuel de progression.</div>
+            </div>
+            <div class="badge-showcase-item">
+                <img src="badges/t3_phoenix.png" alt="T3 Phoenix">
+                <div class="badge-cap"><strong>✅ T3 — Phoenix (S2)</strong><br>🛡️ Gardien. Défense Forteresse. 2D sur Maison / 3D sur Forteresse. 1 Arcane / 48h. Exclusif S2.</div>
+            </div>
+            <div class="badge-showcase-item">
+                <img src="badges/t3_dragon.png" alt="T3 Dragon">
+                <div class="badge-cap"><strong>✅ T3 — Dragon (S1)</strong><br>🛡️ Gardien. Défense Forteresse. 2D sur Maison / 3D sur Forteresse. 1 Arcane / 48h. Exclusif S1.</div>
+            </div>
+            <div class="badge-showcase-item">
+                <img src="badges/special_montroyal.png" alt="Special Mont-Royal">
+                <div class="badge-cap"><strong>✅ Lieu — Mont-Royal "High in the Sky"</strong><br>📋 Requis : Posséder le hex du sommet du Mont-Royal à Montréal.</div>
+            </div>
+            <div class="badge-showcase-item">
+                <img src="badges/terrain_riverain.png" alt="Terrain Riverain">
+                <div class="badge-cap"><strong>✅ Terrain — Riverain</strong><br>📋 Requis : Posséder 30 hex adjacents à un cours d'eau.</div>
+            </div>
+        </div>
+
+        <!-- === CODEX INTERACTIF === -->
+        <div class="section-header" style="margin-top: 3rem;">
+            <div class="section-tag cyan">📖 Codex</div>
+            <h2>Le Codex d'Explorateur</h2>
+        </div>
+        <p class="subtitle">Carnet watercolor (pages jaunies, coins usés) — 6 onglets swipables. Grid de hex 5/rangée.</p>
+
+        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:1rem;">
+            <div style="display:flex;border-bottom:1px solid var(--border);overflow-x:auto;" id="gdd-codex-tabs">
+                <button class="codex-btn active" data-gtab="objets" onclick="gddTab('objets')">📜 Objets <span style="opacity:.5;font-size:.7rem;">40</span></button>
+                <button class="codex-btn" data-gtab="creatures" onclick="gddTab('creatures')">🐉 Gardiens <span style="opacity:.5;font-size:.7rem;">4</span></button>
+                <button class="codex-btn" data-gtab="skins" onclick="gddTab('skins')">🎨 Skins <span style="opacity:.5;font-size:.7rem;">12</span></button>
+                <button class="codex-btn" data-gtab="terrains" onclick="gddTab('terrains')">🌳 Terrains <span style="opacity:.5;font-size:.7rem;">6</span></button>
+                <button class="codex-btn" data-gtab="ville" onclick="gddTab('ville')">🏠 Ma Ville <span style="opacity:.5;font-size:.7rem;">5</span></button>
+                <button class="codex-btn" data-gtab="monde" onclick="gddTab('monde')">🌍 Monde <span style="opacity:.5;font-size:.7rem;">10</span></button>
+            </div>
+            <div style="padding:24px;">
+                <div class="gpanel" id="gtab-objets">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                        <span style="font-weight:600;">Collection T1</span>
+                        <span style="color:var(--accent-green);font-size:.85rem;font-weight:600;">18/60 possédés</span>
+                    </div>
+                    <div class="hex-grid-demo">
+                        <div class="hx o1">🏮</div><div class="hx o1">🌉</div><div class="hx o1">🔑</div><div class="hx o2">🏮</div><div class="hx lk">?</div>
+                        <div class="hx o1">🧭</div><div class="hx lk">?</div><div class="hx o1">⏰</div><div class="hx sk">🔑</div><div class="hx lk">?</div>
+                        <div class="hx o2">🌉</div><div class="hx lk">?</div><div class="hx o1">❄️</div><div class="hx lk">?</div><div class="hx lk">?</div>
+                    </div>
+                    <div style="display:flex;gap:16px;margin-top:16px;font-size:.8rem;color:var(--text-muted);">
+                        <span>🟡 Possédé</span><span>⬜ Pas trouvé</span><span>🔷 Skinnable</span>
+                    </div>
+                </div>
+                <div class="gpanel" id="gtab-creatures" style="display:none;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                        <span style="font-weight:600;">Gardiens Saisonniers</span>
+                        <span style="color:var(--accent-purple);font-size:.85rem;font-weight:600;">1/4 possédés</span>
+                    </div>
+                    <div class="hex-grid-demo" style="max-width:300px;">
+                        <div class="hx o3">🐉</div><div class="hx lk">?</div><div class="hx lk">?</div><div class="hx lk">?</div>
+                    </div>
+                    <div style="margin-top:12px;font-size:.82rem;color:var(--text-muted);">
+                        🐉 Dragon (S1) — <span style="color:var(--accent-green);">Possédé</span> · 🔥 Phoenix (S2) — Saison en cours
+                    </div>
+                </div>
+                <div class="gpanel" id="gtab-skins" style="display:none;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                        <span style="font-weight:600;">Skins de Hex</span>
+                        <span style="color:var(--accent-cyan);font-size:.85rem;font-weight:600;">3/12 activés</span>
+                    </div>
+                    <p style="color:var(--text-muted);font-size:.88rem;">Badge (clé) + Condition (serrure) = Skin activé. Condition perdue → skin se désactive.</p>
+                </div>
+                <div class="gpanel" id="gtab-terrains" style="display:none;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                        <span style="font-weight:600;">Badges de Terrain</span>
+                        <span style="color:var(--accent-orange);font-size:.85rem;font-weight:600;">1/6 possédés</span>
+                    </div>
+                    <div class="hex-grid-demo" style="max-width:400px;">
+                        <div class="hx ot">🌊</div><div class="hx lk">?</div><div class="hx lk">?</div><div class="hx lk">?</div><div class="hx lk">?</div>
+                    </div>
+                    <div style="margin-top:12px;font-size:.82rem;color:var(--text-muted);">
+                        🌊 Riverain — <span style="color:var(--accent-green);">30/30 hex</span> · 🌳 Parc — <span style="color:var(--accent-red);">12/30 hex</span>
+                    </div>
+                </div>
+                <div class="gpanel" id="gtab-ville" style="display:none;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                        <span style="font-weight:600;">Landmarks Locaux</span>
+                        <span style="color:var(--accent-orange);font-size:.85rem;font-weight:600;">1/5 possédés</span>
+                    </div>
+                    <div class="hex-grid-demo" style="max-width:400px;">
+                        <div class="hx ot">🏔️</div><div class="hx lk">?</div><div class="hx lk">?</div><div class="hx lk">?</div><div class="hx lk">?</div>
+                    </div>
+                    <div style="margin-top:12px;font-size:.82rem;color:var(--text-muted);">
+                        🏔️ Mont-Royal — <span style="color:var(--accent-green);">Claim ✅</span> · 🏰 Château Frontenac — Pas visité
+                    </div>
+                </div>
+                <div class="gpanel" id="gtab-monde" style="display:none;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                        <span style="font-weight:600;">Merveilles du Monde — Easter Eggs</span>
+                        <span style="color:var(--accent-red);font-size:.85rem;font-weight:600;">0/10 possédés</span>
+                    </div>
+                    <div class="hex-grid-demo" style="max-width:400px;">
+                        <div class="hx lk">?</div><div class="hx lk">?</div><div class="hx lk">?</div><div class="hx lk">?</div><div class="hx lk">?</div>
+                    </div>
+                    <div style="margin-top:12px;font-size:.82rem;color:var(--text-muted);">
+                        Le graal des voyageurs. Pas requis pour le 100%.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+        function gddTab(tab) {
+            document.querySelectorAll('.gpanel').forEach(p => p.style.display = 'none');
+            document.querySelectorAll('[data-gtab]').forEach(b => b.classList.remove('active'));
+            document.getElementById('gtab-' + tab).style.display = 'block';
+            document.querySelector('[data-gtab="' + tab + '"]').classList.add('active');
+        }
+        </script>
         <div class="table-wrap">
             <table>
                 <thead>
                     <tr>
                         <th>Tier</th>
-                        <th>Visuel</th>
-                        <th>Maintenance</th>
-                        <th>Casino Roll Odds</th>
+                        <th>Sujet</th>
+                        <th>Fond</th>
+                        <th>Effet</th>
+                        <th>Buff</th>
+                        <th>Refill (Manuel)</th>
+                        <th>Odds / Clic</th>
                         <th>Quantité</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>T1</strong></td>
-                        <td>Statique, flat, basique</td>
-                        <td>Gratuit</td>
-                        <td>~1/5 (très commun)</td>
-                        <td>~50 badges</td>
+                        <td><strong>T1 Commun</strong></td>
+                        <td>☀️ Objets quotidiens (lampe, pont, clé, boussole…)</td>
+                        <td>Crème clair / Dark</td>
+                        <td>Statique</td>
+                        <td>❌ Aucun (cosmétique)</td>
+                        <td>💚 3 Jade / 24h</td>
+                        <td>~1/40</td>
+                        <td>~60</td>
                     </tr>
-                    <tr>
-                        <td><strong>T2</strong></td>
-                        <td>Bord <strong>argent</strong></td>
-                        <td>Gratuit</td>
-                        <td>~1/20</td>
-                        <td>~20 badges</td>
-                    </tr>
-                    <tr>
-                        <td><strong>T3</strong></td>
-                        <td>Bord <strong>doré</strong></td>
-                        <td>Gratuit</td>
-                        <td>~1/100</td>
-                        <td>~10 badges</td>
-                    </tr>
-                    <tr>
-                        <td><strong>T4</strong></td>
-                        <td>Épique — effets visuels, pouvoir unique</td>
-                        <td><strong>Arcane</strong></td>
-                        <td>~1/1,000</td>
-                        <td>~5 badges</td>
-                    </tr>
-                    <tr>
-                        <td><strong>T5</strong></td>
-                        <td>Mythique — T4 + <strong>ambiance sonore</strong></td>
-                        <td><strong>Arcane</strong> (plus cher)</td>
-                        <td>~1/10,000</td>
-                        <td>~1-2 badges</td>
+                    <tr style="background: rgba(168,85,247,0.08);">
+                        <td><strong>T3 Gardien</strong></td>
+                        <td>🐉 Créatures mythiques (Dragon, Phoenix…)</td>
+                        <td>Dark + déborde</td>
+                        <td>✨ Parallaxe 3D</td>
+                        <td>🏰 Défense Fort.</td>
+                        <td>💜 1 Arcane / 48h</td>
+                        <td>~1/4,000</td>
+                        <td>1/saison</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="card-grid card-grid-3" style="margin-top: 1.5rem;">
+        <div class="alert info" style="margin-top: 1rem;">
+            <strong>~60 badges T1 + 4 Gardiens T3 + ~11 Locaux au lancement.</strong> 100% completable peu importe où tu habites (hors Merveilles du Monde et Éphémères).
+            Le SUJET fait le tier, pas le traitement visuel — même style watercolor artisanal partout.
+        </div>
+
+        <div class="alert golden" style="margin-top: 1rem;">
+            <strong>⚠️ Simplification v6.0 :</strong> L'ancien T2 Rare (fond dark, buff léger) est <strong>fusionné dans T1</strong>. Le jeu n'a plus que 2 tiers de drop (T1 Commun ~99% et T3 Gardien ~1% du re-roll badge). Cela simplifie la compréhension pour les joueurs et le loot table. Les badges fond dark existent toujours visuellement comme variantes naturelles de T1.
+        </div>
+
+        <!-- === COLLECTIONS BONUS === -->
+        <div class="section-header" style="margin-top: 3rem;">
+            <div class="section-tag orange">📍 Lieux</div>
+            <h2>Collections Bonus — Lieux & Terrains <span class="version-badge new-section">✨ Nouveau v6.0</span></h2>
+        </div>
+
+        <div class="card-grid">
             <div class="card">
-                <div class="card-icon pink">🎖️</div>
-                <h3>1 Badge Équipé</h3>
-                <p>Un seul badge actif à la fois, visible sur <strong>tous tes hex</strong> + ta forteresse.
-                    Les badges non portés coûtent rien. Choix identitaire : "Je suis le gars du Frost."</p>
+                <div class="card-icon green">🏠</div>
+                <h3>Collection Locale — Claim le hex (GPS)</h3>
+                <p>
+                    🏔️ Montréal — Mont-Royal <strong>"High in the Sky"</strong><br>
+                    🏰 Québec — Château Frontenac <strong>"Roi du Château"</strong><br>
+                    🗼 Toronto — CN Tower <strong>"Sky Needle"</strong><br>
+                    🏛️ Ottawa — Parlement <strong>"Capital Guard"</strong><br>
+                    🌲 Vancouver — Stanley Park <strong>"Forest Crown"</strong>
+                </p>
             </div>
-            <div class="card v60-new">
-                <div class="card-icon purple">🔮</div>
-                <h3>T4/T5 = Arcane Driven</h3>
-                <p>Badges T4 et T5 nécessitent de l'<strong>Arcane</strong> pour maintenir leurs effets actifs.
-                    Sans Arcane, le badge reste beau (statique) mais ses pouvoirs s'éteignent. Resource sink endgame.</p>
-            </div>
-            <div class="card v60-new">
-                <div class="card-icon orange">🔊</div>
-                <h3>T5 — Ambiance Sonore</h3>
-                <p>Le graal absolu : quand un joueur marche sur ton territoire, il entend une
-                    <strong>ambiance sonore unique</strong> de ton badge (vents glacials, feu, tonnerre...).
-                    Worldbuilding émergent.</p>
+            <div class="card">
+                <div class="card-icon purple">🌍</div>
+                <h3>Easter Egg — Merveilles du Monde</h3>
+                <p>Le graal des voyageurs. <strong>Pas requis pour le 100%.</strong><br>
+                    🗼 Tour Eiffel — <strong>"Lumière Éternelle"</strong><br>
+                    🗽 Statue de la Liberté — <strong>"Torch Bearer"</strong><br>
+                    🏛️ Colisée — <strong>"Gladiator"</strong><br>
+                    🧱 Grande Muraille — <strong>"Wall Walker"</strong><br>
+                    🏔️ Everest — <strong>"Summit"</strong> ⭐ Le Saint Graal
+                </p>
             </div>
         </div>
 
+        <div class="card-grid" style="margin-top: 1rem;">
+            <div class="card">
+                <div class="card-icon cyan">🌊</div>
+                <h3>Terrains — Requis spécifiques</h3>
+                <p>🌊 <strong>Riverain</strong> — Posséder 30 hex adjacents à un cours d'eau.<br>
+                    🌳 <strong>Parc</strong> — Posséder 30 hex adjacents à un parc.<br>
+                    🏙️ <strong>Downtown</strong> — Posséder 30 hex dans le centre-ville.<br>
+                    Refill : 💜 1 Arcane / semaine.</p>
+            </div>
+        </div>
+
+        <!-- === GARDIENS === -->
         <div class="section-header" style="margin-top: 3rem;">
-            <div class="section-tag orange">🏙️ B2B</div>
-            <h2>Badges B2B — Géo-fencés & Payés <span class="version-badge new-section">✨ Nouveau v6.0</span></h2>
+            <div class="section-tag purple">🐉 Gardiens</div>
+            <h2>T3 — Les Gardiens <span class="version-badge new-section">✨ Nouveau v6.0</span></h2>
+        </div>
+
+        <p class="subtitle">1 nouveau Gardien par saison, exclusif. Même buff de défense — choix cosmétique.
+            Après la saison → <strong>plus disponible jamais</strong>.</p>
+
+        <div class="table-wrap" style="margin-top: 1rem;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Saison</th>
+                        <th>Gardien</th>
+                        <th>Pose Forteresse</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>S1</td><td>🐉 Dragon</td><td>Enroulé autour des murs</td></tr>
+                    <tr><td>S2</td><td>🔥 Phoenix</td><td>Perché au sommet</td></tr>
+                    <tr><td>S3</td><td>🦅 Griffon</td><td>Posé sur une tour</td></tr>
+                    <tr><td>S4</td><td>🦑 Kraken</td><td>Tentacules à la base</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-grid" style="margin-top: 1rem;">
+            <div class="card">
+                <div class="card-icon green">🏠</div>
+                <h3>Sur Maison — Badge 2D</h3>
+                <p>Plaque watercolor au sol. Tu owns le hex = ton Gardien visible.
+                    <strong>Hex perdu = Gardien disparaît.</strong></p>
+            </div>
+            <div class="card">
+                <div class="card-icon orange">🏰</div>
+                <h3>Sur Forteresse — Asset 3D</h3>
+                <p>Créature vivante animée. Le moment wow quand tu upgrade de Maison → Forteresse.</p>
+            </div>
+        </div>
+
+        <!-- === ACQUISITION — LOOT TABLE === -->
+        <div class="section-header" style="margin-top: 3rem;">
+            <div class="section-tag cyan">🎲 Acquisition</div>
+            <h2>Loot Table — Badge intégré au loot <span class="version-badge new-section">✨ Nouveau v6.0</span></h2>
+        </div>
+
+        <p class="subtitle">Le badge est un résultat du loot régulier de la map. Pas de casino séparé — le badge est une surprise dans le flow de farming.</p>
+
+        <div class="table-wrap" style="margin-top: 1rem;">
+            <table>
+                <thead>
+                    <tr><th colspan="2" style="text-align:center; background: rgba(34,211,238,0.1); color: var(--accent-cyan);">📦 Étape 1 — Roll du spot de loot</th></tr>
+                    <tr><th>Résultat</th><th>Odds</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>💎 Quartz</td><td>~45%</td></tr>
+                    <tr><td>💚 Jade</td><td>~27%</td></tr>
+                    <tr><td>💙 Saphir</td><td>~15%</td></tr>
+                    <tr><td>❤️ Ruby</td><td>~8%</td></tr>
+                    <tr style="background: rgba(251,191,36,0.08);"><td><strong>🎖️ Badge</strong></td><td><strong>~2.5%</strong></td></tr>
+                    <tr><td>💜 Arcane</td><td>~2.5%</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-wrap" style="margin-top: 1rem;">
+            <table>
+                <thead>
+                    <tr><th colspan="3" style="text-align:center; background: rgba(168,85,247,0.1); color: var(--accent-purple);">🎖️ Étape 2 — Si Badge → Re-roll tier</th></tr>
+                    <tr><th>Tier</th><th>Odds Re-roll</th><th>Odds finale / clic</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>T1 Commun</td><td>~99%</td><td>~2.475% (~1/40)</td></tr>
+                    <tr style="background: rgba(168,85,247,0.08);"><td><strong>T3 Gardien</strong></td><td><strong>~1%</strong></td><td><strong>~0.025% (1/4,000)</strong></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- === REFILL ECONOMY === -->
+        <div class="section-header" style="margin-top: 3rem;">
+            <div class="section-tag orange">💎 Refill</div>
+            <h2>Économie de Refill — Manuel <span class="version-badge new-section">✨ Nouveau v6.0</span></h2>
+        </div>
+
+        <p class="subtitle">Refill <strong>MANUEL</strong> pour T3 et Locaux uniquement. T1 = gratuit (cosmétique pur). Timer expiré → badge grisé, 0 gem dépensée sans ton accord.</p>
+
+        <div class="table-wrap" style="margin-top: 1rem;">
+            <table>
+                <thead>
+                    <tr><th>Badge</th><th>Coût Refill</th><th>Durée</th><th>Rôle</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>T1 Commun</td><td>✅ Gratuit</td><td>∞</td><td>Cosmétique (mastery = prestige)</td></tr>
+                    <tr style="background: rgba(168,85,247,0.08);"><td>T3 Gardien</td><td>💜 1 Arcane</td><td>48h</td><td>Défense Forteresse</td></tr>
+                    <tr><td>Lieux/Terrains</td><td>💜 1 Arcane</td><td>1 semaine</td><td>Skin hex</td></tr>
+                    <tr style="background: rgba(245,158,11,0.08);"><td>📸 Éphémères</td><td>—</td><td>72h max</td><td>Souvenir (pur flex)</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- === BADGE MASTERY === -->
+        <div class="section-header" style="margin-top: 3rem;">
+            <div class="section-tag pink">⭐ Mastery</div>
+            <h2>Badge Mastery — 10 Niveaux par Badge <span class="version-badge new-section">✨ Nouveau v6.0</span></h2>
+        </div>
+
+        <p class="subtitle">Chaque badge T1 a 10 niveaux de quêtes progressives. La progression est <strong>permanente</strong> (ne reset jamais). Le mastery crée l'engagement long-terme sans coût en ressources.</p>
+
+        <div class="table-wrap" style="margin-top: 1rem;">
+            <table>
+                <thead>
+                    <tr><th>Niveau</th><th>Difficulté</th><th>Reward Gratuit</th><th>Reward Premium Pass</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>Facile</td><td>✅ Badge débloqué</td><td>—</td></tr>
+                    <tr><td>2</td><td>Facile</td><td>5 Quartz</td><td>+ 5 Quartz bonus</td></tr>
+                    <tr style="background: rgba(205,127,50,0.08);"><td>3</td><td>Moyen</td><td>Border <strong>Bronze</strong> 🥉</td><td>—</td></tr>
+                    <tr><td>4</td><td>Moyen</td><td>3 Jade</td><td>+ 3 Jade bonus</td></tr>
+                    <tr><td>5</td><td>Moyen</td><td>🌑 <strong>Fond DARK débloqué</strong> + Titre joueur</td><td>Titre <strong>exclusif</strong> variante</td></tr>
+                    <tr style="background: rgba(192,192,192,0.08);"><td>6</td><td>Difficile</td><td>Border <strong>Silver</strong> 🥈</td><td>—</td></tr>
+                    <tr><td>7</td><td>Difficile</td><td>1 Saphir</td><td>+ 1 Saphir bonus</td></tr>
+                    <tr><td>8</td><td>Très difficile</td><td>5 Jade</td><td>+ 5 Jade bonus</td></tr>
+                    <tr style="background: rgba(255,215,0,0.08);"><td>9</td><td>Très difficile</td><td>Border <strong>Gold</strong> 🥇</td><td>—</td></tr>
+                    <tr style="background: rgba(168,85,247,0.1);"><td><strong>10</strong></td><td><strong>Grind ultime</strong></td><td>✨ Border <strong>PRESTIGE</strong> animé</td><td>✨ Variante <strong>exclusive</strong></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-grid" style="margin-top: 1rem;">
+            <div class="card">
+                <div class="card-icon green">🔗</div>
+                <h3>Lien Season Pass</h3>
+                <p>Compléter un niveau de badge mastery <strong>compte comme une quête Season Pass</strong>. Le joueur qui grind ses badges T1 progresse automatiquement vers le Gardien T3 de la saison en cours.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon cyan">♻️</div>
+                <h3>Permanent vs Saisonnier</h3>
+                <p>Le mastery ne reset <strong>JAMAIS</strong>. Les borders et titres acquis restent pour toujours. Seul le Season Pass reset chaque saison (90 jours).</p>
+            </div>
+        </div>
+
+        <div class="card-grid" style="margin-top: 1rem;">
+            <div class="card">
+                <div class="card-icon green">⬆️</div>
+                <h3>Claim Manuel (pas auto)</h3>
+                <p>Quand une quête de mastery est complétée, le badge montre un indicateur <strong>✨ PRÊT</strong>. Le joueur doit <strong>ouvrir le badge et cliquer "LEVEL UP"</strong> pour réclamer.<br><br>
+                    <strong>Pourquoi :</strong> Le clic crée un moment de dopamine (comme ouvrir un coffre). Empêche des level-ups accidentels sur des badges oubliés. Le badge Lv10 peut être sacrifié — le joueur ne doit jamais y arriver par accident.<br>
+                    <strong>Notification :</strong> Un compteur <strong>"⬆️3"</strong> apparaît sur le menu Collection si des badges ont des level-ups en attente.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon orange">🎆</div>
+                <h3>Animations Progressives</h3>
+                <p>L'animation de level-up est <strong>incrémentalement plus satisfaisante</strong> selon le niveau :<br>
+                    Lv2-6 : particules cyan/vert, flash subtil<br>
+                    Lv7-8 : + <strong>screen shake</strong> 🫨<br>
+                    Lv9 : particules <strong>dorées</strong> 🥇<br>
+                    Lv10 : explosion <strong>PRESTIGE</strong> violette/rose/or ✨</p>
+            </div>
+        </div>
+
+        <div class="alert info" style="margin-top: 1rem;">
+            <strong>📋 Convention de nommage UI :</strong> Les sections de la collection s'appellent <strong>COLLECTION</strong> (badges T1), <strong>LOCAL</strong> (lieux/terrains + Mont-Royal), et <strong>GARDIENS</strong> (Dragon, Phoenix). Le joueur ne voit jamais "T1" ou "T3".
+        </div>
+
+        <!-- === SACRIFICE === -->
+        <div class="card-grid" style="margin-top: 1rem;">
+            <div class="card" style="border-color: rgba(168,85,247,0.3);">
+                <div class="card-icon purple">🔥</div>
+                <h3>Sacrifice — Arcane Faucet Alternatif</h3>
+                <p>Un badge T1 <strong>Niveau 10</strong> peut être sacrifié contre <strong>1 Arcane</strong>. Le badge ET toute sa progression sont perdus — il faudra le re-dropper et re-grinder les 10 niveaux.<br><br>
+                    <strong>Pourquoi :</strong> L'Arcane est INCRAFTABLE au Marchand. Ce sacrifice est la seule autre source. Il crée un dilemme endgame : <em>"Est-ce que je sacrifie ma Boussole Prestige pour garder mon Dragon actif 48h de plus ?"</em><br>
+                    <strong>Garde-fou :</strong> Niveau 10 <strong>uniquement</strong>. Impossible de spam-sell des badges Lv1.</p>
+            </div>
+        </div>
+
+        <div class="alert danger" style="margin-top: 1rem;">
+            <strong>⚠️ Confirmation obligatoire :</strong> Le sacrifice est irréversible. UI = double confirmation + animation de destruction dramatique (le badge se consume en flammes violettes). Le joueur doit taper le nom du badge pour confirmer.
+        </div>
+
+        <!-- === DUPLICATE DROPS & TRACKING === -->
+        <div class="card-grid" style="margin-top: 1.5rem;">
+            <div class="card">
+                <div class="card-icon green">🎲</div>
+                <h3>Duplicate Drops</h3>
+                <p>Roll un badge déjà possédé ? <strong>+1 niveau de mastery</strong> automatique (skip la quête du niveau actuel).<br><br>
+                    Si le badge est déjà <strong>Lv10</strong>, le dupe donne <strong>3 Jade</strong> en fallback.<br>
+                    Résultat : le casino reste excitant même endgame — un dupe est une bonne surprise, jamais une punition.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon cyan">📡</div>
+                <h3>Tracking en Background</h3>
+                <p>Les quêtes de mastery progressent <strong>toujours</strong>, même si le badge n'est pas équipé. Marcher 5 km compte pour tous tes badges marcheur, pas juste celui que tu portes.<br><br>
+                    <strong>Pourquoi :</strong> Forcer l'équipement pour tracker = frustration inutile. Le joueur ne devrait jamais sentir qu'il « gaspille » ses pas.</p>
+            </div>
+        </div>
+
+        <!-- === SEASON PASS === -->
+        <div class="section-header" style="margin-top: 3rem;">
+            <div class="section-tag green">🏆 Season Pass</div>
+            <h2>Season Pass — Chemin Garanti vers le Gardien <span class="version-badge new-section">✨ Nouveau v6.0</span></h2>
+        </div>
+
+        <p class="subtitle">Deux tracks. Le Gardien est au bout des deux — le premium donne de la marge, pas du contenu.</p>
+
+        <div class="card-grid" style="margin-top: 1rem;">
+            <div class="card v60-new">
+                <div class="card-icon cyan">🆓</div>
+                <h3>Track Gratuit</h3>
+                <p>80 quêtes dispo → <strong>80/80 requises</strong> pour le Gardien T3.</p>
+                <p>❌ <strong>Zéro marge</strong> — rate 1 quête = rate le Gardien.<br>
+                    🏋️ Grind pur — jouer toute la saison sans manquer.<br>
+                    🏆 Le Gardien est <strong>gratuit</strong> pour les dédiés.</p>
+            </div>
+            <div class="card v60-new">
+                <div class="card-icon purple">💎</div>
+                <h3>Track Premium (~10$/saison)</h3>
+                <p>100+ quêtes dispo → <strong>80/100 requises</strong> pour le T3.</p>
+                <p>✅ <strong>~20 quêtes de marge</strong> — tu peux skip des semaines.<br>
+                    🎯 Tu paies pour la <strong>flexibilité</strong>, pas le contenu.<br>
+                    🎨 Bonus cosmétiques : skins exclusifs sur le track premium.</p>
+            </div>
+        </div>
+
+        <!-- === ÉPHÉMÈRES / SOUVENIRS === -->
+        <div class="section-header" style="margin-top: 3rem;">
+            <div class="section-tag orange">📸 Éphémères</div>
+            <h2>Badges Éphémères — Souvenirs <span class="version-badge new-section">✨ Nouveau v6.0</span></h2>
+        </div>
+
+        <p class="subtitle">Des badges temporaires liés à des événements réels. Distribués par le backend (pas dans le loot table). Durée 72h max. <strong>Ne comptent PAS pour le 100%.</strong></p>
+
+        <div class="card-grid card-grid-3" style="margin-top: 1rem;">
+            <div class="card">
+                <div class="card-icon cyan">❄️</div>
+                <h3>Météo IRL</h3>
+                <p>« Blizzard 2027 », « Canicule », « Tempête Verglaçante »… Déclenché par des API météo quand les conditions sont extrêmes. <strong>Jouer dehors pendant la tempête = souvenir.</strong></p>
+            </div>
+            <div class="card">
+                <div class="card-icon red">🇨🇦</div>
+                <h3>Fêtes Nationales</h3>
+                <p>« Fête Nationale 2027 » (24 juin), « Canada Day » (1 juillet), « Halloween », « Noël »… Automatique chaque année, mais le <strong>millésime change</strong>.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon purple">🎉</div>
+                <h3>Événements B2B</h3>
+                <p>Festivals, concerts, expos… Créés via le backend pour des partenaires. <strong>Géo-fencés</strong> au lieu de l'événement.</p>
+            </div>
+        </div>
+
+        <div class="card-grid" style="margin-top: 1rem;">
+            <div class="card">
+                <div class="card-icon green">✅</div>
+                <h3>Pourquoi pas dans le 100% ?</h3>
+                <p>Les joueurs OCD-collectionneurs ne doivent <strong>jamais</strong> être punis pour avoir manqué un événement. La collection principale (T1 + Locaux + Gardiens) est toujours 100% completable. Les Éphémères vivent dans un onglet <strong>« 📸 Souvenirs »</strong> séparé.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon orange">📈</div>
+                <h3>Signal d'ancienneté</h3>
+                <p>Un joueur avec 12 souvenirs vs 3 = <strong>badge d'honneur d'ancienneté</strong>. Ça montre l'engagement sans créer de désavantage. Le compteur total est visible sur le profil public.</p>
+            </div>
+        </div>
+
+        <div class="alert info" style="margin-top: 1rem;">
+            <strong>🔧 Backend :</strong> Les Éphémères sont pushés via un endpoint admin (pas le loot table). Le serveur définit : nom, artwork, durée, zone géo (optionnel), condition de claim (ex: capturer 1 hex pendant l'événement). À expiration, le badge reste dans l'onglet Souvenirs mais devient <strong>grisé</strong> (non équipable).
+        </div>
+
+        <!-- === SKIN MECHANIC === -->
+        <div class="section-header" style="margin-top: 3rem;">
+            <div class="section-tag pink">🎨 Skins</div>
+            <h2>Skins de Hex — Badge + Condition <span class="version-badge new-section">✨ Nouveau v6.0</span></h2>
+        </div>
+
+        <div class="card-grid card-grid-3" style="margin-top: 1rem;">
+            <div class="card">
+                <div class="card-icon pink">🎖️</div>
+                <h3>Badge = la Clé</h3>
+                <p>Tu possèdes le badge dans ta collection. Il débloque le potentiel d'un skin.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon orange">📋</div>
+                <h3>Condition = la Serrure</h3>
+                <p>Tu remplis les conditions actives (territoire, terrain, etc.).
+                    <strong>Condition perdue → skin se désactive.</strong></p>
+            </div>
+            <div class="card" style="border-color: var(--accent-cyan);">
+                <div class="card-icon cyan">🎨</div>
+                <h3>Skin Activé = la Récompense</h3>
+                <p>Badge + Condition = skin visible sur tes hex. Le skin se mérite ET se défend.</p>
+            </div>
+        </div>
+
+        <!-- === RULES === -->
+        <div class="card-grid card-grid-3" style="margin-top: 1.5rem;">
+            <div class="card">
+                <div class="card-icon cyan">🔄</div>
+                <h3>1 badge à la fois</h3>
+                <p>Changeable <strong>1x par heure</strong> — empêche le swap-spam de buffs T3 tout en laissant de la flexibilité. Les badges non portés coûtent rien.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon green">🗺️</div>
+                <h3>GPS Claim V1</h3>
+                <p>Lieux : claim le hex = badge. V2 : QR code partenariat. Terrains : requis 30 hex du type.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon orange">❄️</div>
+                <h3>Saisonniers Exclusifs</h3>
+                <p>Badges saisonniers ne reviennent <strong>JAMAIS</strong>.
+                    Collection principale : 100% completable partout.</p>
+            </div>
+        </div>
         </div>
 
         <div class="card-grid">
@@ -1142,22 +1604,22 @@
                     <tr>
                         <td>🥉 Bronze</td>
                         <td>1 recrue</td>
-                        <td>T2 (bord argent)</td>
+                        <td>T1 (fond crème)</td>
                     </tr>
                     <tr>
                         <td>🥈 Silver</td>
                         <td>5 recrues</td>
-                        <td>T3 (bord doré)</td>
+                        <td>T1 (fond dark)</td>
                     </tr>
                     <tr>
                         <td>🥇 Gold</td>
                         <td>15 recrues</td>
-                        <td>T4 (effets visuels)</td>
+                        <td>T1 spécial (effets visuels)</td>
                     </tr>
                     <tr>
                         <td>💎 Diamond</td>
                         <td>50 recrues</td>
-                        <td>T5 (ambiance sonore)</td>
+                        <td>T1 exclusif (glow + titre unique)</td>
                     </tr>
                 </tbody>
             </table>
@@ -1303,44 +1765,6 @@
     </section>
     <div class="divider"></div>
 
-
-    <!-- ============ EMPREINTE ============ -->
-    <section class="section" id="empreinte">
-        <div class="section-header">
-            <div class="section-tag purple">👣 Empreinte</div>
-            <h2>Score Permanent — Prestige à Vie</h2>
-            <p class="subtitle">Un nombre qui monte et ne descend JAMAIS. Zéro avantage mécanique — pur prestige.</p>
-        </div>
-
-        <div class="card-grid">
-            <div class="card">
-                <div class="card-icon purple">📊</div>
-                <h3>Sources de points</h3>
-                <p><strong>Actions passives (Rural) :</strong><br>
-                    Hex neutre exploré / Gem ramassé : <strong>+1</strong><br>
-                    <strong>Actions actives (Urbain/PvP) :</strong><br>
-                    Contester un hex ennemi : <strong>+10</strong><br>
-                    Défendre un hex (repousser attaque) : <strong>+25</strong><br>
-                    Démanteler une arme de siège : <strong>+50</strong><br>
-                    Survivre à un Siège : <strong>+200</strong></p>
-            </div>
-            <div class="card">
-                <div class="card-icon green">🏷️</div>
-                <h3>Titres par paliers</h3>
-                <p>1,000 : <strong>Marcheur</strong><br>
-                    5,000 : <strong>Explorateur</strong><br>
-                    10,000 : <strong>Légende</strong><br>
-                    50,000 : <strong>Titan</strong><br>
-                    Affiché sur le profil : <em>"Empreinte : 12,847"</em></p>
-            </div>
-        </div>
-
-        <div class="alert info" style="margin-top: 1rem;">
-            <strong>🎯 Anti-treadmill :</strong> C'est LA progression permanente du jeu. Un vétéran de 1 an a une
-            Empreinte massive — ça ne lui donne AUCUN avantage, mais ça dit "j'étais là".
-        </div>
-    </section>
-    <div class="divider"></div>
 
 
     <!-- ============ SAISONS ============ -->
@@ -1612,6 +2036,15 @@
                     <li><strong>Interaction de loot coupée :</strong> Trop rapide pour ramasser les "Quartz" au sol.</li>
                     <li><strong>Gameplay "Base Management" :</strong> Le jeu redirige doucement l'attention vers le <strong>Mode Salon</strong> (Forteresse, marchand, fusion de badges). La session de transport devient le moment "administratif" du jeu, garantissant l'activité sur l'application mais pas l'avantage sur le terrain réel.</li>
                 </ul>
+            </div>
+        </section>
+        <div class="divider" style="opacity: 0.2"></div>
+
+        <section class="section" id="brainstorm-empreinte">
+            <div class="section-header">
+                <div class="section-tag" style="background: rgba(156,163,175,0.2); color: #9ca3af; border: 1px solid rgba(156,163,175,0.3);">🧠 Brouillon</div>
+                <h2 style="color: #9ca3af;">Score Permanent — Empreinte</h2>
+                <p class="subtitle" style="color: #6b7280;">Un nombre qui monte et ne descend jamais. Pur prestige, zéro avantage mécanique. Titres par paliers (Marcheur → Titan). Chiffres non validés.</p>
             </div>
         </section>
         <div class="divider" style="opacity: 0.2"></div>
