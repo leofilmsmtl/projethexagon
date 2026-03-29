@@ -1239,7 +1239,7 @@ function showBadgeDetail(id, tierLabel) {
 
   // Mastery section
   const masteryEl = document.getElementById('detail-mastery');
-  if (badge.mastery && badge.unlocked) {
+  if (badge.mastery) {
     const m = badge.mastery;
     const pctM = m.level >= 10 ? 100 : Math.min(100, Math.round((m.progress / m.target) * 100));
     const pillClass = m.level >= 10 ? 'prestige' : m.level >= 9 ? 'gold' : m.level >= 6 ? 'silver' : m.level >= 3 ? 'bronze' : '';
