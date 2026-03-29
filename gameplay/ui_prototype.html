@@ -1174,16 +1174,16 @@ function showBadgeDetail(id, tierLabel) {
          </div>`
       : '';
     questEl.innerHTML = `
-      <div class="quest-title">${condTitle}</div>
-      <div style="margin-top:6px;padding:6px 6px 6px 10px;border-radius:8px;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.3);font-size:12px;color:rgba(251,191,36,0.95);display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
-        <div style="display:flex;align-items:flex-start;gap:6px;margin-top:2px">
-          <span>🏰</span>
+      <div class="quest-title" style="color:rgb(0,200,255);letter-spacing:1px;font-size:11px;">${condTitle}</div>
+      <div style="margin-top:6px;padding:8px 10px;border-radius:8px;background:rgba(0,200,255,0.06);border:1px solid rgba(0,200,255,0.25);font-size:12px;color:rgba(0,200,255,0.9);display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+        <div style="display:flex;align-items:flex-start;gap:8px;margin-top:2px">
+          <span style="font-size:14px;opacity:0.9">📍</span>
           <strong style="line-height:1.4">${badge.quest}</strong>
         </div>
-        ${showProgress ? `<span style="background:rgba(0,0,0,0.5);padding:4px 10px;border-radius:12px;font-weight:700;letter-spacing:0.5px;font-size:11px;white-space:nowrap;border:1px solid rgba(245,158,11,0.25);box-shadow:inset 0 1px 4px rgba(0,0,0,0.6);display:flex;align-items:center;gap:4px">${badge.questProgress} <span style="opacity:0.4;font-weight:normal">/</span> ${badge.questTotal}</span>` : ''}
+        ${showProgress ? `<span style="background:rgba(0,0,0,0.4);padding:4px 10px;border-radius:12px;font-weight:700;letter-spacing:0.5px;font-size:11px;white-space:nowrap;border:1px solid rgba(0,200,255,0.2);box-shadow:inset 0 1px 4px rgba(0,0,0,0.5);display:flex;align-items:center;gap:4px;color:#00FF88">${badge.questProgress} <span style="opacity:0.4;font-weight:normal;color:#00C8FF">/</span> ${badge.questTotal}</span>` : ''}
       </div>
       ${showProgress ? `
-        <div class="quest-progress"><div class="quest-progress-fill" style="width:${pct}%"></div></div>
+        <div class="quest-progress" style="margin-top:8px"><div class="quest-progress-fill" style="width:${pct}%"></div></div>
       ` : ''}
       ${arcaneInfo}
     `;
@@ -1215,11 +1215,11 @@ function showBadgeDetail(id, tierLabel) {
       if (eff.type === 'defense_boost') { icon = '🛡️'; title = 'Boost de Défense'; desc = `+${eff.params.value || 0}% de défense contre les outils de siège.`; }
       else if (eff.type === 'animated_skin') { icon = '🎭'; title = 'Skin Animé Actif'; desc = `Applique l'animation '${eff.params.style || ''}'.`; }
       return `
-        <div style="margin-top:6px;padding:8px 10px;border-radius:8px;background:rgba(234,179,8,0.12);border:1px solid rgba(234,179,8,0.3);font-size:12px;color:rgba(250,204,21,0.95);display:flex;align-items:flex-start;gap:8px">
-          <span style="font-size:16px;line-height:1.2">${icon}</span>
+        <div style="margin-top:6px;padding:10px 12px;border-radius:8px;background:linear-gradient(135deg, rgba(234,179,8,0.15), rgba(250,204,21,0.03));border:1px solid rgba(250,204,21,0.25);box-shadow:inset 0 1px 0 rgba(255,255,255,0.05);font-size:12px;color:rgba(250,204,21,0.95);display:flex;align-items:center;gap:12px">
+          <div style="font-size:20px;line-height:1;background:rgba(250,204,21,0.1);padding:6px;border-radius:8px;border:1px solid rgba(250,204,21,0.2);box-shadow:0 2px 8px rgba(234,179,8,0.2)">${icon}</div>
           <div style="flex:1">
-            <div style="font-weight:bold;letter-spacing:0.5px">${title}</div>
-            <div style="opacity:0.8;margin-top:2px;font-size:11px">${desc}</div>
+            <div style="font-weight:800;letter-spacing:0.5px;color:#fef08a">${title}</div>
+            <div style="opacity:0.8;margin-top:2px;font-size:11px;line-height:1.3">${desc}</div>
           </div>
         </div>
       `;
