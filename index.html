@@ -105,6 +105,12 @@
             border: 1px solid #1e3050; padding: 6px 10px; border-radius: 5px;
             font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #64748b;
         }
+        @media (max-width: 768px) {
+            body { flex-direction: column-reverse; }
+            .panel { width: 100%; min-width: 100%; height: 45vh; border-right: none; border-top: 2px solid #1e3050; border-bottom: none; }
+            .canvas { width: 100%; flex: 1; min-height: 55vh; }
+            .zoom-info { top: 12px; bottom: auto; right: 12px; background: rgba(18, 29, 51, 0.9); }
+        }
 
         @media print {
             @page { size: landscape; margin: 10mm; }
@@ -460,6 +466,60 @@
     });
     canvasEl.addEventListener('mouseup', () => isPanning = false);
     canvasEl.addEventListener('mouseleave', () => isPanning = false);
+
+    // ── Touch Events (Mobile Panning & Pinch-to-Zoom) ──
+    let initialPinchDist = null;
+    let initialZoomLevel = 1;
+    let initialViewBox = null;
+
+    canvasEl.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+            isPanning = true;
+            panStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        } else if (e.touches.length === 2) {
+            isPanning = false;
+            let dx = e.touches[0].clientX - e.touches[1].clientX;
+            let dy = e.touches[0].clientY - e.touches[1].clientY;
+            initialPinchDist = Math.sqrt(dx*dx + dy*dy);
+            initialViewBox = { ...viewBox };
+            initialZoomLevel = zoomLevel;
+        }
+    }, {passive: false});
+
+    canvasEl.addEventListener('touchmove', (e) => {
+        e.preventDefault(); // Prevents native page scrolling while interacting with canvas
+        if (e.touches.length === 1 && isPanning) {
+            const r = canvasEl.getBoundingClientRect();
+            viewBox.x -= (e.touches[0].clientX - panStart.x) / r.width * viewBox.w;
+            viewBox.y -= (e.touches[0].clientY - panStart.y) / r.height * viewBox.h;
+            panStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            applyViewBox();
+        } else if (e.touches.length === 2 && initialPinchDist) {
+            let dx = e.touches[0].clientX - e.touches[1].clientX;
+            let dy = e.touches[0].clientY - e.touches[1].clientY;
+            let currentDist = Math.sqrt(dx*dx + dy*dy);
+            let factor = initialPinchDist / currentDist;
+            
+            const cx = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+            const cy = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+            const r = canvasEl.getBoundingClientRect();
+            const mx = (cx - r.left) / r.width;
+            const my = (cy - r.top) / r.height;
+            
+            const nw = initialViewBox.w * factor;
+            const nh = initialViewBox.h * factor;
+            
+            viewBox.x = initialViewBox.x + (initialViewBox.w - nw) * mx;
+            viewBox.y = initialViewBox.y + (initialViewBox.h - nh) * my;
+            viewBox.w = nw;
+            viewBox.h = nh;
+            zoomLevel = initialZoomLevel / factor;
+            applyViewBox();
+        }
+    }, {passive: false});
+
+    canvasEl.addEventListener('touchend', () => { isPanning = false; initialPinchDist = null; });
+    canvasEl.addEventListener('touchcancel', () => { isPanning = false; initialPinchDist = null; });
 
     function applyViewBox() {
         svgEl.setAttribute('viewBox', `${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`);
