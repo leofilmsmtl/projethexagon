@@ -661,8 +661,12 @@
         el.classList.remove('flash-highlight');
         void el.offsetWidth;
         el.classList.add('flash-highlight');
-        el.focus();
-        el.select();
+        
+        // Prevent native keyboard from popping up automatically on mobile
+        if (window.innerWidth > 768) {
+            el.focus();
+            el.select();
+        }
     }
 
     function dimH(x1, x2, y, val, color, extraText, isGlow, inputId) {
