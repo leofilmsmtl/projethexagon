@@ -1,1426 +1,1073 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projet Hexagon ó Explore. Conquer. Collect.</title>
-    <meta name="description"
-        content="Projet Hexagon est un jeu mobile de gÈolocalisation o˘ les joueurs explorent le monde rÈel ‡ pied ou ‡ vÈlo pour dÈcouvrir des territoires hexagonaux et rivaliser pour la domination.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
+    <title>Plan d'implantation ‚Äî Cl√¥ture & Muret 8√ó8</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        *,
-        *::before,
-        *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0f1729; color: #c8d6e5; font-family: 'Inter', sans-serif; height: 100vh; display: flex; overflow: hidden; }
+
+        .panel {
+            width: 350px; min-width: 350px; background: #121d33;
+            border-right: 1px solid #1e3050; display: flex; flex-direction: column;
+        }
+        .panel-header {
+            padding: 16px 20px; border-bottom: 1px solid #1e3050;
+            background: linear-gradient(180deg, #162240, #121d33);
+        }
+        .panel-header h1 { font-size: 13px; font-weight: 700; color: #e2e8f0; letter-spacing: 1px; text-transform: uppercase; }
+        .panel-header .subtitle { font-size: 11px; color: #64748b; margin-top: 4px; }
+        .project-info {
+            margin-top: 10px; padding: 8px 10px; background: #0d1526; border: 1px solid #1e3050; border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #94a3b8; line-height: 1.7;
+        }
+        .panel-body { flex: 1; overflow-y: auto; }
+        .section { padding: 14px 20px; border-bottom: 1px solid #1e3050; }
+        .section-title {
+            font-size: 9px; font-weight: 700; color: #475569; text-transform: uppercase;
+            letter-spacing: 1.5px; margin-bottom: 10px;
+        }
+        .field { margin-bottom: 6px; }
+        .field:last-child { margin-bottom: 0; }
+        .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .field-label {
+            font-size: 10px; color: #94a3b8; margin-bottom: 2px; display: flex;
+            align-items: center; gap: 5px;
+        }
+        .tag {
+            font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+            padding: 1px 5px; border-radius: 3px; white-space: nowrap;
+        }
+        .tag-blue { background: #1e3a5f; color: #60a5fa; }
+        .tag-red  { background: #4c1d1d; color: #fca5a5; }
+        .tag-pink { background: #3b1764; color: #d8b4fe; }
+        .tag-gold { background: #4a3800; color: #fde68a; }
+        .tag-lime { background: #1e3a1e; color: #86efac; }
+        .tag-cyan { background: #0e3a3a; color: #67e8f9; }
+
+        .field input {
+            width: 100%; background: #0d1526; border: 1px solid #1e3050; color: #e2e8f0;
+            padding: 6px 8px; border-radius: 5px; font-family: 'JetBrains Mono', monospace;
+            font-size: 12px; transition: all 0.3s;
+        }
+        .field input:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 0 2px rgba(99,102,241,0.2); }
+        .field input.highlight {
+            border-color: #f59e0b !important;
+            box-shadow: 0 0 0 2px rgba(245,158,11,0.3), 0 0 12px rgba(245,158,11,0.15) !important;
+            background: #1a1800 !important;
         }
 
-        :root {
-            --gold: #FFD700;
-            --gold-dim: #C9A900;
-            --cyan: #00E5FF;
-            --orange: #FF6B35;
-            --bg-dark: #0A0A0F;
-            --bg-card: #12121A;
-            --bg-card-hover: #1A1A25;
-            --border: rgba(255, 255, 255, 0.06);
-            --text: #E8E8ED;
-            --text-dim: #8888A0;
-            --font-body: 'Inter', -apple-system, sans-serif;
-            --font-display: 'Space Grotesk', sans-serif;
+        /* Interactive Dimensions */
+        @keyframes flashInput {
+            0% { background-color: rgba(251, 191, 36, 0.3); border-color: #fbbf24; transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+        input.flash-highlight {
+            animation: flashInput 0.8s ease-out;
+        }
+        .clickable-dim {
+            transition: opacity 0.2s;
+        }
+        .clickable-dim:hover {
+            opacity: 0.7;
         }
 
-        html {
-            scroll-behavior: smooth;
+        .takeoff { padding: 14px 20px; background: #0d1526; border-top: 1px solid #1e3050; }
+        .takeoff h3 { font-size: 9px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; }
+        .takeoff-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #1a2744; font-size: 11px; }
+        .takeoff-row:last-child { border: none; }
+        .takeoff-label { color: #94a3b8; }
+        .takeoff-value { color: #e2e8f0; font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+
+        .panel-footer { padding: 10px 20px; border-top: 1px solid #1e3050; display: flex; gap: 8px; }
+        .btn {
+            flex: 1; padding: 8px; background: #1e3050; border: 1px solid #2d4a6f;
+            color: #e2e8f0; border-radius: 5px; font-size: 10px; font-weight: 600; cursor: pointer;
+            transition: all 0.15s; text-align: center;
         }
+        .btn:hover { background: #2d4a6f; }
 
-        body {
-            font-family: var(--font-body);
-            background: var(--bg-dark);
-            color: var(--text);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* -- NAV -- */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            padding: 1.2rem 3rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(10, 10, 15, 0.85);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .logo {
-            font-family: var(--font-display);
-            font-weight: 700;
-            font-size: 1.4rem;
-            background: linear-gradient(135deg, var(--gold), var(--orange));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: var(--text-dim);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--gold);
-        }
-
-        /* -- SECTIONS -- */
-        section {
-            padding: 6rem 3rem;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        /* -- HERO -- */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding-top: 8rem;
-            position: relative;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background:
-                radial-gradient(ellipse 600px 400px at 30% 20%, rgba(255, 215, 0, 0.06), transparent),
-                radial-gradient(ellipse 500px 500px at 70% 60%, rgba(0, 229, 255, 0.04), transparent);
-            pointer-events: none;
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1.2rem;
-            border-radius: 100px;
-            background: rgba(255, 215, 0, 0.08);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--gold);
-            margin-bottom: 2rem;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .badge .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--gold);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.3;
-            }
-        }
-
-        h1 {
-            font-family: var(--font-display);
-            font-size: clamp(3rem, 7vw, 5.5rem);
-            font-weight: 800;
-            line-height: 1.05;
-            letter-spacing: -2px;
-            margin-bottom: 1.5rem;
-        }
-
-        h1 .gradient {
-            background: linear-gradient(135deg, var(--gold), var(--orange));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-sub {
-            font-size: 1.25rem;
-            color: var(--text-dim);
-            max-width: 600px;
-            line-height: 1.7;
-            margin-bottom: 3rem;
-        }
-
-        .hero-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            padding: 1rem 2.5rem;
-            border-radius: 12px;
-            background: linear-gradient(135deg, var(--gold), var(--orange));
-            color: #0A0A0F;
-            font-weight: 700;
-            font-size: 1rem;
-            text-decoration: none;
-            transition: transform 0.2s, box-shadow 0.3s;
-            box-shadow: 0 4px 30px rgba(255, 215, 0, 0.2);
-        }
-
-        .hero-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 40px rgba(255, 215, 0, 0.35);
-        }
-
-        .scroll-hint {
-            position: absolute;
-            bottom: 2rem;
-            color: var(--text-dim);
-            font-size: 0.8rem;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(8px);
-            }
-        }
-
-        /* -- SECTION TITLES -- */
-        .section-label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--gold);
-            margin-bottom: 1rem;
-        }
-
-        h2 {
-            font-family: var(--font-display);
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 700;
-            letter-spacing: -1px;
-            margin-bottom: 1rem;
-        }
-
-        .section-desc {
-            color: var(--text-dim);
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin-bottom: 3rem;
-        }
-
-        /* -- PHONE DEMO -- */
-        .demo-section {
-            padding: 6rem 3rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .demo-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(ellipse 800px 600px at 50% 50%, rgba(255, 215, 0, 0.04), transparent);
-            pointer-events: none;
-        }
-
-        .phone-container {
-            position: relative;
-            margin-top: 3rem;
-        }
-
-        .phone {
-            width: 340px;
-            height: 720px;
-            background: #111827;
-            border-radius: 40px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 80px rgba(255, 215, 0, 0.1), 0 30px 60px rgba(0, 0, 0, 0.6);
-            border: 2px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .phone-notch {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 28px;
-            background: #111827;
-            border-radius: 0 0 16px 16px;
-            z-index: 50;
-        }
-
-        .phone-map {
-            position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(ellipse at 60% 40%, rgba(34, 87, 60, 0.4), transparent 60%),
-                radial-gradient(ellipse at 30% 70%, rgba(42, 72, 88, 0.3), transparent 50%),
-                linear-gradient(135deg, #1a2a1a 0%, #1e2d3d 40%, #2a3a2a 70%, #1a2a3a 100%);
-        }
-
-        .phone-hex-grid {
-            position: absolute;
-            inset: 0;
-            opacity: 0.12;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='92' viewBox='0 0 80 92'%3E%3Cpath d='M40 0 L80 23 L80 69 L40 92 L0 69 L0 23Z' fill='none' stroke='%2300e5ff' stroke-width='1'/%3E%3C/svg%3E");
-            background-size: 80px 92px;
-        }
-
-        /* Fog overlay on phone */
-        .phone-fog {
-            position: absolute;
-            inset: 0;
-            background: rgba(10, 10, 15, 0.85);
-            z-index: 5;
-            transition: clip-path 0.8s ease;
-        }
-
-        /* Animated hex cells inside phone */
-        .demo-hex {
-            position: absolute;
-            z-index: 10;
-            opacity: 0;
-            transition: opacity 0.6s ease, transform 0.4s ease;
-        }
-
-        .demo-hex.visible {
-            opacity: 1;
-        }
-
-        .demo-hex svg {
-            filter: drop-shadow(0 0 8px var(--hex-color, rgba(0, 229, 255, 0.4)));
-        }
-
-        /* Player puck in demo */
-        .demo-puck {
-            position: absolute;
-            width: 18px;
-            height: 18px;
-            background: radial-gradient(circle at 30% 30%, #a78bfa, #7c3aed);
-            border-radius: 50%;
-            border: 3px solid white;
-            box-shadow: 0 0 20px rgba(124, 58, 237, 0.8);
-            z-index: 20;
-            transition: top 1.2s ease-in-out, left 1.2s ease-in-out;
-        }
-
-        /* Loot item in demo */
-        .demo-loot {
-            position: absolute;
-            font-size: 24px;
-            z-index: 15;
-            opacity: 0;
-            transition: opacity 0.5s, transform 0.5s;
-            filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.6));
-        }
-
-        .demo-loot.visible {
-            opacity: 1;
-            animation: lootBounce 1.5s ease-in-out infinite;
-        }
-
-        .demo-loot.collected {
-            opacity: 0;
-            transform: scale(0) translateY(-30px);
-        }
-
-        @keyframes lootBounce {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-5px);
-            }
-        }
-
-        /* Score popup in demo */
-        .demo-score {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            font-family: var(--font-display);
-            font-size: 28px;
-            font-weight: 900;
-            z-index: 30;
-            pointer-events: none;
-            opacity: 0;
-            text-shadow: 0 0 20px currentColor;
-        }
-
-        /* Demo status bar */
-        .demo-status {
-            position: absolute;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(20px);
-            border-radius: 50px;
-            padding: 8px 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 13px;
-            font-weight: 700;
-            z-index: 25;
-            white-space: nowrap;
-            transition: all 0.4s;
-        }
-
-        /* Demo step indicators */
-        .demo-steps {
-            display: flex;
-            gap: 8px;
-            margin-top: 2rem;
-        }
-
-        .demo-step-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.15);
+        /* Selection hint */
+        .hint {
+            padding: 8px 20px; background: #0d1526; border-top: 1px solid #1e3050;
+            font-size: 10px; color: #64748b; text-align: center; min-height: 34px;
             transition: all 0.3s;
         }
+        .hint.active { color: #fbbf24; background: #1a1600; }
 
-        .demo-step-dot.active {
-            background: var(--gold);
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-            transform: scale(1.3);
+        .canvas { flex: 1; position: relative; background: #0b1120; overflow: hidden; cursor: grab; }
+        .canvas:active { cursor: grabbing; }
+        .canvas svg { position: absolute; top: 0; left: 0; }
+        .zoom-info {
+            position: absolute; bottom: 12px; right: 12px; background: #121d33ee;
+            border: 1px solid #1e3050; padding: 6px 10px; border-radius: 5px;
+            font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #64748b;
         }
 
-        /* Demo caption */
-        .demo-caption {
-            margin-top: 1.5rem;
-            font-family: var(--font-display);
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text);
-            min-height: 2em;
-            transition: opacity 0.3s;
-            text-align: center;
-        }
+        @media print {
+            @page { size: landscape; margin: 10mm; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            .panel, .zoom-info, .hint { display: none !important; }
+            html, body { height: 100%; }
+            body { display: block; overflow: visible; background: #ffffff !important; margin: 0 !important; padding: 0 !important; }
+            .canvas { position: absolute !important; left: 0 !important; top: 0 !important; width: 100% !important; height: 100% !important; background: #ffffff !important; margin: 0 !important; padding: 0 !important; display: block !important; }
+            svg { width: 100% !important; height: 100% !important; }
+            
+            /* Professional Architectural Print Overrides (Color-Accurate Ink Saver CAD mode) */
+            rect, circle, path, line, text { filter: none !important; } /* Disable UI glows for crisp print */
+            
+            /* Dimensions (Keep Colors, Max Opacity for Print) */
+            .clickable-dim line { opacity: 1 !important; stroke-width: 2 !important; }
+            .clickable-dim text { font-weight: 800 !important; font-size: 11px !important; opacity: 1 !important; }
+            .clickable-dim rect { fill: #ffffff !important; opacity: 1 !important; stroke-width: 1 !important; }
+            
+            /* Grid Patterns (Visible Engineering Graph Paper on White) */
+            pattern#microGrid path { stroke: #cbd5e1 !important; stroke-width: 0.5 !important; opacity: 1 !important; } /* 1" : slate-300 */
+            pattern#smallGrid path { stroke: #94a3b8 !important; stroke-width: 1.5 !important; opacity: 1 !important; } /* 12" : slate-400 */
+            pattern#grid path      { stroke: #475569 !important; stroke-width: 2.5 !important; opacity: 1 !important; } /* 60" : slate-600 */
+            
+            /* Grid Bubbles */
+            circle { fill: #ffffff !important; stroke: #0f172a !important; stroke-width: 2.5 !important; opacity: 1 !important; }
+            circle + text { fill: #0f172a !important; font-weight: 800 !important; font-size: 11px !important; opacity: 1 !important; }
+            
+            /* High Contrast Architecture Colors for White Paper (Mapping Light -> Dark equivalents) */
+            [stroke="#bfdbfe"] { stroke: #1d4ed8 !important; } [fill="#bfdbfe"] { fill: #1d4ed8 !important; } /* Blue (Parking) */
+            [stroke="#60a5fa"] { stroke: #1d4ed8 !important; } [fill="#60a5fa"] { fill: #1d4ed8 !important; } /* Blue (PaveH) */
+            [stroke="#fca5a5"] { stroke: #b91c1c !important; } [fill="#fca5a5"] { fill: #b91c1c !important; } /* Red (Garage) */
+            [stroke="#67e8f9"] { stroke: #0e7490 !important; } [fill="#67e8f9"] { fill: #0e7490 !important; } /* Cyan (Chemin) */
+            [stroke="#d8b4fe"] { stroke: #7e22ce !important; } [fill="#d8b4fe"] { fill: #7e22ce !important; } /* Purple */
+            [stroke="#fde68a"] { stroke: #d97706 !important; } [fill="#fde68a"] { fill: #d97706 !important; } /* Amber */
+            [stroke="#22c55e"] { stroke: #15803d !important; } [fill="#22c55e"] { fill: #15803d !important; } /* Green (Platebandes) */
+            [stroke="#cbd5e1"] { stroke: #475569 !important; } [fill="#cbd5e1"] { fill: #475569 !important; } /* Slate 300 -> 600 */
+            [stroke="#94a3b8"] { stroke: #334155 !important; } [fill="#94a3b8"] { fill: #334155 !important; } /* Slate 400 -> 700 */
+            [stroke="#f59e0b"] { stroke: #d97706 !important; } [fill="#fbbf24"] { fill: #d97706 !important; } /* Muret Amber -> Dark Amber */
+            
+            /* Axis / Structural Lines */
+            line[stroke-dasharray="20,6,4,6"] { stroke: #0f172a !important; opacity: 0.5 !important; stroke-width: 2 !important; }
+            
+            /* Witness Lines (ext) */
+            line[stroke="#475569"] { stroke: #334155 !important; opacity: 1 !important; stroke-width: 1.5 !important; }
+            
+            /* Structural Texts (Force Black for AAA contrast) */
+            text[fill="#475569"], text[fill="#64748b"], text[fill="#94a3b8"], text[fill="#f87171"] { fill: #0f172a !important; font-weight: 800 !important; opacity: 1 !important; }
+            
+            /* Zones */
+            rect[data-zone="parking"] { fill: #f8fafc !important; stroke: #64748b !important; stroke-width: 2 !important; stroke-dasharray: none !important; opacity: 1 !important; }
+            rect[data-zone="garage"] { fill: #ffffff !important; stroke: #dc2626 !important; stroke-width: 3 !important; opacity: 1 !important; }
+            rect[data-zone="deport"] { fill: #ffffff !important; stroke: #94a3b8 !important; stroke-width: 2 !important; opacity: 1 !important; }
+            rect[data-zone="maison"] { stroke-width: 3 !important; stroke: #0f172a !important; opacity: 1 !important; }
+            
+            pattern#hatch line { stroke: #64748b !important; stroke-width: 1.5 !important; }
+            pattern#hatchGreen line { stroke: #22c55e !important; stroke-width: 1.5 !important; }
 
-        /* -- CONCEPT -- */
-        .concept-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .concept-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 2rem;
-            transition: background 0.3s, border-color 0.3s;
-        }
-
-        .concept-card:hover {
-            background: var(--bg-card-hover);
-            border-color: rgba(255, 215, 0, 0.15);
-        }
-
-        .concept-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 1.2rem;
-        }
-
-        .concept-icon.explore {
-            background: rgba(255, 215, 0, 0.1);
-        }
-
-        .concept-icon.conquer {
-            background: rgba(255, 107, 53, 0.1);
-        }
-
-        .concept-icon.collect {
-            background: rgba(0, 229, 255, 0.1);
-        }
-
-        .concept-card h3 {
-            font-family: var(--font-display);
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 0.6rem;
-        }
-
-        .concept-card p {
-            color: var(--text-dim);
-            font-size: 0.95rem;
-        }
-
-        /* -- HOW IT WORKS -- */
-        .steps {
-            display: flex;
-            flex-direction: column;
-            gap: 0rem;
-            margin-top: 2rem;
-            position: relative;
-        }
-
-        .steps::before {
-            content: '';
-            position: absolute;
-            left: 23px;
-            top: 40px;
-            bottom: 40px;
-            width: 2px;
-            background: linear-gradient(to bottom, var(--gold), var(--cyan), var(--orange));
-            opacity: 0.3;
-        }
-
-        .step {
-            display: flex;
-            gap: 2rem;
-            align-items: flex-start;
-            padding: 1.5rem 0;
-        }
-
-        .step-num {
-            min-width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: var(--font-display);
-            font-weight: 700;
-            font-size: 1.1rem;
-            background: var(--bg-card);
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            color: var(--gold);
-            z-index: 1;
-        }
-
-        .step h3 {
-            font-family: var(--font-display);
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-        }
-
-        .step p {
-            color: var(--text-dim);
-            font-size: 0.95rem;
-        }
-
-        /* -- TECH -- */
-        .tech-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .tech-item {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-        }
-
-        .tech-item .label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: var(--text-dim);
-            margin-bottom: 0.5rem;
-        }
-
-        .tech-item .value {
-            font-family: var(--font-display);
-            font-weight: 600;
-            font-size: 1.05rem;
-        }
-
-        /* -- STATUS -- */
-        .status-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .status-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .status-card.done {
-            border-left: 3px solid #22C55E;
-        }
-
-        .status-card.wip {
-            border-left: 3px solid var(--gold);
-        }
-
-        .status-card.planned {
-            border-left: 3px solid var(--text-dim);
-        }
-
-        .status-tag {
-            display: inline-block;
-            padding: 0.25rem 0.7rem;
-            border-radius: 6px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 1rem;
-        }
-
-        .status-tag.done {
-            background: rgba(34, 197, 94, 0.15);
-            color: #22C55E;
-        }
-
-        .status-tag.wip {
-            background: rgba(255, 215, 0, 0.15);
-            color: var(--gold);
-        }
-
-        .status-tag.planned {
-            background: rgba(136, 136, 160, 0.15);
-            color: var(--text-dim);
-        }
-
-        .status-card h3 {
-            font-family: var(--font-display);
-            font-weight: 600;
-            margin-bottom: 0.4rem;
-        }
-
-        .status-card p {
-            color: var(--text-dim);
-            font-size: 0.9rem;
-        }
-
-        /* -- METRICS -- */
-        .metrics {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .metric {
-            text-align: center;
-            padding: 2rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-        }
-
-        .metric .number {
-            font-family: var(--font-display);
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--gold), var(--orange));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .metric .label {
-            color: var(--text-dim);
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-        }
-
-        /* -- VISION -- */
-        .vision-list {
-            list-style: none;
-            margin-top: 2rem;
-        }
-
-        .vision-list li {
-            padding: 1rem 0;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            gap: 1rem;
-            align-items: baseline;
-        }
-
-        .vision-list li:last-child {
-            border-bottom: none;
-        }
-
-        .vision-list .emoji {
-            font-size: 1.3rem;
-        }
-
-        .vision-list .text {
-            color: var(--text-dim);
-            font-size: 1.05rem;
-        }
-
-        .vision-list .text strong {
-            color: var(--text);
-        }
-
-        /* -- CONTACT -- */
-        .contact-section {
-            text-align: center;
-            padding: 8rem 3rem;
-            background: linear-gradient(180deg, transparent, rgba(255, 215, 0, 0.03));
-        }
-
-        .contact-email {
-            font-family: var(--font-display);
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--gold);
-            text-decoration: none;
-            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
-            padding-bottom: 0.2rem;
-            transition: border-color 0.3s;
-        }
-
-        .contact-email:hover {
-            border-color: var(--gold);
-        }
-
-        footer {
-            padding: 2rem 3rem;
-            text-align: center;
-            color: var(--text-dim);
-            font-size: 0.8rem;
-            border-top: 1px solid var(--border);
-        }
-
-        /* -- RESPONSIVE -- */
-        @media (max-width: 768px) {
-            nav {
-                padding: 1rem 1.5rem;
-            }
-
-            section {
-                padding: 4rem 1.5rem;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .steps::before {
-                left: 22px;
-            }
-
-            .phone {
-                width: 280px;
-                height: 600px;
-            }
-        }
-
-        /* -- HEX DECORATION -- */
-        .hex-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: -1;
-            overflow: hidden;
-            opacity: 0.03;
-        }
-
-        .hex-bg svg {
-            width: 100%;
-            height: 100%;
+            /* Title block & Scale */
+            rect[height="4"][fill="#334155"] { fill: #0f172a !important; opacity: 1 !important; }
+            rect[height="4"][fill="#94a3b8"] { fill: #ffffff !important; stroke: #0f172a !important; stroke-width: 1.5 !important; opacity: 1 !important; }
         }
     </style>
 </head>
-
 <body>
 
-    <div class="hex-bg">
-        <svg width="100%" height="100%">
-            <defs>
-                <pattern id="hex" width="56" height="100" patternUnits="userSpaceOnUse" patternTransform="scale(2)">
-                    <path d="M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100" fill="none" stroke="white"
-                        stroke-width="0.5" />
-                    <path d="M28 0L56 16L56 50L28 66L0 50L0 16" fill="none" stroke="white" stroke-width="0.5" />
-                </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#hex)" />
-        </svg>
+    <div class="panel">
+        <div class="panel-header">
+            <h1>üèóÔ∏è Plan d'implantation</h1>
+            <div class="subtitle">Cl√¥ture c√®dre ¬∑ Muret 8√ó8 bois trait√©</div>
+            <div class="project-info">
+                Date : <span id="dateToday"></span><br>
+                √âchelle : 1 unit√© = 1 pouce<br>
+                Statut : <span style="color:#34d399">‚óè Pr√™t pour construction</span>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div class="section">
+                <div class="section-title">‚ë† Colonnes (Largeurs)</div>
+                <div class="field">
+                    <div class="field-label"><span class="tag tag-blue">C‚ÄìE</span> Largeur pav√© existant</div>
+                    <input type="number" id="val_AB" value="254" data-input="AB" oninput="draw()">
+                </div>
+                <div class="field">
+                    <div class="field-label"><span class="tag tag-red">E‚ÄìF</span> D√©bordement garage</div>
+                    <input type="number" step="0.5" id="val_BC" value="35.5" data-input="BC" oninput="draw()">
+                </div>
+                <div class="field">
+                    <div class="field-label"><span class="tag tag-pink">E‚ÄìG</span> Fin pav√© ‚Üí coin d√©portation</div>
+                    <input type="number" id="val_BD" value="51" data-input="BD" oninput="draw()">
+                </div>
+                <div class="field">
+                    <div class="field-label"><span class="tag tag-gold">G‚ÄìH</span> Coin d√©portation ‚Üí mitoyenne</div>
+                    <input type="number" id="val_DE" value="63" data-input="DE" oninput="draw()">
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">‚ë° Rang√©es (Profondeurs)</div>
+                <div class="field">
+                    <div class="field-label"><span class="tag tag-lime">3‚Äì7</span> Y total (Cl√¥ture‚ÜíMaison)</div>
+                    <input type="number" id="val_Yt" value="295" data-input="Yt" oninput="draw()">
+                </div>
+                <div class="field">
+                    <div class="field-label"><span class="tag tag-lime">5‚Äì7</span> Y recul (D√©portation)</div>
+                    <input type="number" id="val_Yr" value="84" data-input="Yr" oninput="draw()">
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">‚ë¢ Am√©nagements</div>
+                <div class="field-row">
+                    <div class="field">
+                        <div class="field-label"><span class="tag tag-cyan">3‚Äì4</span> Platebande Garage</div>
+                        <input type="number" id="val_pbG" value="44" data-input="pbG" oninput="draw()">
+                    </div>
+                    <div class="field">
+                        <div class="field-label"><span class="tag tag-cyan">D‚ÄìE</span> Chemin porte</div>
+                        <input type="number" id="val_ch" value="39" data-input="ch" oninput="draw()">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="field-label"><span class="tag tag-cyan">6‚Äì7</span> Platebande Maison</div>
+                    <input type="number" id="val_pbM" value="44" data-input="pbM" oninput="draw()">
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">‚ë£ Structures</div>
+                <div class="field-row">
+                    <div class="field">
+                        <div class="field-label"><span class="tag tag-red">2‚Äì3</span> Profondeur garage</div>
+                        <input type="number" id="val_garageD" value="100" data-input="garD" oninput="draw()">
+                    </div>
+                    <div class="field">
+                        <div class="field-label"><span class="tag tag-red">B‚ÄìF</span> Largeur garage</div>
+                        <input type="number" id="val_garageW" value="289.5" data-input="garW" oninput="draw()">
+                    </div>
+                    <div class="field">
+                        <div class="field-label"><span class="tag tag-gray" style="background:#475569; border-color:#475569; color:#f8fafc">C‚ÄìB</span> D√©calage garage</div>
+                        <input type="number" id="val_offsetG" value="0" oninput="onOffsetGChange()">
+                    </div>
+                </div>
+                <div class="field-row" style="margin-top:8px">
+                    <div class="field">
+                        <div class="field-label"><span class="tag tag-blue" style="background:#1e3a8a; border-color:#1e3a8a; color:#bfdbfe">1‚Äì2</span> Prof. stationnement</div>
+                        <input type="number" id="val_parkingD" value="240" data-input="parkD" oninput="draw()">
+                    </div>
+                    <div class="field">
+                        <div class="field-label"><span class="tag tag-blue" style="background:#1e3a8a; border-color:#1e3a8a; color:#bfdbfe">A‚ÄìH</span> Larg. stationnement</div>
+                        <input type="number" id="val_parkingW" value="300" data-input="parkW" oninput="draw()">
+                    </div>
+                    <div class="field">
+                        <div class="field-label"><span class="tag tag-gray" style="background:#475569; border-color:#475569; color:#f8fafc">C‚ÄìA</span> D√©calage parking</div>
+                        <input type="number" id="val_offsetH" value="68" oninput="onOffsetHChange()">
+                    </div>
+                </div>
+                <div class="field" style="margin-top:8px">
+                    <div class="field-label"><span class="tag tag-gold" style="background:#334155; border-color:#334155; color:#cbd5e1">G‚ÄìI</span> Largeur d√©portation</div>
+                    <input type="number" id="val_deportW" value="200" data-input="depW" oninput="draw()">
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">‚öôÔ∏è Options & Affichage</div>
+                <div class="field-row">
+                    <label style="color:#94a3b8; font-size:10px; display:flex; align-items:center; gap:5px; cursor:pointer;">
+                        <input type="checkbox" id="chk_grid" onchange="draw()">
+                        Quadrillage (Grille = 1 pi)
+                    </label>
+                    <label style="color:#94a3b8; font-size:10px; display:flex; align-items:center; gap:5px; cursor:pointer;">
+                        <input type="checkbox" id="chk_snapHGA" onchange="draw()">
+                        Alignement gauche strict (A=G=H)
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="hint" id="hint">Clique sur une zone du plan pour voir ses mesures li√©es</div>
+        <div class="takeoff" id="takeoff"></div>
+
+        <div class="panel-footer" style="border-top: none; padding-top: 0;">
+            <button class="btn" id="btnSave" onclick="manualSave()" style="background:#047857; border-color:#065f46;">üíæ Sauvegarder (Cache)</button>
+            <button class="btn" onclick="preparePrint()">‚éô Imprimer</button>
+        </div>
+        <div class="panel-footer" style="border-top: none; padding-top: 0; padding-bottom: 20px;">
+            <button class="btn" onclick="exportJSON()" style="background:#1e3a8a; border-color:#1e3a8a;">‚¨áÔ∏è Exporter JSON</button>
+            <button class="btn" onclick="importJSON()" style="background:#1e3a8a; border-color:#1e3a8a;">‚¨ÜÔ∏è Importer JSON</button>
+        </div>
     </div>
 
-    <nav>
-        <div class="logo">? Projet Hexagon</div>
-        <div class="nav-links">
-            <a href="#demo">DÈmo</a>
-            <a href="#concept">Concept</a>
-            <a href="#how">Comment Áa marche</a>
-            <a href="#tech">Technologie</a>
-            <a href="#status">Avancement</a>
-            <a href="#vision">Vision</a>
-            <a href="#contact">Contact</a>
-        </div>
-    </nav>
+    <div class="canvas" id="canvasContainer">
+        <svg id="mainSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="zoom-info" id="zoomInfo">100%</div>
+    </div>
 
-    <!-- ----------- HERO ----------- -->
-    <section class="hero">
-        <div class="badge"><span class="dot"></span> En dÈveloppement actif</div>
-        <h1>
-            Explorez le monde rÈel.<br>
-            <span class="gradient">ConquÈrez-le.</span>
-        </h1>
-        <p class="hero-sub">
-            Projet Hexagon est un jeu mobile de gÈolocalisation o˘ les joueurs explorent leur ville
-            ‡ pied ou ‡ vÈlo pour dÈcouvrir des territoires, collecter du butin et rivaliser pour la domination.
-        </p>
-        <a href="#demo" class="hero-cta">Voir la dÈmo ?</a>
-        <div class="scroll-hint">? Scroll</div>
-    </section>
-
-    <!-- ----------- INTERACTIVE PHONE DEMO ----------- -->
-    <section class="demo-section" id="demo"
-        style="padding: 6rem 3rem; display: flex; flex-direction: column; align-items: center; position: relative;">
-        <div class="section-label">DÈmo Interactive</div>
-        <h2>Voyez le jeu en action</h2>
-        <p class="section-desc" style="text-align: center;">
-            Maintenez ?? pour voler un hexagone ennemi ó exactement comme dans le vrai jeu.
-        </p>
-
-        <!-- Tab switcher -->
-        <div style="display: flex; gap: 8px; margin-bottom: 2rem;">
-            <button onclick="switchTab('game')" id="tabGame"
-                style="padding: 8px 20px; border-radius: 50px; border: 1px solid rgba(255,215,0,0.3); background: rgba(255,215,0,0.1); color: var(--gold); font-weight: 700; font-size: 0.85rem; cursor: pointer; font-family: var(--font-body);">??
-                Gameplay</button>
-            <button onclick="switchTab('war')" id="tabWar"
-                style="padding: 8px 20px; border-radius: 50px; border: 1px solid var(--border); background: transparent; color: var(--text-dim); font-weight: 700; font-size: 0.85rem; cursor: pointer; font-family: var(--font-body);">??
-                Carte de guerre</button>
-        </div>
-
-        <div style="position: relative;">
-            <!-- ===== GAME PHONE ===== -->
-            <div class="phone" id="gamePhone" data-fog-src="fog-texture.png"
-                style="width: 360px; height: 760px; background: #111827; border-radius: 40px; position: relative; overflow: hidden; box-shadow: 0 0 80px rgba(255,215,0,0.08), 0 30px 60px rgba(0,0,0,0.6); border: 2px solid rgba(255,255,255,0.08);">
-                <div
-                    style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:28px;background:#111827;border-radius:0 0 16px 16px;z-index:50;">
-                </div>
-
-                <!-- Map background -->
-                <img src="map-bg.png"
-                    style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;" alt="">
-
-                <!-- Tessellated hex grid overlay -->
-                <svg viewBox="0 0 360 760" style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2;"
-                    id="hexGrid"></svg>
-
-                <!-- Target hex (the one we're stealing) -->
-                <svg viewBox="0 0 360 760" style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3;"
-                    id="targetHexSvg">
-                    <polygon id="hexStroke" points="" fill="none" stroke="#f87171" stroke-width="2.5" />
-                </svg>
-
-                <!-- Player puck (positioned by JS inside target hex) -->
-                <div id="playerPuck"
-                    style="position: absolute; width: 20px; height: 20px; background: radial-gradient(circle at 30% 30%, #93c5fd, #3b82f6); border-radius: 50%; border: 3px solid white; box-shadow: 0 0 20px rgba(59,130,246,0.8); z-index: 15; animation: puckPulse 2s ease-in-out infinite; transform: translate(-50%, -50%);">
-                </div>
-                <!-- Enemy puck (hidden, animated by JS) -->
-                <div id="enemyPuck"
-                    style="position: absolute; width: 20px; height: 20px; background: radial-gradient(circle at 30% 30%, #fcd34d, #f59e0b); border-radius: 50%; border: 3px solid white; box-shadow: 0 0 20px rgba(245,158,11,0.8); z-index: 15; animation: puckPulse 2s ease-in-out infinite; transform: translate(-50%, -50%); opacity: 0;">
-                </div>
-
-                <!-- Fog overlay -->
-                <div id="fogOverlay" style="position: absolute; inset: 0; z-index: 4; pointer-events: none;"></div>
-
-                <!-- Hex ticks (6 sides) -->
-                <div id="hexTicks"
-                    style="position: absolute; top: 110px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; z-index: 20; opacity: 0; transition: opacity 0.3s;">
-                    <div class="htick"
-                        style="width: 24px; height: 3px; border-radius: 2px; background: rgba(255,255,255,0.15); transition: all 0.2s;">
-                    </div>
-                    <div class="htick"
-                        style="width: 24px; height: 3px; border-radius: 2px; background: rgba(255,255,255,0.15); transition: all 0.2s;">
-                    </div>
-                    <div class="htick"
-                        style="width: 24px; height: 3px; border-radius: 2px; background: rgba(255,255,255,0.15); transition: all 0.2s;">
-                    </div>
-                    <div class="htick"
-                        style="width: 24px; height: 3px; border-radius: 2px; background: rgba(255,255,255,0.15); transition: all 0.2s;">
-                    </div>
-                    <div class="htick"
-                        style="width: 24px; height: 3px; border-radius: 2px; background: rgba(255,255,255,0.15); transition: all 0.2s;">
-                    </div>
-                    <div class="htick"
-                        style="width: 24px; height: 3px; border-radius: 2px; background: rgba(255,255,255,0.15); transition: all 0.2s;">
-                    </div>
-                </div>
-
-                <!-- Top stats pill -->
-                <div
-                    style="position: absolute; top: 50px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; background: rgba(15,23,42,0.85); backdrop-filter: blur(20px); border-radius: 50px; padding: 6px 8px; border: 1px solid rgba(255,255,255,0.1); z-index: 20; gap: 2px;">
-                    <div style="padding: 8px 14px; font-size: 12px; font-weight: 700; white-space: nowrap;">
-                        <span style="color: rgba(255,255,255,0.5);">?</span>
-                        <span style="color: #fbbf24;" id="hexCount"> 0</span>
-                    </div>
-                    <div style="width: 1px; height: 18px; background: rgba(255,255,255,0.15);"></div>
-                    <div style="padding: 8px 14px; font-size: 12px; font-weight: 700; white-space: nowrap;">
-                        <span style="color: rgba(255,255,255,0.5);">??</span>
-                        <span style="color: #a78bfa;" id="scoreDisplay"> 0</span>
-                    </div>
-                </div>
-
-                <!-- Bottom capture pill -->
-                <div id="bottomPill"
-                    style="position: absolute; bottom: 45px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; background: rgba(15,23,42,0.85); backdrop-filter: blur(20px); border-radius: 50px; padding: 6px 8px; border: 1px solid rgba(255,255,255,0.1); z-index: 20; gap: 2px; user-select: none;">
-                    <div style="padding: 10px 16px; font-size: 13px; font-weight: 700; white-space: nowrap;">?? MontrÈal
-                    </div>
-                    <div style="width: 1px; height: 22px; background: rgba(255,255,255,0.12);"></div>
-                    <div id="attackBtn"
-                        style="padding: 10px 14px; font-size: 15px; cursor: pointer; border-radius: 40px; transition: all 0.3s; color: #f87171; position: relative;">
-                        <div id="holdFill"
-                            style="position: absolute; inset: 3px; border-radius: 40px; background: rgba(248,113,113,0.2); opacity: 0; transition: opacity 0.2s; z-index: -1;">
-                        </div>
-                        <span id="attackIcon">??</span>
-                    </div>
-                </div>
-
-                <!-- Hex context menu (hidden, shown by JS) -->
-                <div id="hexMenu"
-                    style="position: absolute; z-index: 25; opacity: 0; pointer-events: none; transform: translate(-50%, -100%); transition: opacity 0.3s, transform 0.3s;">
-                    <div
-                        style="background: rgba(15,23,42,0.95); backdrop-filter: blur(20px); border-radius: 16px; padding: 8px; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 8px 32px rgba(0,0,0,0.5); display: flex; flex-direction: column; gap: 4px; min-width: 140px;">
-                        <div id="menuShield"
-                            style="padding: 10px 14px; font-size: 12px; font-weight: 600; border-radius: 10px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 8px; color: #93c5fd;">
-                            ??? ProtÈger <span style="margin-left: auto; font-size: 10px; color: #fbbf24;">500
-                                pts</span>
-                        </div>
-                        <div
-                            style="padding: 10px 14px; font-size: 12px; font-weight: 600; border-radius: 10px; display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.4);">
-                            ? Renforcer <span
-                                style="margin-left: auto; font-size: 10px; color: rgba(255,255,255,0.25);">750
-                                pts</span>
-                        </div>
-                        <div
-                            style="padding: 10px 14px; font-size: 12px; font-weight: 600; border-radius: 10px; display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.4);">
-                            ?? TransfÈrer
-                        </div>
-                    </div>
-                    <div
-                        style="width: 12px; height: 12px; background: rgba(15,23,42,0.95); transform: rotate(45deg); margin: -7px auto 0; border-right: 1px solid rgba(255,255,255,0.15); border-bottom: 1px solid rgba(255,255,255,0.15);">
-                    </div>
-                </div>
-
-                <!-- Border loader SVG -->
-                <div id="borderLoader"
-                    style="position: absolute; inset: 0; pointer-events: none; z-index: 25; opacity: 0; transition: opacity 0.3s;">
-                    <svg viewBox="0 0 360 760" preserveAspectRatio="none" style="width: 100%; height: 100%;">
-                        <rect id="traceLine" x="3" y="3" width="354" height="754" rx="38" fill="none" stroke="#f87171"
-                            stroke-width="4" stroke-linecap="round" />
-                    </svg>
-                </div>
-
-                <!-- Flash + Score -->
-                <div id="captureFlash"
-                    style="position: absolute; inset: 0; background: white; z-index: 30; opacity: 0; pointer-events: none; border-radius: 40px;">
-                </div>
-                <div id="scorePopup"
-                    style="position: absolute; top: 45%; left: 50%; transform: translate(-50%,-50%) scale(0); font-size: 32px; font-weight: 900; color: #fbbf24; text-shadow: 0 0 30px rgba(251,191,36,0.8); z-index: 30; pointer-events: none; opacity: 0;">
-                    STOLEN!</div>
-            </div>
-
-            <!-- ===== WAR MAP PHONE ===== -->
-            <div id="warPhone"
-                style="width: 360px; height: 760px; background: #111827; border-radius: 40px; position: absolute; top: 0; left: 0; overflow: hidden; box-shadow: 0 0 80px rgba(255,107,53,0.1), 0 30px 60px rgba(0,0,0,0.6); border: 2px solid rgba(255,255,255,0.08); opacity: 0; pointer-events: none; transition: opacity 0.5s;">
-                <div
-                    style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:28px;background:#111827;border-radius:0 0 16px 16px;z-index:50;">
-                </div>
-                <img src="map-bg.png"
-                    style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.7) saturate(1.3);"
-                    alt="">
-                <svg viewBox="0 0 360 760" style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2;"
-                    id="warHexGrid"></svg>
-                <!-- War stats -->
-                <div
-                    style="position: absolute; top: 50px; left: 50%; transform: translateX(-50%); background: rgba(15,23,42,0.9); backdrop-filter: blur(20px); border-radius: 12px; padding: 12px 20px; border: 1px solid rgba(255,107,53,0.2); z-index: 20; text-align: center;">
-                    <div
-                        style="font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--orange); margin-bottom: 4px;">
-                        Zone contestÈe</div>
-                    <div style="font-size: 20px; font-weight: 900; font-family: var(--font-display);">1,247 <span
-                            style="font-size: 12px; color: var(--text-dim);">joueurs actifs</span></div>
-                </div>
-                <div
-                    style="position: absolute; bottom: 45px; left: 50%; transform: translateX(-50%); background: rgba(15,23,42,0.9); backdrop-filter: blur(20px); border-radius: 50px; padding: 8px 20px; border: 1px solid rgba(255,255,255,0.1); z-index: 20; font-size: 12px; font-weight: 700; color: var(--text-dim);">
-                    ?? 87 captures dans la derniËre heure
-                </div>
-            </div>
-        </div>
-
-        <div style="margin-top: 1.5rem; font-size: 0.95rem; color: var(--text-dim); text-align: center; min-height: 1.5em;"
-            id="demoHint">?? Maintenez le bouton ?? pour voler l'hexagone</div>
-    </section>
-
-    <!-- ----------- CONCEPT ----------- -->
-    <section id="concept">
-        <div class="section-label">Le Concept</div>
-        <h2>La course au territoire</h2>
-        <p class="section-desc">
-            Un jeu de stratÈgie territoriale en temps rÈel ancrÈ dans le monde physique.
-            Votre ville devient le plateau de jeu. Chaque pas compte.
-        </p>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem;">
-            <div
-                style="background: var(--bg-card); border: 1px solid rgba(255,107,53,0.2); border-radius: 16px; padding: 2.5rem; position: relative; overflow: hidden;">
-                <div style="position: absolute; top: -20px; right: -20px; font-size: 6rem; opacity: 0.06;">??</div>
-                <div
-                    style="font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--orange); margin-bottom: 1rem;">
-                    Mode CompÈtitif</div>
-                <h3 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">
-                    Le ConquÈrant</h3>
-                <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.8rem;">
-                    <li
-                        style="color: var(--text-dim); font-size: 0.95rem; display: flex; gap: 0.6rem; align-items: baseline;">
-                        <span style="color: var(--orange);">?</span> Capturez des hexagones en vous arrÍtant
-                        physiquement dedans
-                    </li>
-                    <li
-                        style="color: var(--text-dim); font-size: 0.95rem; display: flex; gap: 0.6rem; align-items: baseline;">
-                        <span style="color: var(--orange);">?</span> DÈfendez vos territoires contre les rivaux
-                    </li>
-                    <li
-                        style="color: var(--text-dim); font-size: 0.95rem; display: flex; gap: 0.6rem; align-items: baseline;">
-                        <span style="color: var(--orange);">?</span> Votre couleur s'affiche en temps rÈel sur la carte
-                        de tous les joueurs
-                    </li>
-                    <li
-                        style="color: var(--text-dim); font-size: 0.95rem; display: flex; gap: 0.6rem; align-items: baseline;">
-                        <span style="color: var(--orange);">?</span> Classements par quartier, ville, rÈgion
-                    </li>
-                </ul>
-            </div>
-            <div
-                style="background: var(--bg-card); border: 1px solid rgba(0,229,255,0.2); border-radius: 16px; padding: 2.5rem; position: relative; overflow: hidden;">
-                <div style="position: absolute; top: -20px; right: -20px; font-size: 6rem; opacity: 0.06;">???</div>
-                <div
-                    style="font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--cyan); margin-bottom: 1rem;">
-                    Mode Exploration</div>
-                <h3 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">
-                    Le DÈcouvreur</h3>
-                <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.8rem;">
-                    <li
-                        style="color: var(--text-dim); font-size: 0.95rem; display: flex; gap: 0.6rem; align-items: baseline;">
-                        <span style="color: var(--cyan);">?</span> Explorez pour lever le brouillard de guerre et
-                        rÈvÈler la carte
-                    </li>
-                    <li
-                        style="color: var(--text-dim); font-size: 0.95rem; display: flex; gap: 0.6rem; align-items: baseline;">
-                        <span style="color: var(--cyan);">?</span> Cataloguez des dÈcouvertes : murales, monuments,
-                        lieux cachÈs
-                    </li>
-                    <li
-                        style="color: var(--text-dim); font-size: 0.95rem; display: flex; gap: 0.6rem; align-items: baseline;">
-                        <span style="color: var(--cyan);">?</span> ComplÈtez des dÈfis de partenaires (ex: Tourisme
-                        MontrÈal)
-                    </li>
-                    <li
-                        style="color: var(--text-dim); font-size: 0.95rem; display: flex; gap: 0.6rem; align-items: baseline;">
-                        <span style="color: var(--cyan);">?</span> Collectez du butin rare en visitant physiquement des
-                        lieux
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <p
-            style="text-align: center; color: var(--text-dim); margin-top: 1.5rem; font-size: 0.95rem; font-style: italic;">
-            Deux faÁons de jouer. Une seule carte partagÈe. Chaque joueur y contribue ‡ sa maniËre.
-        </p>
-    </section>
-
-    <!-- ----------- HOW IT WORKS ----------- -->
-    <section id="how">
-        <div class="section-label">ExpÈrience Joueur</div>
-        <h2>Comment Áa marche</h2>
-        <div class="steps">
-            <div class="step">
-                <div class="step-num">1</div>
-                <div>
-                    <h3>Lancez l'app et bougez</h3>
-                    <p>Votre position GPS est suivie en temps rÈel. La carte se dÈvoile automatiquement autour de vous
-                        sur un rendu aquarelle magnifique. Marchez, courez ou pÈdalez ó chaque dÈplacement compte.</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-num">2</div>
-                <div>
-                    <h3>DÈcouvrez des hexagones</h3>
-                    <p>Chaque 500m parcourus, de nouveaux hexagones sont rÈvÈlÈs. Le brouillard de guerre disparaÓt pour
-                        montrer la carte en dessous.</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-num">3</div>
-                <div>
-                    <h3>Capturez des territoires</h3>
-                    <p>ArrÍtez-vous physiquement dans un hexagone et maintenez le bouton ´ HOLD ª pour le capturer. Il
-                        prend votre couleur sur la carte de tous les joueurs.</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-num">4</div>
-                <div>
-                    <h3>Collectez du butin</h3>
-                    <p>Des coffres apparaissent alÈatoirement dans les zones explorÈes. Approchez-vous physiquement pour
-                        les ouvrir.</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-num">5</div>
-                <div>
-                    <h3>Rivalisez en temps rÈel</h3>
-                    <p>Voyez les territoires des autres joueurs sur la carte. Contestez leurs hexagones. DÈfendez les
-                        vÙtres. Dominez votre quartier.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ----------- TECH ----------- -->
-    <section id="tech">
-        <div class="section-label">Technologie</div>
-        <h2>Architecture technique</h2>
-        <p class="section-desc">
-            Stack moderne et scalable, conÁue pour le temps rÈel et la gÈolocalisation haute prÈcision.
-        </p>
-        <div class="tech-grid">
-            <div class="tech-item">
-                <div class="label">Moteur de jeu</div>
-                <div class="value">Unity 6 (URP)</div>
-            </div>
-            <div class="tech-item">
-                <div class="label">Application native</div>
-                <div class="value">Kotlin + Jetpack Compose</div>
-            </div>
-            <div class="tech-item">
-                <div class="label">Backend</div>
-                <div class="value">Node.js + Express</div>
-            </div>
-            <div class="tech-item">
-                <div class="label">Base de donnÈes</div>
-                <div class="value">PostgreSQL + PostGIS</div>
-            </div>
-            <div class="tech-item">
-                <div class="label">Temps rÈel</div>
-                <div class="value">WebSocket (Socket.IO)</div>
-            </div>
-            <div class="tech-item">
-                <div class="label">Cartographie</div>
-                <div class="value">Stadia Maps (Watercolor)</div>
-            </div>
-            <div class="tech-item">
-                <div class="label">Authentification</div>
-                <div class="value">JWT + Google OAuth</div>
-            </div>
-            <div class="tech-item">
-                <div class="label">HÈbergement</div>
-                <div class="value">Cloud (scalable)</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ----------- STATUS ----------- -->
-    <section id="status">
-        <div class="section-label">Avancement</div>
-        <h2>O˘ en sommes-nous</h2>
-        <p class="section-desc">
-            Prototype fonctionnel avec les mÈcaniques core en place. TestÈ sur appareil Android rÈel.
-        </p>
-
-        <div class="metrics">
-            <div class="metric">
-                <div class="number">15+</div>
-                <div class="label">Scripts Unity (C#)</div>
-            </div>
-            <div class="metric">
-                <div class="number">50+</div>
-                <div class="label">Endpoints API</div>
-            </div>
-            <div class="metric">
-                <div class="number">1</div>
-                <div class="label">DÈveloppeur</div>
-            </div>
-            <div class="metric">
-                <div class="number">MVP</div>
-                <div class="label">Stade actuel</div>
-            </div>
-        </div>
-
-        <div class="status-grid" style="margin-top: 3rem;">
-            <div class="status-card done"><span class="status-tag done">? ComplÈtÈ</span>
-                <h3>SystËme de carte</h3>
-                <p>Tiles aquarelle en temps rÈel, zoom dynamique, rendu haute performance avec pool de tiles.</p>
-            </div>
-            <div class="status-card done"><span class="status-tag done">? ComplÈtÈ</span>
-                <h3>Fog of War</h3>
-                <p>Brouillard de guerre avec shaders custom, dÈcoupe hexagonale, et persistance cÙtÈ serveur.</p>
-            </div>
-            <div class="status-card done"><span class="status-tag done">? ComplÈtÈ</span>
-                <h3>Exploration GPS</h3>
-                <p>DÈcouverte automatique d'hexagones basÈe sur la position GPS en temps rÈel du joueur.</p>
-            </div>
-            <div class="status-card done"><span class="status-tag done">? ComplÈtÈ</span>
-                <h3>Capture de territoires</h3>
-                <p>MÈcanique de capture par proximitÈ physique avec couleurs de propriÈtÈ par joueur.</p>
-            </div>
-            <div class="status-card done"><span class="status-tag done">? ComplÈtÈ</span>
-                <h3>Backend complet</h3>
-                <p>API REST + WebSocket, authentification, zones gÈographiques, sync temps rÈel multi-joueurs.</p>
-            </div>
-            <div class="status-card done"><span class="status-tag done">? ComplÈtÈ</span>
-                <h3>App Android native</h3>
-                <p>Kotlin + Jetpack Compose avec Unity embarquÈ, login Google, service de localisation en arriËre-plan.
-                </p>
-            </div>
-            <div class="status-card wip"><span class="status-tag wip">? En cours</span>
-                <h3>SystËme de butin</h3>
-                <p>Spawn dynamique de coffres, collecte par proximitÈ. MÈcaniques de raretÈ et timers en dÈveloppement.
-                </p>
-            </div>
-            <div class="status-card wip"><span class="status-tag wip">? En cours</span>
-                <h3>Stabilisation Android</h3>
-                <p>Optimisation du rendu GL, compatibilitÈ IL2CPP, tests sur diffÈrents appareils Android.</p>
-            </div>
-            <div class="status-card planned"><span class="status-tag planned">? PlanifiÈ</span>
-                <h3>SystËme d'Èconomie</h3>
-                <p>Monnaie in-game, boutique, rÈcompenses quotidiennes, progression joueur.</p>
-            </div>
-            <div class="status-card planned"><span class="status-tag planned">? PlanifiÈ</span>
-                <h3>Social & Classements</h3>
-                <p>Classements par ville/rÈgion, alliances entre joueurs, ÈvÈnements communautaires.</p>
-            </div>
-            <div class="status-card planned"><span class="status-tag planned">? PlanifiÈ</span>
-                <h3>Version iOS</h3>
-                <p>Portage sur iOS une fois la version Android stabilisÈe et validÈe en beta.</p>
-            </div>
-            <div class="status-card planned"><span class="status-tag planned">? PlanifiÈ</span>
-                <h3>Beta publique</h3>
-                <p>Lancement beta dans la rÈgion de MontrÈal, puis expansion progressive.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- ----------- VISION ----------- -->
-    <section id="vision">
-        <div class="section-label">Vision</div>
-        <h2>Pourquoi Projet Hexagon</h2>
-        <ul class="vision-list">
-            <li>
-                <span class="emoji">??</span>
-                <span class="text"><strong>MarchÈ prouvÈ</strong> ó Le marchÈ des jeux gÈolocalisÈs pËse des milliards
-                    et continue de croÓtre. Projet Hexagon apporte une approche fraÓche ‡ un marchÈ validÈ.</span>
-            </li>
-            <li>
-                <span class="emoji">??</span>
-                <span class="text"><strong>SantÈ et mouvement</strong> ó ConÁu pour encourager l'activitÈ physique.
-                    Marche, course, vÈlo ó le jeu rÈcompense le mouvement et transforme chaque sortie en
-                    aventure.</span>
-            </li>
-            <li>
-                <span class="emoji">???</span>
-                <span class="text"><strong>RÈtention naturelle</strong> ó Les joueurs DOIVENT revenir physiquement pour
-                    dÈfendre leurs territoires. Le gameplay est ancrÈ dans les habitudes de dÈplacement
-                    quotidiennes.</span>
-            </li>
-            <li>
-                <span class="emoji">??</span>
-                <span class="text"><strong>ViralitÈ gÈographique</strong> ó Quand un joueur conquiert un quartier, ses
-                    voisins le voient et veulent riposter. L'expansion est organique et locale.</span>
-            </li>
-            <li>
-                <span class="emoji">??</span>
-                <span class="text"><strong>MonÈtisation variÈe</strong> ó CosmÈtiques, boosters, accËs premium,
-                    partenariats locaux avec commerces (loot sponsorisÈ).</span>
-            </li>
-            <li>
-                <span class="emoji">???</span>
-                <span class="text"><strong>Potentiel B2B</strong> ó Les commerces locaux peuvent placer du loot
-                    sponsorisÈ dans leurs hexagones pour attirer des clients rÈels.</span>
-            </li>
-        </ul>
-    </section>
-
-    <!-- ----------- CONTACT ----------- -->
-    <section class="contact-section" id="contact">
-        <div class="section-label">IntÈressÈ?</div>
-        <h2 style="margin-bottom: 2rem;">Discutons.</h2>
-        <p style="color: var(--text-dim); margin-bottom: 2rem; font-size: 1.1rem;">
-            Nous cherchons des partenaires et investisseurs pour accÈlÈrer le dÈveloppement<br>
-            et lancer la beta dans la grande rÈgion de MontrÈal.
-        </p>
-        <a href="mailto:contact@projethexagon.com" class="contact-email">contact@projethexagon.com</a>
-    </section>
-
-    <footer>
-        <p>© 2026 Projet Hexagon ó MontrÈal, QC, Canada</p>
-    </footer>
-
-    <!-- ----------- INTERACTIVE DEMO SCRIPT ----------- -->
-    <style>
-        @keyframes puckPulse {
-
-            0%,
-            100% {
-                transform: translate(-50%, -50%) scale(1);
-                box-shadow: 0 0 20px rgba(124, 58, 237, 0.8);
-            }
-
-            50% {
-                transform: translate(-50%, -50%) scale(1.15);
-                box-shadow: 0 0 30px rgba(124, 58, 237, 1);
-            }
-        }
-
-        @keyframes btnPulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-                text-shadow: 0 0 10px rgba(248, 113, 113, 0.5);
-            }
-
-            50% {
-                transform: scale(1.3);
-                text-shadow: 0 0 25px rgba(248, 113, 113, 1);
-            }
-        }
-    </style>
     <script>
-        // War phone grid + animation (unique to presentation page)
-        (function () {
-            const HEX_R = 28, HEX_W = Math.sqrt(3) * HEX_R;
-            const COLS = 9, ROWS = 16, hSp = HEX_W, vSp = 1.5 * HEX_R;
-            const PLAYER_COLORS = ['#f87171', '#fb923c', '#fbbf24', '#a3e635', '#34d399', '#22d3ee', '#818cf8', '#a78bfa', '#e879f9', '#fb7185', '#f97316', '#14b8a6', '#6366f1', '#8b5cf6', '#ec4899', '#ef4444', '#10b981', '#3b82f6'];
+    document.getElementById('dateToday').textContent = new Date().toLocaleDateString('fr-CA');
 
-            function hexCenter(r, c) { return { x: c * hSp + (r % 2 === 1 ? hSp / 2 : 0) + HEX_W / 2, y: r * vSp + HEX_R }; }
-            function hexPts(cx, cy, r) { const p = []; for (let i = 0; i < 6; i++) { const a = -Math.PI / 2 + i * Math.PI / 3; p.push([cx + r * Math.cos(a), cy + r * Math.sin(a)]); } return p; }
-            function ptsStr(p) { return p.map(v => v.join(',')).join(' '); }
-
-            const warSvg = document.getElementById('warHexGrid');
-            if (warSvg) {
-                for (let row = 0; row < ROWS; row++) for (let col = 0; col < COLS; col++) {
-                    const { x: cx, y: cy } = hexCenter(row, col);
-                    const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-                    poly.setAttribute('points', ptsStr(hexPts(cx, cy, HEX_R)));
-                    const owned = Math.random() > 0.15;
-                    const c = PLAYER_COLORS[Math.floor(Math.random() * PLAYER_COLORS.length)];
-                    poly.setAttribute('fill', owned ? c + '80' : 'transparent');
-                    poly.setAttribute('stroke', owned ? c + 'CC' : 'transparent');
-                    poly.setAttribute('stroke-width', owned ? '1.5' : '0');
-                    poly.setAttribute('data-row', row); poly.setAttribute('data-col', col);
-                    warSvg.appendChild(poly);
+    // ‚îÄ‚îÄ Local Storage (Auto-save) ‚îÄ‚îÄ
+    const STORAGE_KEY = 'blueprintFenceConfig_v1';
+    function saveConfig() {
+        const data = {};
+        document.querySelectorAll('.field input[type="number"], .field-row input[type="checkbox"]').forEach(i => {
+            data[i.id] = i.type === 'checkbox' ? i.checked : i.value;
+        });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+    function manualSave() {
+        saveConfig();
+        const btn = document.getElementById('btnSave');
+        btn.textContent = '‚úÖ Sauvegard√© !';
+        btn.style.background = '#059669';
+        setTimeout(() => { btn.textContent = 'üíæ Sauvegarder'; btn.style.background = '#047857'; }, 2000);
+    }
+    function loadConfig() {
+        try {
+            const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+            if (data) document.querySelectorAll('.field input[type="number"], .field-row input[type="checkbox"]').forEach(i => {
+                if (data[i.id] !== undefined) {
+                    if (i.type === 'checkbox') i.checked = data[i.id];
+                    else i.value = data[i.id];
                 }
-            }
+            });
+        } catch (e) {}
+    }
+    function resetDefaults() {
+        if(confirm("R√©initialiser toutes les dimensions aux valeurs par d√©faut de l'architecte ?")) {
+            localStorage.removeItem(STORAGE_KEY);
+            location.reload();
+        }
+    }
 
-            let warAnimInterval = null;
-            function startWarAnimation() {
-                if (warAnimInterval) return;
-                const hexes = document.querySelectorAll('#warHexGrid polygon');
-                warAnimInterval = setInterval(() => {
-                    const flips = 2 + Math.floor(Math.random() * 3);
-                    for (let i = 0; i < flips; i++) {
-                        const hex = hexes[Math.floor(Math.random() * hexes.length)];
-                        const newColor = PLAYER_COLORS[Math.floor(Math.random() * PLAYER_COLORS.length)];
-                        hex.style.transition = 'none';
-                        hex.setAttribute('fill', '#ffffff90'); hex.setAttribute('stroke', '#ffffffCC');
-                        setTimeout(() => {
-                            hex.style.transition = 'fill 0.5s, stroke 0.5s';
-                            hex.setAttribute('fill', newColor + '80'); hex.setAttribute('stroke', newColor + 'CC');
-                            hex.setAttribute('stroke-width', '1.5');
-                        }, 120);
-                    }
-                }, 800);
-            }
-            function stopWarAnimation() { clearInterval(warAnimInterval); warAnimInterval = null; }
+    // ‚îÄ‚îÄ Export / Import JSON ‚îÄ‚îÄ
+    function exportJSON() {
+        const data = {};
+        document.querySelectorAll('.panel input').forEach(i => {
+            if(i.type === 'checkbox') data[i.id] = i.checked;
+            else data[i.id] = isNaN(parseFloat(i.value)) ? i.value : parseFloat(i.value);
+        });
+        const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `blueprint-mesures-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
 
-            // Tab switching
-            window.switchTab = function (tab) {
-                const gp = document.getElementById('gamePhone'), wp = document.getElementById('warPhone');
-                const tg = document.getElementById('tabGame'), tw = document.getElementById('tabWar');
-                const hint = document.getElementById('demoHint');
-                if (tab === 'game') {
-                    gp.style.opacity = '1'; gp.style.pointerEvents = ''; wp.style.opacity = '0'; wp.style.pointerEvents = 'none';
-                    tg.style.background = 'rgba(255,215,0,0.1)'; tg.style.borderColor = 'rgba(255,215,0,0.3)'; tg.style.color = '#FFD700';
-                    tw.style.background = 'transparent'; tw.style.borderColor = 'rgba(255,255,255,0.06)'; tw.style.color = '#8888A0';
-                    stopWarAnimation();
-                } else {
-                    gp.style.opacity = '0'; gp.style.pointerEvents = 'none'; wp.style.opacity = '1'; wp.style.pointerEvents = '';
-                    tw.style.background = 'rgba(255,107,53,0.1)'; tw.style.borderColor = 'rgba(255,107,53,0.3)'; tw.style.color = '#FF6B35';
-                    tg.style.background = 'transparent'; tg.style.borderColor = 'rgba(255,255,255,0.06)'; tg.style.color = '#8888A0';
-                    if (hint) hint.textContent = '?? AperÁu en temps rÈel ó des territoires changent de mains !';
-                    startWarAnimation();
+    function importJSON() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json';
+        input.onchange = e => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = ev => {
+                try {
+                    const data = JSON.parse(ev.target.result);
+                    document.querySelectorAll('.panel input').forEach(i => {
+                        if (data[i.id] !== undefined) {
+                            if (i.type === 'checkbox') i.checked = data[i.id];
+                            else i.value = data[i.id];
+                        }
+                    });
+                    saveConfig();
+                    draw();
+                    resetZoom();
+                    const btn = document.getElementById('btnSave');
+                    const oldText = btn.textContent;
+                    btn.textContent = "‚úÖ JSON Import√© !";
+                    btn.style.background = "#059669";
+                    setTimeout(() => { btn.textContent = oldText; btn.style.background = "#047857"; }, 2500);
+                } catch (err) {
+                    alert("Erreur lors de la lecture du fichier JSON : " + err);
                 }
             };
-        })();
+            reader.readAsText(file);
+        };
+        input.click();
+    }
+
+    // ‚îÄ‚îÄ Zone ‚Üí related inputs mapping (chess-grid) ‚îÄ‚îÄ
+    const ZONE_MAP = {
+        parking:   { inputs: ['parkW','parkD'], cols: ['A'], rows: ['1','2'], label: 'Stationnement', color: '#94a3b8' },
+        garage:    { inputs: ['garW','garD','AB','BC'], cols: ['B','E','F'], rows: ['2','3'], label: 'Garage', color: '#f87171' },
+        pbGarage:  { inputs: ['pbG','ch'], cols: ['C','D'], rows: ['3','4'], label: 'Platebande Garage', color: '#22c55e' },
+        pave:      { inputs: ['AB','Yt','pbG','pbM','ch'], cols: ['C','E'], rows: ['4','6'], label: 'Pav√© Existant', color: '#60a5fa' },
+        pbMaison:  { inputs: ['pbM'], cols: ['C','E'], rows: ['6','7'], label: 'Platebande Maison', color: '#22c55e' },
+        gapBD:     { inputs: ['BD'], cols: ['E','G'], rows: [], label: 'Gap Pav√© ‚Üí D√©portation (E‚ÄìG)', color: '#d8b4fe' },
+        maison:    { inputs: ['Yt','BD'], cols: ['E','G'], rows: ['7'], label: 'Maison', color: '#94a3b8' },
+        deport:    { inputs: ['Yr','DE','depW','BD'], cols: ['G','H'], rows: ['5','7'], label: 'D√©portation', color: '#e2e8f0' },
+        muret:     { inputs: ['BC','DE','Yr'], cols: ['F','H'], rows: ['3','5'], label: 'Muret', color: '#f59e0b' },
+    };
+
+    let selectedZone = null;
+
+    // ‚îÄ‚îÄ Dimension ‚Üí grid lines mapping ‚îÄ‚îÄ
+    const DIM_GRID = {
+        'val_AB':       { cols: ['C','E'], rows: [] },
+        'val_BC':       { cols: ['E','F'], rows: [] },
+        'val_BD':       { cols: ['E','G'], rows: [] },
+        'val_DE':       { cols: ['G','H'], rows: [] },
+        'val_ch':       { cols: ['D','E'], rows: [] },
+        'val_garageW':  { cols: ['B','F'], rows: [] },
+        'val_offsetG':  { cols: ['B','C'], rows: [] },
+        'val_parkingW': { cols: ['A','H'], rows: [] },
+        'val_offsetH':  { cols: ['A','C'], rows: [] },
+        'val_deportW':  { cols: ['G','I'], rows: [] },
+        'val_Yt':       { cols: [], rows: ['3','7'] },
+        'val_Yr':       { cols: [], rows: ['5','7'] },
+        'val_parkingD': { cols: [], rows: ['1','2'] },
+        'val_garageD':  { cols: [], rows: ['2','3'] },
+        'val_pbG':      { cols: [], rows: ['3','4'] },
+        'val_paveH':    { cols: [], rows: ['4','6'] },
+        'val_pbM':      { cols: [], rows: ['6','7'] },
+    };
+    let highlightedCols = [];
+    let highlightedRows = [];
+    let activeDimId = null;
+    let pendingGridClick = null;
+
+    // ‚îÄ‚îÄ Zoom & Pan ‚îÄ‚îÄ
+    let viewBox = { x: 0, y: 0, w: 600, h: 600 };
+    let isPanning = false, panStart = { x: 0, y: 0 }, zoomLevel = 1;
+
+    const canvasEl = document.getElementById('canvasContainer');
+    const svgEl = document.getElementById('mainSvg');
+
+    canvasEl.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const r = canvasEl.getBoundingClientRect();
+        const mx = (e.clientX - r.left) / r.width;
+        const my = (e.clientY - r.top) / r.height;
+        const f = e.deltaY > 0 ? 1.12 : 0.88;
+        const nw = viewBox.w * f, nh = viewBox.h * f;
+        viewBox.x += (viewBox.w - nw) * mx;
+        viewBox.y += (viewBox.h - nh) * my;
+        viewBox.w = nw; viewBox.h = nh;
+        zoomLevel /= f;
+        applyViewBox();
+    }, { passive: false });
+
+    canvasEl.addEventListener('mousedown', (e) => { isPanning = true; panStart = { x: e.clientX, y: e.clientY }; });
+    canvasEl.addEventListener('mousemove', (e) => {
+        if (!isPanning) return;
+        const r = canvasEl.getBoundingClientRect();
+        viewBox.x -= (e.clientX - panStart.x) / r.width * viewBox.w;
+        viewBox.y -= (e.clientY - panStart.y) / r.height * viewBox.h;
+        panStart = { x: e.clientX, y: e.clientY };
+        applyViewBox();
+    });
+    canvasEl.addEventListener('mouseup', () => isPanning = false);
+    canvasEl.addEventListener('mouseleave', () => isPanning = false);
+
+    function applyViewBox() {
+        svgEl.setAttribute('viewBox', `${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`);
+        document.getElementById('zoomInfo').textContent = Math.round(zoomLevel * 100) + '%';
+    }
+    function resetZoom() {
+        const AB = +document.getElementById('val_AB').value || 254;
+        const BC = +document.getElementById('val_BC').value || 35.5;
+        const BD = +document.getElementById('val_BD').value || 51;
+        const DE = +document.getElementById('val_DE').value || 63;
+        const Yt = +document.getElementById('val_Yt').value || 295;
+        const garD = +document.getElementById('val_garageD').value || 100;
+        const garW = +document.getElementById('val_garageW').value || (AB + BC);
+        const parkD = +document.getElementById('val_parkingD').value || 0;
+        const parkW = +document.getElementById('val_parkingW').value || 0;
+        const depW = +document.getElementById('val_deportW').value || 200;
+        
+        const C = AB + BC;
+        const D = AB + BD;
+        const E = AB + BD + DE;
+        const F = D + depW;
+        
+        const snapHGA = document.getElementById('chk_snapHGA').checked;
+        const G = snapHGA ? 0 : C - garW;
+        const H = snapHGA ? 0 : E - parkW;
+
+        // Limites horizontales incluant les bulles de grille et labels
+        const minX = Math.min(0, G, H) - 80;
+        const maxX = Math.max(E, F) + 80;
+
+        // Limites verticales incluant les bulles de grille hautes et la l√©gende d'√©chelle basse
+        const viewTop = -garD - parkD - 70;
+        const viewBottom = Yt + 150; 
+        
+        viewBox = { x: minX, y: viewTop, w: maxX - minX, h: viewBottom - viewTop };
+        zoomLevel = 1; applyViewBox();
+    }
+
+    function preparePrint() {
+        clearSelection();
+        resetZoom();
+        setTimeout(() => { window.print(); }, 200);
+    }
+
+    // ‚îÄ‚îÄ Selection logic ‚îÄ‚îÄ
+    svgEl.addEventListener('click', (e) => {
+        const zone = e.target.closest('[data-zone]');
+        if (zone) {
+            e.stopPropagation();
+            if (selectedZone === zone.dataset.zone) {
+                clearSelection();
+            } else {
+                selectZone(zone.dataset.zone);
+            }
+        }
+    });
+    canvasEl.addEventListener('dblclick', () => clearSelection());
+
+    function selectZone(zoneId) {
+        highlightedCols = []; highlightedRows = []; // clear dim highlights
+        activeDimId = null;
+        pendingGridClick = null;
+        selectedZone = zoneId;
+        draw();
+
+        const info = ZONE_MAP[zoneId];
+        if (!info) return;
+
+        // Highlight related inputs
+        document.querySelectorAll('.field input').forEach(i => i.classList.remove('highlight'));
+        info.inputs.forEach(key => {
+            const el = document.querySelector(`[data-input="${key}"]`);
+            if (el) { el.classList.add('highlight'); el.closest('.field').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+        });
+
+        // Update hint
+        const hint = document.getElementById('hint');
+        hint.textContent = `üîç ${info.label} ‚Äî Mesures li√©es : ${info.inputs.join(', ')}`;
+        hint.className = 'hint active';
+    }
+
+    function clearSelection() {
+        selectedZone = null;
+        activeDimId = null;
+        pendingGridClick = null;
+        highlightedCols = []; highlightedRows = [];
+        document.querySelectorAll('.field input').forEach(i => i.classList.remove('highlight'));
+        document.getElementById('hint').textContent = 'Clique sur une zone du plan pour voir ses mesures li√©es';
+        document.getElementById('hint').className = 'hint';
+        draw();
+    }
+
+    // ‚îÄ‚îÄ SVG Helpers ‚îÄ‚îÄ
+    function focusInput(id, event) {
+        if (event) event.stopPropagation();
+        pendingGridClick = null;
+
+        if (activeDimId === id) {
+            clearSelection();
+            return;
+        }
+        
+        activeDimId = id;
+
+        // Highlight corresponding grid lines FIRST (works even for virtual IDs)
+        const grid = DIM_GRID[id];
+        if (grid) {
+            selectedZone = null;
+            highlightedCols = grid.cols;
+            highlightedRows = grid.rows;
+            document.querySelectorAll('.field input').forEach(i => i.classList.remove('highlight'));
+            document.getElementById('hint').textContent = `üìê Dimension ${id.replace('val_','')} ‚Äî Grille : ${[...grid.cols, ...grid.rows].join(', ')}`;
+            document.getElementById('hint').className = 'hint active';
+            draw();
+        }
+
+        const el = document.getElementById(id);
+        if(!el) return;
+        if(el.disabled && el.parentElement) {
+            el.parentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+        }
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.remove('flash-highlight');
+        void el.offsetWidth;
+        el.classList.add('flash-highlight');
+        el.focus();
+        el.select();
+    }
+
+    function dimH(x1, x2, y, val, color, extraText, isGlow, inputId) {
+        if(x1 > x2) { let t=x1; x1=x2; x2=t; }
+        const actualGlow = isGlow || (inputId && activeDimId === inputId);
+        const midX = (x1 + x2) / 2;
+        const op = actualGlow ? 1 : 0.7;
+        const sw = actualGlow ? 1.5 : 1;
+        const glow = actualGlow ? 'filter="url(#glow)" font-weight="800"' : 'font-weight="600"';
+        const text = extraText ? `${extraText} ${val}"` : `${val}"`;
+        const wrapStart = inputId ? `<g onclick="focusInput('${inputId}', event)" class="clickable-dim" style="cursor:pointer">` : `<g>`;
+        const lw = Math.max(26, text.length * 6 + 10);
+        return `${wrapStart}
+            <line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="${color}" stroke-width="${sw}" opacity="${op}" />
+            <line x1="${x1}" y1="${y-4}" x2="${x1}" y2="${y+4}" stroke="${color}" stroke-width="1.5" opacity="${op}" />
+            <line x1="${x2}" y1="${y-4}" x2="${x2}" y2="${y+4}" stroke="${color}" stroke-width="1.5" opacity="${op}" />
+            <rect x="${midX - lw/2}" y="${y - 7}" width="${lw}" height="12" rx="2" fill="#0b1120" stroke="${color}" stroke-width="0.5" opacity="1" />
+            <text x="${midX}" y="${y + 2}" fill="${color}" font-size="9" ${glow} text-anchor="middle" letter-spacing="1" opacity="${op}" style="pointer-events:none">${text}</text>
+        </g>`;
+    }
+    function dimV(ya, yb, x, val, color, tag, isGlow, inputId) {
+        if(ya > yb) { let t=ya; ya=yb; yb=t; }
+        const actualGlow = isGlow || (inputId && activeDimId === inputId);
+        const m = (ya + yb) / 2;
+        const op = actualGlow ? 1 : 0.7;
+        const sw = actualGlow ? 1.5 : 1;
+        const glow = actualGlow ? 'filter="url(#glow)" font-weight="800"' : 'font-weight="600"';
+        const text = tag ? `${tag} ${val}"` : `${val}"`;
+        const wrapStart = inputId ? `<g onclick="focusInput('${inputId}', event)" class="clickable-dim" style="cursor:pointer">` : `<g>`;
+        
+        const lw = Math.max(26, text.length * 6 + 10);
+        return `${wrapStart}
+            <line x1="${x}" y1="${ya}" x2="${x}" y2="${yb}" stroke="${color}" stroke-width="${sw}" opacity="${op}" />
+            <line x1="${x-4}" y1="${ya}" x2="${x+4}" y2="${ya}" stroke="${color}" stroke-width="1.5" opacity="${op}" />
+            <line x1="${x-4}" y1="${yb}" x2="${x+4}" y2="${yb}" stroke="${color}" stroke-width="1.5" opacity="${op}" />
+            <rect x="${x - 6}" y="${m - lw/2}" width="12" height="${lw}" rx="2" fill="#0b1120" stroke="${color}" stroke-width="0.5" opacity="1" />
+            <text x="${x}" y="${m}" dy="0.3em" fill="${color}" font-size="9" ${glow} text-anchor="middle" letter-spacing="1" opacity="${op}" transform="rotate(-90,${x},${m})" style="pointer-events:none">${text}</text>
+        </g>`;
+    }
+    function nodeCircle(x, y, letter, col, glow) {
+        const r = glow ? 11 : 8;
+        const sw = glow ? 2.5 : 1.5;
+        const pulse = glow ? `<animate attributeName="r" values="${r};${r+3};${r}" dur="1.2s" repeatCount="indefinite"/>` : '';
+        return `<g onclick="handleGridClick('${letter}', event)" style="cursor:pointer">
+                <circle cx="${x}" cy="${y}" r="${r}" fill="#0f1729" stroke="${col}" stroke-width="${sw}">${pulse}</circle>
+                <text x="${x}" y="${y+3}" fill="${col}" font-family="JetBrains Mono,monospace" font-size="${glow?10:8}" font-weight="700" text-anchor="middle" style="pointer-events:none">${letter}</text>
+                </g>`;
+    }
+    
+    function handleGridClick(char, event) {
+        if (event) event.stopPropagation();
+        
+        if (pendingGridClick === char) {
+            pendingGridClick = null; // Toggle off
+            clearSelection();
+            return;
+        }
+
+        if (!pendingGridClick) {
+            // First click
+            pendingGridClick = char;
+            selectedZone = null;
+            activeDimId = null;
+            highlightedCols = []; highlightedRows = [];
+            document.querySelectorAll('.field input').forEach(i => i.classList.remove('highlight'));
+            document.getElementById('hint').textContent = `üìç Coordonn√©e s√©lectionn√©e : ${char}. Clique sur une deuxi√®me pour voir la liaison.`;
+            document.getElementById('hint').className = 'hint active';
+            draw();
+            return;
+        }
+
+        // Second click
+        const pair1 = pendingGridClick;
+        const pair2 = char;
+        pendingGridClick = null;
+
+        let matchedId = null;
+        for (const [id, grid] of Object.entries(DIM_GRID)) {
+            if (grid.cols.includes(pair1) && grid.cols.includes(pair2)) { matchedId = id; break; }
+            if (grid.rows.includes(pair1) && grid.rows.includes(pair2)) { matchedId = id; break; }
+        }
+
+        if (matchedId) {
+            focusInput(matchedId, event);
+        } else {
+            pendingGridClick = char;
+            document.getElementById('hint').textContent = `üö´ Aucune dimension directe entre ${pair1} et ${pair2}. Nouvelle coordonn√©e en attente : ${char}.`;
+            draw();
+        }
+    }
+    
+    // Ext: Lignes d'attache pleines (witness lines) locales
+    function ext(x1, y1, x2, y2) {
+        return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#475569" stroke-width="0.6" opacity="0.8" />`;
+    }
+
+    // Axes structuraux d'implantation (Trait mixte)
+    function axisLine(x, y1, y2, letter, isNodeGlowFn) {
+        const glow = isNodeGlowFn(letter);
+        const col = glow ? '#93c5fd' : '#475569';
+        const op  = glow ? '0.9' : '0.4';
+        const sw  = glow ? '1.5' : '1';
+        return `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="${col}" stroke-width="${sw}" stroke-dasharray="20,6,4,6" opacity="${op}" style="pointer-events:none" />`;
+    }
+
+    function onOffsetGChange() {
+        const AB = +document.getElementById('val_AB').value || 0;
+        const BC = +document.getElementById('val_BC').value || 0;
+        const offsetG = +document.getElementById('val_offsetG').value || 0;
+        document.getElementById('val_garageW').value = (AB + BC) - offsetG;
+        draw();
+    }
+    function onOffsetHChange() {
+        const AB = +document.getElementById('val_AB').value || 0;
+        const BD = +document.getElementById('val_BD').value || 0;
+        const DE = +document.getElementById('val_DE').value || 0;
+        const offsetH = +document.getElementById('val_offsetH').value || 0;
+        document.getElementById('val_parkingW').value = (AB + BD + DE) - offsetH;
+        draw();
+    }
+
+    // ‚îÄ‚îÄ Main Draw ‚îÄ‚îÄ
+    function draw() {
+        const AB  = +document.getElementById('val_AB').value || 254;
+        const BC  = +document.getElementById('val_BC').value || 35.5;
+        const BD  = +document.getElementById('val_BD').value || 51;
+        const DE  = +document.getElementById('val_DE').value || 63;
+        const Yt  = +document.getElementById('val_Yt').value || 295;
+        const Yr  = +document.getElementById('val_Yr').value || 84;
+        const pbG = +document.getElementById('val_pbG').value || 44;
+        const pbM = +document.getElementById('val_pbM').value || 44;
+        const ch  = +document.getElementById('val_ch').value || 39;
+        const garD = +document.getElementById('val_garageD').value || 100;
+        let garW = +document.getElementById('val_garageW').value || (AB + BC);
+        const depW = +document.getElementById('val_deportW').value || 200;
+        const parkD = +document.getElementById('val_parkingD').value || 0;
+        let parkW = +document.getElementById('val_parkingW').value || 0;
+        const showGrid = document.getElementById('chk_grid').checked;
+        const snapHGA = document.getElementById('chk_snapHGA').checked;
+
+        // ‚îÄ‚îÄ SYST√àME NODAL (X Axis) ‚îÄ‚îÄ
+        const nodes = {
+            A: 0,
+            B: AB,
+            C: AB + BC,
+            D: AB + BD,
+            E: AB + BD + DE
+        };
+        // N≈ìuds d√©riv√©s (Ind√©pendants)
+        nodes.F = nodes.D + depW; // Bord droit D√©portation
+        nodes.K = nodes.B - ch;   // Coin int√©rieur platebande haut / chemin porte
+        
+        // Parametric Constraints (Snap)
+        const iGarW = document.getElementById('val_garageW');
+        const iParkW = document.getElementById('val_parkingW');
+        
+        if (snapHGA) {
+            nodes.G = nodes.A; 
+            nodes.H = nodes.A;
+            garW = nodes.C - nodes.A;
+            parkW = nodes.E - nodes.A;
+            iGarW.value = garW; // Force update width
+            iParkW.value = parkW;
+            iGarW.disabled = true;
+            iParkW.disabled = true;
+            iGarW.parentElement.style.opacity = '0.5';
+            iParkW.parentElement.style.opacity = '0.5';
+        } else {
+            nodes.G = nodes.C - garW;
+            nodes.H = nodes.E - parkW;
+            iGarW.disabled = false;
+            iParkW.disabled = false;
+            iGarW.parentElement.style.opacity = '1';
+            iParkW.parentElement.style.opacity = '1';
+        }
+        
+        // Push 2-way binding to UI if not currently being typed in by user
+        if (document.activeElement?.id !== 'val_offsetG') {
+            const el = document.getElementById('val_offsetG');
+            if(el) el.value = parseFloat((nodes.G - nodes.A).toFixed(1));
+        }
+        if (document.activeElement?.id !== 'val_offsetH') {
+            const el = document.getElementById('val_offsetH');
+            if(el) el.value = parseFloat((nodes.H - nodes.A).toFixed(1));
+        }
+
+        const y1=0, y3=Yt, y2=y3-Yr;
+
+        // Chess-grid mapping (columns A‚ÜíI left‚Üíright, rows 1‚Üí5 top‚Üíbottom)
+        const cols = { A: nodes.H, B: nodes.G, C: nodes.A, D: nodes.K, E: nodes.B, F: nodes.C, G: nodes.D, H: nodes.E, I: nodes.F };
+        const rowsY = { 1: -garD - parkD, 2: -garD, 3: y1, 4: y1 + pbG, 5: y2, 6: y3 - pbM, 7: y3 };
+        const gridBubbleY = rowsY[1] - 40;
+        const gridBubbleX = Math.min(...Object.values(cols)) - 40;
+
+        const fenceV = y2, fenceH = nodes.E - nodes.C;
+        const totalFence = fenceV + fenceH;
+        const timbers = Math.ceil(totalFence / 144);
+
+        document.getElementById('takeoff').innerHTML = `
+            <h3>‚ë§ Quantit√©s</h3>
+            <div class="takeoff-row"><span class="takeoff-label">Muret vertical</span><span class="takeoff-value">${fenceV}" (${(fenceV/12).toFixed(1)}')</span></div>
+            <div class="takeoff-row"><span class="takeoff-label">Fermeture haut</span><span class="takeoff-value">${fenceH.toFixed(1)}" (${(fenceH/12).toFixed(1)}')</span></div>
+            <div class="takeoff-row"><span class="takeoff-label">Total</span><span class="takeoff-value" style="color:#34d399">${totalFence.toFixed(1)}" (${(totalFence/12).toFixed(1)}')</span></div>
+            <div class="takeoff-row"><span class="takeoff-label">Poutres 8√ó8√ó12'</span><span class="takeoff-value" style="color:#fbbf24">${timbers}</span></div>
+        `;
+
+        // Helper: is zone selected?
+        const sel = selectedZone;
+        const z = (id) => sel === id;
+        const zInputs = sel ? (ZONE_MAP[sel]?.inputs || []) : [];
+        const zCols = sel ? (ZONE_MAP[sel]?.cols || []) : [];
+        const zRows = sel ? (ZONE_MAP[sel]?.rows || []) : [];
+        const isColGlow = (c) => zCols.includes(c) || highlightedCols.includes(c) || c === pendingGridClick;
+        const isRowGlow = (r) => zRows.includes(r) || highlightedRows.includes(r) || r === pendingGridClick;
+        const isDimGlow = (inputKey) => zInputs.includes(inputKey);
+
+        // Adaptive row system
+        const rowSpacing = 22;
+        const dimTopRow1 = y1 - 18;
+        const dimTopRow2 = dimTopRow1 - rowSpacing;
+        const dimTopRow3 = dimTopRow2 - rowSpacing;
+        const dimBotRow = y3 + 40;
+        const dimBotRow2 = dimBotRow + 22;
+
+        const content = `
+            <defs>
+                <filter id="glow">
+                    <feGaussianBlur stdDeviation="4" result="blur"/>
+                    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+                <pattern id="hatch" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+                    <line x1="0" y1="0" x2="0" y2="6" stroke="#334155" stroke-width="0.5" />
+                </pattern>
+                <pattern id="hatchGreen" patternUnits="userSpaceOnUse" width="8" height="8" patternTransform="rotate(135)">
+                    <line x1="0" y1="0" x2="0" y2="8" stroke="#166534" stroke-width="0.5" />
+                </pattern>
+                
+                <!-- Grid Patterns (1" / 12" / 60") -->
+                <pattern id="microGrid" width="1" height="1" patternUnits="userSpaceOnUse">
+                    <path d="M 1 0 L 0 0 0 1" fill="none" stroke="#334155" stroke-width="0.1" opacity="0.4"/>
+                </pattern>
+                <pattern id="smallGrid" width="12" height="12" patternUnits="userSpaceOnUse">
+                    <rect width="12" height="12" fill="url(#microGrid)" />
+                    <path d="M 12 0 L 0 0 0 12" fill="none" stroke="#475569" stroke-width="0.3" opacity="0.6"/>
+                </pattern>
+                <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+                    <rect width="60" height="60" fill="url(#smallGrid)" />
+                    <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#64748b" stroke-width="1.0" opacity="0.6"/>
+                </pattern>
+            </defs>
+
+            <!-- Background Grid -->
+            ${showGrid ? '<rect x="-5000" y="-5000" width="10000" height="10000" fill="url(#grid)" style="pointer-events:none;" />' : ''}
+
+            <!-- ‚ïê‚ïê‚ïê STRUCTURES ‚ïê‚ïê‚ïê -->
+
+            <!-- Stationnement -->
+            <g data-zone="parking" style="cursor:pointer">
+                <rect x="${nodes.H}" y="${-garD - parkD}" width="${parkW}" height="${parkD}"
+                    fill="#1e293b" fill-opacity="${z('parking') ? 0.8 : 0.5}"
+                    stroke="${z('parking') ? '#e2e8f0' : '#475569'}" stroke-width="${z('parking') ? 2 : 1}"
+                    stroke-dasharray="4,2" ${z('parking') ? 'filter="url(#glow)"' : ''} />
+                <text x="${nodes.H + parkW/2}" y="${-garD - parkD/2 + 5}" fill="#64748b" font-size="12" font-weight="600" text-anchor="middle" letter-spacing="2" style="pointer-events:none">STATIONNEMENT</text>
+            </g>
+
+            <!-- Garage -->
+            <g data-zone="garage" style="cursor:pointer">
+                <rect x="${nodes.G}" y="${-garD}" width="${garW}" height="${garD}"
+                    fill="url(#hatch)" stroke="${z('garage') ? '#fca5a5' : '#dc2626'}"
+                    stroke-width="${z('garage') ? 3 : 1.5}" opacity="${z('garage') ? 1 : 0.7}"
+                    ${z('garage') ? 'filter="url(#glow)"' : ''} />
+                <text x="${nodes.G + garW/2}" y="${-garD/2 + 5}" fill="#f87171" font-size="13" font-weight="600" text-anchor="middle" letter-spacing="3" opacity="0.7" style="pointer-events:none">GARAGE</text>
+            </g>
+
+            <!-- Platebande Garage -->
+            <g data-zone="pbGarage" style="cursor:pointer">
+                <rect x="${nodes.A}" y="${y1}" width="${nodes.K - nodes.A}" height="${pbG}"
+                    fill="url(#hatchGreen)" stroke="${z('pbGarage') ? '#4ade80' : '#22c55e'}"
+                    stroke-width="${z('pbGarage') ? 2 : 0.5}" opacity="${z('pbGarage') ? 1 : 0.6}"
+                    ${z('pbGarage') ? 'filter="url(#glow)"' : ''} />
+            </g>
+
+            <!-- Chemin Porte -->
+            <rect x="${nodes.B - ch}" y="${y1}" width="${ch}" height="${pbG}" fill="none" stroke="#3b82f6" stroke-width="0.5" stroke-dasharray="3,3" opacity="0.4" />
+
+            <!-- Pav√© -->
+            <g data-zone="pave" style="cursor:pointer">
+                <rect x="${nodes.A}" y="${y1 + pbG}" width="${nodes.B - nodes.A}" height="${y3 - pbG - pbM}"
+                    fill="${z('pave') ? '#1e3a5f' : 'transparent'}" fill-opacity="${z('pave') ? 0.3 : 0}"
+                    stroke="${z('pave') ? '#60a5fa' : '#334155'}" stroke-width="${z('pave') ? 2 : 1}"
+                    ${z('pave') ? 'filter="url(#glow)"' : ''} />
+                <!-- Chemin porte = pav√© qui monte jusqu'√† y1 -->
+                <rect x="${nodes.K}" y="${y1}" width="${nodes.B - nodes.K}" height="${pbG}"
+                    fill="${z('pave') ? '#1e3a5f' : 'transparent'}" fill-opacity="${z('pave') ? 0.2 : 0}"
+                    stroke="${z('pave') ? '#60a5fa' : '#334155'}" stroke-width="${z('pave') ? 1.5 : 0.5}"
+                    stroke-dasharray="3,3" />
+                <text x="${(nodes.A + nodes.B)/2}" y="${(y1+pbG+y3-pbM)/2 - 5}" fill="${z('pave') ? '#60a5fa' : '#334155'}" font-size="16" font-weight="700" text-anchor="middle" letter-spacing="6" style="pointer-events:none">PAV√â EXISTANT</text>
+                <text x="${(nodes.A + nodes.B)/2}" y="${(y1+pbG+y3-pbM)/2 + 12}" fill="${z('pave') ? '#93c5fd' : '#334155'}" font-size="10" text-anchor="middle" style="pointer-events:none">(${AB}" √ó ${Yt - pbG - pbM}")</text>
+            </g>
+
+            <!-- Platebande Maison -->
+            <g data-zone="pbMaison" style="cursor:pointer">
+                <rect x="${nodes.A}" y="${y3 - pbM}" width="${nodes.B - nodes.A}" height="${pbM}"
+                    fill="url(#hatchGreen)" stroke="${z('pbMaison') ? '#4ade80' : '#22c55e'}"
+                    stroke-width="${z('pbMaison') ? 2 : 0.5}" opacity="${z('pbMaison') ? 1 : 0.6}"
+                    ${z('pbMaison') ? 'filter="url(#glow)"' : ''} />
+            </g>
+
+            <!-- Gap B‚ÜíD -->
+            <g data-zone="gapBD" style="cursor:pointer">
+                <rect x="${nodes.B}" y="${y3 - pbM - 20}" width="${nodes.D - nodes.B}" height="20" fill="transparent" />
+            </g>
+
+            <!-- Maison -->
+            <g data-zone="maison" style="cursor:pointer">
+                <rect x="${nodes.A}" y="${y3}" width="${nodes.D - nodes.A}" height="60"
+                    fill="url(#hatch)" stroke="${z('maison') ? '#94a3b8' : '#64748b'}"
+                    stroke-width="${z('maison') ? 3 : 1.5}"
+                    ${z('maison') ? 'filter="url(#glow)"' : ''} />
+                <text x="${(nodes.A + nodes.D)/2}" y="${y3 + 35}" fill="#475569" font-size="16" font-weight="700" text-anchor="middle" letter-spacing="4" style="pointer-events:none">MAISON</text>
+            </g>
+
+            <!-- D√©portation -->
+            <g data-zone="deport" style="cursor:pointer">
+                <rect x="${nodes.D}" y="${y2}" width="${nodes.F - nodes.D}" height="${Yr + 60}"
+                    fill="#1e293b" fill-opacity="${z('deport') ? 0.8 : 0.3}"
+                    stroke="${z('deport') ? '#cbd5e1' : '#64748b'}" stroke-width="${z('deport') ? 2 : 1.5}"
+                    ${z('deport') ? 'filter="url(#glow)"' : ''} />
+            </g>
+
+            <!-- Mur Int√©rieur -->
+            <line x1="${nodes.D}" y1="${y2}" x2="${nodes.D}" y2="${y3}" stroke="#e2e8f0" stroke-width="3" />
+
+            <!-- Muret -->
+            <g data-zone="muret" style="cursor:pointer">
+                <line x1="${nodes.E}" y1="${y1}" x2="${nodes.E}" y2="${y2}" stroke="${z('muret') ? '#fbbf24' : '#f59e0b'}" stroke-width="${z('muret') ? 8 : 6}" stroke-linecap="round" ${z('muret') ? 'filter="url(#glow)"' : ''} />
+                <line x1="${nodes.C}" y1="${y1}" x2="${nodes.E}" y2="${y1}" stroke="${z('muret') ? '#fbbf24' : '#f59e0b'}" stroke-width="${z('muret') ? 8 : 6}" stroke-linecap="round" ${z('muret') ? 'filter="url(#glow)"' : ''} />
+                <rect x="${nodes.E + 12}" y="${y1 + 54}" width="14" height="36" rx="3" fill="#f59e0b" fill-opacity="0.15" stroke="#f59e0b" stroke-width="0.5" style="pointer-events:none" />
+                <text x="${nodes.E + 19}" y="${y1 + 72}" fill="#fbbf24" font-size="8" font-weight="700" text-anchor="middle" transform="rotate(-90,${nodes.E+19},${y1+72})" style="pointer-events:none">MURET</text>
+            </g>
+
+            <!-- Ligne Mitoyenne -->
+            <line x1="${cols.H}" y1="${gridBubbleY - 35}" x2="${cols.H}" y2="${rowsY[4]}" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="16,6" opacity="0.7" style="pointer-events:none" />
+            <text x="${cols.H}" y="${gridBubbleY - 45}" fill="#fbbf24" font-size="9" font-weight="700" text-anchor="middle" letter-spacing="2" opacity="0.9" style="pointer-events:none">‚ñº MITOYENNE ‚ñº</text>
+
+            <!-- ‚ïê‚ïê‚ïê STRUCTURAL GRID ‚ïê‚ïê‚ïê -->
+            <!-- Column grid lines (vertical) -->
+            ${Object.entries(cols).map(([k, x]) => {
+                const gl = isColGlow(k);
+                return `<line x1="${x}" y1="${gridBubbleY + 12}" x2="${x}" y2="${dimBotRow2 + 15}" stroke="${gl ? '#93c5fd' : '#334155'}" stroke-width="${gl ? 1.2 : 0.5}" stroke-dasharray="20,6,4,6" opacity="${gl ? 0.7 : 0.25}" style="pointer-events:none" />`;
+            }).join('\n            ')}
+
+            <!-- Row grid lines (horizontal) -->
+            ${Object.entries(rowsY).map(([k, y]) => {
+                const gl = isRowGlow(k);
+                return `<line x1="${gridBubbleX + 12}" y1="${y}" x2="${Math.max(...Object.values(cols)) + 50}" y2="${y}" stroke="${gl ? '#93c5fd' : '#334155'}" stroke-width="${gl ? 1.2 : 0.5}" stroke-dasharray="20,6,4,6" opacity="${gl ? 0.7 : 0.25}" style="pointer-events:none" />`;
+            }).join('\n            ')}
+
+            <!-- ‚ïê‚ïê‚ïê DIMENSION LINES ‚ïê‚ïê‚ïê -->
+            <!-- A‚ÄìH (Parking width) -->
+            ${dimH(cols.A, cols.H, rowsY[1] - 15, parkW, '#bfdbfe', 'A‚ÄìH', isDimGlow('parkW'), 'val_parkingW')}
+
+            <!-- 1‚Äì2 (Parking depth) -->
+            ${dimV(rowsY[1], rowsY[2], cols.A - 20, parkD, '#bfdbfe', '1‚Äì2', isDimGlow('parkD'), 'val_parkingD')}
+
+            <!-- B‚ÄìF (Garage width) -->
+            ${dimH(cols.B, cols.F, rowsY[2] - 15, garW, '#fca5a5', 'B‚ÄìF', isDimGlow('garW'), 'val_garageW')}
+
+            <!-- C‚ÄìB, C‚ÄìA (Offsets) ‚Äî drawn LAST so labels sit on top -->
+            ${(cols.B !== cols.C) ? dimH(cols.C, cols.B, rowsY[2] - 15, Math.abs(cols.B - cols.C), '#94a3b8', 'C‚ÄìB', isDimGlow('garW'), 'val_offsetG') : ''}
+            ${(cols.A !== cols.C) ? dimH(cols.C, cols.A, rowsY[1] - 15, Math.abs(cols.A - cols.C), '#94a3b8', 'C‚ÄìA', isDimGlow('parkW'), 'val_offsetH') : ''}
+
+            <!-- D‚ÄìE (Chemin porte - row 1) -->
+            ${dimH(cols.D, cols.E, dimTopRow1, ch, '#67e8f9', 'D‚ÄìE', isDimGlow('ch'), 'val_ch')}
+
+            <!-- C‚ÄìE (Pav√© width - row 2) -->
+            ${dimH(cols.C, cols.E, dimTopRow2, AB, '#60a5fa', 'C‚ÄìE', isDimGlow('AB'), 'val_AB')}
+
+            <!-- E‚ÄìF (Garage overhang - row 3) -->
+            ${dimH(cols.E, cols.F, dimTopRow3, BC, '#fca5a5', 'E‚ÄìF', isDimGlow('BC'), 'val_BC')}
+
+            <!-- E‚ÄìG, G‚ÄìH, G‚ÄìI (bottom dims) -->
+            ${ext(cols.E, rowsY[5], cols.E, dimBotRow - 5)}
+            ${ext(cols.G, rowsY[5], cols.G, dimBotRow - 5)}
+            ${ext(cols.H, rowsY[5], cols.H, dimBotRow - 5)}
+            ${ext(cols.I, rowsY[5], cols.I, dimBotRow2 - 5)}
+            ${dimH(cols.E, cols.G, dimBotRow, BD, '#d8b4fe', 'E‚ÄìG', isDimGlow('BD'), 'val_BD')}
+            ${dimH(cols.G, cols.H, dimBotRow, DE, '#fde68a', 'G‚ÄìH', isDimGlow('DE'), 'val_DE')}
+            ${dimH(cols.G, cols.I, dimBotRow2, depW, '#cbd5e1', 'G‚ÄìI', isDimGlow('depW'), 'val_deportW')}
+
+            <!-- 3‚Äì7 (Y total) -->
+            ${ext(cols.H, rowsY[3], cols.H + 35, rowsY[3])}
+            ${ext(cols.H, rowsY[7], cols.H + 35, rowsY[7])}
+            ${dimV(rowsY[3], rowsY[7], cols.H + 40, Yt, '#94a3b8', '3‚Äì7', isDimGlow('Yt'), 'val_Yt')}
+
+            <!-- 2‚Äì3 (Garage depth) -->
+            ${dimV(rowsY[2], rowsY[3], cols.A - 20, garD, '#fca5a5', '2‚Äì3', isDimGlow('garD'), 'val_garageD')}
+
+            <!-- Segment breakdown: 3‚Äì4, 4‚Äì6, 6‚Äì7 (left column) -->
+            ${ext(cols.C, rowsY[3], cols.C - 50, rowsY[3])}
+            ${ext(cols.C, rowsY[4], cols.C - 50, rowsY[4])}
+            ${ext(cols.C, rowsY[6], cols.C - 50, rowsY[6])}
+            ${ext(cols.C, rowsY[7], cols.C - 50, rowsY[7])}
+            ${dimV(rowsY[3], rowsY[4], cols.C - 55, pbG, '#22c55e', '3‚Äì4', isDimGlow('pbG'), 'val_pbG')}
+            ${dimV(rowsY[4], rowsY[6], cols.C - 25, Yt - pbG - pbM, '#60a5fa', '4‚Äì6', isDimGlow('AB'), 'val_paveH')}
+            ${dimV(rowsY[6], rowsY[7], cols.C - 55, pbM, '#22c55e', '6‚Äì7', isDimGlow('pbM'), 'val_pbM')}
+
+            <!-- 5‚Äì7 (Y recul) -->
+            ${ext(cols.G, rowsY[5], cols.G - 20, rowsY[5])}
+            ${dimV(rowsY[5], rowsY[7], cols.G - 25, Yr, '#e2e8f0', '5‚Äì7', isDimGlow('Yr'), 'val_Yr')}
+
+            <!-- Grid bubbles ‚Äî columns (above, stacked when overlapping) -->
+            ${(() => {
+                const grp = {};
+                Object.entries(cols).forEach(([k, x]) => {
+                    const rx = Math.round(x);
+                    if (!grp[rx]) grp[rx] = [];
+                    grp[rx].push(k);
+                });
+                return Object.values(grp).flatMap(group =>
+                    group.map((k, i) => nodeCircle(cols[k], gridBubbleY - i * 20, k, isColGlow(k) ? '#93c5fd' : '#64748b', isColGlow(k)))
+                ).join('\n            ');
+            })()}
+
+            <!-- Grid bubbles ‚Äî rows (left, stacked when overlapping) -->
+            ${(() => {
+                const grp = {};
+                Object.entries(rowsY).forEach(([k, y]) => {
+                    const ry = Math.round(y);
+                    if (!grp[ry]) grp[ry] = [];
+                    grp[ry].push(k);
+                });
+                return Object.values(grp).flatMap(group =>
+                    group.map((k, i) => nodeCircle(gridBubbleX - i * 20, rowsY[k], k, isRowGlow(k) ? '#93c5fd' : '#64748b', isRowGlow(k)))
+                ).join('\n            ');
+            })()}
+
+
+
+            <!-- Cad Scale Legend Overlay -->
+            ${showGrid ? `
+            <g transform="translate(${cols.A}, ${dimBotRow + 30})" style="pointer-events:none;">
+                <text x="0" y="-10" fill="#94a3b8" font-family="JetBrains Mono,monospace" font-size="8" font-weight="700" letter-spacing="1">√âCHELLE (SCALE)</text>
+                <rect x="0" y="0" width="60" height="4" fill="#334155" />
+                <rect x="60" y="0" width="60" height="4" fill="#94a3b8" />
+                <rect x="120" y="0" width="60" height="4" fill="#334155" />
+                <rect x="180" y="0" width="60" height="4" fill="#94a3b8" />
+                
+                <text x="0" y="16" fill="#64748b" font-family="JetBrains Mono,monospace" font-size="7" text-anchor="middle">0'</text>
+                <text x="60" y="16" fill="#64748b" font-family="JetBrains Mono,monospace" font-size="7" text-anchor="middle">5'</text>
+                <text x="120" y="16" fill="#64748b" font-family="JetBrains Mono,monospace" font-size="7" text-anchor="middle">10'</text>
+                <text x="180" y="16" fill="#64748b" font-family="JetBrains Mono,monospace" font-size="7" text-anchor="middle">15'</text>
+                <text x="240" y="16" fill="#64748b" font-family="JetBrains Mono,monospace" font-size="7" text-anchor="middle">20'</text>
+
+                <text x="0" y="32" fill="#475569" font-family="JetBrains Mono,monospace" font-size="7">QUADRILLAGE MINEUR = 1" (POUCE)</text>
+                <text x="0" y="44" fill="#475569" font-family="JetBrains Mono,monospace" font-size="7">QUADRILLAGE MOYEN = 1'-0" (12")</text>
+                <text x="0" y="56" fill="#475569" font-family="JetBrains Mono,monospace" font-size="7">QUADRILLAGE MAJEUR = 5'-0" (60")</text>
+            </g>
+            ` : ''}
+        `;
+
+        svgEl.innerHTML = content;
+        const r = canvasEl.getBoundingClientRect();
+        svgEl.setAttribute('width', r.width);
+        svgEl.setAttribute('height', r.height);
+        applyViewBox();
+        saveConfig();
+    }
+
+    function preparePrint() {
+        resetZoom(); // Force un cadrage parfait qui englobe tout le plan
+        setTimeout(() => window.print(), 100); // Laisse le SVG se rafra√Æchir d'abord
+    }
+
+    window.addEventListener('load', () => { loadConfig(); draw(); resetZoom(); });
+    window.addEventListener('resize', () => {
+        const r = canvasEl.getBoundingClientRect();
+        svgEl.setAttribute('width', r.width);
+        svgEl.setAttribute('height', r.height);
+    });
     </script>
-    <!-- Shared phone demo animation -->
-    <script src="shared/phone-demo.js"></script>
-
 </body>
-
 </html>
