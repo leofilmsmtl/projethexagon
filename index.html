@@ -104,13 +104,13 @@
             position: absolute; bottom: 12px; right: 12px; background: #121d33ee;
         .mobile-toggle {
             display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: rgba(30, 58, 138, 0.9); color: #ffffff; border: 1px solid #3b82f6;
-            padding: 12px 24px; border-radius: 30px; font-size: 14px; font-weight: 700;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.6); z-index: 1000; cursor: pointer;
-            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            background: rgba(15, 23, 42, 0.75); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.2);
+            padding: 8px 16px; border-radius: 20px; font-size: 11px; font-weight: 500; letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4); z-index: 1000; cursor: pointer;
+            backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
             transition: all 0.3s ease;
         }
-        .mobile-toggle:active { transform: translateX(-50%) scale(0.95); }
+        .mobile-toggle:active { transform: translateX(-50%) scale(0.95); opacity: 0.8; }
 
         @media (max-width: 768px) {
             body { flex-direction: column-reverse; }
@@ -189,9 +189,9 @@
 <body>
 
     <!-- Mobile Button -->
-    <button class="mobile-toggle" onclick="document.querySelector('.panel').classList.toggle('collapsed'); this.innerHTML = this.innerHTML.includes('Masquer') ? '⚙️ Réglages' : '⬇️ Masquer'; setTimeout(() => draw(), 400);">⬇️ Masquer</button>
+    <button class="mobile-toggle" onclick="document.querySelector('.panel').classList.toggle('collapsed'); this.innerHTML = this.innerHTML.includes('Réglages') ? '⬇️ Masquer' : '⚙️ Réglages'; setTimeout(() => draw(), 400);">⚙️ Réglages</button>
 
-    <div class="panel">
+    <div class="panel collapsed">
         <div class="panel-header">
             <h1>🏗️ Plan d'implantation</h1>
             <div class="subtitle">Clôture cèdre · Muret 8×8 bois traité</div>
