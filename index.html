@@ -102,14 +102,26 @@
         .canvas svg { position: absolute; top: 0; left: 0; }
         .zoom-info {
             position: absolute; bottom: 12px; right: 12px; background: #121d33ee;
-            border: 1px solid #1e3050; padding: 6px 10px; border-radius: 5px;
-            font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #64748b;
+        .mobile-toggle {
+            display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: rgba(30, 58, 138, 0.9); color: #ffffff; border: 1px solid #3b82f6;
+            padding: 12px 24px; border-radius: 30px; font-size: 14px; font-weight: 700;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6); z-index: 1000; cursor: pointer;
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
         }
+        .mobile-toggle:active { transform: translateX(-50%) scale(0.95); }
+
         @media (max-width: 768px) {
             body { flex-direction: column-reverse; }
-            .panel { width: 100%; min-width: 100%; height: 45vh; border-right: none; border-top: 2px solid #1e3050; border-bottom: none; }
-            .canvas { width: 100%; flex: 1; min-height: 55vh; }
+            .panel { 
+                width: 100%; min-width: 100%; height: 50vh; border-right: none; border-top: 2px solid #1e3050; border-bottom: none; 
+                transition: height 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); overflow: hidden;
+            }
+            .panel.collapsed { height: 0 !important; border-top: none; }
+            .canvas { width: 100%; flex: 1; min-height: 50vh; }
             .zoom-info { top: 12px; bottom: auto; right: 12px; background: rgba(18, 29, 51, 0.9); }
+            .mobile-toggle { display: block; }
         }
 
         @media print {
@@ -175,6 +187,9 @@
     </style>
 </head>
 <body>
+
+    <!-- Mobile Button -->
+    <button class="mobile-toggle" onclick="document.querySelector('.panel').classList.toggle('collapsed'); this.innerHTML = this.innerHTML.includes('Masquer') ? '⚙️ Réglages' : '⬇️ Masquer'; setTimeout(() => draw(), 400);">⬇️ Masquer</button>
 
     <div class="panel">
         <div class="panel-header">
@@ -243,7 +258,7 @@
                 <div class="field-row">
                     <div class="field">
                         <div class="field-label"><span class="tag tag-red">2–3</span> Profondeur garage</div>
-                        <input type="number" id="val_garageD" value="100" data-input="garD" oninput="draw()">
+                        <input type="number" id="val_garageD" value="220" data-input="garD" oninput="draw()">
                     </div>
                     <div class="field">
                         <div class="field-label"><span class="tag tag-red">B–F</span> Largeur garage</div>
@@ -257,20 +272,20 @@
                 <div class="field-row" style="margin-top:8px">
                     <div class="field">
                         <div class="field-label"><span class="tag tag-blue" style="background:#1e3a8a; border-color:#1e3a8a; color:#bfdbfe">1–2</span> Prof. stationnement</div>
-                        <input type="number" id="val_parkingD" value="240" data-input="parkD" oninput="draw()">
+                        <input type="number" id="val_parkingD" value="120" data-input="parkD" oninput="draw()">
                     </div>
                     <div class="field">
                         <div class="field-label"><span class="tag tag-blue" style="background:#1e3a8a; border-color:#1e3a8a; color:#bfdbfe">A–H</span> Larg. stationnement</div>
-                        <input type="number" id="val_parkingW" value="300" data-input="parkW" oninput="draw()">
+                        <input type="number" id="val_parkingW" value="437" data-input="parkW" oninput="draw()">
                     </div>
                     <div class="field">
                         <div class="field-label"><span class="tag tag-gray" style="background:#475569; border-color:#475569; color:#f8fafc">C–A</span> Décalage parking</div>
-                        <input type="number" id="val_offsetH" value="68" oninput="onOffsetHChange()">
+                        <input type="number" id="val_offsetH" value="-69" oninput="onOffsetHChange()">
                     </div>
                 </div>
                 <div class="field" style="margin-top:8px">
                     <div class="field-label"><span class="tag tag-gold" style="background:#334155; border-color:#334155; color:#cbd5e1">G–I</span> Largeur déportation</div>
-                    <input type="number" id="val_deportW" value="200" data-input="depW" oninput="draw()">
+                    <input type="number" id="val_deportW" value="128" data-input="depW" oninput="draw()">
                 </div>
             </div>
 
