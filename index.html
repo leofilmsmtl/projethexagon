@@ -116,9 +116,13 @@
             body { flex-direction: column-reverse; }
             .panel { 
                 width: 100%; min-width: 100%; height: 50vh; border-right: none; border-top: 2px solid #1e3050; border-bottom: none; 
-                transition: height 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); overflow: hidden;
+                transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); overflow: hidden; flex: 0 0 50vh;
             }
-            .panel.collapsed { height: 0 !important; border-top: none; }
+            .panel.collapsed { 
+                height: 0 !important; min-height: 0 !important; max-height: 0 !important; 
+                flex: 0 0 0 !important; padding: 0 !important; margin: 0 !important; 
+                border-top: none !important; opacity: 0 !important; pointer-events: none !important;
+            }
             .canvas { width: 100%; flex: 1; min-height: 50vh; }
             .zoom-info { top: 12px; bottom: auto; right: 12px; background: rgba(18, 29, 51, 0.9); }
             .mobile-toggle { display: block; }
