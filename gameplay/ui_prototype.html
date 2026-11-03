@@ -331,7 +331,7 @@
   }
 
   .collection-header {
-    text-align: center; margin: 50px 0 20px;
+    text-align: center; margin: 50px 0 12px;
   }
   .collection-header h2 {
     color: #fff; font-size: 20px; font-weight: 800; letter-spacing: 2px;
@@ -339,6 +339,32 @@
   .collection-header p {
     color: rgba(255,255,255,0.35); font-size: 11px; font-weight: 600;
     letter-spacing: 1px; margin-top: 4px;
+  }
+
+  /* === HERO COUNTER — The Main Number === */
+  .hero-counter {
+    text-align: center; margin: 0 0 20px; padding: 16px 0 18px;
+    background: linear-gradient(180deg, rgba(0,200,255,0.06) 0%, transparent 100%);
+    border-bottom: 1px solid rgba(0,200,255,0.1);
+  }
+  .hero-counter-number {
+    font-size: 48px; font-weight: 900; letter-spacing: -2px;
+    background: linear-gradient(135deg, #00C8FF 30%, #00FF88 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    line-height: 1;
+  }
+  .hero-counter-label {
+    color: rgba(255,255,255,0.3); font-size: 10px; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase; margin-top: 4px;
+  }
+  .hero-counter-bar {
+    width: 60%; margin: 10px auto 0; height: 4px; border-radius: 2px;
+    background: rgba(255,255,255,0.06); overflow: hidden;
+  }
+  .hero-counter-bar-fill {
+    height: 100%; border-radius: 2px;
+    background: linear-gradient(90deg, #00C8FF, #00FF88);
+    transition: width 0.8s ease;
   }
 
   .collection-section-title {
@@ -375,6 +401,225 @@
     background: rgba(0,200,255,0.1); color: rgba(0,200,255,0.9);
   }
   .badge-grid:not(.collapsed) .badge-see-all { display: none; }
+
+  /* === ATLAS — City Cards === */
+  .atlas-section { margin-bottom: 24px; }
+  .atlas-city-card {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px; margin-bottom: 8px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px; cursor: pointer;
+    transition: all 0.25s;
+  }
+  .atlas-city-card:hover {
+    border-color: rgba(0,200,255,0.25);
+    background: rgba(255,255,255,0.06);
+    transform: translateY(-1px);
+  }
+  .atlas-city-card.expanded {
+    border-color: rgba(0,200,255,0.3);
+    background: rgba(0,200,255,0.04);
+  }
+  .atlas-city-icon {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: linear-gradient(135deg, rgba(0,200,255,0.1), rgba(0,255,136,0.08));
+    border: 1px solid rgba(0,200,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .atlas-city-info { flex: 1; min-width: 0; }
+  .atlas-city-name {
+    color: #fff; font-size: 14px; font-weight: 700;
+  }
+  .atlas-city-sub {
+    color: rgba(255,255,255,0.3); font-size: 10px; font-weight: 600;
+    letter-spacing: 0.5px; margin-top: 2px;
+  }
+  .atlas-city-count {
+    color: rgba(0,200,255,0.7); font-size: 14px; font-weight: 800;
+    flex-shrink: 0;
+  }
+  .atlas-city-arrow {
+    color: rgba(255,255,255,0.15); font-size: 14px; flex-shrink: 0;
+    transition: transform 0.3s;
+  }
+  .atlas-city-card.expanded .atlas-city-arrow { transform: rotate(90deg); }
+  .atlas-city-badges {
+    display: none; padding: 0 4px 12px;
+  }
+  .atlas-city-badges.open {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+  }
+  .atlas-locked-city {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 16px; margin-bottom: 8px;
+    background: rgba(255,255,255,0.015);
+    border: 1px dashed rgba(255,255,255,0.06);
+    border-radius: 16px; opacity: 0.5;
+  }
+  .atlas-locked-icon {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: rgba(255,255,255,0.03);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .atlas-locked-name {
+    color: rgba(255,255,255,0.3); font-size: 13px; font-weight: 600;
+    font-style: italic;
+  }
+  .atlas-locked-sub {
+    color: rgba(255,255,255,0.15); font-size: 10px; margin-top: 2px;
+  }
+
+  /* === EVENTS — Sponsor Cards === */
+  .event-card {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px; margin-bottom: 8px;
+    background: linear-gradient(135deg, rgba(255,215,0,0.04), rgba(255,165,0,0.02));
+    border: 1px solid rgba(255,215,0,0.12);
+    border-radius: 16px; cursor: pointer;
+    transition: all 0.25s;
+  }
+  .event-card:hover {
+    border-color: rgba(255,215,0,0.3);
+    background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(255,165,0,0.04));
+    transform: translateY(-1px);
+  }
+  .event-icon {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,165,0,0.1));
+    border: 1px solid rgba(255,215,0,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .event-info { flex: 1; min-width: 0; }
+  .event-name {
+    color: rgba(255,215,0,0.9); font-size: 14px; font-weight: 700;
+  }
+  .event-sub {
+    color: rgba(255,255,255,0.3); font-size: 10px; font-weight: 600;
+    margin-top: 2px;
+  }
+  .event-count {
+    color: rgba(255,215,0,0.7); font-size: 14px; font-weight: 800;
+    flex-shrink: 0;
+  }
+  .event-badge-live {
+    font-size: 8px; font-weight: 800;
+    padding: 2px 6px; border-radius: 4px; margin-left: 8px;
+    background: rgba(0,255,136,0.15); color: #00FF88;
+    letter-spacing: 1px; animation: readyPulse 2s infinite;
+  }
+
+  /* === LEGENDS — Achievement Cards === */
+  .legend-card {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px; margin-bottom: 8px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 16px; transition: all 0.2s;
+  }
+  .legend-card.obtained {
+    background: linear-gradient(135deg, rgba(192,132,252,0.05), rgba(236,72,153,0.03));
+    border-color: rgba(192,132,252,0.2);
+  }
+  .legend-card.hidden-legend {
+    opacity: 0.35; border-style: dashed;
+  }
+  .legend-icon {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: rgba(192,132,252,0.1); border: 1px solid rgba(192,132,252,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .legend-card.hidden-legend .legend-icon {
+    background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.06);
+  }
+  .legend-info { flex: 1; min-width: 0; }
+  .legend-name {
+    color: rgba(192,132,252,0.9); font-size: 13px; font-weight: 700;
+  }
+  .legend-card.hidden-legend .legend-name { color: rgba(255,255,255,0.25); }
+  .legend-sub {
+    color: rgba(255,255,255,0.3); font-size: 10px; margin-top: 2px;
+  }
+
+  /* === FOOTER — Total Discovered === */
+  .collection-footer {
+    text-align: center; padding: 20px 0 10px;
+    margin-top: 8px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+  .collection-footer-number {
+    color: rgba(255,255,255,0.2); font-size: 13px; font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .collection-footer-number span {
+    color: rgba(255,255,255,0.5); font-weight: 800;
+  }
+
+  /* === CATEGORY ACCORDION === */
+  .cat-accordion {
+    margin-bottom: 6px; border-radius: 14px; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.04);
+    transition: all 0.25s;
+  }
+  .cat-accordion:hover { border-color: rgba(255,255,255,0.08); }
+  .cat-accordion.open { border-color: rgba(255,255,255,0.1); }
+  .cat-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px; cursor: pointer; user-select: none;
+    transition: background 0.2s;
+  }
+  .cat-header:hover { background: rgba(255,255,255,0.03); }
+  .cat-icon {
+    width: 32px; height: 32px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .cat-info { flex: 1; min-width: 0; }
+  .cat-name {
+    font-size: 12px; font-weight: 800; letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .cat-sub {
+    font-size: 10px; font-weight: 600; margin-top: 1px;
+    color: rgba(255,255,255,0.25);
+  }
+  .cat-count {
+    font-size: 13px; font-weight: 800; flex-shrink: 0;
+    color: rgba(255,255,255,0.4);
+  }
+  .cat-chevron {
+    font-size: 10px; color: rgba(255,255,255,0.15);
+    transition: transform 0.3s; flex-shrink: 0;
+  }
+  .cat-accordion.open .cat-chevron { transform: rotate(90deg); }
+  .cat-badges {
+    display: none; padding: 4px 12px 14px;
+  }
+  .cat-accordion.open .cat-badges {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+  }
+
+  /* === SECTION DIVIDER === */
+  .section-divider {
+    display: flex; align-items: center; gap: 10px;
+    margin: 24px 0 14px; user-select: none;
+  }
+  .section-divider-line {
+    flex: 1; height: 1px; background: rgba(255,255,255,0.04);
+  }
+  .section-divider-label {
+    color: rgba(255,255,255,0.2); font-size: 10px; font-weight: 800;
+    letter-spacing: 2px; text-transform: uppercase;
+    padding: 4px 12px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.04);
+    border-radius: 20px;
+    white-space: nowrap;
+  }
 
   /* === BADGE DETAIL MODAL === */
   .badge-detail-overlay {
@@ -788,8 +1033,29 @@
     margin-top: 6px;
   }
   .badge-tier {
-    color: rgba(0,200,255,0.5); font-size: 9px; font-weight: 800;
-    letter-spacing: 1px; margin-top: 2px;
+    display: inline-block;
+    padding: 3px 8px;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    color: rgba(255,255,255,0.8);
+    font-size: 9px; font-weight: 800;
+    letter-spacing: 1px; margin-top: 6px;
+  }
+  .badge-card.border-bronze .badge-tier {
+    border-color: rgba(205,127,50,0.4); color: #CD7F32;
+  }
+  .badge-card.border-silver .badge-tier {
+    border-color: rgba(192,192,192,0.4); color: #C0C0C0;
+  }
+  .badge-card.border-gold .badge-tier {
+    border-color: rgba(255,215,0,0.6); color: #FFD700;
+    background: rgba(255,215,0,0.1);
+  }
+  .badge-card.border-prestige .badge-tier {
+    border-color: rgba(192,132,252,0.8); color: #FFF;
+    background: linear-gradient(135deg, rgba(192,132,252,0.2), rgba(236,72,153,0.2));
+    text-shadow: 0 0 4px rgba(192,132,252,0.8);
   }
   .badge-equipped-tag {
     position: absolute; top: 6px; right: 6px;
@@ -958,29 +1224,49 @@
       <button class="collection-back" onclick="closeCollection()">← Retour</button>
       <div class="collection-header">
         <h2>🎖️ COLLECTION</h2>
-        <p id="global-badge-count"></p>
+      </div>
+
+      <!-- HERO COUNTER -->
+      <div class="hero-counter">
+        <div class="hero-counter-number" id="hero-counter-num">0 / 0</div>
+        <div class="hero-counter-label">Badges Collectionnés</div>
+        <div class="hero-counter-bar"><div class="hero-counter-bar-fill" id="hero-counter-fill" style="width:0%"></div></div>
       </div>
 
       <!-- EQUIPPED HERO -->
       <div class="hero-badge" id="hero-badge"></div>
 
-      <!-- T1 URBAN -->
-      <div class="collection-section-title" id="section-title-t1">T1 — URBAIN</div>
-      <div class="badge-grid" id="badge-grid-t1">
-        <!-- Filled by JS -->
+      <!-- ═══ CORE CATEGORIES (Dynamic) ═══ -->
+      <div id="core-categories"></div>
+
+      <!-- ═══ ATLAS RÉGIONAL ═══ -->
+      <div class="section-divider">
+        <div class="section-divider-line"></div>
+        <div class="section-divider-label">🗺️ Atlas Régional</div>
+        <div class="section-divider-line"></div>
       </div>
+      <div class="atlas-section" id="atlas-section"></div>
 
-      <!-- LOCAL -->
-      <div class="collection-section-title" id="section-title-nature">LOCAL</div>
-      <div class="badge-grid" id="badge-grid-nature"></div>
+      <!-- ═══ ÉDITIONS LIMITÉES (Sponsors / Events) ═══ -->
+      <div class="section-divider">
+        <div class="section-divider-line"></div>
+        <div class="section-divider-label">⭐ Éditions Limitées</div>
+        <div class="section-divider-line"></div>
+      </div>
+      <div id="events-section"></div>
 
-      <!-- EXPLOITS / SUCCÈS -->
-      <div class="collection-section-title" id="section-title-exploits">🏆 EXPLOITS / SUCCÈS</div>
-      <div class="badge-grid" id="badge-grid-exploits"></div>
+      <!-- ═══ LÉGENDES (Exploits) ═══ -->
+      <div class="section-divider">
+        <div class="section-divider-line"></div>
+        <div class="section-divider-label">🎖️ Légendes</div>
+        <div class="section-divider-line"></div>
+      </div>
+      <div id="legends-section"></div>
 
-      <!-- GARDIENS -->
-      <div class="collection-section-title" id="section-title-t3">GARDIENS</div>
-      <div class="badge-grid" id="badge-grid-t3"></div>
+      <!-- FOOTER — Total Discovered -->
+      <div class="collection-footer">
+        <div class="collection-footer-number">✨ Total découvert : <span id="total-discovered">0</span></div>
+      </div>
     </div>
   </div>
 
@@ -1425,20 +1711,286 @@ function toggleSection(gridId) {
   renderAllBadges();
 }
 
+// === ATLAS — Group LOCAL badges by city ===
+const expandedCities = new Set();
+
+function renderAtlas() {
+  const container = document.getElementById('atlas-section');
+  if (!container) return;
+  
+  // Group local badges by region field, fallback to 'Montréal'
+  const cityMap = {};
+  BADGES.t1_nature.forEach(b => {
+    const city = b.region || 'Montréal';
+    if (!cityMap[city]) cityMap[city] = [];
+    cityMap[city].push(b);
+  });
+  
+  const CITY_ICONS = {
+    'Montréal': '🏔️', 'Toronto': '🏙️', 'Vancouver': '🌊',
+    'Calgary': '⛰️', 'Ottawa': '🏛️', 'Québec': '🏰',
+    'Halifax': '⚓', 'default': '📍'
+  };
+  const CITY_SUBS = {
+    'Montréal': 'Québec, Canada', 'Toronto': 'Ontario, Canada',
+    'Vancouver': 'Colombie-Britannique', 'Calgary': 'Alberta, Canada',
+    'Ottawa': 'Ontario, Canada', 'Québec': 'Québec, Canada',
+    'Halifax': 'Nouvelle-Écosse', 'default': 'Région'
+  };
+  
+  let html = '';
+  
+  // Real cities with badges
+  for (const [city, badges] of Object.entries(cityMap)) {
+    const unlocked = badges.filter(b => b.unlocked).length;
+    const icon = CITY_ICONS[city] || CITY_ICONS.default;
+    const sub = CITY_SUBS[city] || CITY_SUBS.default;
+    const isExpanded = expandedCities.has(city);
+    
+    html += `
+      <div class="atlas-city-card ${isExpanded ? 'expanded' : ''}" onclick="toggleAtlasCity('${city}')">
+        <div class="atlas-city-icon">${icon}</div>
+        <div class="atlas-city-info">
+          <div class="atlas-city-name">${city}</div>
+          <div class="atlas-city-sub">${sub}</div>
+        </div>
+        <div class="atlas-city-count">${unlocked}/${badges.length}</div>
+        <div class="atlas-city-arrow">▶</div>
+      </div>
+      <div class="atlas-city-badges ${isExpanded ? 'open' : ''}" id="atlas-badges-${city.replace(/\s/g,'_')}">
+        ${badges.map(b => {
+          let cls = b.unlocked ? 'badge-card' : 'badge-card locked';
+          if (b.equipped) cls = 'badge-card equipped';
+          return `
+            <div class="${cls}" onclick="event.stopPropagation(); showBadgeDetail('${b.id}', 'LOCAL')">
+              ${!b.unlocked ? '<div class="badge-locked-icon">🔒</div>' : ''}
+              <img class="badge-img" src="${b.img}" alt="${b.name}">
+              <div class="badge-name">${b.name}</div>
+              <div class="badge-tier">${b.unlocked ? '✅' : '🔒'}</div>
+            </div>`;
+        }).join('')}
+      </div>`;
+  }
+  
+  // Locked/undiscovered cities (mock for prototype)
+  const lockedCities = ['Toronto', 'Vancouver', 'Calgary'].filter(c => !cityMap[c]);
+  lockedCities.forEach(city => {
+    const icon = CITY_ICONS[city] || '🔒';
+    html += `
+      <div class="atlas-locked-city">
+        <div class="atlas-locked-icon">${icon}</div>
+        <div>
+          <div class="atlas-locked-name">Ville inconnue</div>
+          <div class="atlas-locked-sub">Approchez-vous pour découvrir</div>
+        </div>
+      </div>`;
+  });
+  
+  if (Object.keys(cityMap).length === 0 && lockedCities.length === 0) {
+    html = `
+      <div class="atlas-locked-city">
+        <div class="atlas-locked-icon">🗺️</div>
+        <div>
+          <div class="atlas-locked-name">Aucune région découverte</div>
+          <div class="atlas-locked-sub">Explorez le monde pour débloquer des badges régionaux</div>
+        </div>
+      </div>`;
+  }
+  
+  container.innerHTML = html;
+}
+
+function toggleAtlasCity(city) {
+  if (expandedCities.has(city)) expandedCities.delete(city);
+  else expandedCities.add(city);
+  renderAtlas();
+}
+
+// === EVENTS — Sponsor section ===
+function renderEvents() {
+  const container = document.getElementById('events-section');
+  if (!container) return;
+  
+  // Mock events for prototype visualization
+  const events = [
+    { id: 'osheaga_2026', name: 'Osheaga 2026', icon: '🎵', sub: 'Montréal — Août 2026', total: 3, obtained: 0, live: true },
+    { id: 'nhl_winter', name: 'NHL Winter Classic', icon: '🏒', sub: 'Toronto — Janvier 2026', total: 2, obtained: 0, live: false },
+  ];
+  
+  container.innerHTML = events.map(ev => `
+    <div class="event-card">
+      <div class="event-icon">${ev.icon}</div>
+      <div class="event-info">
+        <div class="event-name">${ev.name}${ev.live ? '<span class="event-badge-live">LIVE</span>' : ''}</div>
+        <div class="event-sub">${ev.sub}</div>
+      </div>
+      <div class="event-count">${ev.obtained}/${ev.total}</div>
+    </div>`
+  ).join('');
+}
+
+// === LEGENDS — Exploit section ===
+function renderLegends() {
+  const container = document.getElementById('legends-section');
+  if (!container) return;
+  
+  const obtained = BADGES.exploits.filter(b => b.unlocked);
+  const locked = BADGES.exploits.filter(b => !b.unlocked);
+  
+  let html = '';
+  
+  // Obtained legends — shown with details
+  obtained.forEach(b => {
+    html += `
+      <div class="legend-card obtained" onclick="showBadgeDetail('${b.id}', 'LÉGENDE')">
+        <div class="legend-icon">🏆</div>
+        <div class="legend-info">
+          <div class="legend-name">${b.name}</div>
+          <div class="legend-sub">${b.desc || 'Exploit accompli'}</div>
+        </div>
+      </div>`;
+  });
+  
+  // Hidden legends — mysterious
+  locked.forEach((b, i) => {
+    html += `
+      <div class="legend-card hidden-legend">
+        <div class="legend-icon">❓</div>
+        <div class="legend-info">
+          <div class="legend-name">Légende cachée #${i + 1}</div>
+          <div class="legend-sub">Accomplissez l'impossible…</div>
+        </div>
+      </div>`;
+  });
+  
+  if (BADGES.exploits.length === 0) {
+    html = `
+      <div class="legend-card hidden-legend">
+        <div class="legend-icon">🎖️</div>
+        <div class="legend-info">
+          <div class="legend-name">Aucune légende</div>
+          <div class="legend-sub">Les exploits les plus rares apparaîtront ici</div>
+        </div>
+      </div>`;
+  }
+  
+  container.innerHTML = html;
+}
+
+// === CATEGORY SYSTEM ===
+const CORE_CATEGORIES = [
+  { key: 'guardian',   icon: '⛩️', name: 'Gardiens',    sub: 'Forteresses · Défense',       color: 'rgba(139,92,246,0.8)',  bg: 'rgba(139,92,246,0.08)', ring: 'rgba(139,92,246,0.2)' },
+  { key: 'fortune',    icon: '🎲', name: 'Fortune',     sub: 'Casino · Collection de Base',  color: 'rgba(250,204,21,0.8)', bg: 'rgba(250,204,21,0.06)', ring: 'rgba(250,204,21,0.2)' },
+  { key: 'exploration',icon: '🧭', name: 'Exploration', sub: 'Conquête · Marche · Créativité',color: 'rgba(0,200,255,0.8)',   bg: 'rgba(0,200,255,0.08)',  ring: 'rgba(0,200,255,0.2)' },
+];
+const expandedCats = new Set();
+
+function toggleCategory(key) {
+  if (expandedCats.has(key)) expandedCats.delete(key);
+  else expandedCats.add(key);
+  renderCoreCategories();
+}
+
+function renderCoreCategories() {
+  const container = document.getElementById('core-categories');
+  if (!container) return;
+  
+  // Merge all core badges
+  const allCore = [...BADGES.t1, ...BADGES.t3];
+  
+  // Group by collection_category
+  const groups = {};
+  CORE_CATEGORIES.forEach(cat => groups[cat.key] = []);
+  allCore.forEach(b => {
+    const cat = b.collection_category || 'fortune'; // default to Fortune
+    if (!groups[cat]) groups[cat] = [];
+    groups[cat].push(b);
+  });
+  
+  let html = '';
+  CORE_CATEGORIES.forEach(cat => {
+    const badges = groups[cat.key] || [];
+    if (badges.length === 0) {
+      // Show empty category as hint
+      html += `
+        <div class="cat-accordion" style="opacity:0.4">
+          <div class="cat-header">
+            <div class="cat-icon" style="background:${cat.bg};border:1px solid ${cat.ring}">${cat.icon}</div>
+            <div class="cat-info">
+              <div class="cat-name" style="color:${cat.color}">${cat.name}</div>
+              <div class="cat-sub">${cat.sub}</div>
+            </div>
+            <div class="cat-count">0/0</div>
+          </div>
+        </div>`;
+      return;
+    }
+    
+    const unlocked = badges.filter(b => b.unlocked).length;
+    const isOpen = expandedCats.has(cat.key);
+    
+    const badgeCards = badges.map(b => {
+      let cls = b.equipped ? 'badge-card equipped' : b.unlocked ? 'badge-card' : 'badge-card locked';
+      if (b.mastery && b.unlocked) cls += ' ' + getMasteryBorderClass(b.mastery.level);
+      if (b.mastery && b.mastery.ready && b.unlocked) cls += ' level-ready';
+      const tag = b.equipped ? '<div class="badge-equipped-tag">ÉQUIPÉ</div>' : '';
+      const lock = !b.unlocked ? '<div class="badge-locked-icon">🔒</div>' : '';
+      const levelReady = (b.mastery && b.mastery.ready && b.unlocked) ? '<div class="badge-levelup-ready">⬆ UP</div>' : '';
+      
+      let levelText = b.unlocked ? '✅' : '🔒';
+      if (b.mastery && b.unlocked) {
+        if (b.mastery.level >= 10) levelText = '✨ MAX';
+        else levelText = 'Lv ' + b.mastery.level;
+      }
+
+      return `
+        <div class="${cls}" onclick="event.stopPropagation(); showBadgeDetail('${b.id}', '${cat.name.toUpperCase()}')">
+          ${tag}${lock}${levelReady}
+          <img class="badge-img" src="${b.img}" alt="${b.name}">
+          <div class="badge-name">${b.name}</div>
+          <div class="badge-tier">${levelText}</div>
+        </div>`;
+    }).join('');
+    
+    html += `
+      <div class="cat-accordion ${isOpen ? 'open' : ''}">
+        <div class="cat-header" onclick="toggleCategory('${cat.key}')">
+          <div class="cat-icon" style="background:${cat.bg};border:1px solid ${cat.ring}">${cat.icon}</div>
+          <div class="cat-info">
+            <div class="cat-name" style="color:${cat.color}">${cat.name}</div>
+            <div class="cat-sub">${cat.sub}</div>
+          </div>
+          <div class="cat-count" style="color:${cat.color}">${unlocked}/${badges.length}</div>
+          <div class="cat-chevron">▶</div>
+        </div>
+        <div class="cat-badges">${badgeCards}</div>
+      </div>`;
+  });
+  
+  container.innerHTML = html;
+}
+
 function renderAllBadges() {
-  renderBadgeGrid('badge-grid-t1', BADGES.t1, 'COLLECTION');
-  renderBadgeGrid('badge-grid-nature', BADGES.t1_nature, 'LOCAL');
-  renderBadgeGrid('badge-grid-exploits', BADGES.exploits, 'EXPLOIT');
-  renderBadgeGrid('badge-grid-t3', BADGES.t3, 'GARDIEN');
+  // Category-based core rendering
+  renderCoreCategories();
 
-  updateSectionCount('section-title-t1', 'COLLECTION', BADGES.t1, 'badge-grid-t1');
-  updateSectionCount('section-title-nature', 'LOCAL', BADGES.t1_nature, 'badge-grid-nature');
-  updateSectionCount('section-title-exploits', '🏆 EXPLOITS', BADGES.exploits, 'badge-grid-exploits');
-  updateSectionCount('section-title-t3', 'GARDIENS', BADGES.t3, 'badge-grid-t3');
+  // Bonus sections
+  renderAtlas();
+  renderEvents();
+  renderLegends();
 
+  // === HERO COUNTER (Core only — the main /N number) ===
+  const coreBadges = [...BADGES.t1, ...BADGES.t3];
+  const coreUnlocked = coreBadges.filter(b => b.unlocked).length;
+  const coreTotal = coreBadges.length || 200;
+  const corePct = Math.round((coreUnlocked / coreTotal) * 100);
+  document.getElementById('hero-counter-num').textContent = `${coreUnlocked} / ${coreTotal}`;
+  document.getElementById('hero-counter-fill').style.width = `${corePct}%`;
+
+  // === TOTAL DISCOVERED (everything) ===
   const all = Object.values(BADGES).flat();
   const totalUnlocked = all.filter(b => b.unlocked).length;
-  document.getElementById('global-badge-count').textContent = `${totalUnlocked} / ${all.length} DÉVERROUILLÉS`;
+  document.getElementById('total-discovered').textContent = totalUnlocked;
 
   // Hero card
   const equipped = all.find(b => b.equipped);
@@ -1447,11 +1999,8 @@ function renderAllBadges() {
 
   if (equipped) {
     let effectsHtml = '';
-    
-    // Si le badge actif a des effets, on les affiche dans la Collection et sur le HUD
     if (equipped.effects && equipped.effects.length > 0) {
       effectsHtml = `<div style="margin-top:6px;padding:4px 8px;border-radius:6px;background:rgba(234,179,8,0.15);border:1px solid rgba(234,179,8,0.3);font-size:11px;color:rgba(250,204,21,0.9);display:inline-flex;align-items:center;gap:4px">✨ <strong>${equipped.effects.length} Buff${equipped.effects.length > 1 ? 's' : ''} Actif${equipped.effects.length > 1 ? 's' : ''}</strong></div>`;
-      
       hudBuffs.innerHTML = equipped.effects.map(eff => {
         let icon = '✨'; let title = eff.type;
         if (eff.type === 'defense_boost') { icon = '🛡️'; title = 'Défense +'+(eff.params.value||0)+'%'; }
@@ -1461,7 +2010,6 @@ function renderAllBadges() {
     } else {
       hudBuffs.innerHTML = '';
     }
-
     hero.style.display = 'flex';
     hero.innerHTML = `
       <img class="hero-badge-img" src="${equipped.img}" alt="${equipped.name}">
@@ -1653,6 +2201,14 @@ async function initApp() {
         // Seuls les badges Collection ont la mastery 10 niveaux
         const isLevelless = db.unlock_method === 'condition' || db.category === 'gardiens' || db.category === 'local';
 
+        // Auto-assign collection_category based on backend category
+        let collCat = db.collection_category; // Use backend value if set
+        if (!collCat) {
+          if (db.category === 'gardiens') collCat = 'guardian';
+          else if (db.unlock_method === 'casino_roll') collCat = 'fortune';
+          else collCat = 'exploration'; // default
+        }
+
         const badge = {
           id: db.id,
           name: db.name,
@@ -1667,6 +2223,7 @@ async function initApp() {
           questTotal: db.quest_condition_target || 1,
           is_starter: db.is_starter || false,
           effects: db.effects || [],
+          collection_category: collCat,
         };
 
         // Mastery — lire les vraies données mastery_levels du backend
