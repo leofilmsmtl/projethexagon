@@ -1,52 +1,228 @@
 <!doctype html>
-<html lang="en-CA"><head>
-<!-- Adresse donnée à Google Play et Apple : ne jamais la déplacer ni la renommer, même si le site change (24 novembre 2026). Les mêmes règles que le jeu : à tenir à jour avec la politique de confidentialité. -->
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en-CA">
+<head>
+<!-- Adresse donnée à Google Play et Apple : ne jamais la déplacer ni la renommer, même si le site change (24 novembre 2026).
+     Page générée par hexa-web/tools/pages-publiques.mjs (le dessin du jeu) : modifier le générateur, pas ce fichier. -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
 <link rel="alternate" hreflang="fr" href="https://projethexagon.com/suppression-compte">
 <title>Delete your account · Projet Hexagon</title>
 <style>
-:root { --papier:#f7f2e8; --encre:#2c2a33; --doux:#6b6675; --trait:#d9d0bf; }
-@media (prefers-color-scheme: dark) { :root { --papier:#211f26; --encre:#ece6f2; --doux:#a9a2b4; --trait:#3a3642; } }
-html { background: var(--papier); color: var(--encre); }
-body { margin: 0 auto; max-width: 660px; padding: 28px 18px 48px; font: 17px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
-h1 { font: 700 26px/1.25 Georgia, "Times New Roman", serif; margin: 0 0 6px; }
-.version { color: var(--doux); font-size: 14px; margin: 0 0 22px; }
-h2 { font: 700 18px/1.3 Georgia, serif; margin: 26px 0 6px; }
-p, li { margin: 0 0 10px; }
-ul, ol { padding-left: 22px; }
-table { border-collapse: collapse; width: 100%; font-size: 15px; margin: 6px 0 12px; }
-th, td { text-align: left; vertical-align: top; border-top: 1px solid var(--trait); padding: 8px 8px 8px 0; }
-th { font-weight: 700; }
-a { color: var(--encre); }
-.pied { margin-top: 30px; color: var(--doux); font-size: 15px; }
-</style></head><body>
+.carnet {
+  /* Couleurs (clair) */
+  --carnet-papier: #FBF5E9;
+  --carnet-encre: #2B2622;
+  /* L'alerte : le terracotta de l'avertissement de connexion, jamais un rouge vif (Julien, 5 novembre : « il n'est pas
+     très visible » ; toujours un mot en plus de la couleur). */
+  --carnet-alerte: #8A3B1F;
+  --carnet-doux: #6E655C;
+  --carnet-champ: #FFFCF6;
+  --carnet-ombre: rgba(43, 38, 34, 0.32);
+  --carnet-lavande: #7C62D9;
+  --carnet-focus: rgba(124, 98, 217, 0.12);
+  --carnet-lavis-centre: rgba(124, 98, 217, 0.66);
+  --carnet-lavis-bord: rgba(124, 98, 217, 0.40);
+  --carnet-lavis: rgba(124, 98, 217, 0.45);
+  --carnet-barre: rgba(124, 98, 217, 0.58);
+  --carnet-voile: rgba(43, 38, 34, 0.42);
+  --carnet-trait-pale: 0.34;
+  --carnet-grain: 0.55;
+  --carnet-marbre: 1;
+  /* Les boutons de marque (règles d'Apple et de Google, pas l'encre du jeu) */
+  --carnet-apple-fond: #000000;
+  --carnet-apple-texte: #FFFFFF;
+  --carnet-google-fond: #FFFFFF;
+  --carnet-google-texte: #1F1F1F;
+  --carnet-google-bord: #747775;
+  /* Polices */
+  --carnet-police: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --carnet-police-titre: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Noto Serif", serif;
+  --carnet-police-marque: Roboto, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  /* Tailles (cibles tactiles de 44 à 56 px) */
+  --carnet-largeur: 440px;
+  --carnet-marge: 28px;
+  --carnet-nom: 38px;
+  --carnet-titre: 29px;
+  --carnet-texte: 16px;
+  --carnet-etiquette: 15px;
+  --carnet-saisie: 17px;
+  --carnet-indice: 14px;
+  --carnet-bouton-texte: 17.5px;
+  --carnet-champ-h: 54px;
+  --carnet-bouton-h: 56px;
+  --carnet-bouton2-h: 52px;
+  --carnet-marque-h: 48px;
+  --carnet-cible: 44px;
+  --carnet-case-l: 46px;
+  --carnet-case-h: 60px;
+  --carnet-logo: 92px;
+  --carnet-logo-petit: 50px;
+  /* Formes du trait (lues par encre.js, en pixels) */
+  --carnet-rayon-champ: 11;
+  --carnet-rayon-bouton: 13;
+  --carnet-rayon-feuille: 28;
+  --carnet-trait: 2.1;
+  --carnet-trait-fort: 2.9;
+  --carnet-trait-varie: 0.7;
+  --carnet-trait-tremble: 0.6;
+  --carnet-souligne: 3.4;
+  --carnet-ombre-decalage: 3;
+  /* Mouvement */
+  --carnet-duree-barre: 400ms;
+  --carnet-courbe: cubic-bezier(0.25, 0.6, 0.3, 1);
+}
+:root[data-theme="sombre"] .carnet {
+    --carnet-papier: #221E33;
+    --carnet-encre: #F4EDE1;
+    --carnet-alerte: #F2A57E;
+    --carnet-doux: #B9AFA3;
+    --carnet-champ: #29243C;
+    --carnet-ombre: rgba(0, 0, 0, 0.5);
+    --carnet-lavande: #9C86EC;
+    --carnet-focus: rgba(156, 134, 236, 0.17);
+    --carnet-lavis-centre: rgba(156, 134, 236, 0.64);
+    --carnet-lavis-bord: rgba(156, 134, 236, 0.36);
+    --carnet-lavis: rgba(156, 134, 236, 0.5);
+    --carnet-barre: rgba(156, 134, 236, 0.62);
+    --carnet-voile: rgba(10, 8, 18, 0.6);
+    --carnet-trait-pale: 0.42;
+    --carnet-grain: 0.5;
+    --carnet-marbre: 1;
+    --carnet-apple-fond: #FFFFFF;
+    --carnet-apple-texte: #000000;
+    --carnet-google-fond: #F2F2F2;
+    --carnet-google-texte: #1F1F1F;
+    --carnet-google-bord: transparent;
+}
+/* Le démarrage est toujours de nuit (Julien, 23 novembre 2026 : « quelque chose de plus pro ») : l'écran de lancement du
+   téléphone est bleu nuit et ne peut pas suivre le thème ; l'écran de chargement le suit, puis le jeu prend le thème. */
+.carnet.carnet-chargement {
+    --carnet-papier: #221E33;
+    --carnet-encre: #F4EDE1;
+    --carnet-alerte: #F2A57E;
+    --carnet-doux: #B9AFA3;
+    --carnet-champ: #29243C;
+    --carnet-ombre: rgba(0, 0, 0, 0.5);
+    --carnet-lavande: #9C86EC;
+    --carnet-focus: rgba(156, 134, 236, 0.17);
+    --carnet-lavis-centre: rgba(156, 134, 236, 0.64);
+    --carnet-lavis-bord: rgba(156, 134, 236, 0.36);
+    --carnet-lavis: rgba(156, 134, 236, 0.5);
+    --carnet-barre: rgba(156, 134, 236, 0.62);
+    --carnet-voile: rgba(10, 8, 18, 0.6);
+    --carnet-trait-pale: 0.42;
+    --carnet-grain: 0.5;
+    --carnet-marbre: 1;
+    --carnet-apple-fond: #FFFFFF;
+    --carnet-apple-texte: #000000;
+    --carnet-google-fond: #F2F2F2;
+    --carnet-google-texte: #1F1F1F;
+    --carnet-google-bord: transparent;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .carnet {
+    --carnet-papier: #221E33;
+    --carnet-encre: #F4EDE1;
+    --carnet-alerte: #F2A57E;
+    --carnet-doux: #B9AFA3;
+    --carnet-champ: #29243C;
+    --carnet-ombre: rgba(0, 0, 0, 0.5);
+    --carnet-lavande: #9C86EC;
+    --carnet-focus: rgba(156, 134, 236, 0.17);
+    --carnet-lavis-centre: rgba(156, 134, 236, 0.64);
+    --carnet-lavis-bord: rgba(156, 134, 236, 0.36);
+    --carnet-lavis: rgba(156, 134, 236, 0.5);
+    --carnet-barre: rgba(156, 134, 236, 0.62);
+    --carnet-voile: rgba(10, 8, 18, 0.6);
+    --carnet-trait-pale: 0.42;
+    --carnet-grain: 0.5;
+    --carnet-marbre: 1;
+    --carnet-apple-fond: #FFFFFF;
+    --carnet-apple-texte: #000000;
+    --carnet-google-fond: #F2F2F2;
+    --carnet-google-texte: #1F1F1F;
+    --carnet-google-bord: transparent;
+}
+}
+
+html, body { margin: 0; }
+.carnet { min-height: 100vh; background: var(--carnet-papier); color: var(--carnet-encre); -webkit-font-smoothing: antialiased; }
+.carnet *, .carnet *::before, .carnet *::after { box-sizing: border-box; }
+.carnet-fond { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.carnet-fond svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.carnet-fond .grain { opacity: var(--carnet-grain); }
+.carnet-fond .marbre { opacity: var(--carnet-marbre); }
+.carnet-fond .g-sombre { display: none; }
+@media (prefers-color-scheme: dark) { .carnet-fond .g-clair { display: none; } .carnet-fond .g-sombre { display: inline; } }
+.carnet .k-encre { fill: var(--carnet-encre); }
+.carnet .st-centre { stop-color: var(--carnet-lavis-centre); }
+.carnet .st-bord { stop-color: var(--carnet-lavis-bord); }
+.page { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; padding: 30px 20px 48px; }
+.tete { display: flex; flex-direction: column; align-items: center; margin: 10px 0 30px; text-decoration: none; color: inherit; }
+.tete .logo { width: 92px; height: 92px; overflow: visible; }
+.tete .nom { margin: 12px 0 0; font: 600 38px/1.05 var(--carnet-police-titre); letter-spacing: 0.01em; text-align: center; }
+.texte { font: 400 17px/1.55 var(--carnet-police); }
+.texte h1 { margin: 0 0 6px; font: 700 28px/1.2 var(--carnet-police-titre); }
+.texte h2 { margin: 28px 0 8px; font: 700 19px/1.3 var(--carnet-police-titre); }
+.texte p, .texte li { margin: 0 0 10px; }
+.texte .version { color: var(--carnet-doux); font-size: 14px; margin: 0 0 20px; }
+.texte a { color: var(--carnet-encre); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+.texte .pied { margin-top: 30px; color: var(--carnet-doux); font-size: 15px; }
+.texte .pied a { color: var(--carnet-doux); }
+.bouton { display: inline-block; padding: 3px 10px; border-radius: 14px; white-space: nowrap; background: var(--carnet-focus); font-weight: 650; }
+.engrenage { display: inline-flex; vertical-align: -5px; width: 24px; height: 24px; margin: 0 2px; }
+.engrenage svg { width: 24px; height: 24px; }
+.etapes { list-style: none; margin: 0 0 10px; padding: 0; }
+.etapes li { display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: start; margin: 0 0 12px; }
+.num { position: relative; width: 34px; height: 34px; }
+.num svg { position: absolute; inset: 0; width: 34px; height: 34px; overflow: visible; }
+.num b { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font: 700 15px/1 var(--carnet-police); }
+.etapes li > span:last-child { padding-top: 5px; }
+.moments { margin: 4px 0 12px; }
+.moments > div { display: grid; grid-template-columns: 128px 1fr; gap: 12px; margin: 0 0 12px; }
+.quand { align-self: start; padding: 2px 10px; border-radius: 12px; background: rgba(244, 166, 140, 0.28); text-align: center; font-size: 15px; font-weight: 700; }
+@media (prefers-color-scheme: dark) { .quand { background: rgba(246, 176, 150, 0.2); } }
+@media (max-width: 420px) { .moments > div { grid-template-columns: 1fr; gap: 4px; } .quand { justify-self: start; } .tete .nom { font-size: 32px; } }
+</style>
+</head>
+<body>
+<div class="carnet"><div class="carnet-fond" aria-hidden="true"><svg><rect class="g-clair grain" width="100%" height="100%" filter="url(#carnet-grain-c)"/><rect class="g-clair marbre" width="100%" height="100%" filter="url(#carnet-marbre-c)"/><rect class="g-sombre grain" width="100%" height="100%" filter="url(#carnet-grain-s)"/><rect class="g-sombre marbre" width="100%" height="100%" filter="url(#carnet-marbre-s)"/></svg></div><svg width="0" height="0"><defs>
+<filter id="carnet-grain-c" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7" stitchTiles="stitch"/><feColorMatrix type="matrix" values="0 0 0 0 .17  0 0 0 0 .15  0 0 0 0 .13  1.1 0 0 0 -.52"/></filter>
+<filter id="carnet-grain-s" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7" stitchTiles="stitch"/><feColorMatrix type="matrix" values="0 0 0 0 .96  0 0 0 0 .93  0 0 0 0 .88  .7 0 0 0 -.37"/></filter>
+<filter id="carnet-marbre-c" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".011 .016" numOctaves="3" seed="12"/><feColorMatrix type="matrix" values="0 0 0 0 .55  0 0 0 0 .45  0 0 0 0 .33  .11 0 0 0 -.04"/></filter>
+<filter id="carnet-marbre-s" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".011 .016" numOctaves="3" seed="12"/><feColorMatrix type="matrix" values="0 0 0 0 .62  0 0 0 0 .55  0 0 0 0 .85  .07 0 0 0 -.025"/></filter>
+<filter id="carnet-aquarelle" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".045" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="4.5" xChannelSelector="R" yChannelSelector="G"/></filter>
+<filter id="carnet-aquarelle-fine" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".09" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="2" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs></svg>
+<div class="page">
+<a class="tete" href="/" aria-label="Projet Hexagon"><svg class="logo grand" viewBox="0 0 92 92" aria-hidden="true" focusable="false"><defs><radialGradient id="carnet-lavis-10" cx="50%" cy="56%" r="52%"><stop offset="0" class="st-centre"/><stop offset="1" class="st-bord"/></radialGradient></defs><path d="M46 14.58L47.78 14.58L49.57 14.58L51.35 14.58L53.13 14.58L54.91 14.58L56.7 14.58L58.48 14.58L61.23 14.9L63.62 15.86L65.64 17.44L67.29 19.67L68.25 21.33L69.21 22.99L70.17 24.66L71.13 26.32L72.09 27.98L73.05 29.64L74.01 31.31L74.97 32.97L75.93 34.63L76.89 36.29L77.85 37.96L78.81 39.62L79.77 41.28L80.87 43.83L81.23 46.37L80.87 48.91L79.77 51.45L78.81 53.12L77.85 54.78L76.89 56.44L75.93 58.1L74.97 59.77L74.01 61.43L73.05 63.09L72.09 64.75L71.13 66.42L70.17 68.08L69.21 69.74L68.25 71.4L67.29 73.07L65.64 75.29L63.62 76.88L61.23 77.83L58.48 78.15L56.56 78.15L54.64 78.15L52.72 78.15L50.8 78.15L48.88 78.15L46.96 78.15L45.04 78.15L43.12 78.15L41.2 78.15L39.28 78.15L37.36 78.15L35.44 78.15L33.52 78.15L30.77 77.83L28.38 76.88L26.36 75.29L24.71 73.07L23.75 71.4L22.79 69.74L21.83 68.08L20.87 66.42L19.91 64.75L18.95 63.09L17.99 61.43L17.03 59.77L16.07 58.1L15.11 56.44L14.15 54.78L13.19 53.12L12.23 51.45L11.13 48.91L10.77 46.37L11.13 43.83L12.23 41.28L13.19 39.62L14.15 37.96L15.11 36.29L16.07 34.63L17.03 32.97L17.99 31.31L18.95 29.64L19.91 27.98L20.87 26.32L21.83 24.66L22.79 22.99L23.75 21.33L24.71 19.67L26.36 17.44L28.38 15.86L30.77 14.9L33.52 14.58L35.3 14.58L37.09 14.58L38.87 14.58L40.65 14.58L42.43 14.58L44.22 14.58L46 14.58Z" fill="url(#carnet-lavis-10)" filter="url(#carnet-aquarelle)"/><path class="k-encre" d="M46.00 14.84L47.06 14.84L48.11 14.85L49.17 14.85L50.22 14.86L51.28 14.86L52.33 14.86L53.39 14.87L54.45 14.87L55.50 14.86L56.56 14.86L57.61 14.86L58.61 14.85L60.40 14.97L61.95 15.35L63.34 15.97L64.58 16.85L65.69 18.00L66.70 19.48L67.22 20.39L67.77 21.35L68.32 22.30L68.87 23.25L69.43 24.21L69.98 25.16L70.54 26.11L71.10 27.06L71.66 28.01L72.22 28.95L72.79 29.90L73.35 30.84L73.93 31.78L74.50 32.73L75.08 33.66L75.66 34.60L76.23 35.54L76.82 36.48L77.40 37.41L77.97 38.35L78.55 39.29L79.13 40.23L79.68 41.14L80.51 42.79L80.98 44.40L81.13 46.00L80.96 47.60L80.45 49.19L79.60 50.81L79.03 51.71L78.43 52.64L77.84 53.57L77.25 54.50L76.65 55.43L76.05 56.36L75.46 57.29L74.87 58.22L74.28 59.15L73.70 60.08L73.12 61.02L72.55 61.96L71.98 62.91L71.42 63.86L70.86 64.81L70.31 65.76L69.76 66.72L69.22 67.67L68.68 68.63L68.14 69.59L67.60 70.55L67.06 71.51L66.55 72.42L65.56 73.89L64.47 75.02L63.25 75.87L61.88 76.46L60.36 76.79L58.60 76.85L57.57 76.81L56.47 76.77L55.36 76.72L54.26 76.68L53.16 76.63L52.06 76.59L50.96 76.56L49.86 76.53L48.75 76.50L47.65 76.49L46.55 76.48L45.45 76.48L44.35 76.49L43.25 76.50L42.14 76.53L41.04 76.57L39.94 76.61L38.84 76.66L37.74 76.71L36.64 76.77L35.53 76.83L34.43 76.89L33.39 76.95L31.62 76.92L30.06 76.62L28.65 76.06L27.36 75.22L26.21 74.08L25.16 72.61L24.63 71.70L24.07 70.75L23.51 69.80L22.96 68.84L22.40 67.89L21.85 66.94L21.30 65.99L20.74 65.03L20.19 64.08L19.63 63.13L19.07 62.18L18.51 61.24L17.94 60.29L17.38 59.35L16.81 58.40L16.24 57.46L15.67 56.52L15.10 55.57L14.53 54.63L13.96 53.69L13.39 52.74L12.83 51.80L12.28 50.87L11.48 49.22L11.02 47.60L10.89 46.00L11.07 44.41L11.58 42.82L12.44 41.21L13.01 40.31L13.59 39.37L14.18 38.44L14.77 37.51L15.36 36.58L15.94 35.64L16.53 34.71L17.10 33.77L17.68 32.83L18.25 31.89L18.82 30.94L19.38 30.00L19.94 29.05L20.50 28.10L21.05 27.14L21.60 26.19L22.14 25.23L22.69 24.27L23.23 23.31L23.77 22.35L24.31 21.39L24.85 20.43L25.36 19.52L26.35 18.03L27.45 16.88L28.68 15.99L30.05 15.36L31.60 14.98L33.39 14.85L34.39 14.86L35.44 14.86L36.50 14.86L37.55 14.86L38.61 14.86L39.67 14.86L40.72 14.86L41.78 14.86L42.83 14.85L43.89 14.85L44.94 14.84L46.00 14.84L46.00 12.63L44.94 12.63L43.89 12.64L42.83 12.64L41.78 12.64L40.72 12.65L39.67 12.65L38.61 12.66L37.55 12.66L36.50 12.66L35.44 12.67L34.39 12.67L33.28 12.68L31.26 12.84L29.35 13.32L27.60 14.13L26.05 15.26L24.70 16.69L23.58 18.37L23.01 19.37L22.48 20.33L21.94 21.29L21.40 22.26L20.86 23.21L20.31 24.17L19.77 25.13L19.22 26.09L18.67 27.04L18.11 27.99L17.55 28.94L16.99 29.89L16.43 30.83L15.86 31.78L15.29 32.72L14.71 33.66L14.14 34.60L13.56 35.54L12.98 36.47L12.40 37.41L11.82 38.35L11.24 39.29L10.64 40.28L9.72 42.11L9.14 44.04L8.94 46.00L9.13 47.96L9.71 49.90L10.62 51.73L11.21 52.73L11.78 53.67L12.35 54.61L12.92 55.56L13.49 56.50L14.06 57.45L14.62 58.39L15.18 59.34L15.74 60.29L16.29 61.24L16.84 62.20L17.38 63.16L17.92 64.12L18.45 65.08L18.98 66.05L19.51 67.02L20.03 67.99L20.55 68.96L21.07 69.93L21.60 70.90L22.12 71.87L22.65 72.84L23.21 73.86L24.36 75.58L25.77 77.06L27.41 78.21L29.24 79.00L31.22 79.44L33.27 79.52L34.43 79.47L35.53 79.42L36.64 79.36L37.74 79.31L38.84 79.25L39.94 79.20L41.04 79.15L42.14 79.11L43.25 79.07L44.35 79.04L45.45 79.02L46.55 79.00L47.65 79.00L48.75 79.00L49.86 79.01L50.96 79.03L52.06 79.05L53.16 79.08L54.26 79.12L55.36 79.15L56.47 79.19L57.57 79.23L58.72 79.27L60.74 79.18L62.68 78.75L64.47 77.98L66.07 76.87L67.47 75.44L68.63 73.76L69.21 72.75L69.75 71.80L70.30 70.84L70.84 69.88L71.39 68.92L71.93 67.97L72.48 67.01L73.03 66.06L73.58 65.10L74.13 64.15L74.69 63.20L75.25 62.25L75.82 61.31L76.38 60.36L76.95 59.42L77.52 58.48L78.10 57.53L78.67 56.59L79.24 55.65L79.81 54.71L80.38 53.77L80.95 52.82L81.54 51.81L82.45 49.96L83.01 47.99L83.18 46.00L82.96 44.02L82.36 42.08L81.42 40.25L80.81 39.26L80.23 38.32L79.65 37.39L79.07 36.45L78.48 35.51L77.91 34.58L77.33 33.64L76.76 32.69L76.19 31.75L75.62 30.81L75.06 29.86L74.50 28.91L73.94 27.96L73.39 27.00L72.85 26.05L72.30 25.09L71.76 24.13L71.21 23.17L70.67 22.22L70.13 21.26L69.59 20.30L69.05 19.34L68.48 18.33L67.35 16.66L65.99 15.22L64.42 14.10L62.66 13.30L60.74 12.82L58.72 12.67L57.61 12.67L56.56 12.67L55.50 12.68L54.45 12.68L53.39 12.67L52.33 12.67L51.28 12.67L50.22 12.66L49.17 12.65L48.11 12.65L47.06 12.64L46.00 12.63Z"/></svg><span class="nom">Projet Hexagon</span></a>
+<article class="texte">
 <h1>Delete your account</h1>
 <p class="version">Projet Hexagon · 9574-9677 Québec Inc. · version of November 24, 2026</p>
 <p class="version">This is a translation. The <a href="/suppression-compte" hreflang="fr">French version</a> prevails.</p>
-
 <h2>1. In the game</h2>
 <p>In the Projet Hexagon app:</p>
-<ol>
-<li>Tap the gear at the bottom of the screen.</li>
-<li>Tap “Account”.</li>
-<li>Tap “Delete my account”.</li>
-<li>Confirm with your password. An account opened with Google or Apple, without a password, gets a code at its email instead.</li>
+<ol class="etapes">
+<li><span class="num"><svg class="logo " viewBox="0 0 34 34" aria-hidden="true" focusable="false"><defs><radialGradient id="carnet-lavis-5" cx="50%" cy="56%" r="52%"><stop offset="0" class="st-centre"/><stop offset="1" class="st-bord"/></radialGradient></defs><path d="M17 5.39L18.54 5.39L20.07 5.39L21.61 5.39L22.63 5.51L23.51 5.86L24.26 6.45L24.87 7.27L25.79 8.87L26.71 10.46L27.63 12.06L28.56 13.66L29.48 15.26L29.89 16.2L30.02 17.14L29.89 18.08L29.48 19.02L28.56 20.61L27.63 22.21L26.71 23.81L25.79 25.41L24.87 27L24.26 27.83L23.51 28.41L22.63 28.76L21.61 28.88L19.77 28.88L17.92 28.88L16.08 28.88L14.23 28.88L12.39 28.88L11.37 28.76L10.49 28.41L9.74 27.83L9.13 27L8.21 25.41L7.29 23.81L6.37 22.21L5.44 20.61L4.52 19.02L4.11 18.08L3.98 17.14L4.11 16.2L4.52 15.26L5.44 13.66L6.37 12.06L7.29 10.46L8.21 8.87L9.13 7.27L9.74 6.45L10.49 5.86L11.37 5.51L12.39 5.39L13.93 5.39L15.46 5.39L17 5.39Z" fill="url(#carnet-lavis-5)" filter="url(#carnet-aquarelle-fine)"/><path class="k-encre" d="M17.00 5.87L17.78 5.88L18.56 5.88L19.34 5.88L20.12 5.88L20.90 5.88L21.63 5.88L22.52 5.97L23.21 6.25L23.79 6.71L24.32 7.43L24.68 8.06L25.06 8.74L25.45 9.42L25.84 10.10L26.23 10.77L26.61 11.45L27.00 12.13L27.38 12.81L27.77 13.48L28.16 14.16L28.54 14.84L28.90 15.47L29.26 16.28L29.36 17.00L29.25 17.71L28.89 18.53L28.53 19.15L28.14 19.83L27.75 20.51L27.37 21.18L26.98 21.86L26.60 22.54L26.22 23.22L25.84 23.90L25.46 24.59L25.08 25.27L24.70 25.95L24.35 26.59L23.83 27.33L23.24 27.81L22.54 28.11L21.64 28.23L20.90 28.24L20.12 28.25L19.34 28.26L18.56 28.27L17.78 28.28L17.00 28.29L16.22 28.29L15.44 28.29L14.66 28.29L13.88 28.29L13.10 28.29L12.36 28.29L11.44 28.18L10.72 27.88L10.12 27.39L9.59 26.63L9.23 25.99L8.85 25.31L8.47 24.63L8.09 23.94L7.72 23.26L7.34 22.58L6.96 21.90L6.58 21.22L6.20 20.53L5.82 19.85L5.43 19.17L5.08 18.54L4.72 17.72L4.63 17.00L4.73 16.28L5.10 15.47L5.46 14.84L5.85 14.17L6.24 13.49L6.63 12.81L7.02 12.14L7.40 11.46L7.79 10.78L8.18 10.10L8.56 9.43L8.95 8.75L9.34 8.07L9.70 7.44L10.22 6.71L10.80 6.26L11.48 5.98L12.37 5.88L13.10 5.88L13.88 5.88L14.66 5.88L15.44 5.88L16.22 5.88L17.00 5.87L17.00 4.27L16.22 4.28L15.44 4.28L14.66 4.28L13.88 4.28L13.10 4.29L12.27 4.29L11.10 4.43L10.00 4.88L9.07 5.61L8.37 6.55L7.96 7.27L7.57 7.95L7.18 8.63L6.80 9.31L6.41 9.98L6.02 10.66L5.64 11.34L5.25 12.02L4.86 12.69L4.47 13.37L4.08 14.05L3.67 14.77L3.21 15.84L3.04 17.00L3.20 18.16L3.65 19.24L4.06 19.96L4.44 20.65L4.83 21.33L5.21 22.01L5.59 22.69L5.96 23.37L6.34 24.05L6.72 24.74L7.10 25.42L7.47 26.11L7.85 26.79L8.26 27.52L8.96 28.50L9.92 29.27L11.05 29.75L12.25 29.91L13.10 29.92L13.88 29.93L14.66 29.94L15.44 29.94L16.22 29.95L17.00 29.95L17.78 29.96L18.56 29.96L19.34 29.95L20.12 29.95L20.90 29.95L21.75 29.94L22.96 29.78L24.11 29.31L25.08 28.54L25.80 27.56L26.22 26.83L26.60 26.15L26.98 25.46L27.36 24.78L27.75 24.10L28.13 23.43L28.51 22.75L28.90 22.07L29.28 21.39L29.67 20.71L30.05 20.03L30.47 19.30L30.93 18.20L31.10 17.00L30.92 15.80L30.45 14.71L30.03 13.98L29.64 13.31L29.25 12.63L28.85 11.96L28.46 11.28L28.07 10.61L27.68 9.94L27.28 9.26L26.89 8.59L26.49 7.91L26.10 7.24L25.68 6.52L24.96 5.58L24.02 4.84L22.91 4.40L21.73 4.27L20.90 4.27L20.12 4.27L19.34 4.27L18.56 4.28L17.78 4.28L17.00 4.27Z"/></svg><b>1</b></span><span>Tap the gear <span class="engrenage" role="img" aria-label="gear"><svg class="hud-picto" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12.00 2.60 L13.86 5.05 L16.70 3.86 L17.09 6.91 L20.14 7.30 L18.95 10.14 L21.40 12.00 L18.95 13.86 L20.14 16.70 L17.09 17.09 L16.70 20.14 L13.86 18.95 L12.00 21.40 L10.14 18.95 L7.30 20.14 L6.91 17.09 L3.86 16.70 L5.05 13.86 L2.60 12.00 L5.05 10.14 L3.86 7.30 L6.91 6.91 L7.30 3.86 L10.14 5.05 Z"/></svg></span> at the bottom of the screen.</span></li>
+<li><span class="num"><svg class="logo " viewBox="0 0 34 34" aria-hidden="true" focusable="false"><defs><radialGradient id="carnet-lavis-6" cx="50%" cy="56%" r="52%"><stop offset="0" class="st-centre"/><stop offset="1" class="st-bord"/></radialGradient></defs><path d="M17 5.39L18.54 5.39L20.07 5.39L21.61 5.39L22.63 5.51L23.51 5.86L24.26 6.45L24.87 7.27L25.79 8.87L26.71 10.46L27.63 12.06L28.56 13.66L29.48 15.26L29.89 16.2L30.02 17.14L29.89 18.08L29.48 19.02L28.56 20.61L27.63 22.21L26.71 23.81L25.79 25.41L24.87 27L24.26 27.83L23.51 28.41L22.63 28.76L21.61 28.88L19.77 28.88L17.92 28.88L16.08 28.88L14.23 28.88L12.39 28.88L11.37 28.76L10.49 28.41L9.74 27.83L9.13 27L8.21 25.41L7.29 23.81L6.37 22.21L5.44 20.61L4.52 19.02L4.11 18.08L3.98 17.14L4.11 16.2L4.52 15.26L5.44 13.66L6.37 12.06L7.29 10.46L8.21 8.87L9.13 7.27L9.74 6.45L10.49 5.86L11.37 5.51L12.39 5.39L13.93 5.39L15.46 5.39L17 5.39Z" fill="url(#carnet-lavis-6)" filter="url(#carnet-aquarelle-fine)"/><path class="k-encre" d="M17.00 5.87L17.78 5.88L18.56 5.88L19.34 5.89L20.12 5.89L20.90 5.89L21.63 5.89L22.52 5.98L23.20 6.25L23.79 6.71L24.32 7.43L24.69 8.05L25.09 8.72L25.49 9.40L25.89 10.07L26.29 10.74L26.69 11.41L27.09 12.08L27.49 12.75L27.89 13.42L28.29 14.09L28.69 14.76L29.07 15.39L29.45 16.23L29.57 17.00L29.47 17.78L29.10 18.63L28.73 19.27L28.34 19.94L27.95 20.62L27.56 21.30L27.17 21.97L26.77 22.64L26.38 23.32L25.99 23.99L25.59 24.66L25.19 25.33L24.80 26.01L24.42 26.64L23.87 27.38L23.26 27.85L22.55 28.12L21.64 28.21L20.90 28.21L20.12 28.20L19.34 28.20L18.56 28.20L17.78 28.19L17.00 28.19L16.22 28.19L15.44 28.19L14.66 28.19L13.88 28.20L13.10 28.20L12.37 28.20L11.46 28.10L10.75 27.82L10.15 27.35L9.61 26.62L9.24 25.98L8.85 25.31L8.46 24.63L8.07 23.96L7.69 23.28L7.30 22.60L6.91 21.92L6.53 21.24L6.14 20.57L5.76 19.89L5.37 19.21L5.01 18.57L4.66 17.74L4.56 17.00L4.68 16.27L5.05 15.45L5.42 14.82L5.82 14.15L6.21 13.48L6.61 12.80L7.00 12.13L7.40 11.45L7.79 10.78L8.18 10.11L8.57 9.43L8.96 8.75L9.35 8.08L9.71 7.45L10.24 6.73L10.81 6.27L11.48 6.00L12.37 5.90L13.10 5.89L13.88 5.89L14.66 5.89L15.44 5.88L16.22 5.88L17.00 5.87L17.00 4.27L16.22 4.28L15.44 4.29L14.66 4.30L13.88 4.31L13.10 4.32L12.27 4.33L11.11 4.48L10.03 4.92L9.12 5.65L8.42 6.59L8.02 7.31L7.63 7.99L7.24 8.66L6.85 9.34L6.47 10.02L6.08 10.69L5.68 11.37L5.29 12.04L4.90 12.72L4.50 13.39L4.11 14.06L3.69 14.78L3.22 15.84L3.04 17.00L3.20 18.16L3.65 19.24L4.06 19.97L4.44 20.65L4.82 21.33L5.21 22.01L5.59 22.69L5.98 23.36L6.36 24.04L6.75 24.72L7.14 25.40L7.53 26.07L7.92 26.75L8.34 27.47L9.05 28.41L9.99 29.15L11.09 29.59L12.27 29.72L13.10 29.72L13.88 29.72L14.66 29.71L15.44 29.71L16.22 29.71L17.00 29.71L17.78 29.71L18.56 29.71L19.34 29.71L20.12 29.71L20.90 29.71L21.73 29.72L22.91 29.58L24.01 29.15L24.95 28.42L25.67 27.48L26.10 26.76L26.50 26.09L26.90 25.42L27.29 24.75L27.69 24.07L28.09 23.40L28.49 22.73L28.88 22.06L29.28 21.39L29.67 20.71L30.07 20.04L30.49 19.31L30.96 18.21L31.13 17.00L30.96 15.79L30.48 14.69L30.06 13.96L29.67 13.29L29.27 12.62L28.88 11.94L28.48 11.27L28.09 10.60L27.69 9.93L27.29 9.26L26.90 8.58L26.50 7.91L26.10 7.24L25.68 6.52L24.96 5.58L24.02 4.84L22.91 4.41L21.73 4.27L20.90 4.27L20.12 4.27L19.34 4.27L18.56 4.27L17.78 4.27L17.00 4.27Z"/></svg><b>2</b></span><span>Tap <span class="bouton">Account</span>.</span></li>
+<li><span class="num"><svg class="logo " viewBox="0 0 34 34" aria-hidden="true" focusable="false"><defs><radialGradient id="carnet-lavis-7" cx="50%" cy="56%" r="52%"><stop offset="0" class="st-centre"/><stop offset="1" class="st-bord"/></radialGradient></defs><path d="M17 5.39L18.54 5.39L20.07 5.39L21.61 5.39L22.63 5.51L23.51 5.86L24.26 6.45L24.87 7.27L25.79 8.87L26.71 10.46L27.63 12.06L28.56 13.66L29.48 15.26L29.89 16.2L30.02 17.14L29.89 18.08L29.48 19.02L28.56 20.61L27.63 22.21L26.71 23.81L25.79 25.41L24.87 27L24.26 27.83L23.51 28.41L22.63 28.76L21.61 28.88L19.77 28.88L17.92 28.88L16.08 28.88L14.23 28.88L12.39 28.88L11.37 28.76L10.49 28.41L9.74 27.83L9.13 27L8.21 25.41L7.29 23.81L6.37 22.21L5.44 20.61L4.52 19.02L4.11 18.08L3.98 17.14L4.11 16.2L4.52 15.26L5.44 13.66L6.37 12.06L7.29 10.46L8.21 8.87L9.13 7.27L9.74 6.45L10.49 5.86L11.37 5.51L12.39 5.39L13.93 5.39L15.46 5.39L17 5.39Z" fill="url(#carnet-lavis-7)" filter="url(#carnet-aquarelle-fine)"/><path class="k-encre" d="M17.00 5.87L17.78 5.87L18.56 5.86L19.34 5.86L20.12 5.85L20.90 5.85L21.63 5.84L22.53 5.94L23.23 6.21L23.82 6.67L24.36 7.40L24.72 8.04L25.12 8.71L25.51 9.38L25.90 10.06L26.30 10.73L26.69 11.41L27.08 12.08L27.48 12.75L27.87 13.43L28.27 14.10L28.66 14.77L29.03 15.40L29.41 16.24L29.53 17.00L29.43 17.77L29.07 18.61L28.71 19.25L28.32 19.93L27.94 20.61L27.55 21.29L27.17 21.97L26.78 22.65L26.40 23.33L26.01 24.00L25.62 24.68L25.23 25.36L24.84 26.03L24.47 26.67L23.91 27.41L23.29 27.89L22.56 28.18L21.64 28.26L20.90 28.25L20.12 28.24L19.34 28.22L18.56 28.21L17.78 28.20L17.00 28.18L16.22 28.16L15.44 28.15L14.66 28.13L13.88 28.12L13.10 28.10L12.37 28.09L11.49 27.98L10.82 27.70L10.26 27.24L9.75 26.52L9.40 25.90L9.01 25.22L8.62 24.54L8.23 23.86L7.85 23.19L7.46 22.51L7.06 21.84L6.67 21.16L6.28 20.49L5.89 19.81L5.50 19.14L5.13 18.51L4.77 17.71L4.66 17.00L4.76 16.29L5.11 15.48L5.47 14.85L5.86 14.17L6.25 13.50L6.64 12.82L7.02 12.14L7.41 11.46L7.80 10.79L8.19 10.11L8.58 9.44L8.97 8.76L9.36 8.08L9.72 7.45L10.24 6.73L10.81 6.28L11.49 6.01L12.37 5.91L13.10 5.90L13.88 5.90L14.66 5.89L15.44 5.89L16.22 5.88L17.00 5.87L17.00 4.27L16.22 4.28L15.44 4.28L14.66 4.28L13.88 4.28L13.10 4.27L12.27 4.28L11.09 4.42L9.99 4.86L9.05 5.59L8.35 6.54L7.93 7.26L7.54 7.93L7.15 8.61L6.76 9.29L6.37 9.96L5.99 10.64L5.60 11.32L5.21 12.00L4.83 12.68L4.44 13.36L4.06 14.03L3.66 14.76L3.21 15.84L3.05 17.00L3.23 18.15L3.70 19.22L4.12 19.93L4.52 20.60L4.92 21.27L5.32 21.94L5.72 22.61L6.11 23.29L6.51 23.96L6.90 24.63L7.29 25.31L7.68 25.98L8.07 26.66L8.48 27.37L9.17 28.30L10.06 29.01L11.13 29.45L12.27 29.60L13.10 29.62L13.88 29.63L14.66 29.64L15.44 29.66L16.22 29.68L17.00 29.69L17.78 29.71L18.56 29.73L19.34 29.74L20.12 29.76L20.90 29.77L21.74 29.79L22.93 29.66L24.06 29.22L25.02 28.48L25.74 27.52L26.17 26.80L26.56 26.12L26.95 25.45L27.34 24.77L27.73 24.10L28.12 23.42L28.50 22.74L28.89 22.06L29.27 21.38L29.65 20.70L30.04 20.02L30.45 19.29L30.90 18.19L31.07 17.00L30.88 15.81L30.41 14.73L29.99 14.01L29.59 13.33L29.20 12.66L28.80 11.99L28.41 11.31L28.02 10.64L27.62 9.96L27.23 9.29L26.84 8.61L26.45 7.94L26.06 7.26L25.65 6.54L24.94 5.60L24.01 4.86L22.91 4.42L21.73 4.28L20.90 4.28L20.12 4.28L19.34 4.27L18.56 4.27L17.78 4.27L17.00 4.27Z"/></svg><b>3</b></span><span>Tap <span class="bouton">Delete my account</span>.</span></li>
+<li><span class="num"><svg class="logo " viewBox="0 0 34 34" aria-hidden="true" focusable="false"><defs><radialGradient id="carnet-lavis-8" cx="50%" cy="56%" r="52%"><stop offset="0" class="st-centre"/><stop offset="1" class="st-bord"/></radialGradient></defs><path d="M17 5.39L18.54 5.39L20.07 5.39L21.61 5.39L22.63 5.51L23.51 5.86L24.26 6.45L24.87 7.27L25.79 8.87L26.71 10.46L27.63 12.06L28.56 13.66L29.48 15.26L29.89 16.2L30.02 17.14L29.89 18.08L29.48 19.02L28.56 20.61L27.63 22.21L26.71 23.81L25.79 25.41L24.87 27L24.26 27.83L23.51 28.41L22.63 28.76L21.61 28.88L19.77 28.88L17.92 28.88L16.08 28.88L14.23 28.88L12.39 28.88L11.37 28.76L10.49 28.41L9.74 27.83L9.13 27L8.21 25.41L7.29 23.81L6.37 22.21L5.44 20.61L4.52 19.02L4.11 18.08L3.98 17.14L4.11 16.2L4.52 15.26L5.44 13.66L6.37 12.06L7.29 10.46L8.21 8.87L9.13 7.27L9.74 6.45L10.49 5.86L11.37 5.51L12.39 5.39L13.93 5.39L15.46 5.39L17 5.39Z" fill="url(#carnet-lavis-8)" filter="url(#carnet-aquarelle-fine)"/><path class="k-encre" d="M17.00 5.87L17.78 5.87L18.56 5.86L19.34 5.86L20.12 5.85L20.90 5.84L21.63 5.84L22.53 5.93L23.24 6.20L23.83 6.66L24.38 7.39L24.75 8.02L25.14 8.70L25.53 9.37L25.92 10.05L26.31 10.72L26.70 11.40L27.09 12.07L27.48 12.75L27.87 13.43L28.25 14.11L28.64 14.79L29.00 15.42L29.36 16.26L29.46 17.00L29.34 17.74L28.97 18.56L28.59 19.19L28.20 19.86L27.80 20.53L27.40 21.20L27.01 21.88L26.61 22.55L26.22 23.22L25.82 23.90L25.43 24.57L25.04 25.24L24.64 25.92L24.28 26.55L23.75 27.26L23.18 27.71L22.51 27.98L21.63 28.07L20.90 28.07L20.12 28.07L19.34 28.07L18.56 28.06L17.78 28.06L17.00 28.06L16.22 28.05L15.44 28.05L14.66 28.04L13.88 28.03L13.10 28.03L12.38 28.02L11.51 27.91L10.86 27.64L10.31 27.20L9.81 26.49L9.46 25.86L9.08 25.18L8.70 24.50L8.31 23.82L7.93 23.14L7.54 22.46L7.16 21.78L6.77 21.10L6.38 20.43L5.99 19.75L5.60 19.08L5.24 18.46L4.89 17.67L4.78 17.00L4.87 16.32L5.21 15.52L5.56 14.90L5.94 14.22L6.32 13.54L6.70 12.85L7.08 12.17L7.46 11.49L7.83 10.81L8.21 10.12L8.59 9.44L8.97 8.76L9.35 8.08L9.71 7.45L10.22 6.72L10.80 6.26L11.48 5.98L12.37 5.87L13.10 5.87L13.88 5.87L14.66 5.87L15.44 5.87L16.22 5.87L17.00 5.87L17.00 4.27L16.22 4.27L15.44 4.27L14.66 4.27L13.88 4.27L13.10 4.27L12.27 4.28L11.09 4.42L9.99 4.86L9.06 5.60L8.36 6.55L7.95 7.27L7.56 7.95L7.18 8.63L6.79 9.31L6.41 9.98L6.02 10.66L5.64 11.34L5.25 12.02L4.87 12.70L4.48 13.38L4.09 14.05L3.68 14.77L3.22 15.85L3.06 17.00L3.22 18.16L3.68 19.23L4.09 19.95L4.47 20.63L4.86 21.31L5.24 21.99L5.62 22.67L6.01 23.35L6.39 24.03L6.77 24.71L7.15 25.39L7.53 26.07L7.92 26.75L8.33 27.48L9.03 28.43L9.97 29.18L11.08 29.63L12.26 29.78L13.10 29.78L13.88 29.79L14.66 29.79L15.44 29.79L16.22 29.78L17.00 29.78L17.78 29.78L18.56 29.77L19.34 29.77L20.12 29.76L20.90 29.75L21.74 29.75L22.91 29.60L24.01 29.15L24.94 28.41L25.65 27.46L26.06 26.74L26.45 26.06L26.84 25.38L27.23 24.71L27.62 24.03L28.01 23.35L28.40 22.68L28.79 22.01L29.19 21.33L29.58 20.66L29.98 19.99L30.40 19.27L30.87 18.18L31.05 17.00L30.89 15.81L30.43 14.72L30.02 13.99L29.64 13.31L29.25 12.63L28.86 11.95L28.48 11.28L28.09 10.60L27.70 9.92L27.31 9.25L26.92 8.57L26.52 7.90L26.13 7.22L25.71 6.50L24.99 5.55L24.04 4.81L22.92 4.37L21.74 4.24L20.90 4.25L20.12 4.25L19.34 4.26L18.56 4.27L17.78 4.27L17.00 4.27Z"/></svg><b>4</b></span><span>Confirm with your password. An account opened with Google or Apple, without a password, gets a code at its email instead.</span></li>
 </ol>
-
 <h2>2. Without the game</h2>
 <p>Write to <a href="mailto:contact@projethexagon.com?subject=Delete%20my%20account">contact@projethexagon.com</a> from your account’s email, with the subject “Delete my account” and your username. A code may be sent to that email to confirm the account is yours. The request is handled within 30 days.</p>
-
 <h2>3. What happens</h2>
-<table>
-<tr><th>When</th><th>What</th></tr>
-<tr><td>Right away</td><td>Your account disappears from other players’ map and leaderboard, and your session ends.</td></tr>
-<tr><td>For 30 days</td><td>Your account can be restored: just sign in again.</td></tr>
-<tr><td>After 30 days</td><td>Your account is erased, with everything in it. The link with your Apple account, if any, is also removed at Apple.</td></tr>
-</table>
-
+<div class="moments">
+<div><span class="quand">Right away</span><span>Your account disappears from other players’ map and leaderboard, and your session ends.</span></div>
+<div><span class="quand">For 30 days</span><span>Your account can be restored: just sign in again.</span></div>
+<div><span class="quand">After 30 days</span><span>Your account is erased, with everything in it. The link with your Apple account, if any, is also removed at Apple.</span></div>
+</div>
 <h2>4. What is erased, what remains</h2>
 <p><b>Erased:</b> your email, your username, your password, your Google and Apple sign-ins, your game (discoveries, inventory, gems, drawings, progress), your consents, your playtime and your positions.</p>
 <p><b>Remains:</b> your hexes stay on the map, without your name. Encrypted backups keep your account until they expire, 6 months at most; they are used only to repair a failure.</p>
-
 <p class="pied"><a href="https://jeu.projethexagon.com/public/textes/en/confidentialite.html">Privacy policy</a> · <a href="https://jeu.projethexagon.com/public/textes/en/conditions.html">Terms of use</a> · <a href="/suppression-compte" hreflang="fr">Français</a></p>
-</body></html>
+</article>
+</div>
+</div>
+</body>
+</html>
