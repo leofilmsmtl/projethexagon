@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<!-- Adresse donnée à Google Play et Apple : ne jamais la déplacer ni la renommer, même si le site change (24 novembre 2026).
+     Page générée par hexa-web/tools/pages-publiques.mjs (le dessin du jeu) : modifier le générateur, pas ce fichier. -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="alternate" hreflang="fr" href="https://projethexagon.com/confidentialite">
+<title>Privacy policy · Projet Hexagon</title>
+<style>
+.carnet {
+  /* Couleurs (clair) */
+  --carnet-papier: #FBF5E9;
+  --carnet-encre: #2B2622;
+  /* L'alerte : le terracotta de l'avertissement de connexion, jamais un rouge vif (Julien, 5 novembre : « il n'est pas
+     très visible » ; toujours un mot en plus de la couleur). */
+  --carnet-alerte: #8A3B1F;
+  --carnet-doux: #6E655C;
+  --carnet-champ: #FFFCF6;
+  --carnet-ombre: rgba(43, 38, 34, 0.32);
+  --carnet-lavande: #7C62D9;
+  --carnet-focus: rgba(124, 98, 217, 0.12);
+  --carnet-lavis-centre: rgba(124, 98, 217, 0.66);
+  --carnet-lavis-bord: rgba(124, 98, 217, 0.40);
+  --carnet-lavis: rgba(124, 98, 217, 0.45);
+  --carnet-barre: rgba(124, 98, 217, 0.58);
+  --carnet-voile: rgba(43, 38, 34, 0.42);
+  --carnet-trait-pale: 0.34;
+  --carnet-grain: 0.55;
+  --carnet-marbre: 1;
+  /* Les boutons de marque (règles d'Apple et de Google, pas l'encre du jeu) */
+  --carnet-apple-fond: #000000;
+  --carnet-apple-texte: #FFFFFF;
+  --carnet-google-fond: #FFFFFF;
+  --carnet-google-texte: #1F1F1F;
+  --carnet-google-bord: #747775;
+  /* Polices */
+  --carnet-police: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --carnet-police-titre: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Noto Serif", serif;
+  --carnet-police-marque: Roboto, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  /* Tailles (cibles tactiles de 44 à 56 px) */
+  --carnet-largeur: 440px;
+  --carnet-marge: 28px;
+  --carnet-nom: 38px;
+  --carnet-titre: 29px;
+  --carnet-texte: 16px;
+  --carnet-etiquette: 15px;
+  --carnet-saisie: 17px;
+  --carnet-indice: 14px;
+  --carnet-bouton-texte: 17.5px;
+  --carnet-champ-h: 54px;
+  --carnet-bouton-h: 56px;
+  --carnet-bouton2-h: 52px;
+  --carnet-marque-h: 48px;
+  --carnet-cible: 44px;
+  --carnet-case-l: 46px;
+  --carnet-case-h: 60px;
+  --carnet-logo: 92px;
+  --carnet-logo-petit: 50px;
+  /* Formes du trait (lues par encre.js, en pixels) */
+  --carnet-rayon-champ: 11;
+  --carnet-rayon-bouton: 13;
+  --carnet-rayon-feuille: 28;
+  --carnet-trait: 2.1;
+  --carnet-trait-fort: 2.9;
+  --carnet-trait-varie: 0.7;
+  --carnet-trait-tremble: 0.6;
+  --carnet-souligne: 3.4;
+  --carnet-ombre-decalage: 3;
+  /* Mouvement */
+  --carnet-duree-barre: 400ms;
+  --carnet-courbe: cubic-bezier(0.25, 0.6, 0.3, 1);
+}
+:root[data-theme="sombre"] .carnet {
+    --carnet-papier: #221E33;
+    --carnet-encre: #F4EDE1;
+    --carnet-alerte: #F2A57E;
+    --carnet-doux: #B9AFA3;
+    --carnet-champ: #29243C;
+    --carnet-ombre: rgba(0, 0, 0, 0.5);
+    --carnet-lavande: #9C86EC;
+    --carnet-focus: rgba(156, 134, 236, 0.17);
+    --carnet-lavis-centre: rgba(156, 134, 236, 0.64);
+    --carnet-lavis-bord: rgba(156, 134, 236, 0.36);
+    --carnet-lavis: rgba(156, 134, 236, 0.5);
+    --carnet-barre: rgba(156, 134, 236, 0.62);
+    --carnet-voile: rgba(10, 8, 18, 0.6);
+    --carnet-trait-pale: 0.42;
+    --carnet-grain: 0.5;
+    --carnet-marbre: 1;
+    --carnet-apple-fond: #FFFFFF;
+    --carnet-apple-texte: #000000;
+    --carnet-google-fond: #F2F2F2;
+    --carnet-google-texte: #1F1F1F;
+    --carnet-google-bord: transparent;
+}
+/* Le démarrage est toujours de nuit (Julien, 23 novembre 2026 : « quelque chose de plus pro ») : l'écran de lancement du
+   téléphone est bleu nuit et ne peut pas suivre le thème ; l'écran de chargement le suit, puis le jeu prend le thème. */
+.carnet.carnet-chargement {
+    --carnet-papier: #221E33;
+    --carnet-encre: #F4EDE1;
+    --carnet-alerte: #F2A57E;
+    --carnet-doux: #B9AFA3;
+    --carnet-champ: #29243C;
+    --carnet-ombre: rgba(0, 0, 0, 0.5);
+    --carnet-lavande: #9C86EC;
+    --carnet-focus: rgba(156, 134, 236, 0.17);
+    --carnet-lavis-centre: rgba(156, 134, 236, 0.64);
+    --carnet-lavis-bord: rgba(156, 134, 236, 0.36);
+    --carnet-lavis: rgba(156, 134, 236, 0.5);
+    --carnet-barre: rgba(156, 134, 236, 0.62);
+    --carnet-voile: rgba(10, 8, 18, 0.6);
+    --carnet-trait-pale: 0.42;
+    --carnet-grain: 0.5;
+    --carnet-marbre: 1;
+    --carnet-apple-fond: #FFFFFF;
+    --carnet-apple-texte: #000000;
+    --carnet-google-fond: #F2F2F2;
+    --carnet-google-texte: #1F1F1F;
+    --carnet-google-bord: transparent;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .carnet {
+    --carnet-papier: #221E33;
+    --carnet-encre: #F4EDE1;
+    --carnet-alerte: #F2A57E;
+    --carnet-doux: #B9AFA3;
+    --carnet-champ: #29243C;
+    --carnet-ombre: rgba(0, 0, 0, 0.5);
+    --carnet-lavande: #9C86EC;
+    --carnet-focus: rgba(156, 134, 236, 0.17);
+    --carnet-lavis-centre: rgba(156, 134, 236, 0.64);
+    --carnet-lavis-bord: rgba(156, 134, 236, 0.36);
+    --carnet-lavis: rgba(156, 134, 236, 0.5);
+    --carnet-barre: rgba(156, 134, 236, 0.62);
+    --carnet-voile: rgba(10, 8, 18, 0.6);
+    --carnet-trait-pale: 0.42;
+    --carnet-grain: 0.5;
+    --carnet-marbre: 1;
+    --carnet-apple-fond: #FFFFFF;
+    --carnet-apple-texte: #000000;
+    --carnet-google-fond: #F2F2F2;
+    --carnet-google-texte: #1F1F1F;
+    --carnet-google-bord: transparent;
+}
+}
+
+html, body { margin: 0; }
+.carnet { min-height: 100vh; background: var(--carnet-papier); color: var(--carnet-encre); -webkit-font-smoothing: antialiased; }
+.carnet *, .carnet *::before, .carnet *::after { box-sizing: border-box; }
+.carnet-fond { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.carnet-fond svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.carnet-fond .grain { opacity: var(--carnet-grain); }
+.carnet-fond .marbre { opacity: var(--carnet-marbre); }
+.carnet-fond .g-sombre { display: none; }
+@media (prefers-color-scheme: dark) { .carnet-fond .g-clair { display: none; } .carnet-fond .g-sombre { display: inline; } }
+.carnet .k-encre { fill: var(--carnet-encre); }
+.carnet .st-centre { stop-color: var(--carnet-lavis-centre); }
+.carnet .st-bord { stop-color: var(--carnet-lavis-bord); }
+.page { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; padding: 30px 20px 48px; }
+.tete { display: flex; flex-direction: column; align-items: center; margin: 10px 0 30px; text-decoration: none; color: inherit; }
+.tete .logo { width: 92px; height: 92px; overflow: visible; }
+.tete .nom { margin: 12px 0 0; font: 600 38px/1.05 var(--carnet-police-titre); letter-spacing: 0.01em; text-align: center; }
+.texte { font: 400 17px/1.55 var(--carnet-police); }
+.texte h1 { margin: 0 0 6px; font: 700 28px/1.2 var(--carnet-police-titre); }
+.texte h2 { margin: 28px 0 8px; font: 700 19px/1.3 var(--carnet-police-titre); }
+.texte p, .texte li { margin: 0 0 10px; }
+.texte .version { color: var(--carnet-doux); font-size: 14px; margin: 0 0 20px; }
+.texte a { color: var(--carnet-encre); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+.texte .pied { margin-top: 30px; color: var(--carnet-doux); font-size: 15px; }
+.texte .pied a { color: var(--carnet-doux); }
+.bouton { display: inline-block; padding: 3px 10px; border-radius: 14px; white-space: nowrap; background: var(--carnet-focus); font-weight: 650; }
+.engrenage { display: inline-flex; vertical-align: -5px; width: 24px; height: 24px; margin: 0 2px; }
+.engrenage svg { width: 24px; height: 24px; }
+table { width: 100%; margin: 6px 0 12px; border-collapse: collapse; font-size: 15px; line-height: 1.4; }
+th, td { padding: 8px 8px 8px 0; text-align: left; vertical-align: top; border-top: 1px solid color-mix(in srgb, var(--carnet-encre) 20%, transparent); }
+th { font-weight: 750; }
+.etapes { list-style: none; margin: 0 0 10px; padding: 0; }
+.etapes li { display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: start; margin: 0 0 12px; }
+.num { position: relative; width: 34px; height: 34px; }
+.num svg { position: absolute; inset: 0; width: 34px; height: 34px; overflow: visible; }
+.num b { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font: 700 15px/1 var(--carnet-police); }
+.etapes li > span:last-child { padding-top: 5px; }
+.moments { margin: 4px 0 12px; }
+.moments > div { display: grid; grid-template-columns: 128px 1fr; gap: 12px; margin: 0 0 12px; }
+.quand { align-self: start; padding: 2px 10px; border-radius: 12px; background: rgba(244, 166, 140, 0.28); text-align: center; font-size: 15px; font-weight: 700; }
+@media (prefers-color-scheme: dark) { .quand { background: rgba(246, 176, 150, 0.2); } }
+@media (max-width: 420px) { .moments > div { grid-template-columns: 1fr; gap: 4px; } .quand { justify-self: start; } .tete .nom { font-size: 32px; } }
+</style>
+</head>
+<body>
+<div class="carnet"><div class="carnet-fond" aria-hidden="true"><svg><rect class="g-clair grain" width="100%" height="100%" filter="url(#carnet-grain-c)"/><rect class="g-clair marbre" width="100%" height="100%" filter="url(#carnet-marbre-c)"/><rect class="g-sombre grain" width="100%" height="100%" filter="url(#carnet-grain-s)"/><rect class="g-sombre marbre" width="100%" height="100%" filter="url(#carnet-marbre-s)"/></svg></div><svg width="0" height="0"><defs>
+<filter id="carnet-grain-c" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7" stitchTiles="stitch"/><feColorMatrix type="matrix" values="0 0 0 0 .17  0 0 0 0 .15  0 0 0 0 .13  1.1 0 0 0 -.52"/></filter>
+<filter id="carnet-grain-s" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7" stitchTiles="stitch"/><feColorMatrix type="matrix" values="0 0 0 0 .96  0 0 0 0 .93  0 0 0 0 .88  .7 0 0 0 -.37"/></filter>
+<filter id="carnet-marbre-c" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".011 .016" numOctaves="3" seed="12"/><feColorMatrix type="matrix" values="0 0 0 0 .55  0 0 0 0 .45  0 0 0 0 .33  .11 0 0 0 -.04"/></filter>
+<filter id="carnet-marbre-s" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".011 .016" numOctaves="3" seed="12"/><feColorMatrix type="matrix" values="0 0 0 0 .62  0 0 0 0 .55  0 0 0 0 .85  .07 0 0 0 -.025"/></filter>
+<filter id="carnet-aquarelle" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".045" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="4.5" xChannelSelector="R" yChannelSelector="G"/></filter>
+<filter id="carnet-aquarelle-fine" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".09" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="2" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs></svg>
+<div class="page">
+<a class="tete" href="/" aria-label="Projet Hexagon"><svg class="logo grand" viewBox="0 0 92 92" aria-hidden="true" focusable="false"><defs><radialGradient id="carnet-lavis-20" cx="50%" cy="56%" r="52%"><stop offset="0" class="st-centre"/><stop offset="1" class="st-bord"/></radialGradient></defs><path d="M46 14.58L47.78 14.58L49.57 14.58L51.35 14.58L53.13 14.58L54.91 14.58L56.7 14.58L58.48 14.58L61.23 14.9L63.62 15.86L65.64 17.44L67.29 19.67L68.25 21.33L69.21 22.99L70.17 24.66L71.13 26.32L72.09 27.98L73.05 29.64L74.01 31.31L74.97 32.97L75.93 34.63L76.89 36.29L77.85 37.96L78.81 39.62L79.77 41.28L80.87 43.83L81.23 46.37L80.87 48.91L79.77 51.45L78.81 53.12L77.85 54.78L76.89 56.44L75.93 58.1L74.97 59.77L74.01 61.43L73.05 63.09L72.09 64.75L71.13 66.42L70.17 68.08L69.21 69.74L68.25 71.4L67.29 73.07L65.64 75.29L63.62 76.88L61.23 77.83L58.48 78.15L56.56 78.15L54.64 78.15L52.72 78.15L50.8 78.15L48.88 78.15L46.96 78.15L45.04 78.15L43.12 78.15L41.2 78.15L39.28 78.15L37.36 78.15L35.44 78.15L33.52 78.15L30.77 77.83L28.38 76.88L26.36 75.29L24.71 73.07L23.75 71.4L22.79 69.74L21.83 68.08L20.87 66.42L19.91 64.75L18.95 63.09L17.99 61.43L17.03 59.77L16.07 58.1L15.11 56.44L14.15 54.78L13.19 53.12L12.23 51.45L11.13 48.91L10.77 46.37L11.13 43.83L12.23 41.28L13.19 39.62L14.15 37.96L15.11 36.29L16.07 34.63L17.03 32.97L17.99 31.31L18.95 29.64L19.91 27.98L20.87 26.32L21.83 24.66L22.79 22.99L23.75 21.33L24.71 19.67L26.36 17.44L28.38 15.86L30.77 14.9L33.52 14.58L35.3 14.58L37.09 14.58L38.87 14.58L40.65 14.58L42.43 14.58L44.22 14.58L46 14.58Z" fill="url(#carnet-lavis-20)" filter="url(#carnet-aquarelle)"/><path class="k-encre" d="M46.00 14.84L47.06 14.84L48.11 14.85L49.17 14.85L50.22 14.86L51.28 14.86L52.33 14.86L53.39 14.87L54.45 14.87L55.50 14.86L56.56 14.86L57.61 14.86L58.61 14.85L60.40 14.97L61.95 15.35L63.34 15.97L64.58 16.85L65.69 18.00L66.70 19.48L67.22 20.39L67.77 21.35L68.32 22.30L68.87 23.25L69.43 24.21L69.98 25.16L70.54 26.11L71.10 27.06L71.66 28.01L72.22 28.95L72.79 29.90L73.35 30.84L73.93 31.78L74.50 32.73L75.08 33.66L75.66 34.60L76.23 35.54L76.82 36.48L77.40 37.41L77.97 38.35L78.55 39.29L79.13 40.23L79.68 41.14L80.51 42.79L80.98 44.40L81.13 46.00L80.96 47.60L80.45 49.19L79.60 50.81L79.03 51.71L78.43 52.64L77.84 53.57L77.25 54.50L76.65 55.43L76.05 56.36L75.46 57.29L74.87 58.22L74.28 59.15L73.70 60.08L73.12 61.02L72.55 61.96L71.98 62.91L71.42 63.86L70.86 64.81L70.31 65.76L69.76 66.72L69.22 67.67L68.68 68.63L68.14 69.59L67.60 70.55L67.06 71.51L66.55 72.42L65.56 73.89L64.47 75.02L63.25 75.87L61.88 76.46L60.36 76.79L58.60 76.85L57.57 76.81L56.47 76.77L55.36 76.72L54.26 76.68L53.16 76.63L52.06 76.59L50.96 76.56L49.86 76.53L48.75 76.50L47.65 76.49L46.55 76.48L45.45 76.48L44.35 76.49L43.25 76.50L42.14 76.53L41.04 76.57L39.94 76.61L38.84 76.66L37.74 76.71L36.64 76.77L35.53 76.83L34.43 76.89L33.39 76.95L31.62 76.92L30.06 76.62L28.65 76.06L27.36 75.22L26.21 74.08L25.16 72.61L24.63 71.70L24.07 70.75L23.51 69.80L22.96 68.84L22.40 67.89L21.85 66.94L21.30 65.99L20.74 65.03L20.19 64.08L19.63 63.13L19.07 62.18L18.51 61.24L17.94 60.29L17.38 59.35L16.81 58.40L16.24 57.46L15.67 56.52L15.10 55.57L14.53 54.63L13.96 53.69L13.39 52.74L12.83 51.80L12.28 50.87L11.48 49.22L11.02 47.60L10.89 46.00L11.07 44.41L11.58 42.82L12.44 41.21L13.01 40.31L13.59 39.37L14.18 38.44L14.77 37.51L15.36 36.58L15.94 35.64L16.53 34.71L17.10 33.77L17.68 32.83L18.25 31.89L18.82 30.94L19.38 30.00L19.94 29.05L20.50 28.10L21.05 27.14L21.60 26.19L22.14 25.23L22.69 24.27L23.23 23.31L23.77 22.35L24.31 21.39L24.85 20.43L25.36 19.52L26.35 18.03L27.45 16.88L28.68 15.99L30.05 15.36L31.60 14.98L33.39 14.85L34.39 14.86L35.44 14.86L36.50 14.86L37.55 14.86L38.61 14.86L39.67 14.86L40.72 14.86L41.78 14.86L42.83 14.85L43.89 14.85L44.94 14.84L46.00 14.84L46.00 12.63L44.94 12.63L43.89 12.64L42.83 12.64L41.78 12.64L40.72 12.65L39.67 12.65L38.61 12.66L37.55 12.66L36.50 12.66L35.44 12.67L34.39 12.67L33.28 12.68L31.26 12.84L29.35 13.32L27.60 14.13L26.05 15.26L24.70 16.69L23.58 18.37L23.01 19.37L22.48 20.33L21.94 21.29L21.40 22.26L20.86 23.21L20.31 24.17L19.77 25.13L19.22 26.09L18.67 27.04L18.11 27.99L17.55 28.94L16.99 29.89L16.43 30.83L15.86 31.78L15.29 32.72L14.71 33.66L14.14 34.60L13.56 35.54L12.98 36.47L12.40 37.41L11.82 38.35L11.24 39.29L10.64 40.28L9.72 42.11L9.14 44.04L8.94 46.00L9.13 47.96L9.71 49.90L10.62 51.73L11.21 52.73L11.78 53.67L12.35 54.61L12.92 55.56L13.49 56.50L14.06 57.45L14.62 58.39L15.18 59.34L15.74 60.29L16.29 61.24L16.84 62.20L17.38 63.16L17.92 64.12L18.45 65.08L18.98 66.05L19.51 67.02L20.03 67.99L20.55 68.96L21.07 69.93L21.60 70.90L22.12 71.87L22.65 72.84L23.21 73.86L24.36 75.58L25.77 77.06L27.41 78.21L29.24 79.00L31.22 79.44L33.27 79.52L34.43 79.47L35.53 79.42L36.64 79.36L37.74 79.31L38.84 79.25L39.94 79.20L41.04 79.15L42.14 79.11L43.25 79.07L44.35 79.04L45.45 79.02L46.55 79.00L47.65 79.00L48.75 79.00L49.86 79.01L50.96 79.03L52.06 79.05L53.16 79.08L54.26 79.12L55.36 79.15L56.47 79.19L57.57 79.23L58.72 79.27L60.74 79.18L62.68 78.75L64.47 77.98L66.07 76.87L67.47 75.44L68.63 73.76L69.21 72.75L69.75 71.80L70.30 70.84L70.84 69.88L71.39 68.92L71.93 67.97L72.48 67.01L73.03 66.06L73.58 65.10L74.13 64.15L74.69 63.20L75.25 62.25L75.82 61.31L76.38 60.36L76.95 59.42L77.52 58.48L78.10 57.53L78.67 56.59L79.24 55.65L79.81 54.71L80.38 53.77L80.95 52.82L81.54 51.81L82.45 49.96L83.01 47.99L83.18 46.00L82.96 44.02L82.36 42.08L81.42 40.25L80.81 39.26L80.23 38.32L79.65 37.39L79.07 36.45L78.48 35.51L77.91 34.58L77.33 33.64L76.76 32.69L76.19 31.75L75.62 30.81L75.06 29.86L74.50 28.91L73.94 27.96L73.39 27.00L72.85 26.05L72.30 25.09L71.76 24.13L71.21 23.17L70.67 22.22L70.13 21.26L69.59 20.30L69.05 19.34L68.48 18.33L67.35 16.66L65.99 15.22L64.42 14.10L62.66 13.30L60.74 12.82L58.72 12.67L57.61 12.67L56.56 12.67L55.50 12.68L54.45 12.68L53.39 12.67L52.33 12.67L51.28 12.67L50.22 12.66L49.17 12.65L48.11 12.65L47.06 12.64L46.00 12.63Z"/></svg><span class="nom">Projet Hexagon</span></a>
+<article class="texte">
+<h1>Privacy policy</h1>
+<p class="version">Projet Hexagon · version of November 24, 2026</p>
+<p class="version">This is a translation. The <a href="/confidentialite" hreflang="fr">French version</a> was presented first and prevails.</p>
+<h2>1. Who is responsible</h2>
+<p>9574-9677 Québec Inc. operates Projet Hexagon and is responsible for your personal information. The person in charge of the protection of personal information is the company’s president. For a question, a request or a complaint: <a href="mailto:contact@projethexagon.com">contact@projethexagon.com</a>.</p>
+
+<h2>2. What we collect, and why</h2>
+<table>
+<tr><th>Information</th><th>Why</th></tr>
+<tr><td>Email, username, password (kept only in encrypted form), verification code</td><td>To open and protect your account.</td></tr>
+<tr><td>Session tokens, technical device identifier, device type (system, version, model)</td><td>To keep you signed in, one phone at a time, and to understand bugs.</td></tr>
+<tr><td>Your phone’s precise location, its accuracy and its speed</td><td>To move your game forward (tiles, gems, wonders) and to check that movements follow the game rules.</td></tr>
+<tr><td>Your game: tiles, territory, gems, wonders, letters, colour, drawings, dragon</td><td>To keep your progress.</td></tr>
+<tr><td>Daily play time and daily game summaries</td><td>To understand whether the game works and is enjoyable.</td></tr>
+<tr><td>Your consents: text version, language, date</td><td>To be able to show what you accepted or withdrew.</td></tr>
+<tr><td>Optional: your choice to be told when the game launches</td><td>To write to you once, when the game launches.</td></tr>
+</table>
+<p>We do not sell your information and do not use it for advertising.</p>
+
+<h2>3. Your location</h2>
+<p>The game does not work without your location. You accept it in the game, then your phone asks for permission. It can also be used while your phone is in your pocket, if you allow it; your phone shows when it is. You can withdraw it at any time in your phone’s settings: the game then stops.</p>
+<p>Without a connection, your movements do not count. A location that is too inaccurate does not discover anything.</p>
+
+<h2>4. What other players see</h2>
+<p>Your captures appear live for them: the tile, your three letters, your colour, your drawings and your username. They never see your location or your route. A captured tile does show that a player went there: someone who knows your letters can roughly guess where you play.</p>
+
+<h2>5. How long we keep your information</h2>
+<table>
+<tr><th>Information</th><th>Duration</th></tr>
+<tr><td>GPS points</td><td>7 days</td></tr>
+<tr><td>Last known location</td><td>1 hour</td></tr>
+<tr><td>Times you visited tiles</td><td>Rounded to the day after 2 days</td></tr>
+<tr><td>Codes sent by email</td><td>Until they expire: a few minutes; 7 days for an account deletion requested by email</td></tr>
+<tr><td>Your game, your consents</td><td>As long as your account exists</td></tr>
+<tr><td>Encrypted backup copies</td><td>Up to 6 months; they are used only to recover from a failure</td></tr>
+</table>
+<p>When you delete your account in the game, it disappears from other players’ maps right away. You can restore it for 30 days; after that, it is erased along with your data. It may remain in backup copies until they expire.</p>
+
+<h2>6. Who else receives it</h2>
+<table>
+<tr><th>Service</th><th>What it receives</th></tr>
+<tr><td>Our server, in Québec</td><td>Everything described here.</td></tr>
+<tr><td>Cloudflare (United States and elsewhere)</td><td>It carries the connection between your phone and our server: it sees your IP address and can see the content of the exchanges.</td></tr>
+<tr><td>SendGrid (United States)</td><td>Your email address and the code or message we send you.</td></tr>
+<tr><td>Stadia Maps (United States)</td><td>Map image requests made by our server, without your identity.</td></tr>
+<tr><td>Apple or Google, depending on your phone</td><td>Installing the app, under their own rules. If you sign in with Google or Apple, they confirm your identity and your email to us.</td></tr>
+</table>
+<p>Before entrusting information to a service outside Québec, we assess how it is protected.</p>
+
+<h2>7. Your rights</h2>
+<p>You can ask to access your information, have it corrected, receive a copy in a common format, withdraw a consent, or have your account deleted (in the game, or through the page <a href="https://projethexagon.com/en/delete-account">projethexagon.com/en/delete-account</a>). Write to the person in charge: <a href="mailto:contact@projethexagon.com">contact@projethexagon.com</a>. We answer within 30 days. You can also file a complaint with the <a href="https://www.cai.gouv.qc.ca/">Commission d’accès à l’information du Québec</a>.</p>
+
+<h2>8. Security and incidents</h2>
+<p>The server and its backup copies are encrypted. If an incident creates a risk of serious harm, we notify the Commission d’accès à l’information and the people concerned, and we record it in a register.</p>
+
+<h2>9. Age</h2>
+<p>The game is open to people aged 14 or older. If you believe a younger person gave us information, write to us: we will remove it.</p>
+
+<h2>10. Changes</h2>
+<p>Each version is dated. If a change affects your information, we present it to you, and we ask for your consent again when needed.</p>
+<p class="pied"><a href="/en/delete-account">Delete your account</a> · <a href="https://jeu.projethexagon.com/public/textes/en/conditions.html">Terms of use</a> · <a href="/confidentialite" hreflang="fr">Français</a></p>
+</article>
+</div>
+</div>
+</body>
+</html>
